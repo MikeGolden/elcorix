@@ -3,14 +3,16 @@ import { test, expect } from "@playwright/test";
 test.describe("Contact page", () => {
   test("shows tel, mailto and instagram links", async ({ page }) => {
     await page.goto("/contact");
+    // Scope to <main>: the footer repeats the phone/e-mail links.
+    const main = page.getByRole("main");
     await expect(
-      page.getByRole("link", { name: /\+49 8362/ }),
+      main.getByRole("link", { name: /\+49 8362/ }),
     ).toHaveAttribute("href", /^tel:\+49/);
     await expect(
-      page.getByRole("link", { name: /hello@kosmetic-fuessen\.de/ }),
+      main.getByRole("link", { name: /hello@kosmetic-fuessen\.de/ }),
     ).toHaveAttribute("href", /^mailto:/);
     await expect(
-      page.getByRole("link", { name: /@kosmetic\.fuessen/ }),
+      main.getByRole("link", { name: /@kosmetic\.fuessen/ }),
     ).toHaveAttribute("href", /instagram\.com/);
   });
 

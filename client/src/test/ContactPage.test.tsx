@@ -5,6 +5,8 @@ import { vi, type Mock } from "vitest";
 import ContactPage from "../pages/ContactPage";
 import { business } from "../config";
 
+const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 function renderPage() {
   return render(
     <MemoryRouter>
@@ -21,10 +23,10 @@ describe("ContactPage", () => {
   it("shows phone, e-mail and instagram links", () => {
     renderPage();
     expect(
-      screen.getByRole("link", { name: new RegExp(business.phone) }),
+      screen.getByRole("link", { name: new RegExp(escapeRegExp(business.phone)) }),
     ).toHaveAttribute("href", `tel:${business.phone.replace(/\s/g, "")}`);
     expect(
-      screen.getByRole("link", { name: new RegExp(business.email) }),
+      screen.getByRole("link", { name: new RegExp(escapeRegExp(business.email)) }),
     ).toHaveAttribute("href", `mailto:${business.email}`);
     expect(
       screen.getByRole("link", { name: /kosmetic\.fuessen/i }),
