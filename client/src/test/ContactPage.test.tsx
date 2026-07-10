@@ -33,6 +33,15 @@ describe("ContactPage", () => {
     ).toHaveAttribute("href", business.instagram);
   });
 
+  it("requires consenting to the privacy policy before submitting", () => {
+    renderPage();
+    const checkbox = screen.getByRole("checkbox", { name: /privacy policy/i });
+    expect(checkbox).toBeRequired();
+    expect(
+      screen.getByRole("link", { name: /privacy policy/i }),
+    ).toHaveAttribute("href", "/privacy");
+  });
+
   it("submits the contact form and shows a success message", async () => {
     const fetchMock = vi
       .spyOn(globalThis, "fetch")
@@ -44,6 +53,7 @@ describe("ContactPage", () => {
     await user.type(screen.getByLabelText(/name/i), "Anna");
     await user.type(screen.getByLabelText(/e-mail/i), "anna@example.com");
     await user.type(screen.getByLabelText(/message/i), "Hello!");
+    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     expect(await screen.findByRole("status")).toHaveTextContent(/thank you/i);
@@ -65,6 +75,7 @@ describe("ContactPage", () => {
     await user.type(screen.getByLabelText(/name/i), "Anna");
     await user.type(screen.getByLabelText(/e-mail/i), "anna@example.com");
     await user.type(screen.getByLabelText(/message/i), "Hello!");
+    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(

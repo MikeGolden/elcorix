@@ -2,6 +2,10 @@
 // (including the tagline) is in src/i18n/locales/*/common.json.
 export const business = {
   name: "Kosmetic Füssen",
+  // Placeholders — replace with the real owner and VAT id (required in the
+  // German Impressum) before going live.
+  owner: "Anna Musterfrau",
+  vatId: "DE000000000",
   address: "Reichenstraße 1, 87629 Füssen, Germany",
   phone: "+49 8362 000000",
   email: "hello@kosmetic-fuessen.de",

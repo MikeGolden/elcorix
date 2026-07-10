@@ -36,7 +36,11 @@ describe("App", () => {
     ).toHaveAttribute("href", "/contact");
   });
 
-  it("renders the Altegio widget on the booking page", () => {
+  it("renders the Altegio widget on the booking page once booking cookies are accepted", () => {
+    window.localStorage.setItem(
+      "cookie-consent",
+      JSON.stringify({ version: 1, decidedAt: new Date().toISOString(), booking: true }),
+    );
     renderAt("/booking");
     expect(
       screen.getByRole("heading", { level: 1, name: /book a procedure/i }),

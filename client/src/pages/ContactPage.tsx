@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import { business } from "../config";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -106,6 +107,25 @@ export default function ContactPage() {
               placeholder={t("contact.messagePlaceholder")}
               className="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2"
             />
+          </div>
+          <div className="flex items-start gap-2">
+            <input
+              id="privacy-consent"
+              name="privacyConsent"
+              type="checkbox"
+              required
+              className="mt-1 accent-brand-600"
+            />
+            <label htmlFor="privacy-consent" className="text-sm text-brand-700">
+              <Trans
+                i18nKey="contact.privacyConsent"
+                components={{
+                  privacyLink: (
+                    <Link to="/privacy" className="font-medium text-brand-600 underline" />
+                  ),
+                }}
+              />
+            </label>
           </div>
           <button
             type="submit"

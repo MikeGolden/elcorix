@@ -51,7 +51,10 @@
     "intro": "Wählen Sie eine Behandlung, Ihre Spezialistin und einen freien Termin im Kalender unten. Sie erhalten eine Bestätigung per E-Mail oder SMS.",
     "widgetTitle": "Altegio Online-Terminbuchung",
     "fallbackQuestion": "Die Buchung lädt nicht?",
-    "fallbackLink": "Buchungskalender von {{businessName}} in einem neuen Tab öffnen"
+    "fallbackLink": "Buchungskalender von {{businessName}} in einem neuen Tab öffnen",
+    "consentTitle": "Externer Buchungskalender",
+    "consentText": "Unser Online-Kalender wird von Altegio bereitgestellt. Beim Laden setzt Altegio Cookies und verarbeitet Ihre IP-Adresse — bei Online-Zahlungen auch Ihre Zahlungsdaten auf den Seiten von Altegio. Einzelheiten finden Sie in unserer Datenschutzerklärung.",
+    "consentLoad": "Kalender laden und Altegio-Cookies akzeptieren"
   },
   "contact": {
     "title": "Kontakt",
@@ -61,10 +64,62 @@
     "email": "E-Mail",
     "message": "Nachricht",
     "messagePlaceholder": "Wie können wir Ihnen helfen?",
+    "privacyConsent": "Ich habe die <privacyLink>Datenschutzerklärung</privacyLink> gelesen und bin damit einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden.",
     "send": "Nachricht senden",
     "sending": "Wird gesendet…",
     "success": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
     "error": "Leider ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns an."
+  },
+  "consent": {
+    "title": "Cookies & externe Dienste",
+    "description": "Wir verwenden nur technisch notwendige Speicherung (Ihre Sprache und diese Cookie-Entscheidung). Der Altegio-Buchungskalender ist ein externer Dienst, der beim Laden Cookies setzt — wir laden ihn nur mit Ihrer Einwilligung. Sie können Ihre Wahl jederzeit unter „Cookie-Einstellungen“ im Seitenfuß ändern.",
+    "privacyLink": "Datenschutzerklärung",
+    "acceptAll": "Alle akzeptieren",
+    "necessaryOnly": "Nur notwendige"
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "intro": "Wir nehmen den Schutz Ihrer personenbezogenen Daten ernst. Diese Erklärung informiert darüber, welche Daten wir auf dieser Website verarbeiten, zu welchem Zweck — und welche Rechte Ihnen nach der Datenschutz-Grundverordnung (DSGVO) zustehen.",
+    "sections": {
+      "controller": {
+        "title": "Verantwortlicher",
+        "body": "Verantwortlich für die Datenverarbeitung auf dieser Website ist {{businessName}}, {{address}}. E-Mail: {{email}}, Telefon: {{phone}}."
+      },
+      "hosting": {
+        "title": "Zugriffsdaten",
+        "body": "Beim Besuch dieser Website werden technische Zugriffsdaten (IP-Adresse, Datum und Uhrzeit, Browsertyp) in Server-Logs verarbeitet, um die Website sicher auszuliefern und Missbrauch zu erkennen (Art. 6 Abs. 1 lit. f DSGVO). Die Log-Daten werden nach kurzer Zeit gelöscht und nicht mit anderen Daten zusammengeführt."
+      },
+      "contactForm": {
+        "title": "Kontaktformular",
+        "body": "Wenn Sie das Kontaktformular nutzen, speichern wir Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO). Nachrichten werden gelöscht, sobald Ihre Anfrage erledigt ist, spätestens nach 12 Monaten."
+      },
+      "booking": {
+        "title": "Online-Terminbuchung und Zahlungen (Altegio)",
+        "body": "Termine werden über den externen Dienst Altegio (alteg.io) gebucht. Der Buchungskalender wird erst nach Ihrer Einwilligung eingebunden (Art. 6 Abs. 1 lit. a DSGVO). Nach dem Laden verarbeitet Altegio Ihre IP-Adresse und setzt Cookies; die von Ihnen eingegebenen Daten — Name, Telefonnummer, E-Mail, gewählte Behandlung und bei Online-Zahlungen Ihre Zahlungsdaten — werden von Altegio auf dessen eigenen Seiten verarbeitet. Einzelheiten entnehmen Sie bitte der Datenschutzerklärung von Altegio. Über unsere Website gestellte Buchungsanfragen speichern wir zusätzlich zur Bearbeitung durch unser Team. Ihre Einwilligung können Sie jederzeit über „Cookie-Einstellungen“ im Seitenfuß widerrufen."
+      },
+      "storage": {
+        "title": "Cookies und Local Storage",
+        "body": "Diese Website setzt selbst keine Tracking-Cookies. Wir nutzen den Local Storage Ihres Browsers ausschließlich für zwei funktionale Zwecke: Ihre Spracheinstellung (i18nextLng) und Ihre Cookie-Entscheidung (cookie-consent). Solche rein funktionale Speicherung ist einwilligungsfrei. Cookies von Altegio werden erst gesetzt, nachdem Sie den Buchungskalender akzeptiert haben."
+      },
+      "rights": {
+        "title": "Ihre Rechte",
+        "body": "Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer personenbezogenen Daten, auf Datenübertragbarkeit, auf Einschränkung der Verarbeitung und Widerspruch sowie das Recht, erteilte Einwilligungen mit Wirkung für die Zukunft zu widerrufen. Außerdem steht Ihnen ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu; für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA)."
+      }
+    }
+  },
+  "imprint": {
+    "title": "Impressum",
+    "operatorTitle": "Diensteanbieter",
+    "ownerLabel": "Inhaberin",
+    "contactTitle": "Kontakt",
+    "vatLabel": "USt-IdNr.",
+    "responsibleLabel": "Verantwortlich für den Inhalt",
+    "dispute": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: https://ec.europa.eu/consumers/odr. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+  },
+  "footer": {
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "cookieSettings": "Cookie-Einstellungen"
   },
   "languageSwitcher": {
     "label": "Sprache"

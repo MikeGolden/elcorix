@@ -51,7 +51,10 @@
     "intro": "Pick a service, choose your specialist and select a free slot in the calendar below. You will receive a confirmation by e-mail or SMS.",
     "widgetTitle": "Altegio online booking",
     "fallbackQuestion": "Booking not loading?",
-    "fallbackLink": "Open the {{businessName}} booking calendar in a new tab"
+    "fallbackLink": "Open the {{businessName}} booking calendar in a new tab",
+    "consentTitle": "External booking calendar",
+    "consentText": "Our online calendar is provided by Altegio. When it loads, Altegio sets cookies and processes your IP address — and, if you pay online, your payment data on Altegio's pages. Details are in our privacy policy.",
+    "consentLoad": "Load calendar and accept Altegio cookies"
   },
   "contact": {
     "title": "Contact",
@@ -61,10 +64,62 @@
     "email": "E-mail",
     "message": "Message",
     "messagePlaceholder": "How can we help you?",
+    "privacyConsent": "I have read the <privacyLink>privacy policy</privacyLink> and agree that my details are processed to answer my enquiry.",
     "send": "Send message",
     "sending": "Sending…",
     "success": "Thank you! We will get back to you shortly.",
     "error": "Something went wrong. Please try again or call us."
+  },
+  "consent": {
+    "title": "Cookies & external services",
+    "description": "We only use storage that is technically required (your language and this cookie decision). The Altegio booking calendar is an external service that sets cookies when it loads — we load it only with your consent. You can change your choice at any time under “Cookie settings” in the footer.",
+    "privacyLink": "Privacy policy",
+    "acceptAll": "Accept all",
+    "necessaryOnly": "Only necessary"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "intro": "We take the protection of your personal data seriously. This notice explains what data we process on this website, why we process it, and the rights you have under the EU General Data Protection Regulation (GDPR).",
+    "sections": {
+      "controller": {
+        "title": "Controller",
+        "body": "The controller responsible for processing personal data on this website is {{businessName}}, {{address}}. E-mail: {{email}}, phone: {{phone}}."
+      },
+      "hosting": {
+        "title": "Access data",
+        "body": "When you visit this site, technical access data (IP address, date and time, browser type) is processed in server logs to deliver the site securely and detect abuse (Art. 6 (1) (f) GDPR). Log data is deleted after a short period and is not merged with other data."
+      },
+      "contactForm": {
+        "title": "Contact form",
+        "body": "If you use the contact form, we store your name, e-mail address and message in order to answer your enquiry (Art. 6 (1) (b) GDPR). Messages are deleted once your enquiry is resolved, at the latest after 12 months."
+      },
+      "booking": {
+        "title": "Online booking and payments (Altegio)",
+        "body": "Appointments are booked through the external service Altegio (alteg.io). The booking calendar is embedded only after you give consent (Art. 6 (1) (a) GDPR). Once loaded, Altegio processes your IP address and sets cookies, and the data you enter — name, phone number, e-mail, selected service and, for online payments, your payment details — is processed by Altegio on its own pages. Please refer to Altegio's privacy policy for details. Booking requests made through our site are additionally stored by us so our staff can follow up. You can withdraw your consent at any time via “Cookie settings” in the footer."
+      },
+      "storage": {
+        "title": "Cookies and local storage",
+        "body": "This website sets no tracking cookies of its own. We use your browser's local storage for two strictly functional purposes: your language preference (i18nextLng) and your cookie decision (cookie-consent). Functional storage of this kind requires no consent. Cookies from Altegio are set only after you accept the booking calendar."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "You have the right to access, rectify and erase your personal data, to receive a copy of it, to restrict or object to its processing, and to withdraw any consent with effect for the future. You also have the right to lodge a complaint with a data protection supervisory authority; the authority competent for us is the Bavarian Data Protection Authority (BayLDA)."
+      }
+    }
+  },
+  "imprint": {
+    "title": "Imprint",
+    "operatorTitle": "Site operator",
+    "ownerLabel": "Owner",
+    "contactTitle": "Contact",
+    "vatLabel": "VAT ID",
+    "responsibleLabel": "Responsible for content",
+    "dispute": "The European Commission provides a platform for online dispute resolution: https://ec.europa.eu/consumers/odr. We are neither obliged nor willing to participate in dispute resolution proceedings before a consumer arbitration board."
+  },
+  "footer": {
+    "privacy": "Privacy policy",
+    "imprint": "Imprint",
+    "cookieSettings": "Cookie settings"
   },
   "languageSwitcher": {
     "label": "Language"

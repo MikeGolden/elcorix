@@ -25,9 +25,11 @@ test.describe("Contact page", () => {
       }),
     );
     await page.goto("/contact");
+    await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("E-mail").fill("anna@example.com");
     await page.getByLabel("Message").fill("I would like an appointment.");
+    await page.getByRole("checkbox", { name: /privacy policy/i }).check();
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByRole("status")).toHaveText(/thank you/i);
   });

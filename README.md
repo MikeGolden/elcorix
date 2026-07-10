@@ -117,6 +117,25 @@ npm run build         # client → client/dist, server → server/dist
 npm run start -w server
 ```
 
+## GDPR / privacy
+
+- **Cookie consent banner** (all three languages) on first visit; “Accept
+  all” and “Only necessary” have equal prominence, the decision is stored in
+  `localStorage` (`cookie-consent`, with timestamp as the consent record) and
+  can be changed any time via “Cookie settings” in the footer.
+- **The Altegio embed is consent-gated** (two-click pattern): the iframe —
+  which sets third-party cookies — only loads after opt-in, either via the
+  banner or the placeholder on the booking page. A no-cookie fallback link
+  (new tab) is always available.
+- **Contact form** requires a privacy-policy checkbox before submitting.
+- **Legal pages**: `/privacy` (privacy policy, GDPR Art. 13 information) and
+  `/imprint` (German Impressum, §5 DDG), linked from the footer. Replace the
+  `owner` and `vatId` placeholders in `client/src/config.ts` and have the
+  privacy text reviewed before going live.
+- The site itself sets no tracking cookies; `localStorage` holds only the
+  language preference and the consent decision (both functional, exempt from
+  consent).
+
 ## Security
 
 See [SECURITY.md](SECURITY.md) for the full posture: helmet headers,

@@ -18,6 +18,7 @@ test.describe("Landing page", () => {
     page,
   }) => {
     await page.goto("/");
+    await page.getByRole("button", { name: "Accept all" }).click();
     await page
       .getByRole("navigation")
       .getByRole("link", { name: "Book a procedure" })
