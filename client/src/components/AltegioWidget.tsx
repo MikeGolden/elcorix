@@ -18,6 +18,7 @@ export default function AltegioWidget() {
         className="h-[720px] w-full"
         loading="lazy"
         allow="payment"
+        referrerPolicy="strict-origin-when-cross-origin"
       />
       <p className="border-t border-brand-100 p-3 text-center text-sm text-brand-700">
         {t("booking.fallbackQuestion")}{" "}

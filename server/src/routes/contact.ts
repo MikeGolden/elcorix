@@ -8,8 +8,10 @@ export function validateContact(body: unknown): string | null {
   const { name, email, message } = body as Record<string, unknown>;
   if (typeof name !== "string" || name.trim().length === 0)
     return "Name is required";
+  if (name.length > 200) return "Name is too long";
   if (typeof email !== "string" || !EMAIL_RE.test(email))
     return "A valid e-mail is required";
+  if (email.length > 320) return "E-mail is too long";
   if (typeof message !== "string" || message.trim().length === 0)
     return "Message is required";
   if (message.length > 5000) return "Message is too long";

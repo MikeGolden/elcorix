@@ -11,8 +11,14 @@ export const business = {
    * Altegio booking page / widget.
    * Replace the company id with your real one from alteg.io
    * (Settings → Online booking → Booking link / widget).
+   * Digits only: the id is interpolated into the booking/payment URL, so a
+   * malformed value must never produce an unexpected host.
    */
-  altegioCompanyId: import.meta.env.VITE_ALTEGIO_COMPANY_ID ?? "000000",
+  altegioCompanyId: sanitizeCompanyId(import.meta.env.VITE_ALTEGIO_COMPANY_ID),
 } as const;
+
+function sanitizeCompanyId(raw: string | undefined): string {
+  return raw !== undefined && /^\d{1,12}$/.test(raw) ? raw : "000000";
+}
 
 export const altegioBookingUrl = `https://n${business.altegioCompanyId}.alteg.io`;

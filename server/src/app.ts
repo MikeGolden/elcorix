@@ -1,13 +1,57 @@
-import express from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import type { Queryable } from "./db/pool.js";
 import { contactRouter } from "./routes/contact.js";
 import { bookingsRouter } from "./routes/bookings.js";
 
-export function createApp(db: Queryable) {
+export interface AppOptions {
+  /**
+   * Origins allowed to call the API cross-origin. Defaults to
+   * CORS_ALLOWED_ORIGINS (comma-separated). Empty means CORS is disabled —
+   * fine when the client is served from the same origin or via the Vite
+   * dev proxy.
+   */
+  corsOrigins?: string[];
+  /** Max write requests (POST) per IP per window. Default 30 / 15 min. */
+  rateLimitMax?: number;
+  rateLimitWindowMs?: number;
+}
+
+export function createApp(db: Queryable, options: AppOptions = {}) {
   const app = express();
-  app.use(cors());
-  app.use(express.json());
+
+  // Only trust proxy-provided client IPs when explicitly deployed behind a
+  // reverse proxy, otherwise X-Forwarded-For could be spoofed to evade
+  // rate limiting.
+  const trustProxy = Number(process.env.TRUST_PROXY_HOPS ?? 0);
+  app.set("trust proxy", trustProxy > 0 ? trustProxy : false);
+  app.disable("x-powered-by");
+
+  app.use(helmet());
+
+  const corsOrigins =
+    options.corsOrigins ??
+    (process.env.CORS_ALLOWED_ORIGINS ?? "")
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean);
+  app.use(cors({ origin: corsOrigins.length > 0 ? corsOrigins : false }));
+
+  app.use(express.json({ limit: "16kb" }));
+
+  const writeLimiter = rateLimit({
+    windowMs: options.rateLimitWindowMs ?? 15 * 60 * 1000,
+    limit: options.rateLimitMax ?? 30,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: "Too many requests, please try again later" },
+  });
+  app.use(["/api/contact", "/api/bookings"], (req, res, next) => {
+    if (req.method === "POST") writeLimiter(req, res, next);
+    else next();
+  });
 
   app.get("/api/health", (_req, res) => {
     res.json({ status: "ok" });
@@ -15,6 +59,25 @@ export function createApp(db: Queryable) {
 
   app.use("/api/contact", contactRouter(db));
   app.use("/api/bookings", bookingsRouter(db));
+
+  // JSON error responses instead of Express's HTML error page; never leak
+  // stack traces or internals to the client.
+  app.use((err: unknown, _req: Request, res: Response, next: NextFunction) => {
+    if (res.headersSent) {
+      next(err);
+      return;
+    }
+    const status =
+      typeof err === "object" && err !== null && "status" in err
+        ? Number((err as { status: unknown }).status)
+        : 500;
+    if (status >= 400 && status < 500) {
+      res.status(status).json({ error: "Invalid request" });
+      return;
+    }
+    console.error("Unhandled error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  });
 
   return app;
 }

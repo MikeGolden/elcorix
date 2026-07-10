@@ -117,6 +117,14 @@ npm run build         # client → client/dist, server → server/dist
 npm run start -w server
 ```
 
+## Security
+
+See [SECURITY.md](SECURITY.md) for the full posture: helmet headers,
+origin-restricted CORS, rate limiting, body/field limits, Altegio company-id
+sanitization, CI vulnerability gates (`npm audit` on every push) and the
+production deployment checklist (CSP, HTTPS, proxy settings). Payments stay
+on Altegio's hosted pages — card data never touches this codebase.
+
 ## Contact details
 
 Business name, address, phone, e-mail and Instagram are configured in
