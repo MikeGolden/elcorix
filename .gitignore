@@ -1,9 +1,37 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+*.tsbuildinfo
+
+# Test artifacts
 coverage/
-.env
-.env.local
 playwright-report/
 test-results/
+blob-report/
+.playwright/
+
+# Environment (keep .env.example)
+.env
+.env.local
+.env.*.local
+
+# Caches
+.vite/
+.cache/
+.eslintcache
+
+# Logs
 *.log
+npm-debug.log*
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
