@@ -1,0 +1,72 @@
+{
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "booking": "Book a procedure",
+    "contact": "Contact"
+  },
+  "hero": {
+    "tagline": "Beauty & skin care in the heart of the Allgäu",
+    "cta": "Book a procedure"
+  },
+  "home": {
+    "whoWeAre": {
+      "title": "Who we are",
+      "p1": "We are a small cosmetic procedures cabinet in the old town of Füssen, at the foot of the Alps. Our certified estheticians combine years of experience with ongoing training in modern cosmetic techniques.",
+      "p2": "We believe in honest advice, medical-grade hygiene and treatments that respect your skin. Every visit starts with a personal consultation — no upselling, just what your skin actually needs."
+    },
+    "whatWeDo": {
+      "title": "What we do",
+      "cta": "See available times"
+    }
+  },
+  "services": {
+    "facial": {
+      "title": "Facial treatments",
+      "description": "Deep cleansing, hydrating and anti-aging facials tailored to your skin type."
+    },
+    "permanentMakeup": {
+      "title": "Permanent make-up",
+      "description": "Natural-looking brows, lips and eyeliner with gentle, precise pigmentation."
+    },
+    "laser": {
+      "title": "Laser & apparative cosmetics",
+      "description": "Modern apparative treatments for skin rejuvenation and hair removal."
+    },
+    "nails": {
+      "title": "Manicure & pedicure",
+      "description": "Classic and medical nail care with long-lasting gel finishes."
+    },
+    "lashesBrows": {
+      "title": "Lash & brow styling",
+      "description": "Lifting, lamination, tinting and extensions for an effortless everyday look."
+    },
+    "body": {
+      "title": "Body treatments",
+      "description": "Relaxing massages, peelings and firming treatments for skin and body."
+    }
+  },
+  "booking": {
+    "title": "Book a procedure",
+    "intro": "Pick a service, choose your specialist and select a free slot in the calendar below. You will receive a confirmation by e-mail or SMS.",
+    "widgetTitle": "Altegio online booking",
+    "fallbackQuestion": "Booking not loading?",
+    "fallbackLink": "Open the {{businessName}} booking calendar in a new tab"
+  },
+  "contact": {
+    "title": "Contact",
+    "openingHours": "Opening hours: Mon–Fri 9:00–18:00, Sat 10:00–14:00",
+    "formLabel": "Contact form",
+    "name": "Name",
+    "email": "E-mail",
+    "message": "Message",
+    "messagePlaceholder": "How can we help you?",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thank you! We will get back to you shortly.",
+    "error": "Something went wrong. Please try again or call us."
+  },
+  "languageSwitcher": {
+    "label": "Language"
+  }
+}

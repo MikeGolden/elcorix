@@ -1,6 +1,7 @@
+// Only non-translatable business data lives here; all user-visible copy
+// (including the tagline) is in src/i18n/locales/*/common.json.
 export const business = {
   name: "Kosmetic Füssen",
-  tagline: "Beauty & skin care in the heart of the Allgäu",
   address: "Reichenstraße 1, 87629 Füssen, Germany",
   phone: "+49 8362 000000",
   email: "hello@kosmetic-fuessen.de",

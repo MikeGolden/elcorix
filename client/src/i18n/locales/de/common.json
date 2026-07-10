@@ -1,0 +1,72 @@
+{
+  "nav": {
+    "label": "Hauptnavigation",
+    "home": "Startseite",
+    "booking": "Termin buchen",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "tagline": "Schönheit & Hautpflege im Herzen des Allgäus",
+    "cta": "Termin buchen"
+  },
+  "home": {
+    "whoWeAre": {
+      "title": "Wer wir sind",
+      "p1": "Wir sind ein kleines Kosmetikstudio in der Füssener Altstadt, am Fuße der Alpen. Unsere zertifizierten Kosmetikerinnen verbinden langjährige Erfahrung mit regelmäßigen Fortbildungen in modernen Behandlungsmethoden.",
+      "p2": "Wir setzen auf ehrliche Beratung, medizinische Hygienestandards und Behandlungen, die Ihre Haut respektieren. Jeder Besuch beginnt mit einem persönlichen Beratungsgespräch — ohne Verkaufsdruck, nur das, was Ihre Haut wirklich braucht."
+    },
+    "whatWeDo": {
+      "title": "Was wir tun",
+      "cta": "Freie Termine ansehen"
+    }
+  },
+  "services": {
+    "facial": {
+      "title": "Gesichtsbehandlungen",
+      "description": "Tiefenreinigende, feuchtigkeitsspendende und Anti-Aging-Behandlungen, abgestimmt auf Ihren Hauttyp."
+    },
+    "permanentMakeup": {
+      "title": "Permanent Make-up",
+      "description": "Natürlich wirkende Augenbrauen, Lippen und Lidstriche durch sanfte, präzise Pigmentierung."
+    },
+    "laser": {
+      "title": "Laser- & apparative Kosmetik",
+      "description": "Moderne apparative Behandlungen zur Hautverjüngung und dauerhaften Haarentfernung."
+    },
+    "nails": {
+      "title": "Maniküre & Pediküre",
+      "description": "Klassische und medizinische Nagelpflege mit langanhaltendem Gel-Finish."
+    },
+    "lashesBrows": {
+      "title": "Wimpern- & Brauenstyling",
+      "description": "Lifting, Laminierung, Färben und Verlängerung für einen gepflegten Look — jeden Tag."
+    },
+    "body": {
+      "title": "Körperbehandlungen",
+      "description": "Entspannende Massagen, Peelings und straffende Anwendungen für Haut und Körper."
+    }
+  },
+  "booking": {
+    "title": "Termin buchen",
+    "intro": "Wählen Sie eine Behandlung, Ihre Spezialistin und einen freien Termin im Kalender unten. Sie erhalten eine Bestätigung per E-Mail oder SMS.",
+    "widgetTitle": "Altegio Online-Terminbuchung",
+    "fallbackQuestion": "Die Buchung lädt nicht?",
+    "fallbackLink": "Buchungskalender von {{businessName}} in einem neuen Tab öffnen"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "openingHours": "Öffnungszeiten: Mo–Fr 9:00–18:00 Uhr, Sa 10:00–14:00 Uhr",
+    "formLabel": "Kontaktformular",
+    "name": "Name",
+    "email": "E-Mail",
+    "message": "Nachricht",
+    "messagePlaceholder": "Wie können wir Ihnen helfen?",
+    "send": "Nachricht senden",
+    "sending": "Wird gesendet…",
+    "success": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
+    "error": "Leider ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns an."
+  },
+  "languageSwitcher": {
+    "label": "Sprache"
+  }
+}

@@ -51,6 +51,35 @@ npm run dev
 
 The Vite dev server proxies `/api/*` to the Express server.
 
+## Internationalization
+
+The client is fully translated with [react-i18next](https://react.i18next.com/)
+into **English (en)**, **German (de)** and **Ukrainian (uk)**.
+
+- Detection order: `localStorage` (`i18nextLng`) → browser language → **German**
+  (the business default). The user's choice is persisted to `localStorage`, and
+  `<html lang>` is kept in sync on every change.
+- Missing keys fall back to **English**.
+- Translations live in `client/src/i18n/locales/<lng>/common.json`; the i18n
+  instance is initialized in `client/src/i18n/index.ts` (imported first in
+  `main.tsx`). Translation keys are type-checked: `client/src/i18n/i18next.d.ts`
+  augments i18next with the English resource shape, so a typo in a `t()` key is
+  a compile error.
+- The header's `LanguageSwitcher` (accessible listbox dropdown, keyboard
+  navigable) uses small inline SVG flags from `client/src/components/flags/`.
+
+**Adding a key:** add it to `en/common.json` first (it is the type source and
+the fallback), then mirror it in `de` and `uk`. A unit test
+(`src/test/translations.test.ts`) fails if the key sets ever diverge.
+
+**Adding a language:** create `client/src/i18n/locales/<lng>/common.json` with
+the full key set, register it in `resources` and `supportedLanguages` in
+`client/src/i18n/index.ts`, add an entry (label + flag component) to
+`LanguageSwitcher`, and extend the completeness test.
+
+Business data that must not be translated (name, address, phone, e-mail,
+Instagram) stays in `client/src/config.ts`.
+
 ## Altegio integration
 
 The booking page embeds the Altegio-hosted booking flow (services, staff,

@@ -1,9 +1,11 @@
 import { FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { business } from "../config";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 export default function ContactPage() {
+  const { t } = useTranslation();
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -32,7 +34,7 @@ export default function ContactPage() {
   return (
     <section aria-labelledby="contact" className="mx-auto max-w-5xl px-4 py-12">
       <h1 id="contact" className="text-3xl font-semibold">
-        Contact
+        {t("contact.title")}
       </h1>
       <div className="mt-8 grid gap-10 md:grid-cols-2">
         <div className="space-y-4">
@@ -65,15 +67,13 @@ export default function ContactPage() {
               </a>
             </li>
           </ul>
-          <p className="text-sm text-brand-700">
-            Opening hours: Mon–Fri 9:00–18:00, Sat 10:00–14:00
-          </p>
+          <p className="text-sm text-brand-700">{t("contact.openingHours")}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4" aria-label="Contact form">
+        <form onSubmit={handleSubmit} className="space-y-4" aria-label={t("contact.formLabel")}>
           <div>
             <label htmlFor="name" className="block text-sm font-medium">
-              Name
+              {t("contact.name")}
             </label>
             <input
               id="name"
@@ -84,7 +84,7 @@ export default function ContactPage() {
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium">
-              E-mail
+              {t("contact.email")}
             </label>
             <input
               id="email"
@@ -96,13 +96,14 @@ export default function ContactPage() {
           </div>
           <div>
             <label htmlFor="message" className="block text-sm font-medium">
-              Message
+              {t("contact.message")}
             </label>
             <textarea
               id="message"
               name="message"
               required
               rows={5}
+              placeholder={t("contact.messagePlaceholder")}
               className="mt-1 w-full rounded-lg border border-brand-100 bg-white px-3 py-2"
             />
           </div>
@@ -111,16 +112,16 @@ export default function ContactPage() {
             disabled={status === "sending"}
             className="rounded-full bg-brand-600 px-6 py-2 font-medium text-white hover:bg-brand-700 disabled:opacity-50"
           >
-            {status === "sending" ? "Sending…" : "Send message"}
+            {status === "sending" ? t("contact.sending") : t("contact.send")}
           </button>
           {status === "sent" && (
             <p role="status" className="text-sm text-green-700">
-              Thank you! We will get back to you shortly.
+              {t("contact.success")}
             </p>
           )}
           {status === "error" && (
             <p role="alert" className="text-sm text-red-700">
-              Something went wrong. Please try again or call us.
+              {t("contact.error")}
             </p>
           )}
         </form>
