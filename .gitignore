@@ -17,6 +17,12 @@ blob-report/
 .env.local
 .env.*.local
 
+# Local databases
+*.sqlite
+*.sqlite3
+*.db
+data/
+
 # Caches
 .vite/
 .cache/

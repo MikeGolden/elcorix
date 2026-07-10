@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import "dotenv/config";
+import "../env.js";
 import { pool } from "./pool.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
