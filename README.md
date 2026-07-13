@@ -51,6 +51,35 @@ npm run dev
 
 The Vite dev server proxies `/api/*` to the Express server.
 
+## Run with Docker
+
+The whole stack (Postgres, API, nginx-served client) is containerized:
+
+```bash
+cp .env.example .env      # set ALTEGIO_COMPANY_ID, POSTGRES_PASSWORD, WEB_PORT
+docker compose up -d --build
+open http://localhost:8080
+```
+
+- **client** — multi-stage build ([client/Dockerfile](client/Dockerfile)):
+  Vite production build (the Altegio company id is inlined via the
+  `VITE_ALTEGIO_COMPANY_ID` build arg), served by nginx with the SPA
+  fallback, gzip, immutable asset caching and the security headers from
+  [SECURITY.md](SECURITY.md) (CSP, `frame-ancestors 'none'`, …) already in
+  place ([docker/nginx.conf](docker/nginx.conf)).
+- **server** — multi-stage build ([server/Dockerfile](server/Dockerfile)),
+  production dependencies only, runs as the non-root `node` user, applies
+  the idempotent schema migration on start. Port 3001 is not published:
+  nginx proxies `/api/*` same-origin, and `TRUST_PROXY_HOPS=1` makes rate
+  limiting see the real client IP.
+- **db** — `postgres:16-alpine` with a named volume (`db-data`) and a
+  healthcheck; the server waits for it to be healthy.
+
+Both Dockerfiles use the repo root as build context because the npm
+workspaces share one `package-lock.json`. Data persists across
+`docker compose down`; use `docker compose down -v` to also drop the
+database volume.
+
 ## Internationalization
 
 The client is fully translated with [react-i18next](https://react.i18next.com/)
