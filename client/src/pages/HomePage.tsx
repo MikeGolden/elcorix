@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { business } from "../config";
 import { images } from "../images";
+import { usePageMeta } from "../seo/usePageMeta";
 
 const serviceKeys = [
   "facial",
@@ -13,6 +14,8 @@ const serviceKeys = [
 ] as const;
 
 const advantageKeys = ["consultation", "hygiene", "technology", "location"] as const;
+
+const testimonialKeys = ["t1", "t2", "t3"] as const;
 
 /** Placeholder names — swap for the real team before going live. */
 const teamMembers = [
@@ -28,6 +31,7 @@ const outlineCta =
 
 export default function HomePage() {
   const { t } = useTranslation();
+  usePageMeta("home");
   return (
     <>
       {/* Hero — full-bleed editorial portrait, my-skinclinic style */}
@@ -35,6 +39,10 @@ export default function HomePage() {
         <img
           src={images.hero}
           alt=""
+          width="1900"
+          height="1267"
+          // React 18 only forwards the lowercase DOM attribute form.
+          {...{ fetchpriority: "high" }}
           className="absolute inset-0 h-full w-full object-cover object-[50%_25%]"
         />
         <div
@@ -192,6 +200,31 @@ export default function HomePage() {
             ))}
           </ul>
         </div>
+      </section>
+
+      {/* Testimonials — curated quotes (update with real reviews). */}
+      <section aria-labelledby="testimonials" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+        <div className="text-center">
+          <div aria-hidden="true" className="mx-auto h-px w-12 bg-brand-500" />
+          <h2
+            id="testimonials"
+            className="mt-6 font-display text-4xl font-medium text-brand-900 sm:text-5xl"
+          >
+            {t("home.testimonials.title")}
+          </h2>
+        </div>
+        <ul className="mt-14 grid gap-10 md:grid-cols-3">
+          {testimonialKeys.map((key) => (
+            <li key={key} className="border-t border-brand-300 pt-6">
+              <blockquote className="font-display text-xl italic leading-relaxed text-brand-700">
+                “{t(`home.testimonials.items.${key}.quote`)}”
+              </blockquote>
+              <p className="mt-4 text-xs font-medium uppercase tracking-[0.15em] text-brand-600">
+                {t(`home.testimonials.items.${key}.name`)}
+              </p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* CTA band — full-bleed photo with booking call-to-action */}

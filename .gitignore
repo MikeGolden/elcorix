@@ -23,6 +23,9 @@ blob-report/
 *.db
 data/
 
+# Database dumps from the db-backup compose service
+backups/
+
 # Caches
 .vite/
 .cache/

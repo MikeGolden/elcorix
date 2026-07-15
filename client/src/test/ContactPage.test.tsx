@@ -63,6 +63,9 @@ describe("ContactPage", () => {
       name: "Anna",
       email: "anna@example.com",
       message: "Hello!",
+      lang: "en",
+      // Honeypot field stays empty for real users.
+      website: "",
     });
   });
 

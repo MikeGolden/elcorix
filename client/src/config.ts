@@ -12,6 +12,28 @@ export const business = {
   instagram: "https://instagram.com/kosmetic.fuessen",
   instagramHandle: "@kosmetic.fuessen",
   /**
+   * WhatsApp deep link (digits only, international format, no "+").
+   * Placeholder — must match the real business phone before going live.
+   */
+  whatsapp: "https://wa.me/498362000000",
+  /**
+   * Canonical production origin. Placeholder until the domain is live —
+   * used for <link rel="canonical">, Open Graph URLs and JSON-LD. Keep
+   * public/robots.txt and public/sitemap.xml in sync when changing it.
+   */
+  siteUrl: "https://kosmetic-fuessen.de",
+  /** Approximate studio coordinates (Reichenstraße, Füssen) for the map. */
+  geo: { latitude: 47.5709, longitude: 10.6986 },
+  /**
+   * Structured opening hours for schema.org JSON-LD (Google local search).
+   * The human-readable string shown on the contact page stays translated
+   * in common.json — keep the two in sync.
+   */
+  openingHours: [
+    { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
+    { days: ["Saturday"], opens: "10:00", closes: "14:00" },
+  ],
+  /**
    * Altegio booking page / widget.
    * Replace the company id with your real one from alteg.io
    * (Settings → Online booking → Booking link / widget).

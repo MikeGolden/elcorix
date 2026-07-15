@@ -3,12 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Default (German) description; usePageMeta overwrites it per route
+         and language once the app mounts. -->
     <meta
       name="description"
       content="Kosmetic Füssen — professionelle kosmetische Behandlungen im Herzen des Allgäus. Online-Terminbuchung."
     />
     <meta name="theme-color" content="#faf7f2" />
-    <title>Kosmetic Füssen — Cosmetic Procedures Cabinet</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Open Graph defaults (shared links in WhatsApp/Instagram/Facebook).
+         Title/description/url are updated per route by usePageMeta. -->
+    <meta property="og:site_name" content="Kosmetic Füssen" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://kosmetic-fuessen.de/images/hero.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Kosmetic Füssen — Kosmetikstudio im Allgäu</title>
     <style>
       /* Match the app's ivory background before CSS loads (no white flash). */
       html {

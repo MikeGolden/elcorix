@@ -19,15 +19,19 @@ Landing page and booking API for a cosmetic procedures cabinet in Füssen, Germa
 .
 ├── client/          # React + TS + Tailwind SPA
 │   └── src/
-│       ├── pages/       # Home (who we are / what we do), Booking, Contact
-│       ├── components/  # Header, Footer, AltegioWidget
+│       ├── pages/       # Home, Prices, Gallery, Booking, Contact, Privacy, Imprint, 404
+│       ├── components/  # Header, Footer, AltegioWidget, BookingRequestForm, MapEmbed, …
+│       ├── seo/         # usePageMeta (titles/OG/canonical), LocalBusiness JSON-LD
 │       └── test/        # Vitest unit tests
 ├── server/          # Express + TS API
 │   └── src/
 │       ├── routes/      # /api/contact, /api/bookings
 │       ├── db/          # pg pool, schema.sql, migrate script
+│       ├── mailer.ts    # optional SMTP notifications
+│       ├── retention.ts # daily GDPR data-retention cleanup
 │       └── test/        # Vitest + Supertest unit tests
-├── e2e/             # Playwright end-to-end tests
+├── e2e/             # Playwright end-to-end tests (dev server, API mocked)
+├── e2e-docker/      # Playwright smoke tests against the composed stack
 └── playwright.config.ts
 ```
 
@@ -60,6 +64,21 @@ cp .env.example .env      # set ALTEGIO_COMPANY_ID, POSTGRES_PASSWORD, WEB_PORT
 docker compose up -d --build
 open http://localhost:8080
 ```
+
+**TLS in production:** add the Caddy overlay — it terminates HTTPS with
+automatic Let's Encrypt certificates, redirects HTTP→HTTPS and www→apex,
+and sets HSTS (set `SITE_DOMAIN` and `ACME_EMAIL` in `.env`):
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d --build
+```
+
+**Backups:** the `db-backup` service writes a nightly `pg_dump` into
+`./backups/` and keeps `BACKUP_KEEP_DAYS` (default 14) days of dumps.
+Copy that folder off the host regularly — a Docker volume is not a backup.
+
+**Publishing images:** `.github/workflows/deploy.yml` builds and pushes
+both images to GHCR on every push to `main`.
 
 - **client** — multi-stage build ([client/Dockerfile](client/Dockerfile)):
   Vite production build (the Altegio company id is inlined via the
@@ -123,20 +142,40 @@ The API also exposes `GET /api/bookings/link` (canonical booking URL) and
 
 ## API
 
-| Method | Path                | Description                          |
-| ------ | ------------------- | ------------------------------------ |
-| GET    | `/api/health`       | Liveness check                       |
-| POST   | `/api/contact`      | Store a contact-form message         |
-| GET    | `/api/bookings/link`| Altegio booking URL for the company  |
-| POST   | `/api/bookings`     | Log a booking request                |
+| Method | Path                | Description                                        |
+| ------ | ------------------- | -------------------------------------------------- |
+| GET    | `/api/health`       | Liveness + DB readiness (503 `degraded` if DB down)|
+| POST   | `/api/contact`      | Store a contact-form message (+ e-mail notify)     |
+| GET    | `/api/bookings/link`| Altegio booking URL for the company                |
+| POST   | `/api/bookings`     | Store a call-back/booking request (+ e-mail notify)|
+
+Both POST endpoints carry a hidden **honeypot** field (`website`): submissions
+that fill it get a fake success response and are stored nowhere.
+
+## E-mail notifications
+
+Set `SMTP_HOST`, `MAIL_FROM` and `MAIL_TO` (plus `SMTP_USER`/`SMTP_PASS` if
+the relay needs auth — see `.env.example`) and the API will e-mail staff on
+every contact message and booking request, and send the customer a localized
+confirmation of receipt. Without SMTP config everything is still stored in
+Postgres; only the notifications are skipped (a warning is logged in
+production).
+
+## Data retention (GDPR)
+
+A daily job deletes stored contact messages and booking requests older than
+`RETENTION_MONTHS` (default 12) — matching the promise in the privacy
+policy. See `server/src/retention.ts`.
 
 ## Testing
 
 ```bash
-npm test              # unit tests (client + server, DB is mocked)
-npm run test:e2e      # Playwright e2e (starts the Vite dev server itself)
+npm test                  # unit tests (client + server, DB is mocked)
+npm run test:e2e          # Playwright e2e (starts the Vite dev server itself)
+npm run test:e2e:docker   # smoke tests against the composed Docker stack
+                          # (run `docker compose up -d --build` first)
 npx playwright install chromium   # one-time browser download for e2e
-npm run typecheck     # TypeScript across both workspaces
+npm run typecheck         # TypeScript across both workspaces
 ```
 
 ## Build
@@ -155,8 +194,11 @@ npm run start -w server
 - **The Altegio embed is consent-gated** (two-click pattern): the iframe —
   which sets third-party cookies — only loads after opt-in, either via the
   banner or the placeholder on the booking page. A no-cookie fallback link
-  (new tab) is always available.
+  (new tab) and a cookie-free **call-back request form** are always available.
+- **The OpenStreetMap embed** on the contact page is click-to-load: nothing
+  third-party loads until the visitor explicitly asks for the map.
 - **Contact form** requires a privacy-policy checkbox before submitting.
+- **Stored requests are auto-deleted** after `RETENTION_MONTHS` (default 12).
 - **Legal pages**: `/privacy` (privacy policy, GDPR Art. 13 information) and
   `/imprint` (German Impressum, §5 DDG), linked from the footer. Replace the
   `owner` and `vatId` placeholders in `client/src/config.ts` and have the
@@ -173,7 +215,29 @@ sanitization, CI vulnerability gates (`npm audit` on every push) and the
 production deployment checklist (CSP, HTTPS, proxy settings). Payments stay
 on Altegio's hosted pages — card data never touches this codebase.
 
+## SEO
+
+- Per-route, per-language `<title>`, meta description, canonical URL and
+  Open Graph tags (`client/src/seo/usePageMeta.ts`).
+- `schema.org/BeautySalon` JSON-LD (address, geo, opening hours, booking
+  link) for Google's local results (`client/src/seo/LocalBusinessJsonLd.tsx`).
+- `robots.txt`, `sitemap.xml`, SVG favicon and apple-touch-icon in
+  `client/public/` — keep the origin there in sync with `siteUrl` in
+  `client/src/config.ts`.
+- No hreflang alternates on purpose: all three languages share one URL
+  (language is a client-side preference, not a URL segment).
+
+## Analytics (optional)
+
+Set `VITE_ANALYTICS_SRC` and `VITE_ANALYTICS_DOMAIN` at build time to inject
+a privacy-friendly, cookie-free analytics script (self-hosted Plausible or
+Umami — no consent banner needed). Remember to allow the script origin in
+the CSP (`docker/nginx.conf`).
+
 ## Contact details
 
-Business name, address, phone, e-mail and Instagram are configured in
-`client/src/config.ts` — currently placeholders, replace with real values.
+Business name, address, phone, e-mail, Instagram, WhatsApp, coordinates and
+opening hours are configured in `client/src/config.ts` — currently
+placeholders, replace with real values. The prices in
+`client/src/pricing.ts` and the testimonials in the translation files are
+placeholders too.

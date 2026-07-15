@@ -3,8 +3,9 @@
 # client/public/images/ so the site serves them itself instead of
 # hotlinking the Unsplash CDN (better performance + GDPR posture).
 #
-# Usage:  ./scripts/fetch-images.sh
-# Then set VITE_LOCAL_IMAGES=true in .env.local and rebuild.
+# The images are committed to the repo and always served first-party
+# (src/images.ts); this script only documents their provenance and lets
+# you re-download them if needed.  Usage:  ./scripts/fetch-images.sh
 set -euo pipefail
 
 dir="$(cd "$(dirname "$0")/.." && pwd)/client/public/images"
@@ -30,4 +31,4 @@ fetch team-esthetician.jpg            photo-1594744803329-e58b31de8bf5 "w=600&h=
 fetch team-nails.jpg                  photo-1544005313-94ddf0286df2   "w=600&h=760&q=70&fit=crop"
 
 echo
-echo "Done. Now set VITE_LOCAL_IMAGES=true in .env.local and rebuild."
+echo "Done. Images refreshed in client/public/images."

@@ -1,7 +1,27 @@
 import { Router } from "express";
 import type { Queryable } from "../db/pool.js";
+import { sendInBackground, type Mailer } from "../mailer.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const SUPPORTED_LANGS = ["en", "de", "uk"] as const;
+type Lang = (typeof SUPPORTED_LANGS)[number];
+
+/** Auto-reply copy per language (the client sends its active language). */
+const confirmation: Record<Lang, { subject: string; text: string }> = {
+  en: {
+    subject: "We received your message — Kosmetic Füssen",
+    text: "Thank you for your message! We will get back to you as soon as possible, usually within one business day.\n\nKosmetic Füssen",
+  },
+  de: {
+    subject: "Wir haben Ihre Nachricht erhalten — Kosmetic Füssen",
+    text: "Vielen Dank für Ihre Nachricht! Wir melden uns so schnell wie möglich bei Ihnen, in der Regel innerhalb eines Werktages.\n\nKosmetic Füssen",
+  },
+  uk: {
+    subject: "Ми отримали ваше повідомлення — Kosmetic Füssen",
+    text: "Дякуємо за ваше повідомлення! Ми відповімо вам якнайшвидше, зазвичай протягом одного робочого дня.\n\nKosmetic Füssen",
+  },
+};
 
 export function validateContact(body: unknown): string | null {
   if (typeof body !== "object" || body === null) return "Invalid body";
@@ -18,10 +38,27 @@ export function validateContact(body: unknown): string | null {
   return null;
 }
 
-export function contactRouter(db: Queryable) {
+/** True when the hidden honeypot field was filled in — i.e. a spam bot. */
+export function isSpam(body: unknown): boolean {
+  if (typeof body !== "object" || body === null) return false;
+  const { website } = body as Record<string, unknown>;
+  return typeof website === "string" && website.trim().length > 0;
+}
+
+function requestLang(raw: unknown): Lang {
+  return SUPPORTED_LANGS.includes(raw as Lang) ? (raw as Lang) : "de";
+}
+
+export function contactRouter(db: Queryable, mailer: Mailer) {
   const router = Router();
 
   router.post("/", async (req, res) => {
+    // Honeypot: real users never see the "website" field. Answer exactly
+    // like a success so bots don't learn they were filtered, store nothing.
+    if (isSpam(req.body)) {
+      res.status(201).json({ id: 0 });
+      return;
+    }
     const error = validateContact(req.body);
     if (error) {
       res.status(400).json({ error });
@@ -35,6 +72,19 @@ export function contactRouter(db: Queryable) {
         [name.trim(), email.trim(), message.trim()],
       );
       res.status(201).json({ id: result.rows[0].id });
+
+      // Notifications go out after the response — the record is already
+      // stored, so a slow or failing SMTP server can't affect the client.
+      if (mailer.enabled && mailer.notifyAddress) {
+        sendInBackground(mailer, {
+          to: mailer.notifyAddress,
+          subject: `New contact message from ${name.trim()}`,
+          text: `Name: ${name.trim()}\nE-mail: ${email.trim()}\n\n${message.trim()}`,
+          replyTo: email.trim(),
+        });
+        const lang = requestLang((req.body as Record<string, unknown>).lang);
+        sendInBackground(mailer, { to: email.trim(), ...confirmation[lang] });
+      }
     } catch (err) {
       console.error("Failed to store contact message:", err);
       res.status(500).json({ error: "Internal server error" });

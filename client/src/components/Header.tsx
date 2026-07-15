@@ -30,6 +30,12 @@ export default function Header() {
           <NavLink to="/" end className={navLinkClass}>
             {t("nav.home")}
           </NavLink>
+          <NavLink to="/prices" className={navLinkClass}>
+            {t("nav.prices")}
+          </NavLink>
+          <NavLink to="/gallery" className={navLinkClass}>
+            {t("nav.gallery")}
+          </NavLink>
           <NavLink to="/booking" className={navLinkClass}>
             {t("nav.booking")}
           </NavLink>

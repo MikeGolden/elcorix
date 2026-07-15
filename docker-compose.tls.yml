@@ -1,0 +1,36 @@
+# TLS overlay: puts Caddy in front of the nginx client container and
+# obtains/renews Let's Encrypt certificates automatically.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d --build
+#
+# Requires SITE_DOMAIN (public DNS pointing at this host) and ACME_EMAIL
+# in .env. Ports 80+443 must be reachable from the internet.
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:?set SITE_DOMAIN in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - client
+
+  # With Caddy terminating TLS the nginx port stays internal.
+  client:
+    ports: !override []
+
+  # Two proxy hops now: Caddy → nginx → API.
+  server:
+    environment:
+      TRUST_PROXY_HOPS: 2
+
+volumes:
+  caddy-data:
+  caddy-config:

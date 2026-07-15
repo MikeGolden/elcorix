@@ -12,6 +12,7 @@
     "build": "npm run build -w client && npm run build -w server",
     "test": "npm run test -w client && npm run test -w server",
     "test:e2e": "playwright test",
+    "test:e2e:docker": "playwright test --config playwright.docker.config.ts",
     "typecheck": "npm run typecheck -w client && npm run typecheck -w server",
     "db:migrate": "npm run db:migrate -w server"
   },

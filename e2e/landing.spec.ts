@@ -21,7 +21,7 @@ test.describe("Landing page", () => {
     await page.getByRole("button", { name: "Accept all" }).click();
     await page
       .getByRole("navigation")
-      .getByRole("link", { name: "Book a procedure" })
+      .getByRole("link", { name: "Book an appointment" })
       .click();
     await expect(page).toHaveURL(/\/booking$/);
     await expect(page.getByTestId("altegio-widget")).toBeVisible();

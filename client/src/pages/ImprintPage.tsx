@@ -1,8 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { business } from "../config";
+import { usePageMeta } from "../seo/usePageMeta";
 
 export default function ImprintPage() {
   const { t } = useTranslation();
+  usePageMeta("imprint");
   return (
     <section aria-labelledby="imprint" className="mx-auto max-w-3xl px-4 py-16 sm:py-24">
       <div aria-hidden="true" className="h-px w-12 bg-brand-500" />

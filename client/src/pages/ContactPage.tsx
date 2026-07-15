@@ -2,6 +2,8 @@ import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { business } from "../config";
+import MapEmbed from "../components/MapEmbed";
+import { usePageMeta } from "../seo/usePageMeta";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -9,7 +11,8 @@ const inputClass =
   "mt-2 w-full rounded-none border-0 border-b border-brand-200 bg-transparent px-0 py-2 font-light text-brand-900 transition-colors placeholder:text-brand-300 focus:border-brand-900 focus:outline-none";
 
 export default function ContactPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  usePageMeta("contact");
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -25,6 +28,10 @@ export default function ContactPage() {
           name: data.get("name"),
           email: data.get("email"),
           message: data.get("message"),
+          // Language of the auto-reply confirmation e-mail.
+          lang: i18n.resolvedLanguage,
+          // Honeypot: hidden from humans, bots fill it in.
+          website: data.get("website"),
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -74,10 +81,21 @@ export default function ContactPage() {
                 {business.instagramHandle}
               </a>
             </li>
+            <li>
+              <a
+                className="text-sm font-medium uppercase tracking-[0.15em] text-brand-600 transition-colors hover:text-brand-900"
+                href={business.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t("contact.whatsapp")}
+              </a>
+            </li>
           </ul>
           <p className="text-sm font-light leading-relaxed text-brand-700">
             {t("contact.openingHours")}
           </p>
+          <MapEmbed />
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6" aria-label={t("contact.formLabel")}>
@@ -113,6 +131,17 @@ export default function ContactPage() {
               rows={5}
               placeholder={t("contact.messagePlaceholder")}
               className={inputClass}
+            />
+          </div>
+          {/* Honeypot — invisible to humans, catnip for spam bots. */}
+          <div className="hidden" aria-hidden="true">
+            <label htmlFor="contact-website">Website</label>
+            <input
+              id="contact-website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
             />
           </div>
           <div className="flex items-start gap-3">

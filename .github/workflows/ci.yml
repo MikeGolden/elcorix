@@ -21,6 +21,24 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
 
+  docker-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      # Real integration: nginx + API + Postgres, nothing mocked.
+      - run: docker compose up -d --build --wait
+      - run: npm run test:e2e:docker
+      - run: docker compose logs
+        if: failure()
+      - run: docker compose down -v
+        if: always()
+
   security:
     runs-on: ubuntu-latest
     steps:

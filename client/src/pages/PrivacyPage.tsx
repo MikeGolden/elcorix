@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { business } from "../config";
+import { usePageMeta } from "../seo/usePageMeta";
 
 const sectionKeys = [
   "controller",
@@ -12,6 +13,7 @@ const sectionKeys = [
 
 export default function PrivacyPage() {
   const { t } = useTranslation();
+  usePageMeta("privacy");
   const controllerDetails = {
     businessName: business.name,
     address: business.address,

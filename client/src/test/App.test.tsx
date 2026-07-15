@@ -29,8 +29,14 @@ describe("App", () => {
     renderAt("/");
     const nav = screen.getByRole("navigation", { name: /main navigation/i });
     expect(
-      within(nav).getByRole("link", { name: /book a procedure/i }),
+      within(nav).getByRole("link", { name: /book an appointment/i }),
     ).toHaveAttribute("href", "/booking");
+    expect(
+      within(nav).getByRole("link", { name: /prices/i }),
+    ).toHaveAttribute("href", "/prices");
+    expect(
+      within(nav).getByRole("link", { name: /gallery/i }),
+    ).toHaveAttribute("href", "/gallery");
     expect(
       within(nav).getByRole("link", { name: /^contact$/i }),
     ).toHaveAttribute("href", "/contact");
@@ -43,7 +49,7 @@ describe("App", () => {
     );
     renderAt("/booking");
     expect(
-      screen.getByRole("heading", { level: 1, name: /book a procedure/i }),
+      screen.getByRole("heading", { level: 1, name: /book an appointment/i }),
     ).toBeInTheDocument();
     const iframe = screen.getByTestId("altegio-widget");
     expect(iframe).toBeInTheDocument();

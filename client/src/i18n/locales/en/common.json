@@ -1,13 +1,50 @@
 {
   "nav": {
     "label": "Main navigation",
+    "skipToContent": "Skip to content",
     "home": "Home",
-    "booking": "Book a procedure",
+    "prices": "Prices",
+    "gallery": "Gallery",
+    "booking": "Book an appointment",
     "contact": "Contact"
+  },
+  "meta": {
+    "home": {
+      "title": "Cosmetic studio in Füssen",
+      "description": "Professional cosmetic treatments in the heart of the Allgäu: facials, permanent make-up, laser, nails, lashes & brows. Book online."
+    },
+    "prices": {
+      "title": "Prices",
+      "description": "Price list for facials, permanent make-up, laser treatments, manicure & pedicure, lash & brow styling and body treatments in Füssen."
+    },
+    "gallery": {
+      "title": "Gallery",
+      "description": "A look inside our cosmetic studio in Füssen — treatment rooms, equipment and our work."
+    },
+    "booking": {
+      "title": "Book an appointment",
+      "description": "Book your cosmetic treatment in Füssen online — choose a service, a specialist and a time that suits you."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Contact Kosmetic Füssen: address, phone, e-mail, WhatsApp, opening hours and directions."
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "description": "How Kosmetic Füssen processes personal data on this website — GDPR information."
+    },
+    "imprint": {
+      "title": "Imprint",
+      "description": "Legal information about the operator of this website (Impressum)."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "This page does not exist."
+    }
   },
   "hero": {
     "tagline": "Beauty & skin care in the heart of the Allgäu",
-    "cta": "Book a procedure"
+    "cta": "Book an appointment"
   },
   "home": {
     "whoWeAre": {
@@ -49,6 +86,23 @@
         "nails": "Nail designer · Lash & brow stylist"
       }
     },
+    "testimonials": {
+      "title": "What our clients say",
+      "items": {
+        "t1": {
+          "quote": "The most thorough skin consultation I've ever had. No upselling — just honest advice and visible results.",
+          "name": "Julia M."
+        },
+        "t2": {
+          "quote": "My brows look completely natural. The hygiene standards and the calm atmosphere convinced me instantly.",
+          "name": "Sarah K."
+        },
+        "t3": {
+          "quote": "Booking online took two minutes, and the studio in the old town is beautiful. I come back every month.",
+          "name": "Olena T."
+        }
+      }
+    },
     "ctaBand": {
       "title": "Ready for your me-time?",
       "text": "Book online in two minutes — choose a service, a specialist and a time that suits you."
@@ -80,8 +134,60 @@
       "description": "Relaxing massages, peelings and firming treatments for skin and body."
     }
   },
+  "prices": {
+    "title": "Prices",
+    "intro": "Transparent prices for our most requested treatments. Every treatment starts with a short consultation — the exact price depends on your skin and the effort involved, and we always confirm it before we begin.",
+    "from": "from {{price}}",
+    "note": "All prices include VAT. For combined or extended treatments we prepare an individual quote during your consultation. Gift vouchers are available in the studio.",
+    "items": {
+      "facial": {
+        "basic": "Classic facial (60 min)",
+        "deepCleansing": "Deep-cleansing facial (75 min)",
+        "antiAging": "Anti-aging treatment (90 min)"
+      },
+      "permanentMakeup": {
+        "brows": "Brows (incl. follow-up)",
+        "lips": "Lips (incl. follow-up)",
+        "refresh": "Refresh / touch-up"
+      },
+      "laser": {
+        "faceSmall": "Face, small area",
+        "legs": "Legs, per session",
+        "skinRejuvenation": "Skin rejuvenation, per session"
+      },
+      "nails": {
+        "manicure": "Classic manicure",
+        "manicureGel": "Manicure with gel polish",
+        "pedicure": "Pedicure"
+      },
+      "lashesBrows": {
+        "lashLifting": "Lash lifting incl. tint",
+        "browLamination": "Brow lamination incl. tint",
+        "tinting": "Lash or brow tinting"
+      },
+      "body": {
+        "massage": "Relaxing massage (50 min)",
+        "peeling": "Full-body peeling",
+        "firming": "Firming body treatment"
+      }
+    }
+  },
+  "gallery": {
+    "title": "Gallery",
+    "intro": "A look inside our studio in the old town of Füssen — and at the work we do every day.",
+    "alts": {
+      "interior": "Treatment room of our studio",
+      "facial": "Facial treatment in progress",
+      "permanentMakeup": "Permanent make-up pigmentation",
+      "laser": "Apparative laser treatment",
+      "nails": "Manicure result with gel polish",
+      "lashesBrows": "Lash and brow styling",
+      "body": "Relaxing body treatment",
+      "studio": "Atmosphere in the studio"
+    }
+  },
   "booking": {
-    "title": "Book a procedure",
+    "title": "Book an appointment",
     "intro": "Pick a service, choose your specialist and select a free slot in the calendar below. You will receive a confirmation by e-mail or SMS.",
     "widgetTitle": "Altegio online booking",
     "fallbackQuestion": "Booking not loading?",
@@ -90,9 +196,23 @@
     "consentText": "Our online calendar is provided by Altegio. When it loads, Altegio sets cookies and processes your IP address — and, if you pay online, your payment data on Altegio's pages. Details are in our privacy policy.",
     "consentLoad": "Load calendar and accept Altegio cookies"
   },
+  "bookingForm": {
+    "title": "Prefer a call-back?",
+    "intro": "Leave your name and phone number and we will call you back to arrange the appointment — no cookies, no external services.",
+    "name": "Name",
+    "phone": "Phone",
+    "service": "Treatment",
+    "serviceAny": "Not sure yet / consultation",
+    "privacyNote": "We use your details only to contact you about your appointment and delete the request once it is handled.",
+    "send": "Request a call-back",
+    "sending": "Sending…",
+    "success": "Thank you! We will call you back during opening hours.",
+    "error": "Something went wrong. Please try again or call us directly."
+  },
   "contact": {
     "title": "Contact",
     "openingHours": "Opening hours: Mon–Fri 9:00–18:00, Sat 10:00–14:00",
+    "whatsapp": "Message us on WhatsApp",
     "formLabel": "Contact form",
     "name": "Name",
     "email": "E-mail",
@@ -102,7 +222,13 @@
     "send": "Send message",
     "sending": "Sending…",
     "success": "Thank you! We will get back to you shortly.",
-    "error": "Something went wrong. Please try again or call us."
+    "error": "Something went wrong. Please try again or call us.",
+    "map": {
+      "title": "Map showing the studio location",
+      "hint": "The map is loaded from OpenStreetMap when you request it. Your IP address is then transmitted to OpenStreetMap.",
+      "load": "Show map",
+      "external": "Open in OpenStreetMap"
+    }
   },
   "consent": {
     "title": "Cookies & external services",
@@ -125,15 +251,15 @@
       },
       "contactForm": {
         "title": "Contact form",
-        "body": "If you use the contact form, we store your name, e-mail address and message in order to answer your enquiry (Art. 6 (1) (b) GDPR). Messages are deleted once your enquiry is resolved, at the latest after 12 months."
+        "body": "If you use the contact form, we store your name, e-mail address and message in order to answer your enquiry (Art. 6 (1) (b) GDPR). If e-mail notifications are configured, we additionally send you a confirmation of receipt. Messages are deleted once your enquiry is resolved, at the latest after 12 months."
       },
       "booking": {
         "title": "Online booking and payments (Altegio)",
-        "body": "Appointments are booked through the external service Altegio (alteg.io). The booking calendar is embedded only after you give consent (Art. 6 (1) (a) GDPR). Once loaded, Altegio processes your IP address and sets cookies, and the data you enter — name, phone number, e-mail, selected service and, for online payments, your payment details — is processed by Altegio on its own pages. Please refer to Altegio's privacy policy for details. Booking requests made through our site are additionally stored by us so our staff can follow up. You can withdraw your consent at any time via “Cookie settings” in the footer."
+        "body": "Appointments are booked through the external service Altegio (alteg.io). The booking calendar is embedded only after you give consent (Art. 6 (1) (a) GDPR). Once loaded, Altegio processes your IP address and sets cookies, and the data you enter — name, phone number, e-mail, selected service and, for online payments, your payment details — is processed by Altegio on its own pages. Please refer to Altegio's privacy policy for details. Booking and call-back requests made through our site are additionally stored by us so our staff can follow up; they are deleted once handled, at the latest after 12 months. You can withdraw your consent at any time via “Cookie settings” in the footer."
       },
       "storage": {
         "title": "Cookies and local storage",
-        "body": "This website sets no tracking cookies of its own. We use your browser's local storage for two strictly functional purposes: your language preference (i18nextLng) and your cookie decision (cookie-consent). Functional storage of this kind requires no consent. Cookies from Altegio are set only after you accept the booking calendar."
+        "body": "This website sets no tracking cookies of its own. We use your browser's local storage for two strictly functional purposes: your language preference (i18nextLng) and your cookie decision (cookie-consent). Functional storage of this kind requires no consent. Cookies from Altegio are set only after you accept the booking calendar. The map on the contact page is loaded from OpenStreetMap only when you explicitly request it."
       },
       "rights": {
         "title": "Your rights",
@@ -149,6 +275,11 @@
     "vatLabel": "VAT ID",
     "responsibleLabel": "Responsible for content",
     "dispute": "The European Commission provides a platform for online dispute resolution: https://ec.europa.eu/consumers/odr. We are neither obliged nor willing to participate in dispute resolution proceedings before a consumer arbitration board."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist or has been moved. Maybe you were looking for our treatments, prices or the online booking?",
+    "cta": "Back to the home page"
   },
   "footer": {
     "privacy": "Privacy policy",

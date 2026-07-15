@@ -1,8 +1,10 @@
 import express, { type NextFunction, type Request, type Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
+import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import type { Queryable } from "./db/pool.js";
+import { createMailerFromEnv, disabledMailer, type Mailer } from "./mailer.js";
 import { contactRouter } from "./routes/contact.js";
 import { bookingsRouter } from "./routes/bookings.js";
 
@@ -17,6 +19,8 @@ export interface AppOptions {
   /** Max write requests (POST) per IP per window. Default 30 / 15 min. */
   rateLimitMax?: number;
   rateLimitWindowMs?: number;
+  /** Notification mailer. Defaults to the SMTP/MAIL env configuration. */
+  mailer?: Mailer;
 }
 
 export function createApp(db: Queryable, options: AppOptions = {}) {
@@ -30,6 +34,15 @@ export function createApp(db: Queryable, options: AppOptions = {}) {
   app.disable("x-powered-by");
 
   app.use(helmet());
+
+  // Request logging (skipped in tests and for the healthcheck's polling).
+  if (process.env.NODE_ENV !== "test") {
+    app.use(
+      morgan("combined", {
+        skip: (req) => req.url === "/api/health",
+      }),
+    );
+  }
 
   const corsOrigins =
     options.corsOrigins ??
@@ -53,12 +66,26 @@ export function createApp(db: Queryable, options: AppOptions = {}) {
     else next();
   });
 
-  app.get("/api/health", (_req, res) => {
-    res.json({ status: "ok" });
+  // Liveness + readiness: verify the database actually answers, so
+  // orchestration (compose healthcheck, monitoring) sees DB outages.
+  app.get("/api/health", async (_req, res) => {
+    try {
+      await db.query("SELECT 1");
+      res.json({ status: "ok" });
+    } catch {
+      res.status(503).json({ status: "degraded" });
+    }
   });
 
-  app.use("/api/contact", contactRouter(db));
-  app.use("/api/bookings", bookingsRouter(db));
+  const mailer = options.mailer ?? (process.env.NODE_ENV === "test" ? disabledMailer : createMailerFromEnv());
+  if (!mailer.enabled && process.env.NODE_ENV === "production") {
+    console.warn(
+      "SMTP is not configured (SMTP_HOST/MAIL_FROM/MAIL_TO) — contact and booking notifications will only be stored in the database",
+    );
+  }
+
+  app.use("/api/contact", contactRouter(db, mailer));
+  app.use("/api/bookings", bookingsRouter(db, mailer));
 
   // JSON error responses instead of Express's HTML error page; never leak
   // stack traces or internals to the client.

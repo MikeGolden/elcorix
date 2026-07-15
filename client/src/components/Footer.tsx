@@ -37,6 +37,14 @@ export default function Footer() {
             >
               Instagram
             </a>
+            <a
+              className="uppercase tracking-[0.15em] transition-colors hover:text-brand-50"
+              href={business.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+            >
+              WhatsApp
+            </a>
           </div>
         </div>
       </div>

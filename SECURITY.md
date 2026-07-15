@@ -24,6 +24,16 @@ guidance for the Altegio calendar and payments integration.
   (name ≤ 200, e-mail ≤ 320, message ≤ 5000, phone ≤ 50, service ≤ 200),
   malformed JSON answered with a generic JSON 400 — no HTML error pages, no
   stack traces in responses.
+- **Spam honeypot** on both write endpoints: a hidden `website` field that
+  humans never see; filled-in submissions get a fake success response and
+  are neither stored nor forwarded.
+- **Request logging** (morgan, combined format; healthcheck polling is
+  excluded) and a **DB-checked healthcheck** (`/api/health` returns 503
+  `degraded` when Postgres does not answer).
+- **Graceful shutdown** on SIGTERM/SIGINT: stop accepting connections,
+  drain in-flight requests, close the pool (8 s hard limit).
+- **GDPR retention job**: contact messages and booking requests are deleted
+  after `RETENTION_MONTHS` (default 12), daily.
 - **SQL injection**: all queries use parameterized statements (`pg`
   placeholders); no string-built SQL anywhere.
 - **Altegio company id sanitization** (server *and* client): the id is
@@ -83,18 +93,27 @@ The API sets its own headers, but the static client is served by your web
 server/CDN — configure it there:
 
 - [ ] Serve everything over **HTTPS** with redirect from HTTP; enable HSTS.
-- [ ] Client `Content-Security-Policy`, e.g.:
-      `default-src 'self'; frame-src https://*.alteg.io; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`
-      (adjust `frame-src` if Altegio loads assets from additional hosts).
+      The provided Caddy overlay (`docker-compose.tls.yml` +
+      `docker/Caddyfile`) does all three automatically.
+- [ ] Client `Content-Security-Policy` — already set by
+      [docker/nginx.conf](docker/nginx.conf); `frame-src` allows Altegio and
+      the click-to-load OpenStreetMap embed. If you enable the optional
+      analytics (`VITE_ANALYTICS_*`), add the script's origin to
+      `script-src` and `connect-src`.
 - [ ] `X-Frame-Options: DENY` / `frame-ancestors 'none'` on the client site —
       the site itself must not be embeddable (clickjacking).
 - [ ] `Referrer-Policy: strict-origin-when-cross-origin`.
 - [ ] Set `TRUST_PROXY_HOPS` if the API sits behind a reverse proxy.
 - [ ] Set `CORS_ALLOWED_ORIGINS` only if the client is on a different origin.
 - [ ] Postgres: dedicated user with least privilege (INSERT/SELECT on the two
-      tables only), TLS to the database, regular backups.
+      tables only), TLS to the database. Nightly `pg_dump` backups are
+      automated by the `db-backup` compose service — copy `./backups/` off
+      the host regularly.
 - [ ] Personal data (contact messages, booking requests) falls under GDPR:
-      add a privacy policy, minimize retention, and delete on request.
+      the privacy policy documents the processing, retention is enforced
+      automatically (`RETENTION_MONTHS`), delete on request via SQL.
+- [ ] SMTP credentials (`SMTP_*`) live in `.env` on the server only — never
+      commit them; notifications degrade gracefully without them.
 
 ## Reporting a vulnerability
 

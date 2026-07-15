@@ -1,0 +1,17 @@
+# TLS termination for the containerized stack (docker-compose.tls.yml).
+# Caddy redirects HTTP→HTTPS and manages Let's Encrypt automatically.
+{
+	email {$ACME_EMAIL}
+}
+
+{$SITE_DOMAIN} {
+	# HSTS only over HTTPS — nginx must not set it (it serves plain HTTP
+	# inside the network). 6 months, extend once the setup is proven.
+	header Strict-Transport-Security "max-age=15552000"
+	reverse_proxy client:80
+}
+
+# Redirect www to the apex domain.
+www.{$SITE_DOMAIN} {
+	redir https://{$SITE_DOMAIN}{uri} permanent
+}

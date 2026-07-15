@@ -9,10 +9,11 @@ WORKDIR /app
 # every VITE_* variable must be passed as a build ARG here.
 ARG VITE_ALTEGIO_COMPANY_ID=000000
 ENV VITE_ALTEGIO_COMPANY_ID=$VITE_ALTEGIO_COMPANY_ID
-# Serve the landing-page photos from client/public/images (committed to the
-# repo) instead of hotlinking the Unsplash CDN.
-ARG VITE_LOCAL_IMAGES=true
-ENV VITE_LOCAL_IMAGES=$VITE_LOCAL_IMAGES
+# Optional privacy-friendly analytics (see SECURITY.md for the CSP change).
+ARG VITE_ANALYTICS_SRC=
+ENV VITE_ANALYTICS_SRC=$VITE_ANALYTICS_SRC
+ARG VITE_ANALYTICS_DOMAIN=
+ENV VITE_ANALYTICS_DOMAIN=$VITE_ANALYTICS_DOMAIN
 COPY package.json package-lock.json ./
 COPY client/package.json client/
 COPY server/package.json server/

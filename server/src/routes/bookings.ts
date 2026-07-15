@@ -1,5 +1,7 @@
 import { Router } from "express";
 import type { Queryable } from "../db/pool.js";
+import { sendInBackground, type Mailer } from "../mailer.js";
+import { isSpam } from "./contact.js";
 
 /**
  * The company id is interpolated into the booking URL, so accept digits
@@ -18,7 +20,7 @@ function altegioCompanyId(): string {
  *  - POST /api/bookings       → log a booking request locally (e.g. from
  *    a fallback form) so staff can follow up in Altegio.
  */
-export function bookingsRouter(db: Queryable) {
+export function bookingsRouter(db: Queryable, mailer: Mailer) {
   const router = Router();
 
   router.get("/link", (_req, res) => {
@@ -30,6 +32,12 @@ export function bookingsRouter(db: Queryable) {
   });
 
   router.post("/", async (req, res) => {
+    // Honeypot (same pattern as the contact form): pretend success, store
+    // nothing, notify nobody.
+    if (isSpam(req.body)) {
+      res.status(201).json({ id: 0, status: "pending" });
+      return;
+    }
     const { service, customerName, customerPhone } = req.body ?? {};
     if (typeof customerName !== "string" || customerName.trim() === "") {
       res.status(400).json({ error: "customerName is required" });
@@ -64,6 +72,17 @@ export function bookingsRouter(db: Queryable) {
         ],
       );
       res.status(201).json(result.rows[0]);
+
+      if (mailer.enabled && mailer.notifyAddress) {
+        sendInBackground(mailer, {
+          to: mailer.notifyAddress,
+          subject: `New booking request from ${customerName.trim()}`,
+          text:
+            `Name: ${customerName.trim()}\nPhone: ${customerPhone.trim()}\n` +
+            `Service: ${typeof service === "string" && service.trim() !== "" ? service.trim() : "—"}\n\n` +
+            "Please follow up and enter the appointment in Altegio.",
+        });
+      }
     } catch (err) {
       console.error("Failed to store booking request:", err);
       res.status(500).json({ error: "Internal server error" });
