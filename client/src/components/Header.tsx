@@ -17,7 +17,7 @@ export default function Header() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
         <Link
           to="/"
-          className="order-1 font-display text-xl font-semibold uppercase tracking-[0.22em] text-brand-900"
+          className="order-1 text-lg font-light uppercase tracking-[0.3em] text-brand-900"
         >
           {business.name}
         </Link>

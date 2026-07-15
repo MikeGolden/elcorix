@@ -15,7 +15,7 @@ export default function CookieBanner() {
   if (!bannerOpen) return null;
 
   const buttonClass =
-    "border border-brand-900 px-6 py-3 text-xs font-medium uppercase tracking-[0.18em] text-brand-900 transition-colors hover:bg-brand-900 hover:text-brand-50";
+    "border border-brand-500 px-6 py-3 text-xs font-medium uppercase tracking-[0.18em] text-brand-700 transition-colors hover:bg-brand-500 hover:text-brand-50";
 
   return (
     <div

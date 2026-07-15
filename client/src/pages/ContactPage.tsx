@@ -140,7 +140,7 @@ export default function ContactPage() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="bg-brand-900 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600 disabled:opacity-50"
+            className="bg-brand-500 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600 disabled:opacity-50"
           >
             {status === "sending" ? t("contact.sending") : t("contact.send")}
           </button>

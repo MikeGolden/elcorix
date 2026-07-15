@@ -29,7 +29,7 @@ export default function AltegioWidget() {
         <button
           type="button"
           onClick={() => decide(true)}
-          className="mt-6 bg-brand-900 px-8 py-3 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
+          className="mt-6 bg-brand-500 px-8 py-3 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
         >
           {t("booking.consentLoad")}
         </button>

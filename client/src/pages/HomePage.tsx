@@ -25,7 +25,7 @@ export default function HomePage() {
           <p className="text-xs font-medium uppercase tracking-[0.35em] text-brand-500">
             Füssen · Allgäu
           </p>
-          <h1 className="mt-6 font-display text-5xl font-medium uppercase tracking-[0.08em] text-brand-900 sm:text-7xl">
+          <h1 className="mt-6 text-4xl font-light uppercase tracking-[0.25em] text-brand-700 sm:text-6xl">
             {business.name}
           </h1>
           <div aria-hidden="true" className="mx-auto mt-8 h-px w-16 bg-brand-500" />
@@ -35,13 +35,13 @@ export default function HomePage() {
           <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/booking"
-              className="inline-block bg-brand-900 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
+              className="inline-block bg-brand-500 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
             >
               {t("hero.cta")}
             </Link>
             <Link
               to="/contact"
-              className="inline-block border border-brand-900 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-900 transition-colors hover:bg-brand-900 hover:text-brand-50"
+              className="inline-block border border-brand-500 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-700 transition-colors hover:bg-brand-500 hover:text-brand-50"
             >
               {t("nav.contact")}
             </Link>
@@ -108,7 +108,7 @@ export default function HomePage() {
           <div className="mt-14 text-center">
             <Link
               to="/booking"
-              className="inline-block border border-brand-900 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-900 transition-colors hover:bg-brand-900 hover:text-brand-50"
+              className="inline-block border border-brand-500 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-700 transition-colors hover:bg-brand-500 hover:text-brand-50"
             >
               {t("home.whatWeDo.cta")}
             </Link>

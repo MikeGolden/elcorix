@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-900 text-brand-100">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <p className="font-display text-2xl font-medium uppercase tracking-[0.22em] text-brand-50">
+        <p className="text-xl font-light uppercase tracking-[0.3em] text-brand-50">
           {business.name}
         </p>
         <div className="mt-8 flex flex-col gap-3 text-sm font-light sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
