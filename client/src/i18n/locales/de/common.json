@@ -18,6 +18,40 @@
     "whatWeDo": {
       "title": "Was wir tun",
       "cta": "Freie Termine ansehen"
+    },
+    "advantages": {
+      "title": "Warum wir",
+      "items": {
+        "consultation": {
+          "title": "Ehrliche Beratung",
+          "text": "Jeder Besuch beginnt mit einer persönlichen Hautberatung — wir empfehlen nur, was Ihre Haut wirklich braucht."
+        },
+        "hygiene": {
+          "title": "Medizinische Hygiene",
+          "text": "Zertifizierte Produkte, sterile Einwegmaterialien und klinische Hygienestandards bei jedem Schritt."
+        },
+        "technology": {
+          "title": "Moderne Technik",
+          "text": "Sanfte, aktuelle apparative Behandlungen mit nachgewiesener Wirkung — keine Experimente an Ihrer Haut."
+        },
+        "location": {
+          "title": "Im Herzen von Füssen",
+          "text": "In der Altstadt am Fuße der Alpen, wenige Minuten von der Reichenstraße — gut erreichbar, gut parkbar."
+        }
+      }
+    },
+    "team": {
+      "title": "Unser Team",
+      "intro": "Zertifizierte Kosmetikerinnen, die ihren Beruf lieben — und sich stetig weiterbilden.",
+      "roles": {
+        "founder": "Inhaberin · Zertifizierte Kosmetikerin",
+        "esthetician": "Kosmetikerin · Permanent-Make-up-Artistin",
+        "nails": "Nageldesignerin · Lash & Brow Stylistin"
+      }
+    },
+    "ctaBand": {
+      "title": "Bereit für Ihre Auszeit?",
+      "text": "Buchen Sie online in zwei Minuten — Behandlung, Spezialistin und Wunschtermin einfach auswählen."
     }
   },
   "services": {

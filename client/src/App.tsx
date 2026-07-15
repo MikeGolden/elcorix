@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CookieBanner from "./components/CookieBanner";
+import FloatingBookCta from "./components/FloatingBookCta";
 import { ConsentProvider } from "./consent/ConsentContext";
 import HomePage from "./pages/HomePage";
 import BookingPage from "./pages/BookingPage";
@@ -24,6 +25,7 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
+        <FloatingBookCta />
         <CookieBanner />
       </div>
     </ConsentProvider>

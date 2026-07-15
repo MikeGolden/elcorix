@@ -18,6 +18,40 @@
     "whatWeDo": {
       "title": "What we do",
       "cta": "See available times"
+    },
+    "advantages": {
+      "title": "Why choose us",
+      "items": {
+        "consultation": {
+          "title": "Honest consultation",
+          "text": "Every visit starts with a personal skin consultation — we recommend only what your skin actually needs."
+        },
+        "hygiene": {
+          "title": "Medical-grade hygiene",
+          "text": "Certified products, sterile single-use materials and clinical hygiene standards at every step."
+        },
+        "technology": {
+          "title": "Modern equipment",
+          "text": "Gentle, up-to-date apparative treatments with proven results — no experiments on your skin."
+        },
+        "location": {
+          "title": "Heart of Füssen",
+          "text": "In the old town at the foot of the Alps, minutes from Reichenstraße — easy to reach, easy to park."
+        }
+      }
+    },
+    "team": {
+      "title": "Our team",
+      "intro": "Certified estheticians who love what they do — and keep learning it.",
+      "roles": {
+        "founder": "Founder · Certified esthetician",
+        "esthetician": "Esthetician · Permanent make-up artist",
+        "nails": "Nail designer · Lash & brow stylist"
+      }
+    },
+    "ctaBand": {
+      "title": "Ready for your me-time?",
+      "text": "Book online in two minutes — choose a service, a specialist and a time that suits you."
     }
   },
   "services": {

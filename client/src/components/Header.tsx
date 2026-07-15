@@ -37,7 +37,13 @@ export default function Header() {
             {t("nav.contact")}
           </NavLink>
         </nav>
-        <div className="order-2 sm:order-3">
+        <div className="order-2 flex items-center gap-4 sm:order-3">
+          <a
+            href={`tel:${business.phone.replace(/\s/g, "")}`}
+            className="hidden text-xs font-medium uppercase tracking-[0.15em] text-brand-700 transition-colors hover:text-brand-900 md:inline"
+          >
+            {business.phone}
+          </a>
           <LanguageSwitcher />
         </div>
       </div>
