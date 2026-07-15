@@ -18,22 +18,24 @@ export default function AltegioWidget() {
     return (
       <div
         data-testid="altegio-consent-placeholder"
-        className="rounded-2xl border border-brand-100 bg-white p-8 text-center shadow-sm"
+        className="border border-brand-200 bg-white p-10 text-center"
       >
-        <h2 className="text-lg font-semibold">{t("booking.consentTitle")}</h2>
-        <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-brand-700">
+        <h2 className="font-display text-2xl font-medium text-brand-900">
+          {t("booking.consentTitle")}
+        </h2>
+        <p className="mx-auto mt-3 max-w-xl text-sm font-light leading-relaxed text-brand-700">
           {t("booking.consentText")}
         </p>
         <button
           type="button"
           onClick={() => decide(true)}
-          className="mt-5 rounded-full bg-brand-600 px-6 py-2 font-medium text-white hover:bg-brand-700"
+          className="mt-6 bg-brand-900 px-8 py-3 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
         >
           {t("booking.consentLoad")}
         </button>
-        <p className="mt-4 text-sm text-brand-700">
+        <p className="mt-5 text-sm font-light text-brand-700">
           <a
-            className="font-medium text-brand-600 underline"
+            className="font-medium text-brand-600 underline underline-offset-4"
             href={altegioBookingUrl}
             target="_blank"
             rel="noreferrer"
@@ -46,7 +48,7 @@ export default function AltegioWidget() {
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-sm">
+    <div className="overflow-hidden border border-brand-200 bg-white">
       <iframe
         title={t("booking.widgetTitle")}
         data-testid="altegio-widget"
@@ -56,10 +58,10 @@ export default function AltegioWidget() {
         allow="payment"
         referrerPolicy="strict-origin-when-cross-origin"
       />
-      <p className="border-t border-brand-100 p-3 text-center text-sm text-brand-700">
+      <p className="border-t border-brand-200 p-3 text-center text-sm font-light text-brand-700">
         {t("booking.fallbackQuestion")}{" "}
         <a
-          className="font-medium text-brand-600 underline"
+          className="font-medium text-brand-600 underline underline-offset-4"
           href={altegioBookingUrl}
           target="_blank"
           rel="noreferrer"

@@ -1,11 +1,35 @@
+/* Self-hosted fonts (GDPR-safe: no Google Fonts CDN request). */
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/cormorant-garamond/500-italic.css";
+@import "@fontsource/jost/300.css";
+@import "@fontsource/jost/400.css";
+@import "@fontsource/jost/500.css";
+
 @import "tailwindcss";
 
+/*
+ * Visual language inspired by editorial beauty-clinic sites
+ * (mdclinica.ru, my-skinclinic.de): warm ivory surfaces, taupe text,
+ * muted bronze accents, serif display headings, tracked-out uppercase
+ * labels and hairline borders.
+ */
 @theme {
-  --color-brand-50: #fdf6f3;
-  --color-brand-100: #fbeae3;
-  --color-brand-300: #eab8a4;
-  --color-brand-500: #c97f5f;
-  --color-brand-600: #b06a4c;
-  --color-brand-700: #8f5238;
-  --color-brand-900: #4d2b1d;
+  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+
+  --color-brand-50: #faf7f2; /* ivory page background */
+  --color-brand-100: #f1ebe0; /* cream panels */
+  --color-brand-200: #e2d8c6; /* sand hairlines */
+  --color-brand-300: #cbb89b; /* light bronze */
+  --color-brand-500: #a08355; /* bronze accent */
+  --color-brand-600: #866b45; /* deep bronze */
+  --color-brand-700: #55524d; /* warm taupe body text */
+  --color-brand-900: #292623; /* warm near-black ink */
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
 }

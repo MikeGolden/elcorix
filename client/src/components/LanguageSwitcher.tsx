@@ -98,7 +98,7 @@ export default function LanguageSwitcher() {
         aria-expanded={open}
         aria-label={t("languageSwitcher.label")}
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-2 rounded-full border border-brand-100 bg-white px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100"
+        className="flex items-center gap-2 border border-brand-200 bg-white px-3 py-2 text-xs font-medium uppercase tracking-[0.1em] text-brand-700 transition-colors hover:border-brand-500 hover:text-brand-900"
       >
         <current.Flag className={flagClass} />
         <span className="hidden sm:inline">{current.label}</span>
@@ -119,7 +119,7 @@ export default function LanguageSwitcher() {
           role="listbox"
           aria-label={t("languageSwitcher.label")}
           onKeyDown={onListKeyDown}
-          className="absolute right-0 z-20 mt-1 min-w-40 overflow-hidden rounded-xl border border-brand-100 bg-white py-1 shadow-lg"
+          className="absolute right-0 z-20 mt-1 min-w-40 overflow-hidden border border-brand-200 bg-white py-1 shadow-lg"
         >
           {languageOptions.map((option, index) => (
             <li

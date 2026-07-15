@@ -15,22 +15,28 @@ export default function CookieBanner() {
   if (!bannerOpen) return null;
 
   const buttonClass =
-    "rounded-full border border-brand-600 px-5 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100";
+    "border border-brand-900 px-6 py-3 text-xs font-medium uppercase tracking-[0.18em] text-brand-900 transition-colors hover:bg-brand-900 hover:text-brand-50";
 
   return (
     <div
       role="dialog"
       aria-labelledby="cookie-banner-title"
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-brand-100 bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-brand-200 bg-brand-50 p-4 shadow-[0_-4px_16px_rgba(41,38,35,0.08)]"
     >
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-center">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center">
         <div className="flex-1">
-          <h2 id="cookie-banner-title" className="font-semibold">
+          <h2
+            id="cookie-banner-title"
+            className="font-display text-xl font-medium text-brand-900"
+          >
             {t("consent.title")}
           </h2>
-          <p className="mt-1 text-sm leading-relaxed text-brand-700">
+          <p className="mt-1 text-sm font-light leading-relaxed text-brand-700">
             {t("consent.description")}{" "}
-            <Link to="/privacy" className="font-medium text-brand-600 underline">
+            <Link
+              to="/privacy"
+              className="font-medium text-brand-600 underline underline-offset-4"
+            >
               {t("consent.privacyLink")}
             </Link>
           </p>
