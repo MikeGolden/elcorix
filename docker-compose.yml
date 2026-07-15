@@ -41,6 +41,9 @@ services:
       dockerfile: client/Dockerfile
       args:
         VITE_ALTEGIO_COMPANY_ID: ${ALTEGIO_COMPANY_ID:-000000}
+        # Compose reads overrides from .env (not .env.local, which only
+        # dev servers load). Defaults to self-hosted images.
+        VITE_LOCAL_IMAGES: ${VITE_LOCAL_IMAGES:-true}
     restart: unless-stopped
     ports:
       - "${WEB_PORT:-8080}:80"
