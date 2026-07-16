@@ -4,22 +4,23 @@ import { business } from "../config";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `px-1 py-2 text-xs font-medium uppercase tracking-[0.2em] transition-colors ${
-    isActive
-      ? "text-brand-900 underline decoration-brand-500 underline-offset-8"
-      : "text-brand-700 hover:text-brand-900"
+  `px-1 py-2 font-mono text-xs font-medium uppercase tracking-[0.18em] transition-colors ${
+    isActive ? "text-brand-500" : "text-brand-700 hover:text-brand-900"
   }`;
 
 export default function Header() {
   const { t } = useTranslation();
   return (
-    <header className="sticky top-0 z-10 border-b border-brand-200/70 bg-brand-50/90 backdrop-blur">
+    <header className="sticky top-0 z-10 border-b border-brand-200 bg-brand-50/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
         <Link
           to="/"
-          className="order-1 text-lg font-light uppercase tracking-[0.3em] text-brand-900"
+          className="order-1 font-display text-sm font-bold uppercase tracking-[0.2em] text-brand-900"
         >
           {business.name}
+          <span aria-hidden="true" className="text-brand-500">
+            .
+          </span>
         </Link>
         {/* Full-width second row on mobile so long German/Ukrainian labels
             never collide with the brand or the language switcher. */}
@@ -46,7 +47,7 @@ export default function Header() {
         <div className="order-2 flex items-center gap-4 sm:order-3">
           <a
             href={`tel:${business.phone.replace(/\s/g, "")}`}
-            className="hidden text-xs font-medium uppercase tracking-[0.15em] text-brand-700 transition-colors hover:text-brand-900 md:inline"
+            className="hidden font-mono text-xs font-medium uppercase tracking-[0.12em] text-brand-700 transition-colors hover:text-brand-500 md:inline"
           >
             {business.phone}
           </a>

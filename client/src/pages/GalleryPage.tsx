@@ -21,7 +21,7 @@ export default function GalleryPage() {
       <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
       <h1
         id="gallery"
-        className="mt-6 font-display text-4xl font-medium text-brand-900 sm:text-5xl"
+        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
       >
         {t("gallery.title")}
       </h1>
@@ -30,12 +30,12 @@ export default function GalleryPage() {
       </p>
       <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {galleryItems.map((item) => (
-          <li key={item.altKey} className="overflow-hidden border border-brand-200/70 bg-white">
+          <li key={item.altKey} className="overflow-hidden border border-brand-200 bg-brand-100">
             <img
               src={item.src}
               alt={t(`gallery.alts.${item.altKey}`)}
               loading="lazy"
-              className="aspect-[4/3] w-full object-cover"
+              className="aspect-[4/3] w-full object-cover grayscale transition-all duration-500 hover:scale-105 hover:grayscale-0"
             />
           </li>
         ))}

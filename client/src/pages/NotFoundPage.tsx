@@ -10,12 +10,12 @@ export default function NotFoundPage() {
       aria-labelledby="not-found"
       className="mx-auto max-w-6xl px-4 py-24 text-center sm:px-6 sm:py-32"
     >
-      <p aria-hidden="true" className="font-display text-7xl italic text-brand-300">
+      <p aria-hidden="true" className="font-mono text-7xl font-medium text-brand-500">
         404
       </p>
       <h1
         id="not-found"
-        className="mt-6 font-display text-4xl font-medium text-brand-900 sm:text-5xl"
+        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
       >
         {t("notFound.title")}
       </h1>
@@ -24,7 +24,7 @@ export default function NotFoundPage() {
       </p>
       <Link
         to="/"
-        className="mt-10 inline-block bg-brand-500 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
+        className="mt-10 inline-block bg-brand-500 px-10 py-4 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600"
       >
         {t("notFound.cta")}
       </Link>

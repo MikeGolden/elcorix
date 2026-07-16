@@ -18,9 +18,9 @@ export default function AltegioWidget() {
     return (
       <div
         data-testid="altegio-consent-placeholder"
-        className="border border-brand-200 bg-white p-10 text-center"
+        className="border border-brand-200 bg-brand-100 p-10 text-center"
       >
-        <h2 className="font-display text-2xl font-medium text-brand-900">
+        <h2 className="font-display text-xl font-bold uppercase tracking-wide text-brand-900">
           {t("booking.consentTitle")}
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-sm font-light leading-relaxed text-brand-700">
@@ -29,7 +29,7 @@ export default function AltegioWidget() {
         <button
           type="button"
           onClick={() => decide(true)}
-          className="mt-6 bg-brand-500 px-8 py-3 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
+          className="mt-6 bg-brand-500 px-8 py-3 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600"
         >
           {t("booking.consentLoad")}
         </button>
@@ -48,7 +48,9 @@ export default function AltegioWidget() {
   }
 
   return (
-    <div className="overflow-hidden border border-brand-200 bg-white">
+    // The iframe itself stays on Altegio's white theme; the frame around it
+    // uses the dark panel color.
+    <div className="overflow-hidden border border-brand-200 bg-brand-100">
       <iframe
         title={t("booking.widgetTitle")}
         data-testid="altegio-widget"

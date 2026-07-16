@@ -11,7 +11,7 @@ export default function BookingPage() {
       <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
       <h1
         id="booking"
-        className="mt-6 font-display text-4xl font-medium text-brand-900 sm:text-5xl"
+        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
       >
         {t("booking.title")}
       </h1>

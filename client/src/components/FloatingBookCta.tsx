@@ -16,7 +16,7 @@ export default function FloatingBookCta() {
   return (
     <Link
       to="/booking"
-      className="fixed left-0 top-1/2 z-20 hidden -translate-y-1/2 items-center gap-3 border border-l-0 border-brand-200 bg-brand-50/95 py-4 pl-6 pr-5 text-xs font-medium uppercase tracking-[0.22em] text-brand-900 shadow-[0_2px_12px_rgba(41,38,35,0.08)] backdrop-blur transition-colors hover:bg-brand-500 hover:text-brand-50 lg:flex"
+      className="fixed left-0 top-1/2 z-20 hidden -translate-y-1/2 items-center gap-3 border border-l-0 border-brand-200 bg-brand-50/95 py-4 pl-6 pr-5 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-900 shadow-[0_2px_16px_rgba(0,0,0,0.6)] backdrop-blur transition-colors hover:border-brand-500 hover:bg-brand-500 hover:text-brand-50 lg:flex"
     >
       {t("hero.cta")}
       <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true" focusable="false">

@@ -15,19 +15,19 @@ export default function CookieBanner() {
   if (!bannerOpen) return null;
 
   const buttonClass =
-    "border border-brand-500 px-6 py-3 text-xs font-medium uppercase tracking-[0.18em] text-brand-700 transition-colors hover:bg-brand-500 hover:text-brand-50";
+    "border border-brand-500 px-6 py-3 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-900 transition-colors hover:bg-brand-500 hover:text-brand-50";
 
   return (
     <div
       role="dialog"
       aria-labelledby="cookie-banner-title"
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-brand-200 bg-brand-50 p-4 shadow-[0_-4px_16px_rgba(41,38,35,0.08)]"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-brand-200 bg-brand-100 p-4 shadow-[0_-8px_24px_rgba(0,0,0,0.5)]"
     >
       <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center">
         <div className="flex-1">
           <h2
             id="cookie-banner-title"
-            className="font-display text-xl font-medium text-brand-900"
+            className="font-display text-base font-bold uppercase tracking-wide text-brand-900"
           >
             {t("consent.title")}
           </h2>

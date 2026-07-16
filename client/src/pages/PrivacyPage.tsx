@@ -25,14 +25,14 @@ export default function PrivacyPage() {
       <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
       <h1
         id="privacy"
-        className="mt-6 font-display text-4xl font-medium text-brand-900 sm:text-5xl"
+        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
       >
         {t("privacy.title")}
       </h1>
       <p className="mt-6 font-light leading-loose text-brand-700">{t("privacy.intro")}</p>
       {sectionKeys.map((key) => (
         <section key={key} className="mt-10 border-t border-brand-200 pt-8">
-          <h2 className="font-display text-2xl font-medium text-brand-900">
+          <h2 className="font-display text-lg font-bold uppercase tracking-wide text-brand-900">
             {t(`privacy.sections.${key}.title`)}
           </h2>
           <p className="mt-3 font-light leading-loose text-brand-700">

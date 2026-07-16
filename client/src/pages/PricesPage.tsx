@@ -31,7 +31,7 @@ export default function PricesPage() {
       <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
       <h1
         id="prices"
-        className="mt-6 font-display text-4xl font-medium text-brand-900 sm:text-5xl"
+        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
       >
         {t("prices.title")}
       </h1>
@@ -44,7 +44,7 @@ export default function PricesPage() {
           <section key={category.key} aria-labelledby={`prices-${category.key}`}>
             <h2
               id={`prices-${category.key}`}
-              className="border-b border-brand-300 pb-3 text-sm font-medium uppercase tracking-[0.15em] text-brand-900"
+              className="border-b border-brand-200 pb-3 text-sm font-medium uppercase tracking-[0.15em] text-brand-900"
             >
               {t(`services.${category.key}.title`)}
             </h2>
@@ -54,7 +54,7 @@ export default function PricesPage() {
                   <span className="font-light text-brand-700">
                     {t(priceItemKey(category.key, item.key))}
                   </span>
-                  <span className="whitespace-nowrap font-medium text-brand-900">
+                  <span className="whitespace-nowrap font-mono text-sm text-brand-500">
                     {item.from
                       ? t("prices.from", { price: formatPrice(language, item.price) })
                       : formatPrice(language, item.price)}

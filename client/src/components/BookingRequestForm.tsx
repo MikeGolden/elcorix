@@ -51,8 +51,8 @@ export default function BookingRequestForm() {
   }
 
   return (
-    <div className="border border-brand-200 bg-white p-8 sm:p-10">
-      <h2 className="font-display text-2xl font-medium text-brand-900">
+    <div className="border border-brand-200 bg-brand-100 p-8 sm:p-10">
+      <h2 className="font-display text-xl font-bold uppercase tracking-wide text-brand-900">
         {t("bookingForm.title")}
       </h2>
       <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-brand-700">
@@ -121,17 +121,17 @@ export default function BookingRequestForm() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="bg-brand-500 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600 disabled:opacity-50"
+            className="bg-brand-500 px-10 py-4 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600 disabled:opacity-50"
           >
             {status === "sending" ? t("bookingForm.sending") : t("bookingForm.send")}
           </button>
           {status === "sent" && (
-            <p role="status" className="mt-4 text-sm text-green-700">
+            <p role="status" className="mt-4 text-sm text-green-400">
               {t("bookingForm.success")}
             </p>
           )}
           {status === "error" && (
-            <p role="alert" className="mt-4 text-sm text-red-700">
+            <p role="alert" className="mt-4 text-sm text-red-400">
               {t("bookingForm.error")}
             </p>
           )}

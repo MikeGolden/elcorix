@@ -1,35 +1,71 @@
 /* Self-hosted fonts (GDPR-safe: no Google Fonts CDN request). */
-@import "@fontsource/cormorant-garamond/500.css";
-@import "@fontsource/cormorant-garamond/600.css";
-@import "@fontsource/cormorant-garamond/500-italic.css";
-@import "@fontsource/jost/300.css";
-@import "@fontsource/jost/400.css";
-@import "@fontsource/jost/500.css";
+@import "@fontsource/unbounded/500.css";
+@import "@fontsource/unbounded/700.css";
+@import "@fontsource/space-grotesk/300.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
 
 @import "tailwindcss";
 
 /*
- * Visual language inspired by editorial beauty-clinic sites
- * (mdclinica.ru, my-skinclinic.de): warm ivory surfaces, taupe text,
- * muted bronze accents, serif display headings, tracked-out uppercase
- * labels and hairline borders.
+ * Visual language: "edge" ultra-modern — carbon-black surfaces, acid-lime
+ * accent, oversized Unbounded display type, JetBrains Mono index labels,
+ * hairline borders, grayscale photos that gain color on hover.
+ *
+ * The brand-* scale keeps its structural meaning from the previous theme
+ * (50 = page surface, 100 = panel, 200 = hairline, 300 = muted, 500/600 =
+ * accent, 700 = secondary text, 900 = primary text) — only the values
+ * changed, which is what re-skins every component consistently.
  */
 @theme {
-  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Unbounded", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-brand-50: #faf7f2; /* ivory page background */
-  --color-brand-100: #f1ebe0; /* cream panels */
-  --color-brand-200: #e2d8c6; /* sand hairlines */
-  --color-brand-300: #cbb89b; /* light bronze */
-  --color-brand-500: #a08355; /* bronze accent */
-  --color-brand-600: #866b45; /* deep bronze */
-  --color-brand-700: #55524d; /* warm taupe body text */
-  --color-brand-900: #292623; /* warm near-black ink */
+  --color-brand-50: #09090b; /* carbon page background */
+  --color-brand-100: #111114; /* raised panels */
+  --color-brand-200: #232329; /* hairlines */
+  --color-brand-300: #55555f; /* muted / disabled */
+  --color-brand-500: #c9f24b; /* acid lime accent */
+  --color-brand-600: #a4d41e; /* accent hover / links */
+  --color-brand-700: #a6a6b0; /* secondary text */
+  --color-brand-900: #f5f5f7; /* primary text */
 }
 
 @layer base {
   body {
     @apply antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-500);
+    color: var(--color-brand-50);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+}
+
+/* Horizontal marquee for the services ticker on the home page. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
   }
 }

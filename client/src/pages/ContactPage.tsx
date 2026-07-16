@@ -47,7 +47,7 @@ export default function ContactPage() {
       <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
       <h1
         id="contact"
-        className="mt-6 font-display text-4xl font-medium text-brand-900 sm:text-5xl"
+        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
       >
         {t("contact.title")}
       </h1>
@@ -169,17 +169,17 @@ export default function ContactPage() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="bg-brand-500 px-10 py-4 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600 disabled:opacity-50"
+            className="bg-brand-500 px-10 py-4 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600 disabled:opacity-50"
           >
             {status === "sending" ? t("contact.sending") : t("contact.send")}
           </button>
           {status === "sent" && (
-            <p role="status" className="text-sm text-green-700">
+            <p role="status" className="text-sm text-green-400">
               {t("contact.success")}
             </p>
           )}
           {status === "error" && (
-            <p role="alert" className="text-sm text-red-700">
+            <p role="alert" className="text-sm text-red-400">
               {t("contact.error")}
             </p>
           )}

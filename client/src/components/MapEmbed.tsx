@@ -28,7 +28,7 @@ export default function MapEmbed() {
         <button
           type="button"
           onClick={() => setLoaded(true)}
-          className="mt-5 bg-brand-500 px-8 py-3 text-xs font-medium uppercase tracking-[0.22em] text-brand-50 transition-colors hover:bg-brand-600"
+          className="mt-5 bg-brand-500 px-8 py-3 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600"
         >
           {t("contact.map.load")}
         </button>
