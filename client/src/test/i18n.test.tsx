@@ -20,14 +20,22 @@ describe("internationalization", () => {
     await user.click(screen.getByRole("button", { name: "Language" }));
     await user.click(screen.getByRole("option", { name: "Deutsch" }));
 
-    const nav = screen.getByRole("navigation");
+    // The anchor menu is collapsed until the hamburger is pressed.
+    await user.click(screen.getByTestId("menu-toggle"));
+    const nav = screen.getByRole("navigation", { name: "Menü" });
     expect(
-      within(nav).getByRole("link", { name: "Startseite" }),
+      within(nav).getByRole("link", { name: "Für wen ist es geeignet?" }),
     ).toBeInTheDocument();
     expect(
-      within(nav).getByRole("link", { name: "Termin buchen" }),
+      within(nav).getByRole("link", { name: "Unsere Preisliste" }),
     ).toBeInTheDocument();
     expect(within(nav).getByRole("link", { name: "Kontakt" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Dauerhafte Laser-Haarentfernung in Kempten",
+      }),
+    ).toBeInTheDocument();
     expect(window.localStorage.getItem("i18nextLng")).toBe("de");
   });
 

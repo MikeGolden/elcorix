@@ -5,15 +5,27 @@ test.describe("Contact page", () => {
     await page.goto("/contact");
     // Scope to <main>: the footer repeats the phone/e-mail links.
     const main = page.getByRole("main");
+    await expect(main.getByRole("link", { name: /\+49 155/ }).first()).toHaveAttribute(
+      "href",
+      /^tel:\+49/,
+    );
     await expect(
-      main.getByRole("link", { name: /\+49 8362/ }),
-    ).toHaveAttribute("href", /^tel:\+49/);
-    await expect(
-      main.getByRole("link", { name: /hello@kosmetic-fuessen\.de/ }),
+      main.getByRole("link", { name: "info@elcorix.com" }).first(),
     ).toHaveAttribute("href", /^mailto:/);
     await expect(
-      main.getByRole("link", { name: /@kosmetic\.fuessen/ }),
-    ).toHaveAttribute("href", /instagram\.com/);
+      main.getByRole("link", { name: "@elcorix", exact: true }),
+    ).toHaveAttribute(
+      "href",
+      /instagram\.com/,
+    );
+  });
+
+  test("shows the opening hours from the design", async ({ page }) => {
+    await page.goto("/contact");
+    await page.getByRole("button", { name: "Only necessary" }).click();
+    await expect(page.getByRole("heading", { name: "Opening hours" })).toBeVisible();
+    await expect(page.getByText("09:00 to 19:00")).toBeVisible();
+    await expect(page.getByText("closed")).toBeVisible();
   });
 
   test("submits the contact form (API mocked)", async ({ page }) => {
@@ -28,7 +40,7 @@ test.describe("Contact page", () => {
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("E-mail").fill("anna@example.com");
-    await page.getByLabel("Message").fill("I would like an appointment.");
+    await page.getByRole("textbox", { name: "Message" }).fill("I would like an appointment.");
     await page.getByRole("checkbox", { name: /privacy policy/i }).check();
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByRole("status")).toHaveText(/thank you/i);

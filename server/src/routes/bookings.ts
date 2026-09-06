@@ -38,7 +38,8 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
       res.status(201).json({ id: 0, status: "pending" });
       return;
     }
-    const { service, customerName, customerPhone } = req.body ?? {};
+    const { service, customerName, customerPhone, preferredAt, marketingConsent } =
+      req.body ?? {};
     if (typeof customerName !== "string" || customerName.trim() === "") {
       res.status(400).json({ error: "customerName is required" });
       return;
@@ -59,16 +60,36 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
       res.status(400).json({ error: "service is too long" });
       return;
     }
+    // Free-text "YYYY-MM-DD HH:MM" from the consultation form. Kept as a
+    // preference, not a confirmed slot — staff book the real appointment
+    // in Altegio — so it is stored as text and only length-checked.
+    if (preferredAt !== undefined && typeof preferredAt !== "string") {
+      res.status(400).json({ error: "preferredAt must be a string" });
+      return;
+    }
+    if (typeof preferredAt === "string" && preferredAt.length > 40) {
+      res.status(400).json({ error: "preferredAt is too long" });
+      return;
+    }
+    if (marketingConsent !== undefined && typeof marketingConsent !== "boolean") {
+      res.status(400).json({ error: "marketingConsent must be a boolean" });
+      return;
+    }
     try {
       const result = await db.query(
         `INSERT INTO booking_requests
-           (altegio_company_id, service, customer_name, customer_phone)
-         VALUES ($1, $2, $3, $4) RETURNING id, status`,
+           (altegio_company_id, service, customer_name, customer_phone,
+            preferred_at, marketing_consent)
+         VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, status`,
         [
           altegioCompanyId(),
           typeof service === "string" ? service : null,
           customerName.trim(),
           customerPhone.trim(),
+          typeof preferredAt === "string" && preferredAt.trim() !== ""
+            ? preferredAt.trim()
+            : null,
+          marketingConsent === true,
         ],
       );
       res.status(201).json(result.rows[0]);
@@ -79,7 +100,9 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
           subject: `New booking request from ${customerName.trim()}`,
           text:
             `Name: ${customerName.trim()}\nPhone: ${customerPhone.trim()}\n` +
-            `Service: ${typeof service === "string" && service.trim() !== "" ? service.trim() : "—"}\n\n` +
+            `Service: ${typeof service === "string" && service.trim() !== "" ? service.trim() : "—"}\n` +
+            `Preferred: ${typeof preferredAt === "string" && preferredAt.trim() !== "" ? preferredAt.trim() : "—"}\n` +
+            `Marketing opt-in: ${marketingConsent === true ? "yes" : "no"}\n\n` +
             "Please follow up and enter the appointment in Altegio.",
         });
       }

@@ -1,65 +1,50 @@
 import { useTranslation } from "react-i18next";
-import { business } from "../config";
+import { business, telHref } from "../config";
+import LegalPage, { LegalSection } from "../components/LegalPage";
 import { usePageMeta } from "../seo/usePageMeta";
+
+const linkClass = "font-medium text-brand-600 underline-offset-4 hover:underline";
 
 export default function ImprintPage() {
   const { t } = useTranslation();
   usePageMeta("imprint");
   return (
-    <section aria-labelledby="imprint" className="mx-auto max-w-3xl px-4 py-16 sm:py-24">
-      <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
-      <h1
-        id="imprint"
-        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
-      >
-        {t("imprint.title")}
-      </h1>
-
-      <section className="mt-10 border-t border-brand-200 pt-8">
-        <h2 className="font-display text-lg font-bold uppercase tracking-wide text-brand-900">{t("imprint.operatorTitle")}</h2>
-        <p className="mt-3 font-light leading-loose text-brand-700">
+    <LegalPage id="imprint" title={t("imprint.title")}>
+      <LegalSection title={t("imprint.operatorTitle")}>
+        <p>
           {business.name}
           <br />
           {t("imprint.ownerLabel")}: {business.owner}
           <br />
           {business.address}
         </p>
-      </section>
+      </LegalSection>
 
-      <section className="mt-10 border-t border-brand-200 pt-8">
-        <h2 className="font-display text-lg font-bold uppercase tracking-wide text-brand-900">{t("imprint.contactTitle")}</h2>
-        <p className="mt-3 font-light leading-loose text-brand-700">
-          <a
-            className="font-medium text-brand-600 underline-offset-4 hover:underline"
-            href={`tel:${business.phone.replace(/\s/g, "")}`}
-          >
+      <LegalSection title={t("imprint.contactTitle")}>
+        <p>
+          <a className={linkClass} href={telHref}>
             {business.phone}
           </a>
           <br />
-          <a
-            className="font-medium text-brand-600 underline-offset-4 hover:underline"
-            href={`mailto:${business.email}`}
-          >
+          <a className={linkClass} href={`mailto:${business.email}`}>
             {business.email}
           </a>
         </p>
-      </section>
+      </LegalSection>
 
-      <section className="mt-10 border-t border-brand-200 pt-8">
-        <h2 className="font-display text-lg font-bold uppercase tracking-wide text-brand-900">{t("imprint.vatLabel")}</h2>
-        <p className="mt-3 font-light leading-loose text-brand-700">{business.vatId}</p>
-      </section>
+      <LegalSection title={t("imprint.vatLabel")}>
+        <p>{business.vatId}</p>
+      </LegalSection>
 
-      <section className="mt-10 border-t border-brand-200 pt-8">
-        <h2 className="font-display text-lg font-bold uppercase tracking-wide text-brand-900">{t("imprint.responsibleLabel")}</h2>
-        <p className="mt-3 font-light leading-loose text-brand-700">
+      <LegalSection title={t("imprint.responsibleLabel")}>
+        <p>
           {business.owner}, {business.address}
         </p>
-      </section>
+      </LegalSection>
 
-      <p className="mt-10 border-t border-brand-200 pt-8 text-sm font-light leading-loose text-brand-700">
+      <p className="mt-10 border-t border-line pt-8 text-sm leading-relaxed text-ink-500">
         {t("imprint.dispute")}
       </p>
-    </section>
+    </LegalPage>
   );
 }

@@ -1,71 +1,109 @@
 /* Self-hosted fonts (GDPR-safe: no Google Fonts CDN request). */
-@import "@fontsource/unbounded/500.css";
-@import "@fontsource/unbounded/700.css";
-@import "@fontsource/space-grotesk/300.css";
-@import "@fontsource/space-grotesk/400.css";
-@import "@fontsource/space-grotesk/500.css";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/manrope/500.css";
+@import "@fontsource/manrope/600.css";
+@import "@fontsource/manrope/700.css";
+@import "@fontsource/manrope/800.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
 
 @import "tailwindcss";
 
 /*
- * Visual language: "edge" ultra-modern — carbon-black surfaces, acid-lime
- * accent, oversized Unbounded display type, JetBrains Mono index labels,
- * hairline borders, grayscale photos that gain color on hover.
+ * elcorix visual language, taken from the Figma file
+ * (figma.com/design/L3SYAnqXeHiD81Ny4cdVmF/elcorix):
+ * white page, soft blue-grey bands, one deep indigo used for every
+ * heading, button and the footer, generous 16px corner radii on every
+ * photo and card, Manrope for headings and Inter for copy.
  *
- * The brand-* scale keeps its structural meaning from the previous theme
- * (50 = page surface, 100 = panel, 200 = hairline, 300 = muted, 500/600 =
- * accent, 700 = secondary text, 900 = primary text) — only the values
- * changed, which is what re-skins every component consistently.
+ *   brand-600  section headings and links
+ *   brand-700  primary buttons, footer band, H1
+ *   ink-*      text scale (900 headline navy → 300 muted label)
+ *   line       hairlines and table rules
+ *   surface-soft   the pale band that alternates with white sections
  */
 @theme {
-  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Unbounded", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
 
-  --color-brand-50: #09090b; /* carbon page background */
-  --color-brand-100: #111114; /* raised panels */
-  --color-brand-200: #232329; /* hairlines */
-  --color-brand-300: #55555f; /* muted / disabled */
-  --color-brand-500: #c9f24b; /* acid lime accent */
-  --color-brand-600: #a4d41e; /* accent hover / links */
-  --color-brand-700: #a6a6b0; /* secondary text */
-  --color-brand-900: #f5f5f7; /* primary text */
+  --color-brand-50: #f2f5fc;
+  --color-brand-100: #e4eaf8;
+  --color-brand-200: #c9d5f0;
+  --color-brand-300: #9dafe0;
+  --color-brand-400: #6a83c9;
+  --color-brand-500: #4460b4;
+  --color-brand-600: #2c4aa8;
+  --color-brand-700: #26397f;
+  --color-brand-800: #1e2d64;
+  --color-brand-900: #16224a;
+
+  --color-ink-900: #14203f;
+  --color-ink-700: #3d4a6b;
+  --color-ink-500: #66708c;
+  --color-ink-300: #9aa3b8;
+
+  --color-line: #e4e8f0;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f4f6fa;
+
+  --radius-card: 1rem;
+  --radius-panel: 1.5rem;
 }
 
 @layer base {
   body {
-    @apply antialiased;
+    @apply bg-surface font-sans text-ink-500 antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-brand-700;
+    text-wrap: balance;
+  }
+
+  /* Anchor navigation must clear the sticky header. */
+  :where(section[id], div[id]) {
+    scroll-margin-top: 6rem;
   }
 
   ::selection {
-    background-color: var(--color-brand-500);
-    color: var(--color-brand-50);
+    background-color: var(--color-brand-700);
+    color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-brand-500);
+    outline: 2px solid var(--color-brand-600);
     outline-offset: 2px;
   }
 }
 
-/* Horizontal marquee for the services ticker on the home page. */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
+@layer components {
+  /* The recurring pill button of the design. Tailwind v4 cannot @apply a
+     custom class, so the shared shape is repeated rather than composed. */
+  .btn-primary,
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5
+           text-sm font-semibold transition-colors disabled:opacity-50;
   }
-  to {
-    transform: translateX(-50%);
+
+  .btn-primary {
+    @apply bg-brand-700 text-white hover:bg-brand-800;
   }
-}
 
-.animate-marquee {
-  animation: marquee 28s linear infinite;
-}
+  .btn-ghost {
+    @apply border border-brand-200 bg-white text-brand-700 hover:border-brand-400 hover:bg-brand-50;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
+  /* "Mehr erfahren →" link used across the cards. */
+  .link-more {
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-brand-400
+           transition-colors hover:text-brand-600;
+  }
+
+  .field {
+    @apply w-full rounded-card border border-line bg-white px-5 py-4 text-[0.95rem]
+           text-ink-900 transition-colors placeholder:text-ink-300
+           focus:border-brand-400 focus:outline-none;
   }
 }

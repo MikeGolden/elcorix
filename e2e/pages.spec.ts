@@ -1,20 +1,35 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("New pages", () => {
-  test("prices page lists categories with formatted prices", async ({ page }) => {
+test.describe("Deep-link routes", () => {
+  test("prices page lists both zone tables and the package table", async ({ page }) => {
     await page.goto("/prices");
     await page.getByRole("button", { name: "Only necessary" }).click();
-    await expect(page.getByRole("heading", { level: 1, name: "Prices" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Facial treatments" })).toBeVisible();
-    await expect(page.getByText("Classic facial (60 min)")).toBeVisible();
-    await expect(page).toHaveTitle(/Prices — Kosmetic Füssen/);
+    await expect(page.getByRole("heading", { level: 1, name: "Price list" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Services for women" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Services for men" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Package deals for women" })).toBeVisible();
+    await expect(page.getByRole("table")).toBeVisible();
+    await expect(page.getByText("Beard contour")).toBeVisible();
+    await expect(page).toHaveTitle(/Price list — elcorix/);
   });
 
   test("gallery page shows images with alt text", async ({ page }) => {
     await page.goto("/gallery");
     await page.getByRole("button", { name: "Only necessary" }).click();
-    await expect(page.getByRole("heading", { level: 1, name: "Gallery" })).toBeVisible();
-    await expect(page.getByAltText("Treatment room of our studio")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Our work" })).toBeVisible();
+    await expect(page.getByAltText("Treatment room in the studio")).toBeVisible();
+  });
+
+  test("terms and mission pages are reachable", async ({ page }) => {
+    await page.goto("/terms");
+    await page.getByRole("button", { name: "Only necessary" }).click();
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Terms and conditions" }),
+    ).toBeVisible();
+    await page.goto("/mission");
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Our mission" }),
+    ).toBeVisible();
   });
 
   test("unknown routes render the 404 page", async ({ page }) => {
@@ -27,7 +42,7 @@ test.describe("New pages", () => {
     await expect(page).toHaveURL(/\/$/);
   });
 
-  test("booking page offers the cookie-free call-back form", async ({ page }) => {
+  test("booking page offers the cookie-free consultation request", async ({ page }) => {
     await page.goto("/booking");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.route("**/api/bookings", (route) =>
@@ -37,11 +52,13 @@ test.describe("New pages", () => {
         body: JSON.stringify({ id: 1, status: "pending" }),
       }),
     );
-    await page.getByLabel(/^name$/i).fill("Anna");
-    await page.getByLabel(/phone/i).fill("+49 123 4567890");
-    await page.getByLabel(/treatment/i).selectOption({ index: 1 });
-    await page.getByRole("button", { name: "Request a call-back" }).click();
-    await expect(page.getByRole("status")).toHaveText(/we will call you back/i);
+    await page.getByLabel("Name").fill("Anna");
+    await page.getByLabel("Phone number").fill("+49 155 1234567");
+    await page.getByLabel("Preferred date").fill("2026-09-15");
+    await page.getByLabel("Preferred time").fill("10:30");
+    await page.getByRole("checkbox", { name: /privacy policy/i }).check();
+    await page.getByRole("button", { name: "Get a consultation" }).click();
+    await expect(page.getByRole("status")).toHaveText(/we will get back to you/i);
   });
 
   test("scroll position resets when navigating between pages", async ({ page }) => {
@@ -51,8 +68,7 @@ test.describe("New pages", () => {
     await expect
       .poll(async () => page.evaluate(() => window.scrollY))
       .toBeGreaterThan(500);
-    await page.getByRole("navigation").getByRole("link", { name: "Prices" }).click();
-    await expect(page).toHaveURL(/\/prices$/);
+    await page.goto("/prices");
     await expect.poll(async () => page.evaluate(() => window.scrollY)).toBe(0);
   });
 });

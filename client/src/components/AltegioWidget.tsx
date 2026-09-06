@@ -18,22 +18,16 @@ export default function AltegioWidget() {
     return (
       <div
         data-testid="altegio-consent-placeholder"
-        className="border border-brand-200 bg-brand-100 p-10 text-center"
+        className="rounded-panel border border-line bg-surface-soft px-6 py-12 text-center sm:px-10"
       >
-        <h2 className="font-display text-xl font-bold uppercase tracking-wide text-brand-900">
-          {t("booking.consentTitle")}
-        </h2>
-        <p className="mx-auto mt-3 max-w-xl text-sm font-light leading-relaxed text-brand-700">
+        <h3 className="text-xl font-bold">{t("booking.consentTitle")}</h3>
+        <p className="mx-auto mt-3 max-w-xl text-[0.95rem] leading-relaxed">
           {t("booking.consentText")}
         </p>
-        <button
-          type="button"
-          onClick={() => decide(true)}
-          className="mt-6 bg-brand-500 px-8 py-3 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600"
-        >
+        <button type="button" onClick={() => decide(true)} className="btn-primary mt-7">
           {t("booking.consentLoad")}
         </button>
-        <p className="mt-5 text-sm font-light text-brand-700">
+        <p className="mt-5 text-sm">
           <a
             className="font-medium text-brand-600 underline underline-offset-4"
             href={altegioBookingUrl}
@@ -48,9 +42,7 @@ export default function AltegioWidget() {
   }
 
   return (
-    // The iframe itself stays on Altegio's white theme; the frame around it
-    // uses the dark panel color.
-    <div className="overflow-hidden border border-brand-200 bg-brand-100">
+    <div className="overflow-hidden rounded-panel border border-line bg-white">
       <iframe
         title={t("booking.widgetTitle")}
         data-testid="altegio-widget"
@@ -60,7 +52,7 @@ export default function AltegioWidget() {
         allow="payment"
         referrerPolicy="strict-origin-when-cross-origin"
       />
-      <p className="border-t border-brand-200 p-3 text-center text-sm font-light text-brand-700">
+      <p className="border-t border-line p-4 text-center text-sm">
         {t("booking.fallbackQuestion")}{" "}
         <a
           className="font-medium text-brand-600 underline underline-offset-4"

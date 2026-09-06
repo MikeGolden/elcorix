@@ -2,31 +2,39 @@
 <!-- Keep the origin in sync with siteUrl in src/config.ts and robots.txt. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://kosmetic-fuessen.de/</loc>
+    <loc>https://elcorix.com/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kosmetic-fuessen.de/prices</loc>
+    <loc>https://elcorix.com/prices</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kosmetic-fuessen.de/booking</loc>
+    <loc>https://elcorix.com/booking</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kosmetic-fuessen.de/gallery</loc>
+    <loc>https://elcorix.com/gallery</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://kosmetic-fuessen.de/contact</loc>
+    <loc>https://elcorix.com/contact</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kosmetic-fuessen.de/privacy</loc>
+    <loc>https://elcorix.com/mission</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://elcorix.com/terms</loc>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://kosmetic-fuessen.de/imprint</loc>
+    <loc>https://elcorix.com/privacy</loc>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://elcorix.com/imprint</loc>
     <priority>0.2</priority>
   </url>
 </urlset>

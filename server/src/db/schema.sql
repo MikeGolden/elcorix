@@ -13,9 +13,18 @@ CREATE TABLE IF NOT EXISTS booking_requests (
   service            TEXT,
   customer_name      TEXT NOT NULL,
   customer_phone     TEXT NOT NULL,
+  -- Free-text preferred date/time from the consultation form
+  -- ("YYYY-MM-DD HH:MM"); the confirmed slot lives in Altegio.
+  preferred_at       TEXT,
+  marketing_consent  BOOLEAN NOT NULL DEFAULT false,
   status             TEXT NOT NULL DEFAULT 'pending',
   created_at         TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Databases created before the consultation form existed (idempotent).
+ALTER TABLE booking_requests ADD COLUMN IF NOT EXISTS preferred_at TEXT;
+ALTER TABLE booking_requests
+  ADD COLUMN IF NOT EXISTS marketing_consent BOOLEAN NOT NULL DEFAULT false;
 
 -- Databases created before the NOT NULL constraints existed: the API has
 -- always required both fields, so backfill and tighten (idempotent).

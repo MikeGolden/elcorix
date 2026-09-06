@@ -3,39 +3,32 @@ import { images } from "../images";
 import { usePageMeta } from "../seo/usePageMeta";
 
 const galleryItems = [
-  { src: images.interior, altKey: "interior" },
-  { src: images.services.facial, altKey: "facial" },
-  { src: images.services.permanentMakeup, altKey: "permanentMakeup" },
-  { src: images.services.laser, altKey: "laser" },
-  { src: images.services.nails, altKey: "nails" },
-  { src: images.services.lashesBrows, altKey: "lashesBrows" },
-  { src: images.services.body, altKey: "body" },
-  { src: images.ctaBand, altKey: "studio" },
+  { src: images.hero, altKey: "hero" },
+  ...images.work.map((src, index) => ({ src, altKey: `n${index + 1}` })),
+  { src: images.technology, altKey: "technology" },
+  { src: images.specialist, altKey: "specialist" },
 ] as const;
 
 export default function GalleryPage() {
   const { t } = useTranslation();
   usePageMeta("gallery");
   return (
-    <section aria-labelledby="gallery" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-      <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
-      <h1
-        id="gallery"
-        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
-      >
+    <section
+      aria-labelledby="gallery-title"
+      className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20"
+    >
+      <h1 id="gallery-title" className="text-3xl font-extrabold sm:text-4xl">
         {t("gallery.title")}
       </h1>
-      <p className="mt-5 max-w-2xl font-light leading-loose text-brand-700">
-        {t("gallery.intro")}
-      </p>
-      <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {galleryItems.map((item) => (
-          <li key={item.altKey} className="overflow-hidden border border-brand-200 bg-brand-100">
+      <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed">{t("gallery.intro")}</p>
+      <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {galleryItems.map((item, index) => (
+          <li key={`${item.altKey}-${index}`}>
             <img
               src={item.src}
-              alt={t(`gallery.alts.${item.altKey}`)}
+              alt={t(`gallery.alts.${item.altKey}` as "gallery.alts.hero")}
               loading="lazy"
-              className="aspect-[4/3] w-full object-cover grayscale transition-all duration-500 hover:scale-105 hover:grayscale-0"
+              className="aspect-[4/3] w-full rounded-panel object-cover"
             />
           </li>
         ))}

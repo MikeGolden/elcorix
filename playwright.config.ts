@@ -10,7 +10,17 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        // CI images (and sandboxes) that ship their own Chromium can point
+        // Playwright at it instead of downloading one.
+        ...(process.env.PW_CHROMIUM_PATH
+          ? { launchOptions: { executablePath: process.env.PW_CHROMIUM_PATH } }
+          : {}),
+      },
+    },
   ],
   webServer: {
     command: "npm run dev -w client",

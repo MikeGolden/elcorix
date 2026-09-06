@@ -1,7 +1,16 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
-import { business } from "../config";
+import { navAnchors } from "../content";
+import en from "../i18n/locales/en/common.json";
+
+/** Resolve a dotted translation key against the English resource. */
+function label(key: string): string {
+  return key
+    .split(".")
+    .reduce<unknown>((node, part) => (node as Record<string, unknown>)[part], en) as string;
+}
 
 function renderAt(path: string) {
   return render(
@@ -12,34 +21,53 @@ function renderAt(path: string) {
 }
 
 describe("App", () => {
-  it("renders hero, who we are and what we do on the home page", () => {
+  it("renders every landing section of the Figma layout on the home page", () => {
     renderAt("/");
     expect(
-      screen.getByRole("heading", { level: 1, name: business.name }),
+      screen.getByRole("heading", {
+        level: 1,
+        name: /permanent laser hair removal in kempten/i,
+      }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /who we are/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /what we do/i }),
-    ).toBeInTheDocument();
+    for (const name of [
+      /who is it for\?/i,
+      /modern diode laser technology/i,
+      /your skin in experienced hands/i,
+      /take a look at our work/i,
+      /popular services and prices/i,
+      /book an appointment/i,
+      /request a free consultation/i,
+      /contact & appointments/i,
+    ]) {
+      expect(screen.getByRole("heading", { name })).toBeInTheDocument();
+    }
   });
 
-  it("has navigation links to booking and contact", () => {
+  it("opens the anchor menu and links every section", async () => {
     renderAt("/");
-    const nav = screen.getByRole("navigation", { name: /main navigation/i });
-    expect(
-      within(nav).getByRole("link", { name: /book an appointment/i }),
-    ).toHaveAttribute("href", "/booking");
-    expect(
-      within(nav).getByRole("link", { name: /prices/i }),
-    ).toHaveAttribute("href", "/prices");
-    expect(
-      within(nav).getByRole("link", { name: /gallery/i }),
-    ).toHaveAttribute("href", "/gallery");
-    expect(
-      within(nav).getByRole("link", { name: /^contact$/i }),
-    ).toHaveAttribute("href", "/contact");
+    const user = userEvent.setup();
+    // The menu is collapsed until the hamburger is pressed.
+    expect(screen.queryByRole("navigation", { name: "Menu" })).not.toBeInTheDocument();
+
+    await user.click(screen.getByTestId("menu-toggle"));
+    const nav = screen.getByRole("navigation", { name: "Menu" });
+    for (const anchor of navAnchors) {
+      expect(within(nav).getByRole("link", { name: label(anchor.key) })).toHaveAttribute(
+        "href",
+        `/#${anchor.id}`,
+      );
+    }
+  });
+
+  it("points the anchor menu back at the home page from a deep route", async () => {
+    renderAt("/prices");
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("menu-toggle"));
+    const nav = screen.getByRole("navigation", { name: "Menu" });
+    expect(within(nav).getByRole("link", { name: /our price list/i })).toHaveAttribute(
+      "href",
+      "/#prices",
+    );
   });
 
   it("renders the Altegio widget on the booking page once booking cookies are accepted", () => {
@@ -53,9 +81,49 @@ describe("App", () => {
     ).toBeInTheDocument();
     const iframe = screen.getByTestId("altegio-widget");
     expect(iframe).toBeInTheDocument();
-    expect(iframe).toHaveAttribute(
-      "src",
-      expect.stringContaining("alteg.io"),
+    expect(iframe).toHaveAttribute("src", expect.stringContaining("alteg.io"));
+  });
+
+  it("gates the Altegio widget behind consent", () => {
+    window.localStorage.setItem(
+      "cookie-consent",
+      JSON.stringify({ version: 1, decidedAt: new Date().toISOString(), booking: false }),
     );
+    renderAt("/booking");
+    expect(screen.getByTestId("altegio-consent-placeholder")).toBeInTheDocument();
+    expect(screen.queryByTestId("altegio-widget")).not.toBeInTheDocument();
+  });
+
+  it("links the four legal pages from the footer", () => {
+    renderAt("/");
+    const footer = screen.getByRole("navigation", { name: "Legal" });
+    expect(within(footer).getByRole("link", { name: "Imprint" })).toHaveAttribute(
+      "href",
+      "/imprint",
+    );
+    expect(within(footer).getByRole("link", { name: "Privacy policy" })).toHaveAttribute(
+      "href",
+      "/privacy",
+    );
+    expect(within(footer).getByRole("link", { name: "Terms" })).toHaveAttribute(
+      "href",
+      "/terms",
+    );
+    expect(within(footer).getByRole("link", { name: "Mission" })).toHaveAttribute(
+      "href",
+      "/mission",
+    );
+  });
+
+  it("renders the price tables from the Figma on /prices", () => {
+    renderAt("/prices");
+    expect(
+      screen.getByRole("heading", { level: 1, name: /price list/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /services for women/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /services for men/i })).toBeInTheDocument();
+    // "Upper lip" is both a zone and the name of the first package.
+    expect(screen.getAllByText("Upper lip").length).toBeGreaterThan(0);
+    expect(screen.getByRole("table")).toBeInTheDocument();
   });
 });

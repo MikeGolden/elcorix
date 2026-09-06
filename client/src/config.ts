@@ -1,37 +1,38 @@
 // Only non-translatable business data lives here; all user-visible copy
-// (including the tagline) is in src/i18n/locales/*/common.json.
+// is in src/i18n/locales/*/common.json.
 export const business = {
-  name: "Kosmetic Füssen",
-  // Placeholders — replace with the real owner and VAT id (required in the
-  // German Impressum) before going live.
-  owner: "Anna Musterfrau",
+  name: "elcorix",
+  /** Legal name / owner — required in the German Impressum. */
+  owner: "Elena Musterfrau",
   vatId: "DE000000000",
-  address: "Reichenstraße 1, 87629 Füssen, Germany",
-  phone: "+49 8362 000000",
-  email: "hello@kosmetic-fuessen.de",
-  instagram: "https://instagram.com/kosmetic.fuessen",
-  instagramHandle: "@kosmetic.fuessen",
+  address: "Bodmanstraße 14, 87435 Kempten (Allgäu), Germany",
+  /** Short form used in the contact block, as in the Figma. */
+  addressShort: "Bodmanstraße 14, Kempten",
+  phone: "+49 155 625 14 872",
+  email: "info@elcorix.com",
+  instagram: "https://instagram.com/elcorix",
+  instagramHandle: "@elcorix",
   /**
    * WhatsApp deep link (digits only, international format, no "+").
-   * Placeholder — must match the real business phone before going live.
+   * Must match the business phone above.
    */
-  whatsapp: "https://wa.me/498362000000",
+  whatsapp: "https://wa.me/4915562514872",
   /**
-   * Canonical production origin. Placeholder until the domain is live —
-   * used for <link rel="canonical">, Open Graph URLs and JSON-LD. Keep
-   * public/robots.txt and public/sitemap.xml in sync when changing it.
+   * Canonical production origin — used for <link rel="canonical">, Open
+   * Graph URLs and JSON-LD. Keep public/robots.txt and public/sitemap.xml
+   * in sync when changing it.
    */
-  siteUrl: "https://kosmetic-fuessen.de",
-  /** Approximate studio coordinates (Reichenstraße, Füssen) for the map. */
-  geo: { latitude: 47.5709, longitude: 10.6986 },
+  siteUrl: "https://elcorix.com",
+  /** Approximate studio coordinates (Bodmanstraße, Kempten) for the map. */
+  geo: { latitude: 47.7263, longitude: 10.3138 },
   /**
    * Structured opening hours for schema.org JSON-LD (Google local search).
-   * The human-readable string shown on the contact page stays translated
-   * in common.json — keep the two in sync.
+   * The human-readable strings shown in the contact section stay
+   * translated in common.json — keep the two in sync.
    */
   openingHours: [
-    { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
-    { days: ["Saturday"], opens: "10:00", closes: "14:00" },
+    { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "19:00" },
+    { days: ["Saturday"], opens: "09:00", closes: "15:00" },
   ],
   /**
    * Altegio booking page / widget.
@@ -48,3 +49,6 @@ function sanitizeCompanyId(raw: string | undefined): string {
 }
 
 export const altegioBookingUrl = `https://n${business.altegioCompanyId}.alteg.io`;
+
+/** `tel:` href without the spaces the display format carries. */
+export const telHref = `tel:${business.phone.replace(/\s/g, "")}`;

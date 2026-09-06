@@ -70,7 +70,7 @@ test.describe("GDPR consent", () => {
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("E-mail").fill("anna@example.com");
-    await page.getByLabel("Message").fill("Hello!");
+    await page.getByRole("textbox", { name: "Message" }).fill("Hello!");
     // Without the checkbox the browser blocks submission (required).
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByRole("status")).toHaveCount(0);

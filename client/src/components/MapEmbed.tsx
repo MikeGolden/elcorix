@@ -20,16 +20,10 @@ export default function MapEmbed() {
     return (
       <div
         data-testid="map-placeholder"
-        className="flex aspect-[4/3] flex-col items-center justify-center border border-brand-200 bg-brand-100 p-8 text-center"
+        className="flex aspect-[4/3] flex-col items-center justify-center rounded-panel border border-line bg-surface-soft p-8 text-center"
       >
-        <p className="max-w-sm text-sm font-light leading-relaxed text-brand-700">
-          {t("contact.map.hint")}
-        </p>
-        <button
-          type="button"
-          onClick={() => setLoaded(true)}
-          className="mt-5 bg-brand-500 px-8 py-3 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600"
-        >
+        <p className="max-w-sm text-sm leading-relaxed">{t("contact.map.hint")}</p>
+        <button type="button" onClick={() => setLoaded(true)} className="btn-primary mt-6">
           {t("contact.map.load")}
         </button>
         <a
@@ -49,7 +43,7 @@ export default function MapEmbed() {
       title={t("contact.map.title")}
       data-testid="map-embed"
       src={embedUrl}
-      className="aspect-[4/3] w-full border border-brand-200"
+      className="aspect-[4/3] w-full rounded-panel border border-line"
       loading="lazy"
       referrerPolicy="strict-origin-when-cross-origin"
     />

@@ -41,6 +41,8 @@ export type MetaKey =
   | "contact"
   | "privacy"
   | "imprint"
+  | "terms"
+  | "mission"
   | "notFound";
 
 /**
