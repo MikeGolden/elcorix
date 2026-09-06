@@ -29,7 +29,7 @@ describe("ContactPage", () => {
       screen.getByRole("link", { name: new RegExp(escapeRegExp(business.email)) }),
     ).toHaveAttribute("href", `mailto:${business.email}`);
     expect(
-      screen.getByRole("link", { name: /kosmetic\.fuessen/i }),
+      screen.getByRole("link", { name: business.instagramHandle }),
     ).toHaveAttribute("href", business.instagram);
   });
 

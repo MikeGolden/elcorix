@@ -1,41 +1,62 @@
 {
   "nav": {
-    "label": "Hauptnavigation",
+    "label": "Menü",
     "skipToContent": "Zum Inhalt springen",
     "home": "Startseite",
-    "prices": "Preise",
-    "gallery": "Galerie",
+    "forWhom": "Für wen ist es geeignet?",
+    "technology": "Unsere Technologie",
+    "specialist": "Über die Meisterin",
+    "work": "Unsere Arbeiten",
+    "prices": "Unsere Preisliste",
     "booking": "Termin buchen",
-    "contact": "Kontakt"
+    "consultation": "Angebot anfordern",
+    "contact": "Kontakt",
+    "gallery": "Galerie"
+  },
+  "cta": {
+    "book": "Termin vereinbaren",
+    "consultation": "Beratung erhalten",
+    "whatsapp": "Über WhatsApp schreiben",
+    "learnMore": "Mehr erfahren",
+    "moreDevices": "Mehr über unsere Geräte erfahren",
+    "fullPriceList": "Vollständige Preisliste ansehen"
   },
   "meta": {
     "home": {
-      "title": "Kosmetikstudio in Füssen",
-      "description": "Professionelle kosmetische Behandlungen im Herzen des Allgäus: Gesichtsbehandlungen, Permanent Make-up, Laser, Nägel, Wimpern & Brauen. Online buchen."
+      "title": "Dauerhafte Laser-Haarentfernung in Kempten",
+      "description": "Dauerhafte Laser-Haarentfernung in Kempten mit moderner Diodenlaser-Technologie – individuell auf Haut- und Haartyp abgestimmt. Termin online buchen."
     },
     "prices": {
-      "title": "Preise",
-      "description": "Preisliste für Gesichtsbehandlungen, Permanent Make-up, Laserbehandlungen, Maniküre & Pediküre, Wimpern- & Brauenstyling und Körperbehandlungen in Füssen."
+      "title": "Preisliste",
+      "description": "Preise für Laser-Haarentfernung in Kempten: alle Zonen für Frauen und Männer sowie Paketlösungen mit 6er- und 8er-Preisen."
     },
     "gallery": {
-      "title": "Galerie",
-      "description": "Ein Blick in unser Kosmetikstudio in Füssen — Behandlungsräume, Technik und unsere Arbeit."
+      "title": "Unsere Arbeiten",
+      "description": "Einblicke in unser Studio in Kempten und in die Behandlungen, die wir jeden Tag durchführen."
     },
     "booking": {
-      "title": "Termin buchen",
-      "description": "Buchen Sie Ihre kosmetische Behandlung in Füssen online — Behandlung, Spezialistin und Wunschtermin einfach auswählen."
+      "title": "Termin vereinbaren",
+      "description": "Buchen Sie Ihre Laser-Haarentfernung in Kempten online – Zone, Termin und Uhrzeit in wenigen Minuten."
     },
     "contact": {
       "title": "Kontakt",
-      "description": "Kontakt zu Kosmetic Füssen: Adresse, Telefon, E-Mail, WhatsApp, Öffnungszeiten und Anfahrt."
+      "description": "Kontakt zu elcorix in Kempten: Adresse, Telefon, WhatsApp, E-Mail, Öffnungszeiten und Anfahrt."
     },
     "privacy": {
       "title": "Datenschutzerklärung",
-      "description": "Wie Kosmetic Füssen personenbezogene Daten auf dieser Website verarbeitet — Informationen nach DSGVO."
+      "description": "Wie elcorix personenbezogene Daten auf dieser Website verarbeitet – Informationen nach DSGVO."
     },
     "imprint": {
       "title": "Impressum",
-      "description": "Rechtliche Angaben zum Betreiber dieser Website (Impressum)."
+      "description": "Rechtliche Angaben zum Betreiber dieser Website."
+    },
+    "terms": {
+      "title": "AGB",
+      "description": "Allgemeine Geschäftsbedingungen für Behandlungen bei elcorix in Kempten."
+    },
+    "mission": {
+      "title": "Leitbild",
+      "description": "Wofür elcorix steht: Sicherheit, ehrliche Beratung und eine Behandlung, bei der Sie sich wohlfühlen."
     },
     "notFound": {
       "title": "Seite nicht gefunden",
@@ -43,176 +64,153 @@
     }
   },
   "hero": {
-    "tagline": "Schönheit & Hautpflege im Herzen des Allgäus",
-    "cta": "Termin buchen"
+    "title": "Dauerhafte Laser-Haarentfernung in Kempten",
+    "imageAlt": "Laser-Haarentfernung an den Beinen im Studio",
+    "servicesLabel": "Unsere Leistungen",
+    "serviceName": "Haarentfernung.",
+    "serviceCount": "20 Leistungen"
   },
-  "home": {
-    "whoWeAre": {
-      "title": "Wer wir sind",
-      "p1": "Wir sind ein kleines Kosmetikstudio in der Füssener Altstadt, am Fuße der Alpen. Unsere zertifizierten Kosmetikerinnen verbinden langjährige Erfahrung mit regelmäßigen Fortbildungen in modernen Behandlungsmethoden.",
-      "p2": "Wir setzen auf ehrliche Beratung, medizinische Hygienestandards und Behandlungen, die Ihre Haut respektieren. Jeder Besuch beginnt mit einem persönlichen Beratungsgespräch — ohne Verkaufsdruck, nur das, was Ihre Haut wirklich braucht."
-    },
-    "whatWeDo": {
-      "title": "Was wir tun",
-      "cta": "Freie Termine ansehen"
-    },
-    "advantages": {
-      "title": "Warum wir",
-      "items": {
-        "consultation": {
-          "title": "Ehrliche Beratung",
-          "text": "Jeder Besuch beginnt mit einer persönlichen Hautberatung — wir empfehlen nur, was Ihre Haut wirklich braucht."
-        },
-        "hygiene": {
-          "title": "Medizinische Hygiene",
-          "text": "Zertifizierte Produkte, sterile Einwegmaterialien und klinische Hygienestandards bei jedem Schritt."
-        },
-        "technology": {
-          "title": "Moderne Technik",
-          "text": "Sanfte, aktuelle apparative Behandlungen mit nachgewiesener Wirkung — keine Experimente an Ihrer Haut."
-        },
-        "location": {
-          "title": "Im Herzen von Füssen",
-          "text": "In der Altstadt am Fuße der Alpen, wenige Minuten von der Reichenstraße — gut erreichbar, gut parkbar."
-        }
-      }
-    },
-    "team": {
-      "title": "Unser Team",
-      "intro": "Zertifizierte Kosmetikerinnen, die ihren Beruf lieben — und sich stetig weiterbilden.",
-      "roles": {
-        "founder": "Inhaberin · Zertifizierte Kosmetikerin",
-        "esthetician": "Kosmetikerin · Permanent-Make-up-Artistin",
-        "nails": "Nageldesignerin · Lash & Brow Stylistin"
-      }
-    },
-    "testimonials": {
-      "title": "Was unsere Kundinnen sagen",
-      "items": {
-        "t1": {
-          "quote": "Die gründlichste Hautberatung, die ich je hatte. Kein Verkaufsdruck — nur ehrliche Empfehlungen und sichtbare Ergebnisse.",
-          "name": "Julia M."
-        },
-        "t2": {
-          "quote": "Meine Brauen sehen völlig natürlich aus. Die Hygienestandards und die ruhige Atmosphäre haben mich sofort überzeugt.",
-          "name": "Sarah K."
-        },
-        "t3": {
-          "quote": "Online buchen hat zwei Minuten gedauert, und das Studio in der Altstadt ist wunderschön. Ich komme jeden Monat wieder.",
-          "name": "Olena T."
-        }
-      }
-    },
-    "ctaBand": {
-      "title": "Bereit für Ihre Auszeit?",
-      "text": "Buchen Sie online in zwei Minuten — Behandlung, Spezialistin und Wunschtermin einfach auswählen."
+  "forWhom": {
+    "title": "Für wen ist es geeignet?",
+    "items": {
+      "convenience": { "title": "Wann Laser-Haarentfernung das Leben wirklich erleichtert" },
+      "irritation": { "title": "Rasieren führt jedes Mal zu Hautirritationen" },
+      "shaving": { "title": "Sie sind es leid, sich ständig zu rasieren" },
+      "beard": { "title": "Sie haben einen Bart, müssen aber ständig die Konturen nachrasieren" }
     }
   },
-  "services": {
-    "facial": {
-      "title": "Gesichtsbehandlungen",
-      "description": "Tiefenreinigende, feuchtigkeitsspendende und Anti-Aging-Behandlungen, abgestimmt auf Ihren Hauttyp."
-    },
-    "permanentMakeup": {
-      "title": "Permanent Make-up",
-      "description": "Natürlich wirkende Augenbrauen, Lippen und Lidstriche durch sanfte, präzise Pigmentierung."
-    },
-    "laser": {
-      "title": "Laser- & apparative Kosmetik",
-      "description": "Moderne apparative Behandlungen zur Hautverjüngung und dauerhaften Haarentfernung."
-    },
-    "nails": {
-      "title": "Maniküre & Pediküre",
-      "description": "Klassische und medizinische Nagelpflege mit langanhaltendem Gel-Finish."
-    },
-    "lashesBrows": {
-      "title": "Wimpern- & Brauenstyling",
-      "description": "Lifting, Laminierung, Färben und Verlängerung für einen gepflegten Look — jeden Tag."
-    },
-    "body": {
-      "title": "Körperbehandlungen",
-      "description": "Entspannende Massagen, Peelings und straffende Anwendungen für Haut und Körper."
+  "technology": {
+    "title": "Moderne Diodenlaser-Technologie – individuell auf Ihre Haut abgestimmt",
+    "imageAlt": "Diodenlaser-Gerät im Behandlungsraum",
+    "p1": "In unserem Studio arbeiten wir mit dem modernen <b>ALIX TWIN KI Smart 5000 8W – einem intelligenten System für professionelle</b> und besonders komfortable Haarentfernung. Vier aufeinander abgestimmte Wellenlängen – 755, 808, 940 und 1064 nm mit Boost – ermöglichen die Behandlung unterschiedlicher Haut- und Haartypen.",
+    "p2": "<b>Ein KI-Scanner analysiert Hauttyp,</b> Haarfarbe und Haardichte und unterstützt uns dabei, die Einstellungen individuell anzupassen. Das leistungsstarke Kühlsystem kühlt das Handstück auf <b>bis zu −26 °C und macht die Behandlung deutlich angenehmer.</b>",
+    "p3": "<b>Verschiedene Aufsätze erlauben präzises Arbeiten</b> an kleinen sowie großen Körperzonen – für eine schnelle, schonende und individuell abgestimmte Behandlung."
+  },
+  "specialist": {
+    "title": "Ihre Haut in erfahrenen Händen",
+    "imageAlt": "Elena, Spezialistin für professionelle Laser-Haarentfernung",
+    "p1": "Mein Name ist Elena und ich bin Ihre <b>Spezialistin für professionelle Laser-Haarentfernung.</b> Seit [Anzahl] Jahren begleite ich Frauen und Männer auf dem Weg zu glatter Haut und einem gepflegten Körpergefühl.",
+    "p2": "Durch meine Ausbildungen in den Bereichen [Ausbildungen/Spezialisierungen] <b>sowie regelmäßige Weiterbildungen arbeite ich nach modernen Qualitäts- und Hygienestandards.</b>",
+    "p3": "Bei jeder Behandlung nehme ich mir Zeit für eine persönliche Beratung, analysiere Ihren Haut- und Haartyp und passe die Einstellungen des Geräts individuell an. <b>Mir ist wichtig, dass Sie sich während der gesamten Behandlung sicher, wohl und gut aufgehoben fühlen.</b>",
+    "credentialsTitle": "Qualifikation",
+    "credentials": {
+      "training": "Fachkraft für professionelle Haarentfernung – zertifizierte Ausbildung mit den Schwerpunkten Haut- und Haartypen, Hygiene, Beratung und Behandlungsprotokolle.",
+      "hygiene": "Arbeiten nach medizinischen Hygienestandards: Einmalmaterialien, desinfizierte Handstücke und dokumentierte Behandlungsabläufe.",
+      "consultation": "Persönliche Beratung und Probebehandlung vor der ersten Sitzung – inklusive Analyse von Haut- und Haartyp."
+    }
+  },
+  "work": {
+    "title": "Sehen Sie sich unsere Arbeiten an",
+    "alts": {
+      "n1": "Behandlung mit dem Diodenlaser",
+      "n2": "Vorbereitung der Haut vor der Behandlung",
+      "n3": "Behandlung einer großen Körperzone",
+      "n4": "Behandlung im Gesichtsbereich",
+      "n5": "Behandlungsraum im Studio",
+      "n6": "Feinarbeit an den Konturen"
     }
   },
   "prices": {
-    "title": "Preise",
-    "intro": "Transparente Preise für unsere gefragtesten Behandlungen. Jede Behandlung beginnt mit einer kurzen Beratung — der genaue Preis richtet sich nach Haut und Aufwand und wird vor Beginn immer bestätigt.",
-    "from": "ab {{price}}",
-    "note": "Alle Preise inklusive Mehrwertsteuer. Für kombinierte oder erweiterte Behandlungen erstellen wir im Beratungsgespräch ein individuelles Angebot. Geschenkgutscheine sind im Studio erhältlich.",
-    "items": {
-      "facial": {
-        "basic": "Klassische Gesichtsbehandlung (60 Min.)",
-        "deepCleansing": "Tiefenreinigende Behandlung (75 Min.)",
-        "antiAging": "Anti-Aging-Behandlung (90 Min.)"
+    "title": "Beliebte Leistungen und Preise",
+    "pageTitle": "Preisliste",
+    "intro": "Alle Preise gelten pro Sitzung und Zone. Wie viele Sitzungen nötig sind, hängt von Haut- und Haartyp ab – das besprechen wir in der kostenlosen Beratung vor der ersten Behandlung.",
+    "note": "Alle Preise verstehen sich inklusive MwSt. Kombinationen mehrerer Zonen und individuelle Paketlösungen stellen wir Ihnen gern persönlich zusammen. Bitte sagen Sie Termine mindestens 24 Stunden vorher ab.",
+    "groups": {
+      "women": "Leistungen für Frauen",
+      "men": "Leistungen für Männer",
+      "packages": "Paketlösungen für Frauen"
+    },
+    "columns": {
+      "package": "Paket",
+      "zones": "Enthaltene Zonen",
+      "single": "Einzelbehandlung",
+      "six": "6er-Paket",
+      "eight": "8er-Paket"
+    },
+    "women": {
+      "upperLip": "Oberlippe",
+      "chin": "Kinn",
+      "underarms": "Achseln",
+      "bikiniClassic": "Bikinizone klassisch",
+      "intimateComplete": "Intim Complete – inkl. Pofalte",
+      "armsFull": "Arme komplett inkl. Hände/Finger",
+      "lowerLegs": "Unterschenkel inkl. Knie",
+      "legsFull": "Beine komplett inkl. Füße/Zehen"
+    },
+    "men": {
+      "beardContour": "Bartkontur",
+      "throat": "Hals",
+      "neck": "Nacken",
+      "underarms": "Achseln",
+      "shoulders": "Schultern",
+      "chest": "Brust",
+      "backFull": "Rücken komplett",
+      "intimateComplete": "Intim Complete inkl. Pofalte"
+    },
+    "packages": {
+      "p1": {
+        "name": "Oberlippe",
+        "zones": "Achseln + Intim Complete inkl. Pofalte"
       },
-      "permanentMakeup": {
-        "brows": "Augenbrauen (inkl. Nachbehandlung)",
-        "lips": "Lippen (inkl. Nachbehandlung)",
-        "refresh": "Auffrischung / Touch-up"
+      "p2": {
+        "name": "Kinn",
+        "zones": "Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
       },
-      "laser": {
-        "faceSmall": "Gesicht, kleine Zone",
-        "legs": "Beine, pro Sitzung",
-        "skinRejuvenation": "Hautverjüngung, pro Sitzung"
+      "p3": {
+        "name": "Achseln",
+        "zones": "Achseln + Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
       },
-      "nails": {
-        "manicure": "Klassische Maniküre",
-        "manicureGel": "Maniküre mit Gel-Lack",
-        "pedicure": "Pediküre"
+      "p4": {
+        "name": "Bikinizone klassisch",
+        "zones": "Achseln + Intim Complete inkl. Pofalte + Beine komplett inkl. Füße/Zehen"
       },
-      "lashesBrows": {
-        "lashLifting": "Wimpernlifting inkl. Färben",
-        "browLamination": "Brauenlaminierung inkl. Färben",
-        "tinting": "Wimpern oder Brauen färben"
-      },
-      "body": {
-        "massage": "Entspannungsmassage (50 Min.)",
-        "peeling": "Ganzkörperpeeling",
-        "firming": "Straffende Körperbehandlung"
+      "p5": {
+        "name": "Intim Complete – inkl. Pofalte",
+        "zones": "Achseln, Arme, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett"
       }
     }
   },
-  "gallery": {
-    "title": "Galerie",
-    "intro": "Ein Blick in unser Studio in der Füssener Altstadt — und auf die Arbeit, die wir jeden Tag machen.",
-    "alts": {
-      "interior": "Behandlungsraum unseres Studios",
-      "facial": "Gesichtsbehandlung",
-      "permanentMakeup": "Permanent-Make-up-Pigmentierung",
-      "laser": "Apparative Laserbehandlung",
-      "nails": "Maniküre-Ergebnis mit Gel-Lack",
-      "lashesBrows": "Wimpern- und Brauenstyling",
-      "body": "Entspannende Körperbehandlung",
-      "studio": "Atmosphäre im Studio"
-    }
-  },
   "booking": {
-    "title": "Termin buchen",
-    "intro": "Wählen Sie eine Behandlung, Ihre Spezialistin und einen freien Termin im Kalender unten. Sie erhalten eine Bestätigung per E-Mail oder SMS.",
+    "title": "Termin vereinbaren",
+    "intro": "Wählen Sie im Kalender eine Zone, einen freien Termin und eine Uhrzeit. Die Bestätigung erhalten Sie per E-Mail oder SMS.",
     "widgetTitle": "Altegio Online-Terminbuchung",
-    "fallbackQuestion": "Die Buchung lädt nicht?",
+    "fallbackQuestion": "Kalender lädt nicht?",
     "fallbackLink": "Buchungskalender von {{businessName}} in einem neuen Tab öffnen",
     "consentTitle": "Externer Buchungskalender",
-    "consentText": "Unser Online-Kalender wird von Altegio bereitgestellt. Beim Laden setzt Altegio Cookies und verarbeitet Ihre IP-Adresse — bei Online-Zahlungen auch Ihre Zahlungsdaten auf den Seiten von Altegio. Einzelheiten finden Sie in unserer Datenschutzerklärung.",
+    "consentText": "Unser Online-Kalender wird von Altegio bereitgestellt. Beim Laden setzt Altegio Cookies und verarbeitet Ihre IP-Adresse – bei einer Online-Zahlung zusätzlich Ihre Zahlungsdaten auf den Seiten von Altegio. Einzelheiten finden Sie in unserer Datenschutzerklärung.",
     "consentLoad": "Kalender laden und Altegio-Cookies akzeptieren"
   },
-  "bookingForm": {
-    "title": "Lieber einen Rückruf?",
-    "intro": "Hinterlassen Sie Name und Telefonnummer — wir rufen Sie zurück und vereinbaren den Termin. Ohne Cookies, ohne externe Dienste.",
+  "consultation": {
+    "title": "Kostenlose Beratung anfordern",
+    "intro": "Hinterlassen Sie Ihren Namen und Ihre Telefonnummer sowie Ihren Wunschtermin – wir melden uns und stimmen alles Weitere persönlich mit Ihnen ab.",
     "name": "Name",
-    "phone": "Telefon",
-    "service": "Behandlung",
-    "serviceAny": "Noch unsicher / Beratung",
-    "privacyNote": "Wir verwenden Ihre Angaben ausschließlich zur Terminvereinbarung und löschen die Anfrage nach Bearbeitung.",
-    "send": "Rückruf anfordern",
+    "phone": "Telefonnummer",
+    "date": "Datum des Besuchs",
+    "time": "Uhrzeit des Besuchs",
+    "consentMarketing": "Ich möchte per E-Mail und telefonisch über Angebote und Neuigkeiten informiert werden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen.",
+    "consentPrivacy": "Mit dem Absenden des Formulars stimme ich zu, dass meine Angaben zur Bearbeitung meiner Terminanfrage verwendet werden. Informationen zur Verarbeitung Ihrer personenbezogenen Daten finden Sie in unserer <privacyLink>Datenschutzerklärung</privacyLink>.",
     "sending": "Wird gesendet…",
-    "success": "Vielen Dank! Wir rufen Sie während der Öffnungszeiten zurück.",
-    "error": "Leider ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an."
+    "success": "Vielen Dank! Wir melden uns während der Öffnungszeiten bei Ihnen.",
+    "error": "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an."
   },
   "contact": {
-    "title": "Kontakt",
-    "openingHours": "Öffnungszeiten: Mo–Fr 9:00–18:00 Uhr, Sa 10:00–14:00 Uhr",
-    "whatsapp": "Schreiben Sie uns auf WhatsApp",
+    "title": "Kontakt & Terminvereinbarung",
+    "pageTitle": "Kontakt",
+    "intro": "Haben Sie Fragen zur Laser-Haarentfernung oder möchten Sie herausfinden, welche Behandlung zu Ihnen passt? Kontaktieren Sie uns oder vereinbaren Sie direkt einen kostenlosen und unverbindlichen Beratungstermin. Wir nehmen uns Zeit für Sie und beraten Sie persönlich.",
+    "addressLabel": "Adresse",
+    "phoneLabel": "Telefon / WhatsApp",
+    "emailLabel": "E-Mail",
+    "hoursTitle": "Öffnungszeiten",
+    "hours": {
+      "weekdaysLabel": "Montag bis Freitag",
+      "weekdays": "09:00 bis 19:00 Uhr",
+      "saturdayLabel": "Samstag",
+      "saturday": "nach vorheriger Terminvereinbarung von 09:00 bis 15:00 Uhr",
+      "sundayLabel": "Sonntag",
+      "sunday": "geschlossen"
+    },
+    "whatsapp": "Über WhatsApp schreiben",
+    "formTitle": "Schreiben Sie uns",
     "formLabel": "Kontaktformular",
     "name": "Name",
     "email": "E-Mail",
@@ -222,68 +220,131 @@
     "send": "Nachricht senden",
     "sending": "Wird gesendet…",
     "success": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
-    "error": "Leider ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns an.",
+    "error": "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns an.",
     "map": {
       "title": "Karte mit dem Standort des Studios",
-      "hint": "Die Karte wird erst auf Ihre Anfrage von OpenStreetMap geladen. Dabei wird Ihre IP-Adresse an OpenStreetMap übermittelt.",
+      "hint": "Die Karte wird auf Ihre Anforderung hin von OpenStreetMap geladen. Dabei wird Ihre IP-Adresse an OpenStreetMap übertragen.",
       "load": "Karte anzeigen",
       "external": "In OpenStreetMap öffnen"
     }
   },
+  "gallery": {
+    "title": "Unsere Arbeiten",
+    "intro": "Einblicke in unser Studio in Kempten – und in die Behandlungen, die wir jeden Tag durchführen.",
+    "alts": {
+      "hero": "Laser-Haarentfernung an den Beinen",
+      "n1": "Behandlung mit dem Diodenlaser",
+      "n2": "Vorbereitung der Haut vor der Behandlung",
+      "n3": "Behandlung einer großen Körperzone",
+      "n4": "Behandlung im Gesichtsbereich",
+      "n5": "Behandlungsraum im Studio",
+      "n6": "Feinarbeit an den Konturen",
+      "technology": "Diodenlaser-Gerät im Behandlungsraum",
+      "specialist": "Elena, Spezialistin für Laser-Haarentfernung"
+    }
+  },
   "consent": {
     "title": "Cookies & externe Dienste",
-    "description": "Wir verwenden nur technisch notwendige Speicherung (Ihre Sprache und diese Cookie-Entscheidung). Der Altegio-Buchungskalender ist ein externer Dienst, der beim Laden Cookies setzt — wir laden ihn nur mit Ihrer Einwilligung. Sie können Ihre Wahl jederzeit unter „Cookie-Einstellungen“ im Seitenfuß ändern.",
+    "description": "Wir verwenden nur technisch notwendigen Speicher (Ihre Sprache und diese Cookie-Entscheidung). Der Buchungskalender von Altegio ist ein externer Dienst, der beim Laden Cookies setzt – wir laden ihn nur mit Ihrer Einwilligung. Ihre Auswahl können Sie jederzeit über „Cookie-Einstellungen“ im Footer ändern.",
     "privacyLink": "Datenschutzerklärung",
     "acceptAll": "Alle akzeptieren",
     "necessaryOnly": "Nur notwendige"
   },
   "privacy": {
     "title": "Datenschutzerklärung",
-    "intro": "Wir nehmen den Schutz Ihrer personenbezogenen Daten ernst. Diese Erklärung informiert darüber, welche Daten wir auf dieser Website verarbeiten, zu welchem Zweck — und welche Rechte Ihnen nach der Datenschutz-Grundverordnung (DSGVO) zustehen.",
+    "intro": "Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Hier erfahren Sie, welche Daten wir auf dieser Website verarbeiten, zu welchem Zweck und welche Rechte Ihnen nach der Datenschutz-Grundverordnung (DSGVO) zustehen.",
     "sections": {
       "controller": {
         "title": "Verantwortlicher",
-        "body": "Verantwortlich für die Datenverarbeitung auf dieser Website ist {{businessName}}, {{address}}. E-Mail: {{email}}, Telefon: {{phone}}."
+        "body": "Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist {{businessName}}, {{address}}. E-Mail: {{email}}, Telefon: {{phone}}."
       },
       "hosting": {
         "title": "Zugriffsdaten",
-        "body": "Beim Besuch dieser Website werden technische Zugriffsdaten (IP-Adresse, Datum und Uhrzeit, Browsertyp) in Server-Logs verarbeitet, um die Website sicher auszuliefern und Missbrauch zu erkennen (Art. 6 Abs. 1 lit. f DSGVO). Die Log-Daten werden nach kurzer Zeit gelöscht und nicht mit anderen Daten zusammengeführt."
+        "body": "Beim Besuch dieser Website werden technische Zugriffsdaten (IP-Adresse, Datum und Uhrzeit, Browsertyp) in Server-Logs verarbeitet, um die Seite sicher auszuliefern und Missbrauch zu erkennen (Art. 6 Abs. 1 lit. f DSGVO). Log-Daten werden nach kurzer Zeit gelöscht und nicht mit anderen Daten zusammengeführt."
       },
       "contactForm": {
         "title": "Kontaktformular",
-        "body": "Wenn Sie das Kontaktformular nutzen, speichern wir Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO). Sofern E-Mail-Benachrichtigungen eingerichtet sind, erhalten Sie zusätzlich eine Eingangsbestätigung. Nachrichten werden gelöscht, sobald Ihre Anfrage erledigt ist, spätestens nach 12 Monaten."
+        "body": "Wenn Sie das Kontaktformular nutzen, speichern wir Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO). Ist der E-Mail-Versand konfiguriert, senden wir Ihnen zusätzlich eine Eingangsbestätigung. Nachrichten werden gelöscht, sobald Ihre Anfrage erledigt ist, spätestens nach 12 Monaten."
       },
       "booking": {
         "title": "Online-Terminbuchung und Zahlungen (Altegio)",
-        "body": "Termine werden über den externen Dienst Altegio (alteg.io) gebucht. Der Buchungskalender wird erst nach Ihrer Einwilligung eingebunden (Art. 6 Abs. 1 lit. a DSGVO). Nach dem Laden verarbeitet Altegio Ihre IP-Adresse und setzt Cookies; die von Ihnen eingegebenen Daten — Name, Telefonnummer, E-Mail, gewählte Behandlung und bei Online-Zahlungen Ihre Zahlungsdaten — werden von Altegio auf dessen eigenen Seiten verarbeitet. Einzelheiten entnehmen Sie bitte der Datenschutzerklärung von Altegio. Über unsere Website gestellte Buchungs- und Rückrufanfragen speichern wir zusätzlich zur Bearbeitung durch unser Team; sie werden nach Erledigung gelöscht, spätestens nach 12 Monaten. Ihre Einwilligung können Sie jederzeit über „Cookie-Einstellungen“ im Seitenfuß widerrufen."
+        "body": "Termine werden über den externen Dienst Altegio (alteg.io) gebucht. Der Buchungskalender wird erst nach Ihrer Einwilligung eingebunden (Art. 6 Abs. 1 lit. a DSGVO). Nach dem Laden verarbeitet Altegio Ihre IP-Adresse und setzt Cookies; die von Ihnen eingegebenen Daten – Name, Telefonnummer, E-Mail, gewählte Leistung und bei Online-Zahlung Ihre Zahlungsdaten – werden von Altegio auf dessen eigenen Seiten verarbeitet. Einzelheiten entnehmen Sie bitte der Datenschutzerklärung von Altegio. Beratungs- und Terminanfragen über unser Formular speichern wir zusätzlich selbst, damit unser Team sich bei Ihnen melden kann; sie werden nach Erledigung gelöscht, spätestens nach 12 Monaten. Ihre Einwilligung können Sie jederzeit über „Cookie-Einstellungen“ im Footer widerrufen."
       },
       "storage": {
-        "title": "Cookies und Local Storage",
-        "body": "Diese Website setzt selbst keine Tracking-Cookies. Wir nutzen den Local Storage Ihres Browsers ausschließlich für zwei funktionale Zwecke: Ihre Spracheinstellung (i18nextLng) und Ihre Cookie-Entscheidung (cookie-consent). Solche rein funktionale Speicherung ist einwilligungsfrei. Cookies von Altegio werden erst gesetzt, nachdem Sie den Buchungskalender akzeptiert haben. Die Karte auf der Kontaktseite wird erst auf Ihre ausdrückliche Anfrage von OpenStreetMap geladen."
+        "title": "Cookies und lokaler Speicher",
+        "body": "Diese Website setzt keine eigenen Tracking-Cookies. Wir nutzen den lokalen Speicher Ihres Browsers für zwei rein funktionale Zwecke: Ihre Sprachauswahl (i18nextLng) und Ihre Cookie-Entscheidung (cookie-consent). Für funktionale Speicherung dieser Art ist keine Einwilligung erforderlich. Cookies von Altegio werden erst gesetzt, wenn Sie den Buchungskalender akzeptieren. Die Karte im Kontaktbereich wird nur auf Ihre ausdrückliche Anforderung hin von OpenStreetMap geladen."
       },
       "rights": {
         "title": "Ihre Rechte",
-        "body": "Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer personenbezogenen Daten, auf Datenübertragbarkeit, auf Einschränkung der Verarbeitung und Widerspruch sowie das Recht, erteilte Einwilligungen mit Wirkung für die Zukunft zu widerrufen. Außerdem steht Ihnen ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu; für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA)."
+        "body": "Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer personenbezogenen Daten, auf Datenübertragbarkeit, auf Einschränkung der Verarbeitung sowie ein Widerspruchsrecht; erteilte Einwilligungen können Sie mit Wirkung für die Zukunft widerrufen. Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren; für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA)."
       }
     }
   },
   "imprint": {
     "title": "Impressum",
-    "operatorTitle": "Diensteanbieter",
+    "operatorTitle": "Betreiber der Website",
     "ownerLabel": "Inhaberin",
     "contactTitle": "Kontakt",
-    "vatLabel": "USt-IdNr.",
+    "vatLabel": "Umsatzsteuer-ID",
     "responsibleLabel": "Verantwortlich für den Inhalt",
-    "dispute": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: https://ec.europa.eu/consumers/odr. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+    "dispute": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: https://ec.europa.eu/consumers/odr. Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+  },
+  "terms": {
+    "title": "Allgemeine Geschäftsbedingungen",
+    "intro": "Diese Bedingungen gelten für alle Behandlungen und Terminvereinbarungen bei elcorix. Bitte lassen Sie sie vor der Veröffentlichung rechtlich prüfen und an Ihre tatsächlichen Abläufe anpassen.",
+    "sections": {
+      "scope": {
+        "title": "Geltungsbereich",
+        "body": "Diese Bedingungen gelten für alle über diese Website oder telefonisch vereinbarten Behandlungen. Abweichende Vereinbarungen bedürfen der Textform."
+      },
+      "appointments": {
+        "title": "Terminvereinbarung",
+        "body": "Termine können online über den Buchungskalender, telefonisch, per WhatsApp oder über das Beratungsformular vereinbart werden. Der Vertrag kommt mit der Bestätigung des Termins durch uns zustande."
+      },
+      "cancellation": {
+        "title": "Absage und Verschiebung",
+        "body": "Bitte sagen Sie vereinbarte Termine mindestens 24 Stunden vorher ab oder verschieben Sie sie. Bei kurzfristigerer Absage oder Nichterscheinen können wir einen Ausfallbetrag berechnen."
+      },
+      "payment": {
+        "title": "Preise und Zahlung",
+        "body": "Es gelten die zum Zeitpunkt der Buchung ausgewiesenen Preise inklusive Mehrwertsteuer. Paketpreise gelten für die jeweils angegebene Anzahl an Sitzungen. Die Zahlung erfolgt im Studio oder – sofern angeboten – online über Altegio."
+      },
+      "liability": {
+        "title": "Mitwirkung und Haftung",
+        "body": "Für eine sichere Behandlung benötigen wir zutreffende Angaben zu Hauttyp, Medikamenten und Vorerkrankungen sowie die Einhaltung der Vor- und Nachsorgehinweise. Für Schäden, die auf unvollständigen Angaben oder auf der Nichtbeachtung dieser Hinweise beruhen, können wir nicht haften."
+      }
+    },
+    "note": "Stand: bitte vor der Veröffentlichung durch eine Rechtsberatung prüfen lassen."
+  },
+  "mission": {
+    "title": "Unser Leitbild",
+    "intro": "elcorix steht für dauerhafte Haarentfernung, die sich sicher, ehrlich und angenehm anfühlt. Drei Punkte sind uns dabei besonders wichtig.",
+    "sections": {
+      "safety": {
+        "title": "Sicherheit zuerst",
+        "body": "Jede Behandlung beginnt mit einer Analyse von Haut- und Haartyp und einer Probefläche. Wir arbeiten nach dokumentierten Protokollen, mit Einmalmaterialien und geprüfter Technik – und sagen offen, wenn eine Behandlung nicht geeignet ist."
+      },
+      "honesty": {
+        "title": "Ehrliche Beratung",
+        "body": "Wir versprechen keine Ergebnisse, die wir nicht halten können. Sie erfahren vorab, wie viele Sitzungen realistisch nötig sind, was das kostet und welche Alternativen es gibt – ohne Verkaufsdruck."
+      },
+      "care": {
+        "title": "Zeit für Sie",
+        "body": "Wir planen ausreichend Zeit pro Termin ein, damit Sie in Ruhe ankommen, Fragen stellen und sich während der gesamten Behandlung gut aufgehoben fühlen."
+      }
+    }
   },
   "notFound": {
     "title": "Seite nicht gefunden",
-    "text": "Die gesuchte Seite existiert nicht oder wurde verschoben. Vielleicht suchen Sie unsere Behandlungen, Preise oder die Online-Buchung?",
-    "cta": "Zur Startseite"
+    "text": "Diese Seite existiert nicht oder wurde verschoben. Vielleicht suchen Sie unsere Preisliste, unsere Arbeiten oder die Online-Terminbuchung?",
+    "cta": "Zurück zur Startseite"
   },
   "footer": {
+    "label": "Rechtliches",
     "privacy": "Datenschutz",
     "imprint": "Impressum",
+    "terms": "AGB",
+    "mission": "Leitbild",
     "cookieSettings": "Cookie-Einstellungen"
   },
   "languageSwitcher": {

@@ -6,6 +6,11 @@
 # The images are committed to the repo and always served first-party
 # (src/images.ts); this script only documents their provenance and lets
 # you re-download them if needed.  Usage:  ./scripts/fetch-images.sh
+#
+# NOTE: these are the previous studio's stock photos, re-mapped to the roles
+# the elcorix layout needs (see client/src/images.ts). They are placeholders.
+# Replace them with real laser-hair-removal photography — keep the file names
+# and roughly the aspect ratios and nothing else has to change.
 set -euo pipefail
 
 dir="$(cd "$(dirname "$0")/.." && pwd)/client/public/images"

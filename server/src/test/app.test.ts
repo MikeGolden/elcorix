@@ -129,6 +129,44 @@ describe("POST /api/bookings", () => {
     expect(res.body).toEqual({ id: 7, status: "pending" });
   });
 
+  it("stores the preferred date/time and marketing opt-in from the consultation form", async () => {
+    query.mockResolvedValue({ rows: [{ id: 8, status: "pending" }] });
+    const res = await request(app).post("/api/bookings").send({
+      customerName: "Anna",
+      customerPhone: "+49123456789",
+      preferredAt: "2026-09-15 10:30",
+      marketingConsent: true,
+    });
+    expect(res.status).toBe(201);
+    expect(query).toHaveBeenCalledWith(
+      expect.stringContaining("preferred_at"),
+      expect.arrayContaining(["2026-09-15 10:30", true]),
+    );
+  });
+
+  it("defaults the marketing opt-in to false and the preferred slot to null", async () => {
+    query.mockResolvedValue({ rows: [{ id: 9, status: "pending" }] });
+    await request(app)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789" });
+    expect(query).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.arrayContaining([null, false]),
+    );
+  });
+
+  it.each([
+    [{ preferredAt: 42 }],
+    [{ preferredAt: "x".repeat(41) }],
+    [{ marketingConsent: "yes" }],
+  ])("rejects an invalid consultation field %#", async (extra) => {
+    const res = await request(app)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789", ...extra });
+    expect(res.status).toBe(400);
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("requires customer name and phone", async () => {
     const res = await request(app)
       .post("/api/bookings")

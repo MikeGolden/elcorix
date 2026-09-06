@@ -15,7 +15,7 @@ const languageOptions: LanguageOption[] = [
   { code: "uk", label: "Українська", Flag: FlagUA },
 ];
 
-const flagClass = "h-4 w-6 shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgba(0,0,0,0.1)]";
+const flagClass = "h-4 w-6 shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgba(20,32,63,0.12)]";
 
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
@@ -98,7 +98,7 @@ export default function LanguageSwitcher() {
         aria-expanded={open}
         aria-label={t("languageSwitcher.label")}
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-2 border border-brand-200 bg-brand-100 px-3 py-2 font-mono text-xs font-medium uppercase tracking-[0.1em] text-brand-700 transition-colors hover:border-brand-500 hover:text-brand-900"
+        className="flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-700 transition-colors hover:border-brand-400 hover:bg-brand-50"
       >
         <current.Flag className={flagClass} />
         <span className="hidden sm:inline">{current.label}</span>
@@ -119,7 +119,7 @@ export default function LanguageSwitcher() {
           role="listbox"
           aria-label={t("languageSwitcher.label")}
           onKeyDown={onListKeyDown}
-          className="absolute right-0 z-20 mt-1 min-w-40 overflow-hidden border border-brand-200 bg-brand-100 py-1 shadow-lg shadow-black/40"
+          className="absolute right-0 z-50 mt-2 min-w-40 overflow-hidden rounded-2xl border border-line bg-white py-1 shadow-[0_18px_48px_rgba(20,32,63,0.16)]"
         >
           {languageOptions.map((option, index) => (
             <li
@@ -133,7 +133,7 @@ export default function LanguageSwitcher() {
               aria-current={option.code === current.code ? "true" : undefined}
               aria-label={option.label}
               onClick={() => select(option.code)}
-              className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-brand-900 hover:bg-brand-200 focus:bg-brand-200 focus:outline-none"
+              className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-ink-700 hover:bg-surface-soft focus:bg-surface-soft focus:outline-none"
             >
               <option.Flag className={flagClass} />
               {option.label}

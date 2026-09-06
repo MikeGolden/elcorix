@@ -1,6 +1,12 @@
-# Kosmetic Füssen
+# elcorix
 
-Landing page and booking API for a cosmetic procedures cabinet in Füssen, Germany.
+Landing page and booking API for **elcorix**, a laser hair-removal studio in
+Kempten (Allgäu), Germany.
+
+The front end is built to the elcorix Figma file
+(`figma.com/design/L3SYAnqXeHiD81Ny4cdVmF/elcorix`) — see
+[DESIGN_PROPOSAL.md](./DESIGN_PROPOSAL.md) for the design system it derives
+from that file (palette, type scale, section inventory, known deviations).
 
 ## Stack
 
@@ -19,8 +25,11 @@ Landing page and booking API for a cosmetic procedures cabinet in Füssen, Germa
 .
 ├── client/          # React + TS + Tailwind SPA
 │   └── src/
-│       ├── pages/       # Home, Prices, Gallery, Booking, Contact, Privacy, Imprint, 404
-│       ├── components/  # Header, Footer, AltegioWidget, BookingRequestForm, MapEmbed, …
+│       ├── pages/       # Home, Prices, Gallery, Booking, Contact, Privacy,
+│       │                #   Imprint, Terms (AGB), Mission (Leitbild), 404
+│       ├── sections/    # The one-page landing sections from the Figma
+│       ├── components/  # Header, Footer, AltegioWidget, ConsultationForm,
+│       │                #   PriceTables, MapEmbed, …
 │       ├── seo/         # usePageMeta (titles/OG/canonical), LocalBusiness JSON-LD
 │       └── test/        # Vitest unit tests
 ├── server/          # Express + TS API
@@ -46,7 +55,7 @@ npm install
 cp .env.example .env        # set DATABASE_URL and ALTEGIO_COMPANY_ID
 
 # create the database and apply schema
-createdb kosmetic
+createdb kosmetic   # the database name is unchanged
 npm run db:migrate
 
 # run frontend (http://localhost:5173) and API (http://localhost:3001)

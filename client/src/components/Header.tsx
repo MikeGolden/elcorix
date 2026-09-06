@@ -1,57 +1,114 @@
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { business } from "../config";
+import { business, telHref } from "../config";
+import { navAnchors } from "../content";
+import { anchorHref } from "../anchors";
 import LanguageSwitcher from "./LanguageSwitcher";
+import Logo from "./Logo";
+import { CloseIcon, MenuIcon, WhatsAppIcon } from "./icons";
 
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `px-1 py-2 font-mono text-xs font-medium uppercase tracking-[0.18em] transition-colors ${
-    isActive ? "text-brand-500" : "text-brand-700 hover:text-brand-900"
-  }`;
+const roundButton =
+  "flex h-11 w-11 items-center justify-center rounded-full transition-colors";
 
 export default function Header() {
   const { t } = useTranslation();
+  const { pathname, hash } = useLocation();
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // Close the anchor menu on navigation (including hash-only jumps).
+  useEffect(() => setOpen(false), [pathname, hash]);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: PointerEvent) {
+      if (!menuRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-10 border-b border-brand-200 bg-brand-50/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
-        <Link
-          to="/"
-          className="order-1 font-display text-sm font-bold uppercase tracking-[0.2em] text-brand-900"
+    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-4 py-4 sm:px-6">
+        <Logo />
+        <a
+          href={telHref}
+          className="hidden text-sm font-medium text-brand-700 transition-colors hover:text-brand-500 md:inline"
         >
-          {business.name}
-          <span aria-hidden="true" className="text-brand-500">
-            .
-          </span>
-        </Link>
-        {/* Full-width second row on mobile so long German/Ukrainian labels
-            never collide with the brand or the language switcher. */}
-        <nav
-          aria-label={t("nav.label")}
-          className="order-3 flex w-full flex-wrap items-center gap-x-6 gap-y-1 sm:order-2 sm:w-auto"
-        >
-          <NavLink to="/" end className={navLinkClass}>
-            {t("nav.home")}
-          </NavLink>
-          <NavLink to="/prices" className={navLinkClass}>
-            {t("nav.prices")}
-          </NavLink>
-          <NavLink to="/gallery" className={navLinkClass}>
-            {t("nav.gallery")}
-          </NavLink>
-          <NavLink to="/booking" className={navLinkClass}>
-            {t("nav.booking")}
-          </NavLink>
-          <NavLink to="/contact" className={navLinkClass}>
-            {t("nav.contact")}
-          </NavLink>
-        </nav>
-        <div className="order-2 flex items-center gap-4 sm:order-3">
-          <a
-            href={`tel:${business.phone.replace(/\s/g, "")}`}
-            className="hidden font-mono text-xs font-medium uppercase tracking-[0.12em] text-brand-700 transition-colors hover:text-brand-500 md:inline"
-          >
-            {business.phone}
-          </a>
+          {business.phone}
+        </a>
+
+        <div ref={menuRef} className="relative ml-auto flex items-center gap-2 sm:gap-3">
           <LanguageSwitcher />
+          <Link
+            to={anchorHref(pathname, "consultation")}
+            className="btn-primary hidden px-6 py-3 text-sm sm:inline-flex"
+          >
+            {t("cta.consultation")}
+          </Link>
+          <a
+            href={business.whatsapp}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t("cta.whatsapp")}
+            className={`${roundButton} border border-brand-200 text-brand-700 hover:border-brand-400 hover:bg-brand-50`}
+          >
+            <WhatsAppIcon />
+          </a>
+          <button
+            ref={toggleRef}
+            type="button"
+            data-testid="menu-toggle"
+            aria-expanded={open}
+            aria-controls="anchor-menu"
+            aria-label={t("nav.label")}
+            onClick={() => setOpen((value) => !value)}
+            className={`${roundButton} bg-brand-700 text-white hover:bg-brand-800`}
+          >
+            {open ? <CloseIcon /> : <MenuIcon />}
+          </button>
+
+          {open && (
+            <nav
+              id="anchor-menu"
+              aria-label={t("nav.label")}
+              className="absolute right-0 top-14 w-64 rounded-panel border border-line bg-white p-3 shadow-[0_18px_48px_rgba(20,32,63,0.14)]"
+            >
+              <ul className="space-y-1">
+                {navAnchors.map((item) => (
+                  <li key={item.id}>
+                    <Link
+                      to={anchorHref(pathname, item.id)}
+                      className="block rounded-xl px-4 py-2.5 text-[0.95rem] font-semibold text-brand-700 transition-colors hover:bg-brand-50"
+                    >
+                      {t(item.key)}
+                    </Link>
+                  </li>
+                ))}
+                <li className="pt-1 sm:hidden">
+                  <Link
+                    to={anchorHref(pathname, "consultation")}
+                    className="btn-primary w-full"
+                  >
+                    {t("cta.consultation")}
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          )}
         </div>
       </div>
     </header>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kosmetic-fuessen.de/sitemap.xml
+Sitemap: https://elcorix.com/sitemap.xml

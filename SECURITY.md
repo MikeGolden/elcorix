@@ -1,6 +1,6 @@
 # Security
 
-Security posture and deployment checklist for Kosmetic Füssen, with specific
+Security posture and deployment checklist for elcorix, with specific
 guidance for the Altegio calendar and payments integration.
 
 ## What is enforced in code

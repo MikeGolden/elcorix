@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CookieBanner from "./components/CookieBanner";
-import FloatingBookCta from "./components/FloatingBookCta";
 import ScrollToTop from "./components/ScrollToTop";
 import LocalBusinessJsonLd from "./seo/LocalBusinessJsonLd";
 import { ConsentProvider } from "./consent/ConsentContext";
@@ -14,16 +13,18 @@ import BookingPage from "./pages/BookingPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import ImprintPage from "./pages/ImprintPage";
+import TermsPage from "./pages/TermsPage";
+import MissionPage from "./pages/MissionPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 export default function App() {
   const { t } = useTranslation();
   return (
     <ConsentProvider>
-      <div className="flex min-h-screen flex-col bg-brand-50 text-brand-900">
+      <div className="flex min-h-screen flex-col bg-surface text-ink-500">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-brand-900 focus:px-4 focus:py-2 focus:text-brand-50"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand-700 focus:px-5 focus:py-2 focus:text-white"
         >
           {t("nav.skipToContent")}
         </a>
@@ -39,11 +40,12 @@ export default function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/imprint" element={<ImprintPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/mission" element={<MissionPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />
-        <FloatingBookCta />
         <CookieBanner />
       </div>
     </ConsentProvider>

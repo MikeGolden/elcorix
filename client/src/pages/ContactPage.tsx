@@ -1,14 +1,10 @@
 import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
-import { business } from "../config";
-import MapEmbed from "../components/MapEmbed";
+import ContactSection from "../sections/ContactSection";
 import { usePageMeta } from "../seo/usePageMeta";
 
 type Status = "idle" | "sending" | "sent" | "error";
-
-const inputClass =
-  "mt-2 w-full rounded-none border-0 border-b border-brand-200 bg-transparent px-0 py-2 font-light text-brand-900 transition-colors placeholder:text-brand-300 focus:border-brand-900 focus:outline-none";
 
 export default function ContactPage() {
   const { t, i18n } = useTranslation();
@@ -43,148 +39,123 @@ export default function ContactPage() {
   }
 
   return (
-    <section aria-labelledby="contact" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-      <div aria-hidden="true" className="h-px w-12 bg-brand-500" />
-      <h1
-        id="contact"
-        className="mt-6 font-display text-3xl font-bold uppercase tracking-tight text-brand-900 sm:text-5xl"
-      >
-        {t("contact.title")}
-      </h1>
-      <div className="mt-12 grid gap-14 md:grid-cols-2">
-        <div className="space-y-6">
-          <p className="font-light leading-loose text-brand-700">{business.address}</p>
-          <ul className="space-y-4 border-l border-brand-200 pl-6">
-            <li>
-              <a
-                className="text-sm font-medium uppercase tracking-[0.15em] text-brand-600 transition-colors hover:text-brand-900"
-                href={`tel:${business.phone.replace(/\s/g, "")}`}
-              >
-                {business.phone}
-              </a>
-            </li>
-            <li>
-              <a
-                className="text-sm font-medium uppercase tracking-[0.15em] text-brand-600 transition-colors hover:text-brand-900"
-                href={`mailto:${business.email}`}
-              >
-                {business.email}
-              </a>
-            </li>
-            <li>
-              <a
-                className="text-sm font-medium uppercase tracking-[0.15em] text-brand-600 transition-colors hover:text-brand-900"
-                href={business.instagram}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {business.instagramHandle}
-              </a>
-            </li>
-            <li>
-              <a
-                className="text-sm font-medium uppercase tracking-[0.15em] text-brand-600 transition-colors hover:text-brand-900"
-                href={business.whatsapp}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t("contact.whatsapp")}
-              </a>
-            </li>
-          </ul>
-          <p className="text-sm font-light leading-relaxed text-brand-700">
-            {t("contact.openingHours")}
-          </p>
-          <MapEmbed />
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6" aria-label={t("contact.formLabel")}>
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-xs font-medium uppercase tracking-[0.2em] text-brand-700"
-            >
-              {t("contact.name")}
-            </label>
-            <input id="name" name="name" required className={inputClass} />
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-xs font-medium uppercase tracking-[0.2em] text-brand-700"
-            >
-              {t("contact.email")}
-            </label>
-            <input id="email" name="email" type="email" required className={inputClass} />
-          </div>
-          <div>
-            <label
-              htmlFor="message"
-              className="block text-xs font-medium uppercase tracking-[0.2em] text-brand-700"
-            >
-              {t("contact.message")}
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              rows={5}
-              placeholder={t("contact.messagePlaceholder")}
-              className={inputClass}
-            />
-          </div>
-          {/* Honeypot — invisible to humans, catnip for spam bots. */}
-          <div className="hidden" aria-hidden="true">
-            <label htmlFor="contact-website">Website</label>
-            <input
-              id="contact-website"
-              name="website"
-              type="text"
-              tabIndex={-1}
-              autoComplete="off"
-            />
-          </div>
-          <div className="flex items-start gap-3">
-            <input
-              id="privacy-consent"
-              name="privacyConsent"
-              type="checkbox"
-              required
-              className="mt-1 accent-brand-600"
-            />
-            <label htmlFor="privacy-consent" className="text-sm font-light text-brand-700">
-              <Trans
-                i18nKey="contact.privacyConsent"
-                components={{
-                  privacyLink: (
-                    <Link
-                      to="/privacy"
-                      className="font-medium text-brand-600 underline underline-offset-4"
-                    />
-                  ),
-                }}
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            disabled={status === "sending"}
-            className="bg-brand-500 px-10 py-4 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-50 transition-colors hover:bg-brand-600 disabled:opacity-50"
-          >
-            {status === "sending" ? t("contact.sending") : t("contact.send")}
-          </button>
-          {status === "sent" && (
-            <p role="status" className="text-sm text-green-400">
-              {t("contact.success")}
-            </p>
-          )}
-          {status === "error" && (
-            <p role="alert" className="text-sm text-red-400">
-              {t("contact.error")}
-            </p>
-          )}
-        </form>
+    <>
+      <div className="mx-auto max-w-[1200px] px-4 pt-14 sm:px-6 sm:pt-20">
+        <h1 className="text-3xl font-extrabold sm:text-4xl">{t("contact.pageTitle")}</h1>
       </div>
-    </section>
+
+      <ContactSection />
+
+      <section aria-labelledby="contact-form-title" className="px-4 pb-16 sm:px-6 sm:pb-20">
+        <div className="mx-auto max-w-[1200px] rounded-panel bg-surface-soft px-6 py-12 sm:px-10">
+          <h2 id="contact-form-title" className="text-center text-2xl font-bold">
+            {t("contact.formTitle")}
+          </h2>
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto mt-8 max-w-3xl"
+            aria-label={t("contact.formLabel")}
+          >
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label htmlFor="contact-name" className="sr-only">
+                  {t("contact.name")}
+                </label>
+                <input
+                  id="contact-name"
+                  name="name"
+                  required
+                  autoComplete="name"
+                  placeholder={t("contact.name")}
+                  className="field"
+                />
+              </div>
+              <div>
+                <label htmlFor="contact-email" className="sr-only">
+                  {t("contact.email")}
+                </label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder={t("contact.email")}
+                  className="field"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="contact-message" className="sr-only">
+                  {t("contact.message")}
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  required
+                  rows={5}
+                  placeholder={t("contact.messagePlaceholder")}
+                  className="field"
+                />
+              </div>
+            </div>
+
+            {/* Honeypot — invisible to humans, catnip for spam bots. */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="contact-website">Website</label>
+              <input
+                id="contact-website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
+            <div className="mt-6 flex items-start gap-3 text-xs leading-relaxed">
+              <input
+                id="contact-privacy"
+                name="privacyConsent"
+                type="checkbox"
+                required
+                className="mt-0.5 h-4 w-4 shrink-0 accent-brand-700"
+              />
+              <label htmlFor="contact-privacy">
+                <Trans
+                  i18nKey="contact.privacyConsent"
+                  components={{
+                    privacyLink: (
+                      <Link
+                        to="/privacy"
+                        className="font-medium text-brand-600 underline underline-offset-2"
+                      />
+                    ),
+                  }}
+                />
+              </label>
+            </div>
+
+            <div className="mt-8 text-center">
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="btn-primary px-10"
+              >
+                {status === "sending" ? t("contact.sending") : t("contact.send")}
+              </button>
+              {status === "sent" && (
+                <p role="status" className="mt-4 text-sm font-medium text-brand-600">
+                  {t("contact.success")}
+                </p>
+              )}
+              {status === "error" && (
+                <p role="alert" className="mt-4 text-sm font-medium text-red-600">
+                  {t("contact.error")}
+                </p>
+              )}
+            </div>
+          </form>
+        </div>
+      </section>
+    </>
   );
 }
