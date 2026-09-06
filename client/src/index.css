@@ -102,8 +102,37 @@
   }
 
   .field {
-    @apply w-full rounded-card border border-line bg-white px-5 py-4 text-[0.95rem]
-           text-ink-900 transition-colors placeholder:text-ink-300
-           focus:border-brand-400 focus:outline-none;
+    @apply w-full min-w-0 appearance-none rounded-card border border-line bg-white px-5 py-4
+           text-[0.95rem] leading-6 text-ink-900 transition-colors
+           placeholder:text-ink-300 focus:border-brand-400 focus:outline-none;
+  }
+
+  /*
+   * Safari (iOS above all) gives date/time inputs an intrinsic width that
+   * ignores `width: 100%`, so the control spills out of its grid column, and it
+   * centres the value inside that box. Reset both so they line up with the
+   * text fields next to them.
+   */
+  .field[type="date"],
+  .field[type="time"],
+  select.field {
+    /* 1.5rem line + 2rem padding + 2px border — the text fields' exact box. */
+    @apply block h-[calc(3.5rem+2px)] text-left;
+  }
+
+  .field[type="date"]::-webkit-date-and-time-value,
+  .field[type="time"]::-webkit-date-and-time-value {
+    @apply m-0 text-left;
+  }
+
+  .field[type="date"]::-webkit-calendar-picker-indicator,
+  .field[type="time"]::-webkit-calendar-picker-indicator {
+    @apply cursor-pointer opacity-60;
+  }
+
+  /* Native select arrow replaced with our own chevron. */
+  .field-select {
+    @apply bg-[length:1.15rem] bg-[right_1.25rem_center] bg-no-repeat pr-12;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   }
 }

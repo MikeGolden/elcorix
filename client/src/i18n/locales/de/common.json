@@ -73,10 +73,18 @@
   "forWhom": {
     "title": "Für wen ist es geeignet?",
     "items": {
-      "convenience": { "title": "Wann Laser-Haarentfernung das Leben wirklich erleichtert" },
-      "irritation": { "title": "Rasieren führt jedes Mal zu Hautirritationen" },
-      "shaving": { "title": "Sie sind es leid, sich ständig zu rasieren" },
-      "beard": { "title": "Sie haben einen Bart, müssen aber ständig die Konturen nachrasieren" }
+      "convenience": {
+        "title": "Wann Laser-Haarentfernung das Leben wirklich erleichtert"
+      },
+      "irritation": {
+        "title": "Rasieren führt jedes Mal zu Hautirritationen"
+      },
+      "shaving": {
+        "title": "Sie sind es leid, sich ständig zu rasieren"
+      },
+      "beard": {
+        "title": "Sie haben einen Bart, müssen aber ständig die Konturen nachrasieren"
+      }
     }
   },
   "technology": {
@@ -102,12 +110,10 @@
   "work": {
     "title": "Sehen Sie sich unsere Arbeiten an",
     "alts": {
-      "n1": "Behandlung mit dem Diodenlaser",
-      "n2": "Vorbereitung der Haut vor der Behandlung",
-      "n3": "Behandlung einer großen Körperzone",
-      "n4": "Behandlung im Gesichtsbereich",
-      "n5": "Behandlungsraum im Studio",
-      "n6": "Feinarbeit an den Konturen"
+      "n1": "Laser-Haarentfernung an den Beinen im Behandlungsstuhl",
+      "n2": "Nahaufnahme des Handstücks bei der Achselbehandlung",
+      "n3": "Achselbehandlung bei einem Kunden mit Schutzbrille",
+      "n4": "Behandlung der Bartkonturen im Gesicht"
     }
   },
   "prices": {
@@ -187,6 +193,7 @@
     "phone": "Telefonnummer",
     "date": "Datum des Besuchs",
     "time": "Uhrzeit des Besuchs",
+    "timeAny": "Keine Präferenz",
     "consentMarketing": "Ich möchte per E-Mail und telefonisch über Angebote und Neuigkeiten informiert werden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen.",
     "consentPrivacy": "Mit dem Absenden des Formulars stimme ich zu, dass meine Angaben zur Bearbeitung meiner Terminanfrage verwendet werden. Informationen zur Verarbeitung Ihrer personenbezogenen Daten finden Sie in unserer <privacyLink>Datenschutzerklärung</privacyLink>.",
     "sending": "Wird gesendet…",
@@ -232,13 +239,11 @@
     "title": "Unsere Arbeiten",
     "intro": "Einblicke in unser Studio in Kempten – und in die Behandlungen, die wir jeden Tag durchführen.",
     "alts": {
-      "hero": "Laser-Haarentfernung an den Beinen",
-      "n1": "Behandlung mit dem Diodenlaser",
-      "n2": "Vorbereitung der Haut vor der Behandlung",
-      "n3": "Behandlung einer großen Körperzone",
-      "n4": "Behandlung im Gesichtsbereich",
-      "n5": "Behandlungsraum im Studio",
-      "n6": "Feinarbeit an den Konturen",
+      "hero": "Laser-Haarentfernung an den Beinen im Studio",
+      "n1": "Laser-Haarentfernung an den Beinen im Behandlungsstuhl",
+      "n2": "Nahaufnahme des Handstücks bei der Achselbehandlung",
+      "n3": "Achselbehandlung bei einem Kunden mit Schutzbrille",
+      "n4": "Behandlung der Bartkonturen im Gesicht",
       "technology": "Diodenlaser-Gerät im Behandlungsraum",
       "specialist": "Elena, Spezialistin für Laser-Haarentfernung"
     }

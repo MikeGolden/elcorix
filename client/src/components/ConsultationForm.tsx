@@ -4,6 +4,27 @@ import { Trans, useTranslation } from "react-i18next";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+/** Opening hours (09:00–19:00); the last slot starts half an hour before close. */
+const FIRST_SLOT_MINUTES = 9 * 60;
+const LAST_SLOT_MINUTES = 18 * 60 + 30;
+const SLOT_MINUTES = 30;
+
+/** "09:00", "09:30", … "18:30" — appointments start on the half hour only. */
+const TIME_SLOTS = Array.from(
+  { length: (LAST_SLOT_MINUTES - FIRST_SLOT_MINUTES) / SLOT_MINUTES + 1 },
+  (_, i) => {
+    const minutes = FIRST_SLOT_MINUTES + i * SLOT_MINUTES;
+    return `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
+  },
+);
+
+/** Today in the local time zone as `YYYY-MM-DD`, so past dates stay unpickable. */
+function today() {
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
+  return local.toISOString().slice(0, 10);
+}
+
 /**
  * The consultation request from the Figma ("Beratung erhalten"): name,
  * phone, preferred date and time, an optional marketing opt-in and a
@@ -82,23 +103,41 @@ export default function ConsultationForm() {
             className="field"
           />
         </div>
-        <div>
+        <div className="min-w-0">
           <label
             htmlFor="consult-date"
             className="mb-2 block text-xs font-semibold text-ink-300"
           >
             {t("consultation.date")}
           </label>
-          <input id="consult-date" name="date" type="date" className="field" />
+          <input
+            id="consult-date"
+            name="date"
+            type="date"
+            min={today()}
+            className="field"
+          />
         </div>
-        <div>
+        <div className="min-w-0">
           <label
             htmlFor="consult-time"
             className="mb-2 block text-xs font-semibold text-ink-300"
           >
             {t("consultation.time")}
           </label>
-          <input id="consult-time" name="time" type="time" className="field" />
+          <select
+            id="consult-time"
+            name="time"
+            defaultValue=""
+            className="field field-select"
+          >
+            <option value="">{t("consultation.timeAny")}</option>
+            {TIME_SLOTS.map((slot) => (
+              <option key={slot} value={slot}>
+                {slot}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

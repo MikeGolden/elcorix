@@ -17,7 +17,7 @@ test.describe("Deep-link routes", () => {
     await page.goto("/gallery");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Our work" })).toBeVisible();
-    await expect(page.getByAltText("Treatment room in the studio")).toBeVisible();
+    await expect(page.getByAltText("Diode laser device in the treatment room")).toBeVisible();
   });
 
   test("terms and mission pages are reachable", async ({ page }) => {
@@ -55,7 +55,8 @@ test.describe("Deep-link routes", () => {
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("Phone number").fill("+49 155 1234567");
     await page.getByLabel("Preferred date").fill("2026-09-15");
-    await page.getByLabel("Preferred time").fill("10:30");
+    // The time field is a select of half-hour slots, not a free-text input.
+    await page.getByLabel("Preferred time").selectOption("10:30");
     await page.getByRole("checkbox", { name: /privacy policy/i }).check();
     await page.getByRole("button", { name: "Get a consultation" }).click();
     await expect(page.getByRole("status")).toHaveText(/we will get back to you/i);
