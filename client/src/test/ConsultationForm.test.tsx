@@ -36,7 +36,7 @@ describe("ConsultationForm", () => {
     await user.type(screen.getByLabelText("Name"), "Anna");
     await user.type(screen.getByLabelText(/phone number/i), "+49 155 1234567");
     await user.type(screen.getByLabelText(/preferred date/i), "2026-09-15");
-    await user.type(screen.getByLabelText(/preferred time/i), "10:30");
+    await user.selectOptions(screen.getByLabelText(/preferred time/i), "10:30");
     await user.click(screen.getByRole("checkbox", { name: /offers and news/i }));
     await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
@@ -51,6 +51,17 @@ describe("ConsultationForm", () => {
       marketingConsent: true,
     });
     expect(await screen.findByRole("status")).toHaveTextContent(/thank you/i);
+  });
+
+  it("offers appointment times on the half hour only", () => {
+    renderForm();
+    const slots = screen
+      .getAllByRole("option")
+      .map((option) => (option as HTMLOptionElement).value)
+      .filter(Boolean);
+    expect(slots[0]).toBe("09:00");
+    expect(slots.at(-1)).toBe("18:30");
+    expect(slots.every((slot) => /^\d\d:(00|30)$/.test(slot))).toBe(true);
   });
 
   it("shows an error message when the request fails", async () => {

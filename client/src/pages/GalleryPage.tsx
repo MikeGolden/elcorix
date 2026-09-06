@@ -2,6 +2,11 @@ import { useTranslation } from "react-i18next";
 import { images } from "../images";
 import { usePageMeta } from "../seo/usePageMeta";
 
+/**
+ * The four tiles of the Figma's "Sehen Sie sich unsere Arbeiten an"
+ * section, plus the hero, device and specialist photos — every image on
+ * this page comes from the studio's own set, nothing else.
+ */
 const galleryItems = [
   { src: images.hero, altKey: "hero" },
   ...images.work.map((src, index) => ({ src, altKey: `n${index + 1}` })),

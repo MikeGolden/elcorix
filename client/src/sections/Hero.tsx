@@ -8,7 +8,7 @@ export default function Hero() {
   const { pathname } = useLocation();
   return (
     <section className="mx-auto max-w-[1200px] px-4 pb-14 pt-8 sm:px-6 sm:pb-20 sm:pt-12">
-      <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
+      <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-14">
         <div>
           <h1 className="text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-[3.35rem]">
             {t("hero.title")}
@@ -24,10 +24,10 @@ export default function Hero() {
               className="mt-4 inline-flex items-center gap-4 rounded-panel p-2 pr-6 transition-colors hover:bg-surface-soft"
             >
               <img
-                src={images.hero}
+                src={images.serviceThumb}
                 alt=""
-                width="112"
-                height="112"
+                width="320"
+                height="320"
                 className="h-14 w-14 rounded-2xl object-cover"
               />
               <span className="text-[0.95rem]">
@@ -41,11 +41,11 @@ export default function Hero() {
         <img
           src={images.hero}
           alt={t("hero.imageAlt")}
-          width="1900"
-          height="1267"
+          width="1600"
+          height="1000"
           // React 18 only forwards the lowercase DOM attribute form.
           {...{ fetchpriority: "high" }}
-          className="aspect-[4/3] w-full rounded-panel object-cover"
+          className="aspect-[16/10] w-full rounded-panel object-cover"
         />
       </div>
     </section>

@@ -110,12 +110,10 @@
   "work": {
     "title": "Take a look at our work",
     "alts": {
-      "n1": "Treatment with the diode laser",
-      "n2": "Preparing the skin before treatment",
-      "n3": "Treating a large body zone",
-      "n4": "Treatment on the face",
-      "n5": "Treatment room in the studio",
-      "n6": "Detailed work on the contours"
+      "n1": "Laser hair removal on the legs in the treatment chair",
+      "n2": "Close-up of the handpiece during an underarm treatment",
+      "n3": "Underarm treatment on a client wearing protective goggles",
+      "n4": "Treatment of the beard contours on the face"
     }
   },
   "prices": {
@@ -195,6 +193,7 @@
     "phone": "Phone number",
     "date": "Preferred date",
     "time": "Preferred time",
+    "timeAny": "No preference",
     "consentMarketing": "I would like to receive offers and news by e-mail and phone. I can withdraw this consent at any time with effect for the future.",
     "consentPrivacy": "By submitting this form I agree that my details may be used to handle my appointment request. Information on how we process your personal data is in our <privacyLink>privacy policy</privacyLink>.",
     "sending": "Sending…",
@@ -240,15 +239,13 @@
     "title": "Our work",
     "intro": "A look inside our studio in Kempten — and at the treatments we carry out every day.",
     "alts": {
-      "hero": "Laser hair removal on the legs",
-      "n1": "Treatment with the diode laser",
-      "n2": "Preparing the skin before treatment",
-      "n3": "Treating a large body zone",
-      "n4": "Treatment on the face",
-      "n5": "Treatment room in the studio",
-      "n6": "Detailed work on the contours",
+      "hero": "Laser hair removal on the legs in the studio",
+      "n1": "Laser hair removal on the legs in the treatment chair",
+      "n2": "Close-up of the handpiece during an underarm treatment",
+      "n3": "Underarm treatment on a client wearing protective goggles",
+      "n4": "Treatment of the beard contours on the face",
       "technology": "Diode laser device in the treatment room",
-      "specialist": "Elena, laser hair removal specialist"
+      "specialist": "Elena, specialist for laser hair removal"
     }
   },
   "consent": {

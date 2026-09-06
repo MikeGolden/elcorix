@@ -1,39 +1,36 @@
 /**
  * Central image registry.
  *
- * All photos are committed to `client/public/images/` and served
- * first-party (no CDN request — required by the nginx CSP `img-src 'self'`
- * and the site's GDPR posture). `scripts/fetch-images.sh` documents the
- * source of each file.
+ * Every photo is derived from the studio's own `NewPics/` set and
+ * committed to `client/public/images/`, served first-party (no CDN
+ * request — required by the nginx CSP `img-src 'self'` and the site's
+ * GDPR posture). No other photography is used anywhere on the site.
  *
- * PLACEHOLDERS: these are the studio's previous stock photos, re-mapped to
- * the roles the elcorix layout needs. Replace each one with real
- * laser-hair-removal photography (same file name, same aspect ratio) —
- * the Figma calls for treatment shots, the device in the studio and a
- * portrait of the specialist.
+ * Each entry below is one image slot of the elcorix Figma layout; the
+ * crops and sizes were produced from the originals in `NewPics/`.
  */
 export const images = {
-  /** Hero — treatment in progress, 4:3-ish landscape. */
+  /** Hero — treatment in progress, 16:10 landscape. */
   hero: "/images/hero.jpg",
-  /** "Modern diode laser technology" — the device in the studio. */
-  technology: "/images/interior.jpg",
+  /** Rounded thumbnail next to "Unsere Leistungen" in the hero. */
+  serviceThumb: "/images/service-thumb.jpg",
+  /** "Moderne Diodenlaser-Technologie" — the device in the studio. */
+  technology: "/images/technology.jpg",
   /** Portrait of the specialist for "Ihre Haut in erfahrenen Händen". */
-  specialist: "/images/team-esthetician.jpg",
-  /** Square thumbnails for the "who is it for?" cards. */
+  specialist: "/images/specialist.jpg",
+  /** Square thumbnails for the "Für wen ist es geeignet?" cards. */
   reasons: {
-    convenience: "/images/service-body.jpg",
-    irritation: "/images/cta-band.jpg",
-    shaving: "/images/service-facial.jpg",
-    beard: "/images/team-founder.jpg",
+    convenience: "/images/reason-convenience.jpg",
+    irritation: "/images/reason-irritation.jpg",
+    shaving: "/images/reason-shaving.jpg",
+    beard: "/images/reason-beard.jpg",
   },
-  /** The horizontal "our work" strip. */
+  /** "Sehen Sie sich unsere Arbeiten an" — four tiles, as in the Figma. */
   work: [
-    "/images/service-laser.jpg",
-    "/images/cta-band.jpg",
-    "/images/service-body.jpg",
-    "/images/service-facial.jpg",
-    "/images/interior.jpg",
-    "/images/service-permanent-makeup.jpg",
+    "/images/work-1.jpg",
+    "/images/work-2.jpg",
+    "/images/work-3.jpg",
+    "/images/work-4.jpg",
   ],
 } as const;
 
