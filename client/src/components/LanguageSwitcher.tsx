@@ -98,9 +98,8 @@ export default function LanguageSwitcher() {
         aria-expanded={open}
         aria-label={t("languageSwitcher.label")}
         onClick={() => setOpen((value) => !value)}
-        className="flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-2 text-xs font-semibold text-brand-700 transition-colors hover:border-brand-400 hover:bg-brand-50"
+        className="flex items-center gap-1.5 rounded-full px-2 py-2 text-xs font-semibold text-brand-700 transition-colors hover:text-brand-500"
       >
-        <current.Flag className={flagClass} />
         <span className="hidden sm:inline">{current.label}</span>
         <span className="sm:hidden" aria-hidden="true">
           {current.code.toUpperCase()}

@@ -17,6 +17,18 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  // The header is transparent over the hero photo and only paints its
+  // background once the page scrolls away from the top.
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close the anchor menu on navigation (including hash-only jumps).
   useEffect(() => setOpen(false), [pathname, hash]);
@@ -41,7 +53,11 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
+    <header
+      className={`sticky top-0 z-40 transition-colors ${
+        scrolled ? "bg-white/95 backdrop-blur" : "bg-transparent"
+      }`}
+    >
       <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-4 py-4 sm:px-6">
         <Logo />
         <a
@@ -64,7 +80,7 @@ export default function Header() {
             target="_blank"
             rel="noreferrer"
             aria-label={t("cta.whatsapp")}
-            className={`${roundButton} border border-brand-200 text-brand-700 hover:border-brand-400 hover:bg-brand-50`}
+            className={`${roundButton} bg-white text-brand-700 shadow-[0_1px_4px_rgba(20,32,63,0.14)] hover:bg-brand-50`}
           >
             <WhatsAppIcon />
           </a>

@@ -109,6 +109,8 @@
   },
   "work": {
     "title": "Take a look at our work",
+    "prev": "Previous images",
+    "next": "Next images",
     "alts": {
       "n1": "Laser hair removal on the legs in the treatment chair",
       "n2": "Close-up of the handpiece during an underarm treatment",
