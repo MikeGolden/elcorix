@@ -109,6 +109,8 @@
   },
   "work": {
     "title": "Sehen Sie sich unsere Arbeiten an",
+    "prev": "Vorherige Bilder",
+    "next": "Nächste Bilder",
     "alts": {
       "n1": "Laser-Haarentfernung an den Beinen im Behandlungsstuhl",
       "n2": "Nahaufnahme des Handstücks bei der Achselbehandlung",
