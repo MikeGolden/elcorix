@@ -74,7 +74,7 @@ export default function ContactSection() {
             href={business.whatsapp}
             target="_blank"
             rel="noreferrer"
-            className="btn-ghost mt-8"
+            className="btn-primary mt-8"
           >
             {t("contact.whatsapp")}
           </a>

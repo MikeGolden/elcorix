@@ -15,12 +15,12 @@ export default function Technology() {
       aria-labelledby="technology-title"
       className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20"
     >
-      <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
+      <div className="grid items-center gap-10 md:grid-cols-2 md:items-stretch md:gap-14">
         <img
           src={images.technology}
           alt={t("technology.imageAlt")}
           loading="lazy"
-          className="aspect-[4/3] w-full rounded-panel object-cover"
+          className="aspect-[4/3] h-full w-full rounded-panel object-cover md:aspect-auto"
         />
         <div>
           <h2 id="technology-title" className="text-2xl font-bold sm:text-[1.9rem] sm:leading-tight">
