@@ -2,6 +2,7 @@ import { Router } from "express";
 import type { Queryable } from "../db/pool.js";
 import { sendInBackground, type Mailer } from "../mailer.js";
 import { isSpam } from "./contact.js";
+import { isValidPhone } from "../phone.js";
 
 /**
  * The company id is interpolated into the booking URL, so accept digits
@@ -54,6 +55,12 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
     }
     if (customerPhone.length > 50) {
       res.status(400).json({ error: "customerPhone is too long" });
+      return;
+    }
+    // Same rule as the form (client/src/phone.ts) — the form check is a
+    // courtesy, this one is the guarantee.
+    if (!isValidPhone(customerPhone)) {
+      res.status(400).json({ error: "customerPhone is invalid" });
       return;
     }
     if (typeof service === "string" && service.length > 200) {

@@ -23,9 +23,11 @@ export default function Footer() {
   const { t } = useTranslation();
   const { openSettings } = useConsent();
   return (
-    <footer className="px-4 pb-0 pt-16 sm:px-6">
-      <div className="mx-auto max-w-[1200px] rounded-t-panel bg-brand-700 px-6 py-10 sm:px-10 sm:py-12">
-        <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+    <footer className="pt-16">
+      {/* The indigo band spans the viewport; only its content keeps the
+          1200px column of the rest of the page. */}
+      <div className="rounded-t-panel bg-brand-700 py-10 sm:py-12">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-7 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <Logo variant="light" />
             <p className="mt-2 text-xs text-white/60">
@@ -41,6 +43,12 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                {/* Static file served by nginx, not a router route — plain <a>. */}
+                <a href="/sitemap.xml" className={linkClass}>
+                  {t("footer.sitemap")}
+                </a>
+              </li>
               <li>
                 <button type="button" onClick={openSettings} className={linkClass}>
                   {t("footer.cookieSettings")}

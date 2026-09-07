@@ -14,9 +14,14 @@ export default function Hero() {
   const { pathname } = useLocation();
   return (
     // -mt-19/pt-19 = the header's height: the section starts under the
-    // header without moving any of its content.
+    // header without moving any of its content. The copy's right padding
+    // keeps it clear of the photo, which covers the right half of the
+    // *viewport*: below 1200px that is 50vw + a gutter, and above it the
+    // centred container only ever overlaps the photo by 600px, so the
+    // padding caps at 640px — a plain percentage grew with the screen and
+    // squeezed the headline to one word per line.
     <section className="relative -mt-19 pt-19">
-      <div className="mx-auto max-w-[1200px] px-4 pb-14 pt-8 sm:px-6 sm:pb-20 sm:pt-12 lg:pr-[55%]">
+      <div className="mx-auto max-w-[1200px] px-4 pb-14 pt-8 sm:px-6 sm:pb-20 sm:pt-12 lg:pr-[min(calc(50vw+2.5rem),640px)]">
         <h1 className="text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-[3.35rem]">
           {t("hero.title")}
         </h1>
