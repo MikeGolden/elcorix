@@ -1,49 +1,24 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { business } from "../config";
 
 const { latitude, longitude } = business.geo;
 const bbox = [longitude - 0.006, latitude - 0.003, longitude + 0.006, latitude + 0.003].join(",");
 const embedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${latitude},${longitude}`;
-const largeMapUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=17/${latitude}/${longitude}`;
 
 /**
- * Click-to-load OpenStreetMap embed (two-click pattern, same as the
- * Altegio widget): nothing third-party loads until the visitor asks for
- * the map, so no consent record is needed — the click *is* the request.
+ * OpenStreetMap embed, loaded with the page — Mykhailo asked for the map
+ * to be visible straight away, without the click-to-load placeholder.
+ * The privacy policy states this: the visitor's IP reaches OpenStreetMap
+ * as soon as the contact section loads.
  */
 export default function MapEmbed() {
   const { t } = useTranslation();
-  const [loaded, setLoaded] = useState(false);
-
-  if (!loaded) {
-    return (
-      <div
-        data-testid="map-placeholder"
-        className="flex aspect-[4/3] h-full flex-col items-center justify-center rounded-panel border border-line bg-surface-soft p-8 text-center md:aspect-auto md:min-h-[420px]"
-      >
-        <p className="max-w-sm text-sm leading-relaxed">{t("contact.map.hint")}</p>
-        <button type="button" onClick={() => setLoaded(true)} className="btn-primary mt-6">
-          {t("contact.map.load")}
-        </button>
-        <a
-          className="mt-4 text-sm font-medium text-brand-600 underline underline-offset-4"
-          href={largeMapUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {t("contact.map.external")}
-        </a>
-      </div>
-    );
-  }
-
   return (
     <iframe
       title={t("contact.map.title")}
       data-testid="map-embed"
       src={embedUrl}
-      className="aspect-[4/3] h-full w-full rounded-panel border border-line md:aspect-auto md:min-h-[420px]"
+      className="aspect-[4/3] h-full w-full rounded-panel border-0 md:aspect-auto md:min-h-[420px]"
       loading="lazy"
       referrerPolicy="strict-origin-when-cross-origin"
     />

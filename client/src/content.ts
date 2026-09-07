@@ -25,6 +25,3 @@ export const reasons: { key: ReasonKey; image: string }[] = [
   { key: "beard", image: images.reasons.beard },
 ];
 
-/** Bullet points of the specialist's credentials card. */
-export const credentials = ["training", "hygiene", "consultation"] as const;
-export type CredentialKey = (typeof credentials)[number];

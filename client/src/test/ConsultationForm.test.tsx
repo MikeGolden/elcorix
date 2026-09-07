@@ -53,6 +53,27 @@ describe("ConsultationForm", () => {
     expect(await screen.findByRole("status")).toHaveTextContent(/thank you/i);
   });
 
+  it("blocks submission and explains when the phone number is not a number", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true }) as unknown as Mock;
+    vi.stubGlobal("fetch", fetchMock);
+    renderForm();
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText("Name"), "Anna");
+    await user.type(screen.getByLabelText(/phone number/i), "asdfgh");
+    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
+    await user.click(screen.getByRole("button", { name: /get a consultation/i }));
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(await screen.findByText(/valid phone number/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/phone number/i)).toHaveAttribute("aria-invalid", "true");
+
+    await user.clear(screen.getByLabelText(/phone number/i));
+    await user.type(screen.getByLabelText(/phone number/i), "+49 155 625 14 872");
+    await user.click(screen.getByRole("button", { name: /get a consultation/i }));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("offers appointment times on the half hour only", () => {
     renderForm();
     const slots = screen

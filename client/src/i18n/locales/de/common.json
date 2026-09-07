@@ -100,12 +100,7 @@
     "p1": "Mein Name ist Elena und ich bin Ihre <b>Spezialistin für professionelle Laser-Haarentfernung.</b> Seit [Anzahl] Jahren begleite ich Frauen und Männer auf dem Weg zu glatter Haut und einem gepflegten Körpergefühl.",
     "p2": "Durch meine Ausbildungen in den Bereichen [Ausbildungen/Spezialisierungen] <b>sowie regelmäßige Weiterbildungen arbeite ich nach modernen Qualitäts- und Hygienestandards.</b>",
     "p3": "Bei jeder Behandlung nehme ich mir Zeit für eine persönliche Beratung, analysiere Ihren Haut- und Haartyp und passe die Einstellungen des Geräts individuell an. <b>Mir ist wichtig, dass Sie sich während der gesamten Behandlung sicher, wohl und gut aufgehoben fühlen.</b>",
-    "credentialsTitle": "Qualifikation",
-    "credentials": {
-      "training": "Fachkraft für professionelle Haarentfernung – zertifizierte Ausbildung mit den Schwerpunkten Haut- und Haartypen, Hygiene, Beratung und Behandlungsprotokolle.",
-      "hygiene": "Arbeiten nach medizinischen Hygienestandards: Einmalmaterialien, desinfizierte Handstücke und dokumentierte Behandlungsabläufe.",
-      "consultation": "Persönliche Beratung und Probebehandlung vor der ersten Sitzung – inklusive Analyse von Haut- und Haartyp."
-    }
+    "certificateAlt": "Zertifikat: Fachkraft für professionelle Haarentfernung"
   },
   "work": {
     "title": "Sehen Sie sich unsere Arbeiten an",
@@ -193,6 +188,7 @@
     "intro": "Hinterlassen Sie Ihren Namen und Ihre Telefonnummer sowie Ihren Wunschtermin – wir melden uns und stimmen alles Weitere persönlich mit Ihnen ab.",
     "name": "Name",
     "phone": "Telefonnummer",
+    "phoneError": "Bitte geben Sie eine gültige Telefonnummer ein, z. B. +49 155 625 14 872.",
     "date": "Datum des Besuchs",
     "time": "Uhrzeit des Besuchs",
     "timeAny": "Keine Präferenz",
@@ -231,10 +227,7 @@
     "success": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
     "error": "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns an.",
     "map": {
-      "title": "Karte mit dem Standort des Studios",
-      "hint": "Die Karte wird auf Ihre Anforderung hin von OpenStreetMap geladen. Dabei wird Ihre IP-Adresse an OpenStreetMap übertragen.",
-      "load": "Karte anzeigen",
-      "external": "In OpenStreetMap öffnen"
+      "title": "Karte mit dem Standort des Studios"
     }
   },
   "gallery": {
@@ -279,7 +272,7 @@
       },
       "storage": {
         "title": "Cookies und lokaler Speicher",
-        "body": "Diese Website setzt keine eigenen Tracking-Cookies. Wir nutzen den lokalen Speicher Ihres Browsers für zwei rein funktionale Zwecke: Ihre Sprachauswahl (i18nextLng) und Ihre Cookie-Entscheidung (cookie-consent). Für funktionale Speicherung dieser Art ist keine Einwilligung erforderlich. Cookies von Altegio werden erst gesetzt, wenn Sie den Buchungskalender akzeptieren. Die Karte im Kontaktbereich wird nur auf Ihre ausdrückliche Anforderung hin von OpenStreetMap geladen."
+        "body": "Diese Website setzt keine eigenen Tracking-Cookies. Wir nutzen den lokalen Speicher Ihres Browsers für zwei rein funktionale Zwecke: Ihre Sprachauswahl (i18nextLng) und Ihre Cookie-Entscheidung (cookie-consent). Für funktionale Speicherung dieser Art ist keine Einwilligung erforderlich. Cookies von Altegio werden erst gesetzt, wenn Sie den Buchungskalender akzeptieren. Die Karte im Kontaktbereich wird beim Aufruf der Seite direkt von OpenStreetMap geladen. Dabei wird Ihre IP-Adresse an OpenStreetMap übertragen."
       },
       "rights": {
         "title": "Ihre Rechte",
@@ -347,6 +340,7 @@
     "cta": "Zurück zur Startseite"
   },
   "footer": {
+    "sitemap": "Sitemap",
     "label": "Rechtliches",
     "privacy": "Datenschutz",
     "imprint": "Impressum",

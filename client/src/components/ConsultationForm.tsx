@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
+import { isValidPhone } from "../phone";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -38,11 +39,20 @@ function today() {
 export default function ConsultationForm() {
   const { t } = useTranslation();
   const [status, setStatus] = useState<Status>("idle");
+  const [phoneError, setPhoneError] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    const phone = String(data.get("customerPhone") ?? "");
+    if (!isValidPhone(phone)) {
+      // Keep the browser's own bubble out of it: the message belongs in the
+      // form, in the visitor's language.
+      setPhoneError(true);
+      form.querySelector<HTMLInputElement>("#consult-phone")?.focus();
+      return;
+    }
     const date = String(data.get("date") ?? "");
     const time = String(data.get("time") ?? "");
     setStatus("sending");
@@ -61,6 +71,7 @@ export default function ConsultationForm() {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       form.reset();
+      setPhoneError(false);
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -96,12 +107,25 @@ export default function ConsultationForm() {
             id="consult-phone"
             name="customerPhone"
             type="tel"
+            inputMode="tel"
             required
             maxLength={50}
             autoComplete="tel"
+            aria-invalid={phoneError || undefined}
+            aria-describedby={phoneError ? "consult-phone-error" : undefined}
+            onChange={() => phoneError && setPhoneError(false)}
+            onBlur={(event) => {
+              const value = event.currentTarget.value;
+              setPhoneError(value.trim() !== "" && !isValidPhone(value));
+            }}
             placeholder={t("consultation.phone")}
             className="field"
           />
+          {phoneError && (
+            <p id="consult-phone-error" className="mt-2 text-xs font-medium text-red-600">
+              {t("consultation.phoneError")}
+            </p>
+          )}
         </div>
         <div className="min-w-0">
           <label
