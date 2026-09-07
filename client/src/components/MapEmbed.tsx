@@ -20,7 +20,7 @@ export default function MapEmbed() {
     return (
       <div
         data-testid="map-placeholder"
-        className="flex aspect-[4/3] flex-col items-center justify-center rounded-panel border border-line bg-surface-soft p-8 text-center"
+        className="flex aspect-[4/3] h-full flex-col items-center justify-center rounded-panel border border-line bg-surface-soft p-8 text-center md:aspect-auto md:min-h-[420px]"
       >
         <p className="max-w-sm text-sm leading-relaxed">{t("contact.map.hint")}</p>
         <button type="button" onClick={() => setLoaded(true)} className="btn-primary mt-6">
@@ -43,7 +43,7 @@ export default function MapEmbed() {
       title={t("contact.map.title")}
       data-testid="map-embed"
       src={embedUrl}
-      className="aspect-[4/3] w-full rounded-panel border border-line"
+      className="aspect-[4/3] h-full w-full rounded-panel border border-line md:aspect-auto md:min-h-[420px]"
       loading="lazy"
       referrerPolicy="strict-origin-when-cross-origin"
     />
