@@ -23,8 +23,11 @@ export const business = {
    * in sync when changing it.
    */
   siteUrl: "https://elcorix.com",
-  /** Approximate studio coordinates (Bodmanstraße, Kempten) for the map. */
-  geo: { latitude: 47.7263, longitude: 10.3138 },
+  /**
+   * Studio coordinates for the map and the JSON-LD — the Bodmanstraße 14
+   * building itself (OSM way/112674650, geocoded via Nominatim).
+   */
+  geo: { latitude: 47.72538, longitude: 10.30913 },
   /**
    * Structured opening hours for schema.org JSON-LD (Google local search).
    * The human-readable strings shown in the contact section stay

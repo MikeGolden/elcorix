@@ -167,6 +167,31 @@ describe("POST /api/bookings", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ["letters", "asdfgh"],
+    ["too few digits", "12345"],
+    ["mixed letters and digits", "+49 abc 123456"],
+    ["too many digits", "1".repeat(16)],
+  ])("rejects a phone number that is %s", async (_case, customerPhone) => {
+    const res = await request(app)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe("customerPhone is invalid");
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it.each([["+49 155 625 14 872"], ["0155/6251487"], ["(0049) 155 625-14-872"]])(
+    "accepts the phone number %s as visitors write it",
+    async (customerPhone) => {
+      query.mockResolvedValue({ rows: [{ id: 11, status: "pending" }] });
+      const res = await request(app)
+        .post("/api/bookings")
+        .send({ customerName: "Anna", customerPhone });
+      expect(res.status).toBe(201);
+    },
+  );
+
   it("requires customer name and phone", async () => {
     const res = await request(app)
       .post("/api/bookings")

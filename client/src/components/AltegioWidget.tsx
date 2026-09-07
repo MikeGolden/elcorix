@@ -42,7 +42,7 @@ export default function AltegioWidget() {
   }
 
   return (
-    <div className="overflow-hidden rounded-panel border border-line bg-white">
+    <div className="overflow-hidden rounded-panel bg-white">
       <iframe
         title={t("booking.widgetTitle")}
         data-testid="altegio-widget"
@@ -52,7 +52,7 @@ export default function AltegioWidget() {
         allow="payment"
         referrerPolicy="strict-origin-when-cross-origin"
       />
-      <p className="border-t border-line p-4 text-center text-sm">
+      <p className="p-4 text-center text-sm">
         {t("booking.fallbackQuestion")}{" "}
         <a
           className="font-medium text-brand-600 underline underline-offset-4"
