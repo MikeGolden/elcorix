@@ -18,6 +18,8 @@ export const images = {
   technology: "/images/technology.jpg",
   /** Portrait of the specialist for "Ihre Haut in erfahrenen Händen". */
   specialist: "/images/specialist.jpg",
+  /** The training certificate shown next to that portrait, as in the Figma. */
+  certificate: "/images/certificate.png",
   /** Square thumbnails for the "Für wen ist es geeignet?" cards. */
   reasons: {
     convenience: "/images/reason-convenience.jpg",

@@ -100,12 +100,7 @@
     "p1": "My name is Elena and I am your <b>specialist for professional laser hair removal.</b> For [number] years I have been helping women and men on their way to smooth skin and a well-cared-for feeling.",
     "p2": "Through my training in [qualifications/specialisations] <b>and regular further education, I work to modern quality and hygiene standards.</b>",
     "p3": "For every treatment I take the time for a personal consultation, analyse your skin and hair type and adjust the device settings individually. <b>What matters to me is that you feel safe, comfortable and well looked after throughout.</b>",
-    "credentialsTitle": "Qualifications",
-    "credentials": {
-      "training": "Certified specialist for professional hair removal — training covering skin and hair types, hygiene, consultation and treatment protocols.",
-      "hygiene": "Work to medical hygiene standards: single-use materials, disinfected handpieces and documented treatment records.",
-      "consultation": "Personal consultation and patch test before the first session — including an analysis of skin and hair type."
-    }
+    "certificateAlt": "Certificate: specialist for professional hair removal"
   },
   "work": {
     "title": "Take a look at our work",
@@ -193,6 +188,7 @@
     "intro": "Leave your name, phone number and preferred appointment — we will call you back and arrange the details personally.",
     "name": "Name",
     "phone": "Phone number",
+    "phoneError": "Please enter a valid phone number, e.g. +49 155 625 14 872.",
     "date": "Preferred date",
     "time": "Preferred time",
     "timeAny": "No preference",
@@ -231,10 +227,7 @@
     "success": "Thank you! We will get back to you shortly.",
     "error": "Something went wrong. Please try again or call us.",
     "map": {
-      "title": "Map showing the studio location",
-      "hint": "The map is loaded from OpenStreetMap when you request it. Your IP address is then transmitted to OpenStreetMap.",
-      "load": "Show map",
-      "external": "Open in OpenStreetMap"
+      "title": "Map showing the studio location"
     }
   },
   "gallery": {
@@ -279,7 +272,7 @@
       },
       "storage": {
         "title": "Cookies and local storage",
-        "body": "This website sets no tracking cookies of its own. We use your browser's local storage for two strictly functional purposes: your language preference (i18nextLng) and your cookie decision (cookie-consent). Functional storage of this kind requires no consent. Cookies from Altegio are set only after you accept the booking calendar. The map in the contact section is loaded from OpenStreetMap only when you explicitly request it."
+        "body": "This website sets no tracking cookies of its own. We use your browser's local storage for two strictly functional purposes: your language preference (i18nextLng) and your cookie decision (cookie-consent). Functional storage of this kind requires no consent. Cookies from Altegio are set only after you accept the booking calendar. The map in the contact section is loaded directly from OpenStreetMap when the page opens; your IP address is transmitted to OpenStreetMap in the process."
       },
       "rights": {
         "title": "Your rights",
@@ -347,6 +340,7 @@
     "cta": "Back to the home page"
   },
   "footer": {
+    "sitemap": "Sitemap",
     "label": "Legal",
     "privacy": "Privacy policy",
     "imprint": "Imprint",

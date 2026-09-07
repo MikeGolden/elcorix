@@ -4,8 +4,14 @@ import ConsultationForm from "../components/ConsultationForm";
 export default function ConsultationSection() {
   const { t } = useTranslation();
   return (
-    <section id="consultation" aria-labelledby="consultation-title" className="px-4 sm:px-6">
-      <div className="mx-auto max-w-[1200px] rounded-panel bg-surface-soft px-6 py-12 sm:px-10 sm:py-14">
+    <section
+      id="consultation"
+      aria-labelledby="consultation-title"
+      className="mx-auto max-w-[1200px] px-4 sm:px-6"
+    >
+      {/* The tinted card fills the same 1200px-minus-gutters column as every
+          other section, so all block edges line up down the page. */}
+      <div className="rounded-panel bg-surface-soft px-6 py-12 sm:px-10 sm:py-14">
         <h2
           id="consultation-title"
           className="text-center text-2xl font-bold sm:text-3xl"

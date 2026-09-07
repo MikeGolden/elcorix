@@ -59,13 +59,18 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-4 py-4 sm:px-6">
-        <Logo />
-        <a
-          href={telHref}
-          className="hidden text-sm font-medium text-brand-700 transition-colors hover:text-brand-500 md:inline"
-        >
-          {business.phone}
-        </a>
+        <div className="flex items-center gap-4">
+          <Logo />
+          {/* Optically centred on the wordmark: the boxes are centred and the
+              2px nudge lines the digits up with the x-height band of "corix",
+              which carries the logo's visual weight. */}
+          <a
+            href={telHref}
+            className="hidden translate-y-[2px] text-sm font-medium text-brand-700 transition-colors hover:text-brand-500 md:inline"
+          >
+            {business.phone}
+          </a>
+        </div>
 
         <div ref={menuRef} className="relative ml-auto flex items-center gap-2 sm:gap-3">
           <LanguageSwitcher />
