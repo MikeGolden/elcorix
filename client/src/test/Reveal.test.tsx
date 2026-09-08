@@ -1,13 +1,20 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { act, render, screen } from "@testing-library/react";
-import Reveal, { useReveal } from "../components/Reveal";
+import Reveal, { useReveal, resetRevealObserver } from "../components/Reveal";
 
 type Callback = (entries: IntersectionObserverEntry[]) => void;
 
-/** Minimal IntersectionObserver stand-in whose callback the test drives. */
+/**
+ * Minimal IntersectionObserver stand-in whose callback the test drives.
+ *
+ * <Reveal> shares one observer across the whole page, so the assertions
+ * below are about the *element* being observed and released, not about an
+ * observer existing per component.
+ */
 class MockObserver {
   static instances: MockObserver[] = [];
   observed: Element[] = [];
+  unobserved: Element[] = [];
   disconnected = false;
 
   constructor(private readonly callback: Callback) {
@@ -18,23 +25,25 @@ class MockObserver {
     this.observed.push(element);
   }
 
-  unobserve() {}
+  unobserve(element: Element) {
+    this.unobserved.push(element);
+  }
 
   disconnect() {
     this.disconnected = true;
   }
 
-  /** Pretend the observed element scrolled into view. */
-  enter() {
+  /** Pretend an observed element scrolled into view. */
+  enter(target: Element = this.observed[this.observed.length - 1]) {
     act(() => {
-      this.callback([{ isIntersecting: true } as IntersectionObserverEntry]);
+      this.callback([{ isIntersecting: true, target } as IntersectionObserverEntry]);
     });
   }
 
   /** A callback run for an element that is still off screen. */
-  miss() {
+  miss(target: Element = this.observed[this.observed.length - 1]) {
     act(() => {
-      this.callback([{ isIntersecting: false } as IntersectionObserverEntry]);
+      this.callback([{ isIntersecting: false, target } as IntersectionObserverEntry]);
     });
   }
 }
@@ -42,10 +51,14 @@ class MockObserver {
 function useMockObserver() {
   MockObserver.instances = [];
   vi.stubGlobal("IntersectionObserver", MockObserver);
+  // The shared observer is memoised, so drop the previous one before the
+  // stub is installed.
+  resetRevealObserver();
   return MockObserver;
 }
 
 afterEach(() => {
+  resetRevealObserver();
   vi.unstubAllGlobals();
   MockObserver.instances = [];
 });
@@ -61,13 +74,47 @@ describe("Reveal", () => {
     const [observer] = MockObserver.instances;
     expect(observer.observed).toEqual([block]);
 
-    observer.miss();
+    observer.miss(block);
     expect(block).toHaveAttribute("data-revealed", "false");
 
-    observer.enter();
+    observer.enter(block);
     expect(block).toHaveAttribute("data-revealed", "true");
-    // One-shot: scrolling back up must not replay the animation.
-    expect(observer.disconnected).toBe(true);
+    // One-shot: the element is released, so scrolling back up cannot
+    // replay the animation.
+    expect(observer.unobserved).toEqual([block]);
+  });
+
+  it("shares a single observer across every reveal on the page", () => {
+    useMockObserver();
+    render(
+      <>
+        <Reveal data-testid="a">A</Reveal>
+        <Reveal data-testid="b">B</Reveal>
+        <Reveal data-testid="c">C</Reveal>
+      </>,
+    );
+
+    expect(MockObserver.instances).toHaveLength(1);
+    const [observer] = MockObserver.instances;
+    expect(observer.observed).toHaveLength(3);
+
+    // Releasing one element must not stop the others from revealing.
+    const a = screen.getByTestId("a");
+    observer.enter(a);
+    expect(a).toHaveAttribute("data-revealed", "true");
+    expect(screen.getByTestId("b")).toHaveAttribute("data-revealed", "false");
+
+    observer.enter(screen.getByTestId("b"));
+    expect(screen.getByTestId("b")).toHaveAttribute("data-revealed", "true");
+    expect(screen.getByTestId("c")).toHaveAttribute("data-revealed", "false");
+  });
+
+  it("stops observing an element that unmounts before it is seen", () => {
+    useMockObserver();
+    const { unmount } = render(<Reveal data-testid="block">Content</Reveal>);
+    const block = screen.getByTestId("block");
+    unmount();
+    expect(MockObserver.instances[0].unobserved).toEqual([block]);
   });
 
   it("renders revealed from the first paint when IntersectionObserver is missing", () => {
@@ -113,7 +160,7 @@ describe("Reveal", () => {
     render(<Probe />);
 
     expect(screen.getByTestId("probe")).toHaveTextContent("false");
-    MockObserver.instances[0].enter();
+    MockObserver.instances[0].enter(screen.getByTestId("probe"));
     expect(screen.getByTestId("probe")).toHaveTextContent("true");
   });
 });

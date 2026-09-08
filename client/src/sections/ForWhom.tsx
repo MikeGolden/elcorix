@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
+import Photo from "../components/Photo";
 import { reasons } from "../content";
 import { anchorHref } from "../anchors";
 import { ArrowRightIcon } from "../components/icons";
@@ -27,10 +28,13 @@ export default function ForWhom() {
             delay={80 * index}
             className="flex items-center gap-5 rounded-panel bg-surface-soft p-5"
           >
-            <img
+            <Photo
               src={reason.image}
               alt=""
+              width="480"
+              height="480"
               loading="lazy"
+              decoding="async"
               className="h-24 w-24 shrink-0 rounded-2xl object-cover sm:h-28 sm:w-28"
             />
             <div>

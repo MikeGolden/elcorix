@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
 import Reveal from "../components/Reveal";
 import Lightbox from "../components/Lightbox";
+import Photo from "../components/Photo";
 import { images } from "../images";
 
 /**
@@ -39,11 +40,28 @@ export default function Works() {
     setAtEnd(track.scrollLeft >= max - 1);
   }, []);
 
+  /**
+   * Reading scrollWidth/clientWidth forces the browser to flush layout, and
+   * a scroll handler runs on every frame of a momentum swipe — exactly when
+   * the main thread can least afford it. Coalesce to one read per frame.
+   */
+  const frameRef = useRef(0);
+  const scheduleSync = useCallback(() => {
+    if (frameRef.current !== 0) return;
+    frameRef.current = window.requestAnimationFrame(() => {
+      frameRef.current = 0;
+      syncArrows();
+    });
+  }, [syncArrows]);
+
   useEffect(() => {
     syncArrows();
-    window.addEventListener("resize", syncArrows);
-    return () => window.removeEventListener("resize", syncArrows);
-  }, [syncArrows]);
+    window.addEventListener("resize", scheduleSync, { passive: true });
+    return () => {
+      window.removeEventListener("resize", scheduleSync);
+      if (frameRef.current !== 0) window.cancelAnimationFrame(frameRef.current);
+    };
+  }, [syncArrows, scheduleSync]);
 
   const page = (direction: -1 | 1) => {
     const track = trackRef.current;
@@ -68,7 +86,7 @@ export default function Works() {
       <Reveal className="relative mt-9" delay={90}>
         <ul
           ref={trackRef}
-          onScroll={syncArrows}
+          onScroll={scheduleSync}
           tabIndex={0}
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth
                      [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5
@@ -88,12 +106,13 @@ export default function Works() {
                            focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-700
                            focus-visible:ring-offset-2"
               >
-                <img
+                <Photo
                   src={slide.src}
                   alt={slide.alt}
                   width="760"
                   height="1064"
                   loading="lazy"
+                  decoding="async"
                   className="aspect-[5/7] w-full rounded-panel object-cover transition-transform
                              duration-300 group-hover:scale-[1.03]"
                 />

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "./icons";
+import Photo from "./Photo";
 
 export type LightboxImage = {
   src: string;
@@ -94,9 +95,10 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
     >
       <figure className="pointer-events-none flex max-h-full max-w-[min(1100px,100%)] flex-col
                          items-center gap-3">
-        <img
+        <Photo
           src={image.src}
           alt={image.alt}
+          decoding="async"
           data-testid="lightbox-image"
           className="max-h-[78vh] w-auto max-w-full rounded-panel object-contain shadow-2xl"
         />

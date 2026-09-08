@@ -8,10 +8,20 @@
  *
  * Each entry below is one image slot of the elcorix Figma layout; the
  * crops and sizes were produced from the originals in `NewPics/`.
+ *
+ * Every path here names the JPEG/PNG original. A WebP twin of the same
+ * name sits next to it — regenerate with `npm run images -w client` — and
+ * <Photo> picks it automatically, so nothing below has to list it.
  */
 export const images = {
   /** Hero — treatment in progress, 16:10 landscape. */
   hero: "/images/hero.jpg",
+  /**
+   * 900px WebP crop of the hero for the full-bleed phone layout. Named
+   * explicitly because it is a second size, not a second format; keep the
+   * preload in index.html pointing at the same set.
+   */
+  heroSmall: "/images/hero-900.webp",
   /** Rounded thumbnail next to "Unsere Leistungen" in the hero. */
   serviceThumb: "/images/service-thumb.jpg",
   /** "Moderne Diodenlaser-Technologie" — the device in the studio. */

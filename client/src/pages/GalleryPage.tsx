@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Lightbox from "../components/Lightbox";
+import Photo from "../components/Photo";
 import { images } from "../images";
 import { usePageMeta } from "../seo/usePageMeta";
 
@@ -51,10 +52,14 @@ export default function GalleryPage() {
                          focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-700
                          focus-visible:ring-offset-2"
             >
-              <img
+              <Photo
                 src={slide.src}
                 alt={slide.alt}
+                width="760"
+                height="570"
                 loading="lazy"
+                decoding="async"
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 className="aspect-[4/3] w-full rounded-panel object-cover transition-transform
                            duration-300 group-hover:scale-[1.03]"
               />

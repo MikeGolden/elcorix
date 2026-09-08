@@ -11,6 +11,18 @@
     />
     <meta name="theme-color" content="#26397f" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- The hero photo is the LCP element, but it is rendered by React, so
+         the preload scanner never sees it in the markup and the download
+         cannot start until the bundle has parsed and mounted. Preloading it
+         here starts the fetch with the very first bytes of HTML instead.
+         Keep the type/srcset in step with <Hero>. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/hero.webp"
+      type="image/webp"
+      fetchpriority="high"
+    />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!-- Open Graph defaults (shared links in WhatsApp/Instagram/Facebook).
          Title/description/url are updated per route by usePageMeta. -->
