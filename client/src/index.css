@@ -130,6 +130,52 @@
     @apply cursor-pointer opacity-60;
   }
 
+  /*
+   * Scroll reveal (components/Reveal.tsx). Everything wearing `.reveal`
+   * starts transparent and 1.75rem low; <Reveal> flips data-revealed the
+   * first time the element enters the viewport and it eases into place.
+   *
+   * The end state is `transform: none`, not `translate3d(0,0,0)`: a lingering
+   * transform would make the element a containing block and break the
+   * `position: fixed` overlays (Lightbox, cookie banner) rendered inside it.
+   */
+  .reveal,
+  .reveal-fade {
+    opacity: 0;
+    transition:
+      opacity 650ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 650ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .reveal {
+    transform: translate3d(0, 1.75rem, 0);
+  }
+
+  .reveal[data-revealed="true"],
+  .reveal-fade[data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* No animation may ever swallow content: visitors who ask for less motion,
+     and anyone printing the page, get every block at full opacity. */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-fade {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media print {
+    .reveal,
+    .reveal-fade {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   /* Native select arrow replaced with our own chevron. */
   .field-select {
     @apply bg-[length:1.15rem] bg-[right_1.25rem_center] bg-no-repeat pr-12;

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { business, telHref } from "../config";
 import MapEmbed from "../components/MapEmbed";
+import Reveal from "../components/Reveal";
 
 export default function ContactSection() {
   const { t } = useTranslation();
@@ -11,8 +12,12 @@ export default function ContactSection() {
       className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20"
     >
       <div className="grid gap-10 md:grid-cols-2 md:gap-14">
-        <MapEmbed />
-        <div>
+        {/* The wrapper stays a stretched grid item, so the map keeps
+            matching the text column's height. */}
+        <Reveal>
+          <MapEmbed />
+        </Reveal>
+        <Reveal delay={110}>
           <h2 id="contact-title" className="text-2xl font-bold sm:text-[1.9rem]">
             {t("contact.title")}
           </h2>
@@ -78,7 +83,7 @@ export default function ContactSection() {
           >
             {t("contact.whatsapp")}
           </a>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

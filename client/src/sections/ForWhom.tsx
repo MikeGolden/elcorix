@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Reveal from "../components/Reveal";
 import { reasons } from "../content";
 import { anchorHref } from "../anchors";
 import { ArrowRightIcon } from "../components/icons";
@@ -13,13 +14,17 @@ export default function ForWhom() {
       aria-labelledby="for-whom-title"
       className="mx-auto max-w-[1200px] border-b border-line px-4 pb-16 sm:px-6 sm:pb-20"
     >
-      <h2 id="for-whom-title" className="text-2xl font-bold sm:text-3xl">
+      <Reveal as="h2" id="for-whom-title" className="text-2xl font-bold sm:text-3xl">
         {t("forWhom.title")}
-      </h2>
+      </Reveal>
       <ul className="mt-8 grid gap-5 md:grid-cols-2">
-        {reasons.map((reason) => (
-          <li
+        {reasons.map((reason, index) => (
+          <Reveal
+            as="li"
             key={reason.key}
+            // The cards land one after another rather than as a block; two
+            // columns means the stagger only ever runs four steps deep.
+            delay={80 * index}
             className="flex items-center gap-5 rounded-panel bg-surface-soft p-5"
           >
             <img
@@ -40,7 +45,7 @@ export default function ForWhom() {
                 <ArrowRightIcon />
               </Link>
             </div>
-          </li>
+          </Reveal>
         ))}
       </ul>
     </section>
