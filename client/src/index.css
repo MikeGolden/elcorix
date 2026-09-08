@@ -82,6 +82,13 @@
     scroll-margin-top: 6rem;
   }
 
+  /* <picture> is display:contents, so its children are laid out by the
+     surrounding grid/flex container. <source> defaults to display:block and
+     would claim a cell of its own, pushing the image out of place. */
+  picture > source {
+    display: none;
+  }
+
   ::selection {
     background-color: var(--color-brand-700);
     color: #ffffff;
