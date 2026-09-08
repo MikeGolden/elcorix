@@ -200,6 +200,8 @@
     "date": "Preferred date",
     "time": "Preferred time",
     "timeAny": "No preference",
+    "dateRequired": "Please also choose a date for the time you picked.",
+    "datePast": "Please choose a date that is not in the past.",
     "consentMarketing": "I would like to receive offers and news by e-mail and phone. I can withdraw this consent at any time with effect for the future.",
     "consentPrivacy": "By submitting this form I agree that my details may be used to handle my appointment request. Information on how we process your personal data is in our <privacyLink>privacy policy</privacyLink>.",
     "sending": "Sending…",
