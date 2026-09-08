@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
+import Photo, { webpFor } from "../components/Photo";
 import { images } from "../images";
 import { anchorHref } from "../anchors";
 
@@ -11,9 +12,13 @@ import { anchorHref } from "../anchors";
  * header buttons sit on the photo and there is no divider between them.
  *
  * Everything here is above the fold, so the reveals fire on load: headline
- * first, then the button, the photo and the service teaser, ~90ms apart.
- * The photo only fades — sliding a half-viewport image that is pinned to
- * the right edge reads as a glitch, not as motion.
+ * first, then the button and the service teaser, ~90ms apart.
+ *
+ * The photo is deliberately NOT revealed. It is the LCP element, and an
+ * element at `opacity: 0` does not count as painted — wrapping it in
+ * <Reveal> pushed the largest paint behind React mounting, the observer
+ * firing, a 180ms stagger and a 650ms fade. It is preloaded in index.html
+ * and painted as soon as it decodes.
  */
 export default function Hero() {
   const { t } = useTranslation();
@@ -49,11 +54,13 @@ export default function Hero() {
             to="/prices"
             className="mt-4 inline-flex items-center gap-4 rounded-panel p-2 pr-6 transition-colors hover:bg-surface-soft"
           >
-            <img
+            <Photo
               src={images.serviceThumb}
               alt=""
               width="320"
               height="320"
+              loading="lazy"
+              decoding="async"
               className="h-14 w-14 rounded-2xl object-cover"
             />
             <span className="text-[0.95rem]">
@@ -63,14 +70,17 @@ export default function Hero() {
           </Link>
         </Reveal>
 
-        <Reveal
-          as="img"
-          variant="fade"
-          delay={180}
+        <Photo
+          data-testid="hero-photo"
           src={images.hero}
+          // Full-bleed below lg, half the viewport above it: a phone gets
+          // the 900px crop (26kB) instead of the 1600px one.
+          webpSrcSet={`${images.heroSmall} 900w, ${webpFor(images.hero)} 1600w`}
+          sizes="(min-width: 1024px) 50vw, 100vw"
           alt={t("hero.imageAlt")}
           width="1600"
           height="1000"
+          decoding="async"
           // React 18 only forwards the lowercase DOM attribute form.
           {...{ fetchpriority: "high" }}
           className="mt-10 aspect-[16/10] w-full rounded-panel object-cover

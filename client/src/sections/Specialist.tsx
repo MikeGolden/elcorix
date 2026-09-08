@@ -1,5 +1,6 @@
 import { Trans, useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
+import Photo from "../components/Photo";
 import { images } from "../images";
 
 const strong = { b: <strong className="font-semibold text-ink-900" /> };
@@ -33,16 +34,22 @@ export default function Specialist() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <img
+          <Photo
             src={images.certificate}
             alt={t("specialist.certificateAlt")}
+            width="274"
+            height="394"
             loading="lazy"
+            decoding="async"
             className="h-full w-full rounded-panel object-contain"
           />
-          <img
+          <Photo
             src={images.specialist}
             alt={t("specialist.imageAlt")}
+            width="620"
+            height="1240"
             loading="lazy"
+            decoding="async"
             className="h-full min-h-64 w-full rounded-panel object-cover"
           />
         </div>

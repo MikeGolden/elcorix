@@ -61,11 +61,23 @@ export const packages: PricePackage[] = [
   { key: "p5", single: 319, six: 1529, eight: 1889 },
 ];
 
+/**
+ * Constructing an Intl.NumberFormat is expensive — it resolves locale data
+ * on every call — and the price tables format 31 cells per render. Building
+ * one formatter per language and reusing it turns that into 31 lookups.
+ */
+const formatters = new Map<string, Intl.NumberFormat>();
+
 export function formatPrice(language: string, price: number): string {
-  return new Intl.NumberFormat(language, {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(price);
+  let formatter = formatters.get(language);
+  if (formatter === undefined) {
+    formatter = new Intl.NumberFormat(language, {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+    formatters.set(language, formatter);
+  }
+  return formatter.format(price);
 }

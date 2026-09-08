@@ -20,14 +20,24 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   // The header is transparent over the hero photo and only paints its
-  // background once the page scrolls away from the top.
+  // background once the page scrolls away from the top. Coalesced to one
+  // read per frame: the handler fires on every scroll event otherwise, and
+  // this one runs for the whole length of the page.
   useEffect(() => {
-    function onScroll() {
+    let frame = 0;
+    function read() {
+      frame = 0;
       setScrolled(window.scrollY > 8);
     }
-    onScroll();
+    function onScroll() {
+      if (frame === 0) frame = window.requestAnimationFrame(read);
+    }
+    read();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame !== 0) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   // Close the anchor menu on navigation (including hash-only jumps).

@@ -1,11 +1,26 @@
-/* Self-hosted fonts (GDPR-safe: no Google Fonts CDN request). */
-@import "@fontsource/manrope/500.css";
-@import "@fontsource/manrope/600.css";
+/*
+ * Self-hosted fonts (GDPR-safe: no Google Fonts CDN request).
+ *
+ * One import per weight the site actually renders — every extra weight is
+ * an extra font request for every visitor:
+ *   Manrope  700/800  headings only (font-display, h1-h3 and the 404 mark)
+ *   Inter    400      body copy, the default weight
+ *   Inter    500/600  links, labels, buttons, <strong> lead-ins
+ *   Inter    700      bold body text (Hero's service label and friends);
+ *                     without it the browser fakes bold by smearing 600.
+ *
+ * These files declare every unicode subset with a `unicode-range`, so the
+ * browser fetches only what the page needs: latin for German and English,
+ * latin + cyrillic for Ukrainian. Do NOT swap them for the per-subset
+ * files (`latin-400.css`) — those ship without a unicode-range, so every
+ * visitor would download the Cyrillic faces too.
+ */
 @import "@fontsource/manrope/700.css";
 @import "@fontsource/manrope/800.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
 
 @import "tailwindcss";
 
