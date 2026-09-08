@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Default (German) description; usePageMeta overwrites it per route
-         and language once the app mounts. -->
-    <meta
-      name="description"
-      content="elcorix — dauerhafte Laser-Haarentfernung in Kempten. Moderne Diodenlaser-Technologie, individuell auf Ihre Haut abgestimmt. Termin online buchen."
-    />
+    <!-- The title, description, canonical, per-page Open Graph tags and the
+         LocalBusiness JSON-LD are NOT written here. vite/seoPrerender.ts
+         injects them as a marked block (see SEO_BLOCK_START in
+         src/seo/staticHead.ts) in dev and in the build, and writes one copy
+         of this document per route into dist/, so that scrapers which never
+         run JavaScript get the right head for the URL they asked for.
+         Adding a title or description back here would duplicate them. -->
     <meta name="theme-color" content="#26397f" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <!-- The hero photo is the LCP element, but it is rendered by React, so
@@ -24,13 +25,13 @@
       fetchpriority="high"
     />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <!-- Open Graph defaults (shared links in WhatsApp/Instagram/Facebook).
-         Title/description/url are updated per route by usePageMeta. -->
+    <!-- Open Graph constants (shared links in WhatsApp/Instagram/Facebook).
+         Title/description/url/locale are per route and per language, so
+         they live in the injected block instead. -->
     <meta property="og:site_name" content="elcorix" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://elcorix.com/images/hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>elcorix — Laser-Haarentfernung in Kempten</title>
     <style>
       /* Match the app background before CSS loads (no flash). */
       html {

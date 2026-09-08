@@ -30,7 +30,8 @@ from that file (palette, type scale, section inventory, known deviations).
 │       ├── sections/    # The one-page landing sections from the Figma
 │       ├── components/  # Header, Footer, AltegioWidget, ConsultationForm,
 │       │                #   PriceTables, MapEmbed, …
-│       ├── seo/         # usePageMeta (titles/OG/canonical), LocalBusiness JSON-LD
+│       ├── seo/         # route table, shared title/canonical rules, the
+│       │                #   build-time <head> and usePageMeta
 │       └── test/        # Vitest unit tests
 ├── server/          # Express + TS API
 │   └── src/
@@ -226,15 +227,30 @@ on Altegio's hosted pages — card data never touches this codebase.
 
 ## SEO
 
-- Per-route, per-language `<title>`, meta description, canonical URL and
-  Open Graph tags (`client/src/seo/usePageMeta.ts`).
-- `schema.org/BeautySalon` JSON-LD (address, geo, opening hours, booking
-  link) for Google's local results (`client/src/seo/LocalBusinessJsonLd.tsx`).
+The site is a client-rendered SPA, so the `<head>` is written twice: once at
+build time for crawlers, and again at runtime for the visitor's language.
+
+- **Build time** — `client/vite/seoPrerender.ts` injects a marked block into
+  `index.html` (title, description, canonical, Open Graph, and the
+  `schema.org/BeautySalon` JSON-LD) and writes one shell per route into
+  `dist/`: `dist/prices/index.html`, `dist/contact/index.html`, … nginx
+  serves them with `try_files $uri $uri/index.html /index.html`. Without
+  this, everything that does not run JavaScript — every social scraper —
+  saw the home page's head whatever URL it asked for. The shells are
+  German; only the head is prerendered, the body is still React's.
+- **Runtime** — `client/src/seo/usePageMeta.ts` rewrites those same tags in
+  the visitor's language on navigation. The title and canonical rules are
+  shared with the build step (`client/src/seo/meta.ts`) so the two cannot
+  disagree.
+- `client/src/seo/routes.ts` is the route table the prerender and the tests
+  read; `src/test/staticMeta.test.ts` fails if it and `public/sitemap.xml`
+  drift apart.
 - `robots.txt`, `sitemap.xml`, SVG favicon and apple-touch-icon in
   `client/public/` — keep the origin there in sync with `siteUrl` in
   `client/src/config.ts`.
 - No hreflang alternates on purpose: all three languages share one URL
-  (language is a client-side preference, not a URL segment).
+  (language is a client-side preference, not a URL segment). This also means
+  the prerendered head can only be one language, and German is the market.
 
 ## Analytics (optional)
 

@@ -4,7 +4,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CookieBanner from "./components/CookieBanner";
 import ScrollToTop from "./components/ScrollToTop";
-import LocalBusinessJsonLd from "./seo/LocalBusinessJsonLd";
 import { ConsentProvider } from "./consent/ConsentContext";
 import HomePage from "./pages/HomePage";
 import PricesPage from "./pages/PricesPage";
@@ -29,7 +28,6 @@ export default function App() {
           {t("nav.skipToContent")}
         </a>
         <ScrollToTop />
-        <LocalBusinessJsonLd />
         <Header />
         <main id="main" className="flex-1">
           <Routes>
