@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { isValidPhone } from "../phone";
@@ -19,7 +19,11 @@ const TIME_SLOTS = Array.from(
   },
 );
 
-/** Today in the local time zone as `YYYY-MM-DD`, so past dates stay unpickable. */
+/**
+ * Today in the local time zone as `YYYY-MM-DD`, so past dates stay
+ * unpickable. Read at submit time as well as at render time: a tab left
+ * open overnight would otherwise still be offering yesterday.
+ */
 function today() {
   const now = new Date();
   const local = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
@@ -40,6 +44,15 @@ export default function ConsultationForm() {
   const { t } = useTranslation();
   const [status, setStatus] = useState<Status>("idle");
   const [phoneError, setPhoneError] = useState(false);
+  const [dateError, setDateError] = useState<"missing" | "past" | null>(null);
+
+  // The `min` attribute is only a hint the browser may or may not enforce,
+  // so recompute the boundary on every render rather than freezing it.
+  const minDate = today();
+
+  const focusField = useCallback((form: HTMLFormElement, id: string) => {
+    form.querySelector<HTMLInputElement>(id)?.focus();
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,11 +63,25 @@ export default function ConsultationForm() {
       // Keep the browser's own bubble out of it: the message belongs in the
       // form, in the visitor's language.
       setPhoneError(true);
-      form.querySelector<HTMLInputElement>("#consult-phone")?.focus();
+      focusField(form, "#consult-phone");
       return;
     }
-    const date = String(data.get("date") ?? "");
-    const time = String(data.get("time") ?? "");
+    const date = String(data.get("date") ?? "").trim();
+    const time = String(data.get("time") ?? "").trim();
+    // A time on its own is not a slot anyone can act on — "14:00" tells
+    // staff nothing about the day — and the API rejects it. Ask for the
+    // date instead of silently dropping what the visitor chose.
+    if (date === "" && time !== "") {
+      setDateError("missing");
+      focusField(form, "#consult-date");
+      return;
+    }
+    if (date !== "" && date < today()) {
+      setDateError("past");
+      focusField(form, "#consult-date");
+      return;
+    }
+    setDateError(null);
     setStatus("sending");
     try {
       const res = await fetch("/api/bookings", {
@@ -63,7 +90,8 @@ export default function ConsultationForm() {
         body: JSON.stringify({
           customerName: data.get("customerName"),
           customerPhone: data.get("customerPhone"),
-          preferredAt: [date, time].filter(Boolean).join(" "),
+          // Date first, time only alongside it (guarded above).
+          preferredAt: date === "" ? "" : [date, time].filter(Boolean).join(" "),
           marketingConsent: data.get("marketingConsent") === "on",
           // Honeypot: hidden from humans, bots fill it in.
           website: data.get("website"),
@@ -72,6 +100,7 @@ export default function ConsultationForm() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       form.reset();
       setPhoneError(false);
+      setDateError(null);
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -138,9 +167,21 @@ export default function ConsultationForm() {
             id="consult-date"
             name="date"
             type="date"
-            min={today()}
+            min={minDate}
+            aria-invalid={dateError !== null || undefined}
+            aria-describedby={dateError !== null ? "consult-date-error" : undefined}
+            onChange={() => dateError !== null && setDateError(null)}
             className="field"
           />
+          {dateError !== null && (
+            <p id="consult-date-error" className="mt-2 text-xs font-medium text-red-600">
+              {t(
+                dateError === "missing"
+                  ? "consultation.dateRequired"
+                  : "consultation.datePast",
+              )}
+            </p>
+          )}
         </div>
         <div className="min-w-0">
           <label

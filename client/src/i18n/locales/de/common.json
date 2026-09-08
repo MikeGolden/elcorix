@@ -200,6 +200,8 @@
     "date": "Datum des Besuchs",
     "time": "Uhrzeit des Besuchs",
     "timeAny": "Keine Präferenz",
+    "dateRequired": "Bitte wählen Sie zu der Uhrzeit auch ein Datum aus.",
+    "datePast": "Bitte wählen Sie ein Datum, das nicht in der Vergangenheit liegt.",
     "consentMarketing": "Ich möchte per E-Mail und telefonisch über Angebote und Neuigkeiten informiert werden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen.",
     "consentPrivacy": "Mit dem Absenden des Formulars stimme ich zu, dass meine Angaben zur Bearbeitung meiner Terminanfrage verwendet werden. Informationen zur Verarbeitung Ihrer personenbezogenen Daten finden Sie in unserer <privacyLink>Datenschutzerklärung</privacyLink>.",
     "sending": "Wird gesendet…",
