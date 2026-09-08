@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { business } from "../config";
+import { canonicalUrl, composeTitle, ogLocaleFor } from "./meta";
+import type { MetaKey } from "./routes";
+
+export type { MetaKey };
 
 function setMetaByName(name: string, content: string) {
   let tag = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
@@ -33,22 +36,17 @@ function setCanonical(href: string) {
   tag.href = href;
 }
 
-export type MetaKey =
-  | "home"
-  | "prices"
-  | "gallery"
-  | "booking"
-  | "contact"
-  | "privacy"
-  | "imprint"
-  | "terms"
-  | "mission"
-  | "notFound";
-
 /**
  * Per-route, per-language document metadata: title, description,
  * canonical URL and Open Graph tags. `metaKey` addresses
  * `meta.<key>.title` / `meta.<key>.description` in the translations.
+ *
+ * These tags already exist in the served HTML — `vite/seoPrerender.ts`
+ * writes a German set into every route's shell for the crawlers that never
+ * run this code. What happens here is the language swap: the same tags,
+ * rewritten in the visitor's chosen language. The title and canonical
+ * rules are shared with the build step in `./meta` so the two cannot
+ * disagree.
  *
  * The three languages share one URL (language is a client-side
  * preference, not a URL segment), so there are deliberately no hreflang
@@ -59,12 +57,9 @@ export function usePageMeta(metaKey: MetaKey): void {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const title =
-      pathname === "/"
-        ? `${business.name} — ${t(`meta.${metaKey}.title`)}`
-        : `${t(`meta.${metaKey}.title`)} — ${business.name}`;
+    const title = composeTitle(pathname, t(`meta.${metaKey}.title`));
     const description = t(`meta.${metaKey}.description`);
-    const url = `${business.siteUrl}${pathname === "/" ? "/" : pathname}`;
+    const url = canonicalUrl(pathname);
 
     document.title = title;
     setMetaByName("description", description);
@@ -72,6 +67,6 @@ export function usePageMeta(metaKey: MetaKey): void {
     setMetaByProperty("og:title", title);
     setMetaByProperty("og:description", description);
     setMetaByProperty("og:url", url);
-    setMetaByProperty("og:locale", i18n.resolvedLanguage ?? "de");
+    setMetaByProperty("og:locale", ogLocaleFor(i18n.resolvedLanguage));
   }, [t, i18n.resolvedLanguage, pathname, metaKey]);
 }
