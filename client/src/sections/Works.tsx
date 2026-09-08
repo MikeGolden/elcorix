@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
+import Lightbox from "../components/Lightbox";
 import { images } from "../images";
 
 /**
@@ -8,12 +9,25 @@ import { images } from "../images";
  * tiles. The track is a native scroll-snap list (so touch swiping and
  * keyboard scrolling work without a carousel library); the arrows page
  * it by one tile and disable themselves at either end.
+ *
+ * Each tile is a button that opens the photo full screen in <Lightbox>,
+ * which then pages through the same set with its own arrows and keys.
  */
 export default function Works() {
   const { t } = useTranslation();
   const trackRef = useRef<HTMLUListElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(true);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const slides = useMemo(
+    () =>
+      images.work.map((src, index) => ({
+        src,
+        alt: t(`work.alts.n${index + 1}` as "work.alts.n1"),
+      })),
+    [t],
+  );
 
   const syncArrows = useCallback(() => {
     const track = trackRef.current;
@@ -57,19 +71,30 @@ export default function Works() {
                      [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-5
                      [&::-webkit-scrollbar]:hidden"
         >
-          {images.work.map((src, index) => (
+          {slides.map((slide, index) => (
             <li
-              key={src}
+              key={slide.src}
               className="w-[72%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-3.75rem)/4)]"
             >
-              <img
-                src={src}
-                alt={t(`work.alts.n${index + 1}` as "work.alts.n1")}
-                width="760"
-                height="1064"
-                loading="lazy"
-                className="aspect-[5/7] w-full rounded-panel object-cover"
-              />
+              <button
+                type="button"
+                onClick={() => setOpenIndex(index)}
+                aria-label={t("lightbox.open", { name: slide.alt })}
+                data-testid={`work-tile-${index + 1}`}
+                className="group block w-full cursor-zoom-in overflow-hidden rounded-panel
+                           focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-700
+                           focus-visible:ring-offset-2"
+              >
+                <img
+                  src={slide.src}
+                  alt={slide.alt}
+                  width="760"
+                  height="1064"
+                  loading="lazy"
+                  className="aspect-[5/7] w-full rounded-panel object-cover transition-transform
+                             duration-300 group-hover:scale-[1.03]"
+                />
+              </button>
             </li>
           ))}
         </ul>
@@ -99,6 +124,13 @@ export default function Works() {
           <ChevronRightIcon />
         </button>
       </div>
+
+      <Lightbox
+        images={slides}
+        index={openIndex}
+        onClose={() => setOpenIndex(null)}
+        onIndexChange={setOpenIndex}
+      />
     </section>
   );
 }

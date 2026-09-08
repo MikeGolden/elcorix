@@ -113,6 +113,14 @@
       "n4": "Treatment of the beard contours on the face"
     }
   },
+  "lightbox": {
+    "label": "Image viewer",
+    "open": "Open image: {{name}}",
+    "close": "Close image viewer",
+    "prev": "Previous image",
+    "next": "Next image",
+    "counter": "{{current}} of {{total}}"
+  },
   "prices": {
     "title": "Popular services and prices",
     "pageTitle": "Price list",
