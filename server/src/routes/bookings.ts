@@ -14,6 +14,40 @@ function altegioCompanyId(): string {
   return /^\d{1,12}$/.test(raw) ? raw : "000000";
 }
 
+/** "YYYY-MM-DD", optionally followed by " HH:MM". */
+const PREFERRED_AT_RE = /^(\d{4})-(\d{2})-(\d{2})(?: ([01]\d|2[0-3]):([0-5]\d))?$/;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * The preferred slot is a customer wish, not a confirmed appointment — the
+ * real booking is made in Altegio — but it still has to be a slot a human
+ * can act on. A bare time with no day ("14:00") is meaningless to staff,
+ * and a date in the past is always a mistake, so both are rejected here
+ * rather than stored.
+ *
+ * The visitor's clock may legitimately be a day ahead of the server's, so
+ * "yesterday" in UTC is still accepted; anything older is not.
+ */
+export function validatePreferredAt(value: string): string | null {
+  const match = PREFERRED_AT_RE.exec(value);
+  if (match === null) {
+    return "preferredAt must be YYYY-MM-DD, optionally followed by HH:MM";
+  }
+  const [, year, month, day] = match;
+  const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+  if (
+    Number.isNaN(date.getTime()) ||
+    date.getUTCMonth() + 1 !== Number(month) ||
+    date.getUTCDate() !== Number(day)
+  ) {
+    return "preferredAt is not a real date";
+  }
+  if (date.getTime() < Date.now() - DAY_MS) {
+    return "preferredAt is in the past";
+  }
+  return null;
+}
+
 /**
  * The booking calendar itself is handled by the embedded Altegio widget
  * on the client. This router provides:
@@ -67,21 +101,28 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
       res.status(400).json({ error: "service is too long" });
       return;
     }
-    // Free-text "YYYY-MM-DD HH:MM" from the consultation form. Kept as a
-    // preference, not a confirmed slot — staff book the real appointment
-    // in Altegio — so it is stored as text and only length-checked.
-    if (preferredAt !== undefined && typeof preferredAt !== "string") {
+    if (preferredAt !== undefined && preferredAt !== null && typeof preferredAt !== "string") {
       res.status(400).json({ error: "preferredAt must be a string" });
       return;
     }
-    if (typeof preferredAt === "string" && preferredAt.length > 40) {
-      res.status(400).json({ error: "preferredAt is too long" });
-      return;
+    const trimmedPreferredAt =
+      typeof preferredAt === "string" ? preferredAt.trim() : "";
+    if (trimmedPreferredAt !== "") {
+      if (trimmedPreferredAt.length > 40) {
+        res.status(400).json({ error: "preferredAt is too long" });
+        return;
+      }
+      const preferredAtError = validatePreferredAt(trimmedPreferredAt);
+      if (preferredAtError !== null) {
+        res.status(400).json({ error: preferredAtError });
+        return;
+      }
     }
     if (marketingConsent !== undefined && typeof marketingConsent !== "boolean") {
       res.status(400).json({ error: "marketingConsent must be a boolean" });
       return;
     }
+
     try {
       const result = await db.query(
         `INSERT INTO booking_requests
@@ -93,29 +134,30 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
           typeof service === "string" ? service : null,
           customerName.trim(),
           customerPhone.trim(),
-          typeof preferredAt === "string" && preferredAt.trim() !== ""
-            ? preferredAt.trim()
-            : null,
+          trimmedPreferredAt !== "" ? trimmedPreferredAt : null,
           marketingConsent === true,
         ],
       );
       res.status(201).json(result.rows[0]);
-
-      if (mailer.enabled && mailer.notifyAddress) {
-        sendInBackground(mailer, {
-          to: mailer.notifyAddress,
-          subject: `New booking request from ${customerName.trim()}`,
-          text:
-            `Name: ${customerName.trim()}\nPhone: ${customerPhone.trim()}\n` +
-            `Service: ${typeof service === "string" && service.trim() !== "" ? service.trim() : "—"}\n` +
-            `Preferred: ${typeof preferredAt === "string" && preferredAt.trim() !== "" ? preferredAt.trim() : "—"}\n` +
-            `Marketing opt-in: ${marketingConsent === true ? "yes" : "no"}\n\n` +
-            "Please follow up and enter the appointment in Altegio.",
-        });
-      }
     } catch (err) {
       console.error("Failed to store booking request:", err);
       res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    // Outside the try above on purpose: the request is answered and the
+    // record stored, so nothing here may produce a second response.
+    if (mailer.enabled && mailer.notifyAddress) {
+      sendInBackground(mailer, {
+        to: mailer.notifyAddress,
+        subject: `New booking request from ${customerName.trim()}`,
+        text:
+          `Name: ${customerName.trim()}\nPhone: ${customerPhone.trim()}\n` +
+          `Service: ${typeof service === "string" && service.trim() !== "" ? service.trim() : "—"}\n` +
+          `Preferred: ${trimmedPreferredAt !== "" ? trimmedPreferredAt : "—"}\n` +
+          `Marketing opt-in: ${marketingConsent === true ? "yes" : "no"}\n\n` +
+          "Please follow up and enter the appointment in Altegio.",
+      });
     }
   });
 

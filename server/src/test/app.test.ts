@@ -6,7 +6,10 @@ import type { Queryable } from "../db/pool.js";
 
 const query = vi.fn();
 const db = { query } as unknown as Queryable;
-const app = createApp(db);
+// Behaviour tests, not rate-limiting tests: security.test.ts owns the
+// limiter, and a shared 30-request budget would otherwise start returning
+// 429 to whichever case happens to run last.
+const app = createApp(db, { rateLimitMax: 10_000 });
 
 beforeEach(() => {
   query.mockReset();
@@ -117,6 +120,13 @@ describe("GET /api/bookings/link", () => {
   });
 });
 
+/** A date the retention/past-date rules will still accept next year. */
+function daysFromNow(days: number): string {
+  return new Date(Date.now() + days * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+}
+
 describe("POST /api/bookings", () => {
   it("logs a booking request", async () => {
     query.mockResolvedValue({ rows: [{ id: 7, status: "pending" }] });
@@ -131,16 +141,58 @@ describe("POST /api/bookings", () => {
 
   it("stores the preferred date/time and marketing opt-in from the consultation form", async () => {
     query.mockResolvedValue({ rows: [{ id: 8, status: "pending" }] });
+    const preferredAt = `${daysFromNow(7)} 10:30`;
     const res = await request(app).post("/api/bookings").send({
       customerName: "Anna",
       customerPhone: "+49123456789",
-      preferredAt: "2026-09-15 10:30",
+      preferredAt,
       marketingConsent: true,
     });
     expect(res.status).toBe(201);
     expect(query).toHaveBeenCalledWith(
       expect.stringContaining("preferred_at"),
-      expect.arrayContaining(["2026-09-15 10:30", true]),
+      expect.arrayContaining([preferredAt, true]),
+    );
+  });
+
+  it.each([
+    ["a bare time with no day", "14:00"],
+    ["a date in the past", "2020-01-02"],
+    ["an impossible day", "2030-02-31"],
+    ["an impossible hour", "2030-01-02 25:00"],
+    ["a free-text wish", "sometime next week"],
+    ["a different date format", "15.09.2030"],
+    ["an ISO timestamp", "2030-01-02T10:30:00Z"],
+  ])("rejects %s as a preferred slot", async (_case, preferredAt) => {
+    const res = await request(app)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789", preferredAt });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/preferredAt/);
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["a date on its own", () => daysFromNow(3)],
+    ["a date and time", () => `${daysFromNow(3)} 09:00"`.replace('"', "")],
+    ["today", () => daysFromNow(0)],
+    ["an empty string", () => ""],
+  ])("accepts %s", async (_case, build) => {
+    query.mockResolvedValue({ rows: [{ id: 12, status: "pending" }] });
+    const res = await request(app)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789", preferredAt: build() });
+    expect(res.status).toBe(201);
+  });
+
+  it("stores an empty preferred slot as null rather than an empty string", async () => {
+    query.mockResolvedValue({ rows: [{ id: 13, status: "pending" }] });
+    await request(app)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789", preferredAt: "   " });
+    expect(query).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.arrayContaining([null]),
     );
   });
 

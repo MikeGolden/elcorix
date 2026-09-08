@@ -7,19 +7,26 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SUPPORTED_LANGS = ["en", "de", "uk"] as const;
 type Lang = (typeof SUPPORTED_LANGS)[number];
 
+/**
+ * Signature on the auto-reply. Must match the name and city the site itself
+ * uses (client/src/config.ts) — a confirmation signed by a different
+ * business in a different town reads as a phishing attempt.
+ */
+const BUSINESS_SIGNATURE = "elcorix — Kempten";
+
 /** Auto-reply copy per language (the client sends its active language). */
 const confirmation: Record<Lang, { subject: string; text: string }> = {
   en: {
-    subject: "We received your message — Kosmetic Füssen",
-    text: "Thank you for your message! We will get back to you as soon as possible, usually within one business day.\n\nKosmetic Füssen",
+    subject: "We received your message — elcorix",
+    text: `Thank you for your message! We will get back to you as soon as possible, usually within one business day.\n\n${BUSINESS_SIGNATURE}`,
   },
   de: {
-    subject: "Wir haben Ihre Nachricht erhalten — Kosmetic Füssen",
-    text: "Vielen Dank für Ihre Nachricht! Wir melden uns so schnell wie möglich bei Ihnen, in der Regel innerhalb eines Werktages.\n\nKosmetic Füssen",
+    subject: "Wir haben Ihre Nachricht erhalten — elcorix",
+    text: `Vielen Dank für Ihre Nachricht! Wir melden uns so schnell wie möglich bei Ihnen, in der Regel innerhalb eines Werktages.\n\n${BUSINESS_SIGNATURE}`,
   },
   uk: {
-    subject: "Ми отримали ваше повідомлення — Kosmetic Füssen",
-    text: "Дякуємо за ваше повідомлення! Ми відповімо вам якнайшвидше, зазвичай протягом одного робочого дня.\n\nKosmetic Füssen",
+    subject: "Ми отримали ваше повідомлення — elcorix",
+    text: `Дякуємо за ваше повідомлення! Ми відповімо вам якнайшвидше, зазвичай протягом одного робочого дня.\n\n${BUSINESS_SIGNATURE}`,
   },
 };
 
@@ -65,6 +72,8 @@ export function contactRouter(db: Queryable, mailer: Mailer) {
       return;
     }
     const { name, email, message } = req.body;
+    const lang = requestLang((req.body as Record<string, unknown>).lang);
+
     try {
       const result = await db.query(
         `INSERT INTO contact_messages (name, email, message)
@@ -72,22 +81,23 @@ export function contactRouter(db: Queryable, mailer: Mailer) {
         [name.trim(), email.trim(), message.trim()],
       );
       res.status(201).json({ id: result.rows[0].id });
-
-      // Notifications go out after the response — the record is already
-      // stored, so a slow or failing SMTP server can't affect the client.
-      if (mailer.enabled && mailer.notifyAddress) {
-        sendInBackground(mailer, {
-          to: mailer.notifyAddress,
-          subject: `New contact message from ${name.trim()}`,
-          text: `Name: ${name.trim()}\nE-mail: ${email.trim()}\n\n${message.trim()}`,
-          replyTo: email.trim(),
-        });
-        const lang = requestLang((req.body as Record<string, unknown>).lang);
-        sendInBackground(mailer, { to: email.trim(), ...confirmation[lang] });
-      }
     } catch (err) {
       console.error("Failed to store contact message:", err);
       res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    // Notifications go out after the response, and outside the try above:
+    // the record is already stored, so nothing here may turn into a second
+    // res.* call on an answered request.
+    if (mailer.enabled && mailer.notifyAddress) {
+      sendInBackground(mailer, {
+        to: mailer.notifyAddress,
+        subject: `New contact message from ${name.trim()}`,
+        text: `Name: ${name.trim()}\nE-mail: ${email.trim()}\n\n${message.trim()}`,
+        replyTo: email.trim(),
+      });
+      sendInBackground(mailer, { to: email.trim(), ...confirmation[lang] });
     }
   });
 
