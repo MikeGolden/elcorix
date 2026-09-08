@@ -42,17 +42,23 @@ export default function AltegioWidget() {
   }
 
   return (
-    <div className="overflow-hidden rounded-panel bg-white">
-      <iframe
-        title={t("booking.widgetTitle")}
-        data-testid="altegio-widget"
-        src={altegioBookingUrl}
-        className="h-[720px] w-full"
-        loading="lazy"
-        allow="payment"
-        referrerPolicy="strict-origin-when-cross-origin"
-      />
-      <p className="p-4 text-center text-sm">
+    <div>
+      {/* The iframe is the only child of the clipping box, so all four of its
+          corners follow the panel radius — with the fallback line inside it the
+          bottom two stayed square. `rounded-panel` on the iframe itself as well:
+          Safari does not always clip an iframe to a rounded ancestor. */}
+      <div className="overflow-hidden rounded-panel bg-white">
+        <iframe
+          title={t("booking.widgetTitle")}
+          data-testid="altegio-widget"
+          src={altegioBookingUrl}
+          className="block h-[720px] w-full rounded-panel"
+          loading="lazy"
+          allow="payment"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      </div>
+      <p className="mt-4 text-center text-sm">
         {t("booking.fallbackQuestion")}{" "}
         <a
           className="font-medium text-brand-600 underline underline-offset-4"
