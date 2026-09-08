@@ -113,6 +113,14 @@
       "n4": "Behandlung der Bartkonturen im Gesicht"
     }
   },
+  "lightbox": {
+    "label": "Bildansicht",
+    "open": "Bild öffnen: {{name}}",
+    "close": "Bildansicht schließen",
+    "prev": "Vorheriges Bild",
+    "next": "Nächstes Bild",
+    "counter": "{{current}} von {{total}}"
+  },
   "prices": {
     "title": "Beliebte Leistungen und Preise",
     "pageTitle": "Preisliste",
