@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
+import Reveal from "../components/Reveal";
 import Lightbox from "../components/Lightbox";
 import { images } from "../images";
 
@@ -58,11 +59,13 @@ export default function Works() {
       aria-labelledby="work-title"
       className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20"
     >
-      <h2 id="work-title" className="text-center text-2xl font-bold sm:text-3xl">
+      <Reveal as="h2" id="work-title" className="text-center text-2xl font-bold sm:text-3xl">
         {t("work.title")}
-      </h2>
+      </Reveal>
 
-      <div className="relative mt-9">
+      {/* The reveal stops here on purpose: <Lightbox> below is `fixed` and
+          must not sit inside an element that is briefly transformed. */}
+      <Reveal className="relative mt-9" delay={90}>
         <ul
           ref={trackRef}
           onScroll={syncArrows}
@@ -123,7 +126,7 @@ export default function Works() {
         >
           <ChevronRightIcon />
         </button>
-      </div>
+      </Reveal>
 
       <Lightbox
         images={slides}

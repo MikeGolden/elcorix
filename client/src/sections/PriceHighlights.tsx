@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Reveal from "../components/Reveal";
 import { PackagePriceTable, ZonePriceTables } from "../components/PriceTables";
 
 export default function PriceHighlights() {
@@ -10,20 +11,21 @@ export default function PriceHighlights() {
       aria-labelledby="prices-title"
       className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20"
     >
-      <h2 id="prices-title" className="text-center text-2xl font-bold sm:text-3xl">
+      <Reveal as="h2" id="prices-title" className="text-center text-2xl font-bold sm:text-3xl">
         {t("prices.title")}
-      </h2>
-      <div className="mt-10">
+      </Reveal>
+      <Reveal className="mt-10" delay={90}>
         <ZonePriceTables />
-      </div>
-      <div className="mt-14">
+      </Reveal>
+      {/* Its own reveal — the package table is a screen further down. */}
+      <Reveal className="mt-14">
         <PackagePriceTable />
-      </div>
-      <div className="mt-10 flex justify-end">
+      </Reveal>
+      <Reveal className="mt-10 flex justify-end" delay={90}>
         <Link to="/prices" className="btn-primary">
           {t("cta.fullPriceList")}
         </Link>
-      </div>
+      </Reveal>
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
+import Reveal from "../components/Reveal";
 import { images } from "../images";
 import { anchorHref } from "../anchors";
 
@@ -16,13 +17,14 @@ export default function Technology() {
       className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20"
     >
       <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
-        <img
+        <Reveal
+          as="img"
           src={images.technology}
           alt={t("technology.imageAlt")}
           loading="lazy"
           className="aspect-[4/3] w-full rounded-panel object-cover"
         />
-        <div>
+        <Reveal delay={110}>
           <h2 id="technology-title" className="text-2xl font-bold sm:text-[1.9rem] sm:leading-tight">
             {t("technology.title")}
           </h2>
@@ -40,7 +42,7 @@ export default function Technology() {
           <Link to={anchorHref(pathname, "consultation")} className="btn-primary mt-8">
             {t("cta.moreDevices")}
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

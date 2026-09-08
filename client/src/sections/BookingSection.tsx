@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import AltegioWidget from "../components/AltegioWidget";
+import Reveal from "../components/Reveal";
 
 /**
  * Online booking. The Figma has no calendar of its own — the studio books
@@ -8,7 +9,8 @@ import AltegioWidget from "../components/AltegioWidget";
 export default function BookingSection() {
   const { t } = useTranslation();
   return (
-    <section
+    <Reveal
+      as="section"
       id="booking"
       aria-labelledby="booking-title"
       className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20"
@@ -22,6 +24,6 @@ export default function BookingSection() {
       <div className="mt-10">
         <AltegioWidget />
       </div>
-    </section>
+    </Reveal>
   );
 }

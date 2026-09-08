@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Reveal from "../components/Reveal";
 import { images } from "../images";
 import { anchorHref } from "../anchors";
 
@@ -8,6 +9,11 @@ import { anchorHref } from "../anchors";
  * the photo bleeds to the right edge of the viewport and runs the full
  * height of the block, up behind the (transparent) header — so the
  * header buttons sit on the photo and there is no divider between them.
+ *
+ * Everything here is above the fold, so the reveals fire on load: headline
+ * first, then the button, the photo and the service teaser, ~90ms apart.
+ * The photo only fades — sliding a half-viewport image that is pinned to
+ * the right edge reads as a glitch, not as motion.
  */
 export default function Hero() {
   const { t } = useTranslation();
@@ -22,14 +28,22 @@ export default function Hero() {
     // squeezed the headline to one word per line.
     <section className="relative -mt-19 pt-19">
       <div className="mx-auto max-w-[1200px] px-4 pb-14 pt-8 sm:px-6 sm:pb-20 sm:pt-12 lg:pr-[min(calc(50vw+2.5rem),640px)]">
-        <h1 className="text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-[3.35rem]">
+        <Reveal
+          as="h1"
+          className="text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-[3.35rem]"
+        >
           {t("hero.title")}
-        </h1>
-        <Link to={anchorHref(pathname, "booking")} className="btn-primary mt-8">
+        </Reveal>
+        <Reveal
+          as={Link}
+          delay={90}
+          to={anchorHref(pathname, "booking")}
+          className="btn-primary mt-8"
+        >
           {t("cta.book")}
-        </Link>
+        </Reveal>
 
-        <div className="mt-12">
+        <Reveal className="mt-12" delay={270}>
           <p className="text-sm font-bold text-brand-700">{t("hero.servicesLabel")}</p>
           <Link
             to="/prices"
@@ -47,9 +61,12 @@ export default function Hero() {
               <span className="text-ink-300">{t("hero.serviceCount")}</span>
             </span>
           </Link>
-        </div>
+        </Reveal>
 
-        <img
+        <Reveal
+          as="img"
+          variant="fade"
+          delay={180}
           src={images.hero}
           alt={t("hero.imageAlt")}
           width="1600"
