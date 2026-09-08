@@ -70,7 +70,14 @@ export function createMailerFromEnv(env: NodeJS.ProcessEnv = process.env): Maile
  */
 export function sendInBackground(mailer: Mailer, message: MailMessage): void {
   if (!mailer.enabled) return;
-  mailer.send(message).catch((err) => {
+  const failed = (err: unknown) =>
     console.error(`Failed to send notification e-mail "${message.subject}":`, err);
-  });
+  // try/catch as well as .catch(): a mailer that throws synchronously would
+  // otherwise unwind into the route handler, which has already answered the
+  // request — and the resulting second res.* call is a crash, not a bounce.
+  try {
+    void Promise.resolve(mailer.send(message)).catch(failed);
+  } catch (err) {
+    failed(err);
+  }
 }

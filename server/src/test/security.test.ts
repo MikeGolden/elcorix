@@ -79,13 +79,40 @@ describe("request body hardening", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
-  it("rejects bodies over the size limit", async () => {
+  it("rejects bodies over the size limit and says so", async () => {
     const res = await request(createApp(db))
       .post("/api/contact")
-      .send({ name: "A", email: "a@b.co", message: "x".repeat(20_000) });
+      .send({ name: "A", email: "a@b.co", message: "x".repeat(40_000) });
     expect(res.status).toBe(413);
-    expect(res.body).toEqual({ error: "Invalid request" });
+    expect(res.body).toEqual({ error: "Request body is too large" });
     expect(query).not.toHaveBeenCalled();
+  });
+
+  it("lets a full-length multibyte message reach the field validation", async () => {
+    // 5000 characters is the documented maximum, and Cyrillic costs two
+    // bytes each: under a 16kb body limit this was rejected by the parser
+    // as a malformed request instead of being accepted.
+    const res = await request(createApp(db))
+      .post("/api/contact")
+      .send({ name: "Анна", email: "a@b.co", message: "щ".repeat(5000) });
+    expect(res.status).toBe(201);
+    expect(query).toHaveBeenCalled();
+  });
+
+  it("still reports an over-length message as a field error, not a size error", async () => {
+    const res = await request(createApp(db))
+      .post("/api/contact")
+      .send({ name: "A", email: "a@b.co", message: "x".repeat(5001) });
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: "Message is too long" });
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("answers unknown API routes with JSON, not Express's HTML page", async () => {
+    const res = await request(createApp(db)).post("/api/nope").send({});
+    expect(res.status).toBe(404);
+    expect(res.headers["content-type"]).toMatch(/application\/json/);
+    expect(res.body).toEqual({ error: "Not found" });
   });
 
   it.each([
