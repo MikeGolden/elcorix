@@ -23,6 +23,12 @@ require_once get_theme_file_path( 'inc/seo.php' );
 if ( class_exists( 'Elcorix_Settings' ) ) {
 	require_once get_theme_file_path( 'inc/template-tags.php' );
 } else {
+	/*
+	 * Without the plugin there is no content, no business data and no
+	 * template tags — every template would fatal on its first call. Say so,
+	 * in wp-admin and on the front end, rather than serving a white screen
+	 * that looks like a hosting failure.
+	 */
 	add_action(
 		'admin_notices',
 		static function (): void {
@@ -33,5 +39,13 @@ if ( class_exists( 'Elcorix_Settings' ) ) {
 				)
 				. '</p></div>';
 		}
+	);
+
+	add_filter(
+		'template_include',
+		static function (): string {
+			return get_theme_file_path( 'inc/missing-plugin.php' );
+		},
+		PHP_INT_MAX
 	);
 }
