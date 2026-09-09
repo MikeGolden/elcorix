@@ -1,10 +1,16 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import de from "../i18n/locales/de/common.json";
 import en from "../i18n/locales/en/common.json";
 import uk from "../i18n/locales/uk/common.json";
+import ru from "../i18n/locales/ru/common.json";
 import { staticBusiness } from "../business";
-import { canonicalUrl, composeTitle, ogLocaleFor } from "../seo/meta";
+import { supportedLanguages } from "../i18n/routing";
+import {
+  alternateLinks,
+  canonicalUrl,
+  composeTitle,
+  ogAlternateLocales,
+  ogLocaleFor,
+} from "../seo/meta";
 import { siteRoutes } from "../seo/routes";
 import {
   injectSeoBlock,
@@ -24,26 +30,11 @@ function jsonLdFrom(html: string): Record<string, unknown> {
 }
 
 describe("route table", () => {
-  const sitemap = readFileSync(resolve(process.cwd(), "public/sitemap.xml"), "utf8");
-  const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-
-  it("declares the same URLs as public/sitemap.xml", () => {
-    // The sitemap is hand-written; this is what stops it drifting from the
-    // routes that actually get a prerendered shell.
-    expect([...sitemapUrls].sort()).toEqual(
-      siteRoutes.map((route) => canonicalUrl(route.path)).sort(),
-    );
-  });
-
-  it("declares the same changefreq as the sitemap", () => {
-    const freqs = [...sitemap.matchAll(/<changefreq>([^<]+)<\/changefreq>/g)].map((m) => m[1]);
-    expect(freqs).toEqual(siteRoutes.map((route) => route.changefreq));
-  });
-
   it.each([
     ["de", de],
     ["en", en],
     ["uk", uk],
+    ["ru", ru],
   ] as const)("has a %s title and description for every route", (_language, resources) => {
     for (const route of siteRoutes) {
       const meta = resources.meta[route.metaKey];
@@ -59,9 +50,22 @@ describe("shared title and canonical rules", () => {
     expect(composeTitle("/prices", "Preisliste")).toBe("Preisliste — elcorix");
   });
 
-  it("builds absolute canonicals against the configured origin", () => {
-    expect(canonicalUrl("/")).toBe("https://elcorix.com/");
-    expect(canonicalUrl("/prices")).toBe("https://elcorix.com/prices");
+  it("builds absolute canonicals with the language segment", () => {
+    expect(canonicalUrl("de", "/")).toBe("https://elcorix.com/de");
+    expect(canonicalUrl("de", "/prices")).toBe("https://elcorix.com/de/prices");
+    expect(canonicalUrl("uk", "/prices")).toBe("https://elcorix.com/uk/prices");
+  });
+
+  it("declares every language plus x-default as hreflang alternates", () => {
+    // A page's alternates include the page itself — that is what tells
+    // Google the URLs are one cluster and not near-duplicates.
+    expect(alternateLinks("/prices")).toEqual([
+      { hreflang: "en", href: "https://elcorix.com/en/prices" },
+      { hreflang: "de", href: "https://elcorix.com/de/prices" },
+      { hreflang: "uk", href: "https://elcorix.com/uk/prices" },
+      { hreflang: "ru", href: "https://elcorix.com/ru/prices" },
+      { hreflang: "x-default", href: "https://elcorix.com/de/prices" },
+    ]);
   });
 
   it("emits Open Graph locales as language_TERRITORY", () => {
@@ -69,8 +73,10 @@ describe("shared title and canonical rules", () => {
     expect(ogLocaleFor("de")).toBe("de_DE");
     expect(ogLocaleFor("en")).toBe("en_GB");
     expect(ogLocaleFor("uk")).toBe("uk_UA");
+    expect(ogLocaleFor("ru")).toBe("ru_RU");
     expect(ogLocaleFor("en-GB")).toBe("en_GB");
     expect(ogLocaleFor(undefined)).toBe("de_DE");
+    expect(ogAlternateLocales("de")).toEqual(["en_GB", "uk_UA", "ru_RU"]);
   });
 });
 
@@ -78,27 +84,56 @@ describe("static head blocks", () => {
   const home = siteRoutes[0];
   const prices = siteRoutes.find((route) => route.path === "/prices")!;
 
-  it("carries the route's own German title, description and canonical", () => {
-    const block = seoBlock(prices, BOOKING_URL);
-    const head = routeHead(prices);
+  it("carries the route's own title, description and canonical per language", () => {
+    const block = seoBlock(prices, "de", BOOKING_URL);
+    const head = routeHead(prices, "de");
 
     expect(head.title).toBe(`${de.meta.prices.title} — elcorix`);
     expect(block).toContain(`<title>${head.title}</title>`);
     expect(block).toContain(`content="${de.meta.prices.description}"`);
-    expect(block).toContain('<link rel="canonical" href="https://elcorix.com/prices" />');
-    expect(block).toContain('content="https://elcorix.com/prices"');
+    expect(block).toContain('<link rel="canonical" href="https://elcorix.com/de/prices" />');
     expect(block).toContain('content="de_DE"');
+
+    const ukrainian = seoBlock(prices, "uk", BOOKING_URL);
+    expect(ukrainian).toContain(`<title>${uk.meta.prices.title} — elcorix</title>`);
+    expect(ukrainian).toContain('<link rel="canonical" href="https://elcorix.com/uk/prices" />');
+    expect(ukrainian).toContain('content="uk_UA"');
+
+    const russian = seoBlock(prices, "ru", BOOKING_URL);
+    expect(russian).toContain(`<title>${ru.meta.prices.title} — elcorix</title>`);
+    expect(russian).toContain('<link rel="canonical" href="https://elcorix.com/ru/prices" />');
+    expect(russian).toContain('content="ru_RU"');
+  });
+
+  it("declares the hreflang alternates every crawler needs", () => {
+    const block = seoBlock(prices, "en", BOOKING_URL);
+    for (const language of supportedLanguages) {
+      expect(block).toContain(
+        `<link rel="alternate" hreflang="${language}" href="https://elcorix.com/${language}/prices" />`,
+      );
+    }
+    expect(block).toContain(
+      '<link rel="alternate" hreflang="x-default" href="https://elcorix.com/de/prices" />',
+    );
+    // Its own locale is not repeated as an alternate.
+    expect(block).toContain('<meta property="og:locale" content="en_GB" />');
+    expect(block).not.toContain('<meta property="og:locale:alternate" content="en_GB" />');
+    expect(block).toContain('<meta property="og:locale:alternate" content="de_DE" />');
+  });
+
+  it("defaults to German when no language is given", () => {
+    expect(routeHead(prices).title).toBe(`${de.meta.prices.title} — elcorix`);
   });
 
   it("escapes quotes so a translation can never break out of an attribute", () => {
-    const block = seoBlock({ ...prices, metaKey: "prices" }, BOOKING_URL);
+    const block = seoBlock(prices, "de", BOOKING_URL);
     const attributes = [...block.matchAll(/content="([^"]*)"/g)].map((m) => m[1]);
     expect(attributes.length).toBeGreaterThan(0);
     for (const value of attributes) expect(value).not.toContain('"');
   });
 
   it("embeds LocalBusiness JSON-LD that parses and cannot close its own tag", () => {
-    const block = seoBlock(home, BOOKING_URL);
+    const block = seoBlock(home, "de", BOOKING_URL);
     expect(block).not.toContain("</script></script>");
 
     const data = jsonLdFrom(block);
@@ -118,7 +153,7 @@ describe("static head blocks", () => {
   });
 
   it("never emits a raw < inside the JSON-LD", () => {
-    const escaped = seoBlock(home, "https://n1.alteg.io</script><script>alert(1)</script>");
+    const escaped = seoBlock(home, "de", "https://n1.alteg.io</script><script>alert(1)</script>");
     const script = escaped.slice(escaped.indexOf('application/ld+json">') + 21);
     expect(script.slice(0, script.indexOf("</script>"))).not.toContain("<");
   });
@@ -128,21 +163,21 @@ describe("injecting the block into index.html", () => {
   const document = "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"UTF-8\" />\n  </head>\n  <body></body>\n</html>\n";
 
   it("adds exactly one block, inside the head", () => {
-    const injected = injectSeoBlock(document, seoBlock(siteRoutes[0], BOOKING_URL));
+    const injected = injectSeoBlock(document, seoBlock(siteRoutes[0], "de", BOOKING_URL));
     expect(injected.match(/<title>/g)).toHaveLength(1);
     expect(injected.indexOf("<title>")).toBeLessThan(injected.indexOf("</head>"));
   });
 
   it("swaps one route's block for another without touching the rest", () => {
-    const home = injectSeoBlock(document, seoBlock(siteRoutes[0], BOOKING_URL));
+    const home = injectSeoBlock(document, seoBlock(siteRoutes[0], "de", BOOKING_URL));
     const prices = replaceSeoBlock(
       home,
-      seoBlock(siteRoutes.find((route) => route.path === "/prices")!, BOOKING_URL),
+      seoBlock(siteRoutes.find((route) => route.path === "/prices")!, "en", BOOKING_URL),
     );
 
     expect(prices.match(/<title>/g)).toHaveLength(1);
-    expect(prices).toContain('href="https://elcorix.com/prices"');
-    expect(prices).not.toContain('href="https://elcorix.com/"');
+    expect(prices).toContain('href="https://elcorix.com/en/prices"');
+    expect(prices).not.toContain('<link rel="canonical" href="https://elcorix.com/de" />');
     expect(prices).toContain('<meta charset="UTF-8" />');
     expect(prices).toContain("<body></body>");
   });

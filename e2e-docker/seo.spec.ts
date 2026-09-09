@@ -4,15 +4,18 @@ import { test, expect } from "@playwright/test";
  * The prerendered route shells, served by the real nginx.
  *
  * This is the only place the whole chain is exercised: the Vite plugin
- * writes dist/<route>/index.html, and nginx picks it up through
+ * writes dist/<lang>/<route>/index.html, and nginx picks it up through
  * `try_files $uri $uri/index.html /index.html`. Without it a link to
- * /prices shared on WhatsApp previews as the home page.
+ * /de/prices shared on WhatsApp previews as the home page.
  */
 const routes = [
-  { path: "/prices", title: "Preisliste — elcorix" },
-  { path: "/contact", title: "Kontakt — elcorix" },
-  { path: "/booking", title: "Termin vereinbaren — elcorix" },
-  { path: "/imprint", title: "Impressum — elcorix" },
+  { path: "/de/prices", title: "Preisliste — elcorix" },
+  { path: "/de/contact", title: "Kontakt — elcorix" },
+  { path: "/en/prices", title: "Price list — elcorix" },
+  { path: "/uk/booking", title: "Записатися на прийом — elcorix" },
+  { path: "/uk/gallery", title: "Наші роботи — elcorix" },
+  { path: "/ru/gallery", title: "Наши работы — elcorix" },
+  { path: "/de/imprint", title: "Impressum — elcorix" },
 ];
 
 test.describe("Prerendered route shells", () => {
@@ -29,13 +32,44 @@ test.describe("Prerendered route shells", () => {
       expect(html).toContain(`content="https://elcorix.com${route.path}"`);
       expect(html.match(/<title>/g)).toHaveLength(1);
       expect(html).toContain('type="application/ld+json"');
+
+      // Each shell declares the whole language cluster.
+      for (const language of ["en", "de", "uk", "ru"]) {
+        const alternate = route.path.replace(/^\/[a-z]{2}/, `/${language}`);
+        expect(html).toContain(
+          `<link rel="alternate" hreflang="${language}" href="https://elcorix.com${alternate}" />`,
+        );
+      }
     });
   }
 
-  test("the home page keeps its own head", async ({ request }) => {
+  test("each language home page keeps its own head", async ({ request }) => {
+    const german = await (await request.get("/de")).text();
+    expect(german).toContain("<title>elcorix — Dauerhafte Laser-Haarentfernung in Kempten</title>");
+    expect(german).toContain('<link rel="canonical" href="https://elcorix.com/de" />');
+    expect(german).toContain('<html lang="de"');
+
+    const english = await (await request.get("/en")).text();
+    expect(english).toContain('<link rel="canonical" href="https://elcorix.com/en" />');
+    expect(english).toContain('<html lang="en"');
+  });
+
+  test("the unprefixed document points crawlers at the German page", async ({ request }) => {
+    // nginx falls back to dist/index.html for "/" and for anything unknown;
+    // the router then redirects the visitor to their own language.
     const html = await (await request.get("/")).text();
-    expect(html).toContain("<title>elcorix — Dauerhafte Laser-Haarentfernung in Kempten</title>");
-    expect(html).toContain('<link rel="canonical" href="https://elcorix.com/" />');
+    expect(html).toContain('<link rel="canonical" href="https://elcorix.com/de" />');
+  });
+
+  test("the generated sitemap is served and lists every language", async ({ request }) => {
+    const response = await request.get("/sitemap.xml");
+    expect(response.status()).toBe(200);
+    const xml = await response.text();
+    // 9 routes × 4 languages.
+    expect(xml.match(/<loc>/g)).toHaveLength(36);
+    expect(xml).toContain("<loc>https://elcorix.com/uk/prices</loc>");
+    expect(xml).toContain("<loc>https://elcorix.com/ru/prices</loc>");
+    expect(xml).toContain('hreflang="x-default"');
   });
 
   test("unknown URLs still fall back to the SPA document", async ({ request }) => {
@@ -46,7 +80,7 @@ test.describe("Prerendered route shells", () => {
 
   test("HTML is never cached, hashed assets are", async ({ request }) => {
     // A cached shell would pin the browser to a bundle the deploy deleted.
-    const shell = await request.get("/prices");
+    const shell = await request.get("/de/prices");
     expect(shell.headers()["cache-control"]).toContain("no-cache");
 
     const html = await shell.text();
@@ -57,7 +91,7 @@ test.describe("Prerendered route shells", () => {
   });
 
   test("the shells keep the security headers", async ({ request }) => {
-    const headers = (await request.get("/prices")).headers();
+    const headers = (await request.get("/de/prices")).headers();
     expect(headers["x-content-type-options"]).toBe("nosniff");
     expect(headers["content-security-policy"]).toContain("frame-ancestors 'none'");
   });

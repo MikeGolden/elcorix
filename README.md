@@ -275,26 +275,34 @@ The site is a client-rendered SPA, so the `<head>` is written twice: once at
 build time for crawlers, and again at runtime for the visitor's language.
 
 - **Build time** — `client/vite/seoPrerender.ts` injects a marked block into
-  `index.html` (title, description, canonical, Open Graph, and the
-  `schema.org/BeautySalon` JSON-LD) and writes one shell per route into
-  `dist/`: `dist/prices/index.html`, `dist/contact/index.html`, … nginx
+  `index.html` (title, description, canonical, hreflang, Open Graph, and the
+  `schema.org/BeautySalon` JSON-LD) and writes one shell per language per
+  route into `dist/`: `dist/de/prices/index.html`, `dist/en/prices/index.html`,
+  … 27 in total, each in its own language with `<html lang>` to match. nginx
   serves them with `try_files $uri $uri/index.html /index.html`. Without
   this, everything that does not run JavaScript — every social scraper —
-  saw the home page's head whatever URL it asked for. The shells are
-  German; only the head is prerendered, the body is still React's.
-- **Runtime** — `client/src/seo/usePageMeta.ts` rewrites those same tags in
-  the visitor's language on navigation. The title and canonical rules are
-  shared with the build step (`client/src/seo/meta.ts`) so the two cannot
-  disagree.
-- `client/src/seo/routes.ts` is the route table the prerender and the tests
-  read; `src/test/staticMeta.test.ts` fails if it and `public/sitemap.xml`
-  drift apart.
-- `robots.txt`, `sitemap.xml`, SVG favicon and apple-touch-icon in
-  `client/public/` — keep the origin there in sync with `siteUrl` in
-  `client/src/config.ts`.
-- No hreflang alternates on purpose: all three languages share one URL
-  (language is a client-side preference, not a URL segment). This also means
-  the prerendered head can only be one language, and German is the market.
+  saw the home page's head whatever URL it asked for. Only the head is
+  prerendered; the body is still React's.
+- The unprefixed `dist/index.html` that nginx falls back to for `/` and for
+  unknown URLs carries the German home head and canonicalises to `/de`; the
+  router then redirects the visitor to their own language.
+- **Runtime** — `client/src/seo/usePageMeta.ts` rewrites those same tags for
+  the route and language the router landed on. The title, canonical and
+  alternate rules are shared with the build step (`client/src/seo/meta.ts`)
+  so the two cannot disagree.
+- **hreflang** — every page declares every language plus `x-default`
+  (German), in the shells, at runtime, and in the sitemap. This is the point
+  of the language segments: Google crawls with `Accept-Language: en-US`, so
+  while they all shared one URL the German site was being indexed in its
+  English rendering, with no alternate URL to point at.
+- `client/src/seo/routes.ts` is the route table the router, the prerender,
+  the sitemap and the tests all read.
+- `sitemap.xml` is **generated**, not committed: `client/src/seo/sitemap.ts`
+  builds it from the route table × the language list (32 URLs with their
+  alternates), the prerender plugin writes it into `dist/` and serves it from
+  the dev server, and `src/test/sitemap.test.ts` asserts the output.
+- `robots.txt`, SVG favicon and apple-touch-icon in `client/public/` — keep
+  the origin there in sync with `siteUrl` in `client/src/business.ts`.
 
 ## Analytics (optional)
 

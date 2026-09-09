@@ -17,9 +17,17 @@ test.describe("Static SEO head (dev server)", () => {
     const html = await (await request.get("/")).text();
 
     expect(html).toContain("<title>elcorix — Dauerhafte Laser-Haarentfernung in Kempten</title>");
-    expect(html).toContain('<link rel="canonical" href="https://elcorix.com/" />');
+    // The dev server has no per-route shells; it serves the German home
+    // block, which canonicalises to /de — the language "/" redirects to.
+    expect(html).toContain('<link rel="canonical" href="https://elcorix.com/de" />');
     expect(html).toContain('property="og:title"');
     expect(html).toContain('content="de_DE"');
+    for (const language of ["en", "de", "uk", "ru"]) {
+      expect(html).toContain(
+        `<link rel="alternate" hreflang="${language}" href="https://elcorix.com/${language}" />`,
+      );
+    }
+    expect(html).toContain('hreflang="x-default" href="https://elcorix.com/de"');
     // Exactly one of each — a second <title> would be a duplicated tag.
     expect(html.match(/<title>/g)).toHaveLength(1);
     expect(html.match(/name="description"/g)).toHaveLength(1);
@@ -39,17 +47,26 @@ test.describe("Static SEO head (dev server)", () => {
   });
 
   test("the app reuses those tags instead of appending its own", async ({ page }) => {
-    await page.goto("/");
-    // Playwright's default locale is en-US, so the app switches the head to
-    // English on mount — the static German tags are the crawler's copy.
+    await page.goto("/en");
+    // The URL says English, so the app rewrites the German shell's tags on
+    // mount — those tags are the copy a crawler that runs no JS reads.
     const ogLocale = page.locator('meta[property="og:locale"]');
     await expect(ogLocale).toHaveAttribute("content", "en_GB");
     await expect(page).toHaveTitle(/Permanent laser hair removal/);
+
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://elcorix.com/en",
+    );
 
     await page.getByTestId("language-switcher").click();
     await page.getByRole("option", { name: "Deutsch" }).click();
     await expect(ogLocale).toHaveAttribute("content", "de_DE");
     await expect(page).toHaveTitle(/Dauerhafte Laser-Haarentfernung/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://elcorix.com/de",
+    );
 
     // One of each: usePageMeta must rewrite the prerendered tags, never
     // append a second set beside them.
@@ -57,5 +74,8 @@ test.describe("Static SEO head (dev server)", () => {
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
     await expect(page.locator('meta[name="description"]')).toHaveCount(1);
     await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(1);
+    // …and the alternates are one set of five (four languages plus
+    // x-default), replaced not appended.
+    await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(5);
   });
 });

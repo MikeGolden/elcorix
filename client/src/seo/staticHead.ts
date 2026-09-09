@@ -1,6 +1,16 @@
 import de from "../i18n/locales/de/common.json";
+import en from "../i18n/locales/en/common.json";
+import uk from "../i18n/locales/uk/common.json";
+import ru from "../i18n/locales/ru/common.json";
 import { staticBusiness } from "../business";
-import { canonicalUrl, composeTitle, ogLocaleFor } from "./meta";
+import { defaultLanguage, type SupportedLanguage } from "../i18n/routing";
+import {
+  alternateLinks,
+  canonicalUrl,
+  composeTitle,
+  ogAlternateLocales,
+  ogLocaleFor,
+} from "./meta";
 import type { SiteRoute } from "./routes";
 
 /**
@@ -10,11 +20,20 @@ import type { SiteRoute } from "./routes";
  * `staticBusiness` — no DOM, no environment — so the Vite config can
  * import it and `staticMeta.test.ts` can assert on the output.
  *
- * German, deliberately: the three languages share one URL, so a static
- * shell can only carry one of them, and the market is Kempten. Once a
- * visitor's browser runs the bundle, `usePageMeta` replaces these tags
- * with their chosen language.
+ * One shell per language per route: `/de/prices`, `/en/prices` and
+ * `/uk/prices` and `/ru/prices` are four URLs, so each gets its own head, in its own
+ * language, declaring the other two as hreflang alternates. (Before the
+ * language segments existed, they all shared one URL and the shell could
+ * only be German — which is how Google, crawling with
+ * `Accept-Language: en-US`, ended up indexing the German site in English.)
+ *
+ * The unprefixed `index.html` that nginx falls back to carries the German
+ * home page's head, pointing its canonical at `/de` — a visitor arriving
+ * there is redirected to their own language by the router.
  */
+
+/** Translations addressed by language, for the head of each shell. */
+const translations = { de, en, uk, ru } as const;
 
 export const SEO_BLOCK_START = "<!--seo:start-->";
 export const SEO_BLOCK_END = "<!--seo:end-->";
@@ -79,12 +98,15 @@ export type RouteHead = {
   canonical: string;
 };
 
-export function routeHead(route: SiteRoute): RouteHead {
-  const meta = de.meta[route.metaKey];
+export function routeHead(
+  route: SiteRoute,
+  language: SupportedLanguage = defaultLanguage,
+): RouteHead {
+  const meta = translations[language].meta[route.metaKey];
   return {
     title: composeTitle(route.path, meta.title),
     description: meta.description,
-    canonical: canonicalUrl(route.path),
+    canonical: canonicalUrl(language, route.path),
   };
 }
 
@@ -93,16 +115,27 @@ export function routeHead(route: SiteRoute): RouteHead {
  * prerender step can swap it out of the built index.html for every other
  * route without re-parsing the document.
  */
-export function seoBlock(route: SiteRoute, altegioBookingUrl: string): string {
-  const head = routeHead(route);
+export function seoBlock(
+  route: SiteRoute,
+  language: SupportedLanguage,
+  altegioBookingUrl: string,
+): string {
+  const head = routeHead(route, language);
   const lines = [
     `<title>${escapeAttribute(head.title)}</title>`,
     `<meta name="description" content="${escapeAttribute(head.description)}" />`,
     `<link rel="canonical" href="${head.canonical}" />`,
+    ...alternateLinks(route.path).map(
+      (alternate) =>
+        `<link rel="alternate" hreflang="${alternate.hreflang}" href="${alternate.href}" />`,
+    ),
     `<meta property="og:title" content="${escapeAttribute(head.title)}" />`,
     `<meta property="og:description" content="${escapeAttribute(head.description)}" />`,
     `<meta property="og:url" content="${head.canonical}" />`,
-    `<meta property="og:locale" content="${ogLocaleFor("de")}" />`,
+    `<meta property="og:locale" content="${ogLocaleFor(language)}" />`,
+    ...ogAlternateLocales(language).map(
+      (locale) => `<meta property="og:locale:alternate" content="${locale}" />`,
+    ),
     `<script type="application/ld+json">${embedJson(
       localBusinessJsonLd(altegioBookingUrl),
     )}</script>`,
