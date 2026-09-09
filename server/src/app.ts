@@ -5,6 +5,11 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import type { Queryable } from "./db/pool.js";
 import { createMailerFromEnv, disabledMailer, type Mailer } from "./mailer.js";
+import {
+  createTelegramFromEnv,
+  disabledTelegram,
+  type TelegramNotifier,
+} from "./telegram.js";
 import { contactRouter } from "./routes/contact.js";
 import { bookingsRouter } from "./routes/bookings.js";
 
@@ -21,6 +26,11 @@ export interface AppOptions {
   rateLimitWindowMs?: number;
   /** Notification mailer. Defaults to the SMTP/MAIL env configuration. */
   mailer?: Mailer;
+  /**
+   * Telegram notifier for consultation requests. Defaults to the
+   * TELEGRAM_* env configuration.
+   */
+  telegram?: TelegramNotifier;
 }
 
 export function createApp(db: Queryable, options: AppOptions = {}) {
@@ -88,8 +98,12 @@ export function createApp(db: Queryable, options: AppOptions = {}) {
     );
   }
 
+  const telegram =
+    options.telegram ??
+    (process.env.NODE_ENV === "test" ? disabledTelegram : createTelegramFromEnv());
+
   app.use("/api/contact", contactRouter(db, mailer));
-  app.use("/api/bookings", bookingsRouter(db, mailer));
+  app.use("/api/bookings", bookingsRouter(db, mailer, telegram));
 
   // Unmatched API routes: Express's default 404 is an HTML page, which a
   // fetch() calling res.json() cannot parse. Everything under /api must
