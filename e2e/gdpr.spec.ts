@@ -1,10 +1,14 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("GDPR consent", () => {
-  test("banner gates the Altegio calendar until consent and persists", async ({
+  // The Altegio booking block is hidden behind an off feature flag
+  // (client/src/features.ts), so /booking is not served and the embed never
+  // renders. The consent gate itself is still covered by the unit tests in
+  // client/src/test/consent.test.tsx; un-skip this together with the flag.
+  test.skip("banner gates the Altegio calendar until consent and persists", async ({
     page,
   }) => {
-    await page.goto("/booking");
+    await page.goto("/en/booking");
     const banner = page.getByRole("dialog", {
       name: "Cookies & external services",
     });
@@ -43,14 +47,16 @@ test.describe("GDPR consent", () => {
     ).toBeVisible();
     await page.getByRole("button", { name: "Only necessary" }).click();
 
-    await page.goto("/booking");
-    await expect(page.getByTestId("altegio-consent-placeholder")).toBeVisible();
+    // The decision persists across a navigation and a reload: the banner
+    // stays closed rather than asking again.
+    await page.goto("/en/prices");
+    await expect(page.getByRole("dialog")).toBeHidden();
   });
 
   test("privacy policy and imprint are reachable from the footer", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/en");
     await page.getByRole("button", { name: "Only necessary" }).click();
 
     const footer = page.locator("footer");

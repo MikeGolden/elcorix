@@ -45,8 +45,26 @@ test.describe("Deep-link routes", () => {
     await expect(page).toHaveURL(/\/en$/);
   });
 
-  test("booking page offers the cookie-free consultation request", async ({ page }) => {
+  test("the hidden Altegio booking block is nowhere on the site", async ({ page }) => {
+    // The flag is off (client/src/features.ts): no landing section, no
+    // embed, no route, and nothing linking to either.
+    await page.goto("/en");
+    await page.getByRole("button", { name: "Only necessary" }).click();
+    await expect(page.locator("#booking")).toHaveCount(0);
+    await expect(page.getByTestId("altegio-consent-placeholder")).toHaveCount(0);
+    await expect(page.locator('a[href$="#booking"], a[href$="/booking"]')).toHaveCount(0);
+
     await page.goto("/en/booking");
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Page not found" }),
+    ).toBeVisible();
+  });
+
+  // Was the /booking page; that route is behind an off feature flag
+  // (client/src/features.ts), so the same form is exercised where it also
+  // lives — the consultation section of the landing page.
+  test("landing page offers the cookie-free consultation request", async ({ page }) => {
+    await page.goto("/en#consultation");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.route("**/api/bookings", (route) =>
       route.fulfill({

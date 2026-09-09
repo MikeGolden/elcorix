@@ -2,6 +2,8 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import App from "../App";
+import BookingPage from "../pages/BookingPage";
+import { ConsentProvider } from "../consent/ConsentContext";
 import { navAnchors } from "../content";
 import en from "../i18n/locales/en/common.json";
 
@@ -28,6 +30,21 @@ function renderAt(path: string) {
 }
 
 /**
+ * The Altegio booking route is behind an (off) feature flag, so the page is
+ * mounted on its own rather than routed to — the widget, its consent gate
+ * and the page itself all still ship and are still covered.
+ */
+function renderBookingPage() {
+  return render(
+    <ConsentProvider>
+      <MemoryRouter initialEntries={["/en/booking"]}>
+        <BookingPage />
+      </MemoryRouter>
+    </ConsentProvider>,
+  );
+}
+
+/**
  * jsdom's navigator reports en-US and the tests start with empty storage,
  * so an unprefixed path redirects to the English tree.
  */
@@ -48,7 +65,6 @@ describe("App", () => {
       /your skin in experienced hands/i,
       /take a look at our work/i,
       /popular services and prices/i,
-      /book an appointment/i,
       /request a free consultation/i,
       /contact & appointments/i,
     ]) {
@@ -88,7 +104,7 @@ describe("App", () => {
       "cookie-consent",
       JSON.stringify({ version: 1, decidedAt: new Date().toISOString(), booking: true }),
     );
-    renderAt("/booking");
+    renderBookingPage();
     expect(
       screen.getByRole("heading", { level: 1, name: /book an appointment/i }),
     ).toBeInTheDocument();
@@ -102,9 +118,32 @@ describe("App", () => {
       "cookie-consent",
       JSON.stringify({ version: 1, decidedAt: new Date().toISOString(), booking: false }),
     );
-    renderAt("/booking");
+    renderBookingPage();
     expect(screen.getByTestId("altegio-consent-placeholder")).toBeInTheDocument();
     expect(screen.queryByTestId("altegio-widget")).not.toBeInTheDocument();
+  });
+
+  it("hides the booking block while the Altegio feature flag is off", () => {
+    renderAt("/");
+    expect(
+      screen.queryByRole("heading", { name: /book an appointment/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId("altegio-consent-placeholder")).not.toBeInTheDocument();
+    // Nothing may point at a section that is no longer on the page — the
+    // hero CTA is repointed at the consultation request instead.
+    for (const link of screen.getAllByRole("link")) {
+      expect(link.getAttribute("href")).not.toMatch(/#booking$|\/booking$/);
+    }
+    expect(
+      screen.getAllByRole("link", { name: /get a consultation/i })[0],
+    ).toHaveAttribute("href", "/en#consultation");
+  });
+
+  it("does not serve /booking while the flag is off", () => {
+    renderAt("/booking");
+    expect(
+      screen.getByRole("heading", { level: 1, name: /page not found/i }),
+    ).toBeInTheDocument();
   });
 
   it("links the four legal pages from the footer", () => {

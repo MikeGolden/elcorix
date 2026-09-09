@@ -9,6 +9,10 @@ WORKDIR /app
 # every VITE_* variable must be passed as a build ARG here.
 ARG VITE_ALTEGIO_COMPANY_ID=000000
 ENV VITE_ALTEGIO_COMPANY_ID=$VITE_ALTEGIO_COMPANY_ID
+# The booking block is compiled out unless this is "true" — see
+# client/src/features.ts.
+ARG VITE_ENABLE_ALTEGIO=false
+ENV VITE_ENABLE_ALTEGIO=$VITE_ENABLE_ALTEGIO
 # Optional privacy-friendly analytics (see SECURITY.md for the CSP change).
 ARG VITE_ANALYTICS_SRC=
 ENV VITE_ANALYTICS_SRC=$VITE_ANALYTICS_SRC
