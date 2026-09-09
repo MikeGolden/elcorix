@@ -43,8 +43,11 @@ export const staticBusiness = {
    * translated in common.json — keep the two in sync.
    */
   openingHours: [
-    { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "19:00" },
-    { days: ["Saturday"], opens: "09:00", closes: "15:00" },
+    {
+      days: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "19:00",
+    },
   ],
 } as const;
 

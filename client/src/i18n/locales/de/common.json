@@ -217,12 +217,10 @@
     "emailLabel": "E-Mail",
     "hoursTitle": "Öffnungszeiten",
     "hours": {
-      "weekdaysLabel": "Montag bis Freitag",
+      "weekdaysLabel": "Dienstag bis Samstag",
       "weekdays": "09:00 bis 19:00 Uhr",
-      "saturdayLabel": "Samstag",
-      "saturday": "nach vorheriger Terminvereinbarung von 09:00 bis 15:00 Uhr",
-      "sundayLabel": "Sonntag",
-      "sunday": "geschlossen"
+      "closedLabel": "Sonntag und Montag",
+      "closed": "geschlossen"
     },
     "whatsapp": "Über WhatsApp schreiben",
     "formTitle": "Schreiben Sie uns",

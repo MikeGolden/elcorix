@@ -217,12 +217,10 @@
     "emailLabel": "E-mail",
     "hoursTitle": "Opening hours",
     "hours": {
-      "weekdaysLabel": "Monday to Friday",
+      "weekdaysLabel": "Tuesday to Saturday",
       "weekdays": "09:00 to 19:00",
-      "saturdayLabel": "Saturday",
-      "saturday": "by prior appointment, 09:00 to 15:00",
-      "sundayLabel": "Sunday",
-      "sunday": "closed"
+      "closedLabel": "Sunday and Monday",
+      "closed": "closed"
     },
     "whatsapp": "Message us on WhatsApp",
     "formTitle": "Write to us",

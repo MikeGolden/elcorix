@@ -66,12 +66,8 @@ export default function ContactSection() {
               {t("contact.hours.weekdays")}
             </li>
             <li>
-              <span className="font-semibold text-ink-900">{t("contact.hours.saturdayLabel")}:</span>{" "}
-              {t("contact.hours.saturday")}
-            </li>
-            <li>
-              <span className="font-semibold text-ink-900">{t("contact.hours.sundayLabel")}:</span>{" "}
-              {t("contact.hours.sunday")}
+              <span className="font-semibold text-ink-900">{t("contact.hours.closedLabel")}:</span>{" "}
+              {t("contact.hours.closed")}
             </li>
           </ul>
 
