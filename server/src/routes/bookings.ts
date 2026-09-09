@@ -1,6 +1,12 @@
 import { Router } from "express";
 import type { Queryable } from "../db/pool.js";
 import { sendInBackground, type Mailer } from "../mailer.js";
+import {
+  disabledTelegram,
+  formatBookingRequest,
+  notifyInBackground,
+  type TelegramNotifier,
+} from "../telegram.js";
 import { isSpam } from "./contact.js";
 import { isValidPhone } from "../phone.js";
 
@@ -54,8 +60,15 @@ export function validatePreferredAt(value: string): string | null {
  *  - GET  /api/bookings/link  → the canonical Altegio booking URL
  *  - POST /api/bookings       → log a booking request locally (e.g. from
  *    a fallback form) so staff can follow up in Altegio.
+ *
+ * Staff are notified twice over, by e-mail and in Telegram; each channel is
+ * optional and enabled by its own environment variables.
  */
-export function bookingsRouter(db: Queryable, mailer: Mailer) {
+export function bookingsRouter(
+  db: Queryable,
+  mailer: Mailer,
+  telegram: TelegramNotifier = disabledTelegram,
+) {
   const router = Router();
 
   router.get("/link", (_req, res) => {
@@ -123,6 +136,7 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
       return;
     }
 
+    let created: { id?: number } | undefined;
     try {
       const result = await db.query(
         `INSERT INTO booking_requests
@@ -138,7 +152,8 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
           marketingConsent === true,
         ],
       );
-      res.status(201).json(result.rows[0]);
+      created = result.rows[0];
+      res.status(201).json(created);
     } catch (err) {
       console.error("Failed to store booking request:", err);
       res.status(500).json({ error: "Internal server error" });
@@ -159,6 +174,18 @@ export function bookingsRouter(db: Queryable, mailer: Mailer) {
           "Please follow up and enter the appointment in Altegio.",
       });
     }
+
+    notifyInBackground(
+      telegram,
+      formatBookingRequest({
+        customerName: customerName.trim(),
+        customerPhone: customerPhone.trim(),
+        service: typeof service === "string" ? service : null,
+        preferredAt: trimmedPreferredAt,
+        marketingConsent: marketingConsent === true,
+        id: created?.id,
+      }),
+    );
   });
 
   return router;

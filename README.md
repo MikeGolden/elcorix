@@ -38,6 +38,7 @@ from that file (palette, type scale, section inventory, known deviations).
 │       ├── routes/      # /api/contact, /api/bookings
 │       ├── db/          # pg pool, schema.sql, migrate script
 │       ├── mailer.ts    # optional SMTP notifications
+│       ├── telegram.ts  # optional Telegram bot notifications
 │       ├── retention.ts # daily GDPR data-retention cleanup
 │       └── test/        # Vitest + Supertest unit tests
 ├── e2e/             # Playwright end-to-end tests (dev server, API mocked)
@@ -157,7 +158,7 @@ The API also exposes `GET /api/bookings/link` (canonical booking URL) and
 | GET    | `/api/health`       | Liveness + DB readiness (503 `degraded` if DB down)|
 | POST   | `/api/contact`      | Store a contact-form message (+ e-mail notify)     |
 | GET    | `/api/bookings/link`| Altegio booking URL for the company                |
-| POST   | `/api/bookings`     | Store a call-back/booking request (+ e-mail notify)|
+| POST   | `/api/bookings`     | Store a call-back/booking request (+ e-mail/Telegram)|
 
 Both POST endpoints carry a hidden **honeypot** field (`website`): submissions
 that fill it get a fake success response and are stored nowhere.
@@ -170,6 +171,21 @@ every contact message and booking request, and send the customer a localized
 confirmation of receipt. Without SMTP config everything is still stored in
 Postgres; only the notifications are skipped (a warning is logged in
 production).
+
+## Telegram notifications
+
+Consultation requests can also land in a Telegram chat, so staff see them on
+their phone without waiting for e-mail. It runs alongside the SMTP
+notification — both, either or neither can be configured. The bot only ever
+*sends*: no webhook, no polling process, no bot command to secure.
+
+Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` (see `.env.example`) and
+restart the API. A malformed or half-finished configuration disables the
+channel with a warning in the log rather than failing silently.
+
+**[TELEGRAM.md](TELEGRAM.md)** has the full walkthrough: creating the bot
+with @BotFather, finding the chat id, wiring it into dev and Docker,
+verifying it, a troubleshooting table and the security/GDPR notes.
 
 ## Data retention (GDPR)
 

@@ -283,4 +283,91 @@ describe("POST /api/bookings", () => {
       }),
     );
   });
+
+  it("posts the request to Telegram when the bot is configured", async () => {
+    query.mockResolvedValue({ rows: [{ id: 21, status: "pending" }] });
+    const send = vi.fn().mockResolvedValue(undefined);
+    const botApp = createApp(db, { telegram: { enabled: true, chatId: "-100", send } });
+    const res = await request(botApp).post("/api/bookings").send({
+      customerName: "Anna",
+      customerPhone: "+49123456789",
+      preferredAt: `${daysFromNow(3)} 10:30`,
+      marketingConsent: true,
+    });
+    expect(res.status).toBe(201);
+    await vi.waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+    const text = send.mock.calls[0][0] as string;
+    expect(text).toContain("Anna");
+    expect(text).toContain("+49123456789");
+    expect(text).toContain("10:30");
+    expect(text).toContain("#21");
+  });
+
+  it("notifies both channels for the same request", async () => {
+    query.mockResolvedValue({ rows: [{ id: 22, status: "pending" }] });
+    const sendMail = vi.fn().mockResolvedValue(undefined);
+    const sendChat = vi.fn().mockResolvedValue(undefined);
+    const bothApp = createApp(db, {
+      mailer: { enabled: true, notifyAddress: "owner@example.com", send: sendMail },
+      telegram: { enabled: true, chatId: "-100", send: sendChat },
+    });
+    await request(bothApp)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789" });
+    await vi.waitFor(() => {
+      expect(sendMail).toHaveBeenCalledTimes(1);
+      expect(sendChat).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("does not post honeypot submissions to Telegram", async () => {
+    const send = vi.fn().mockResolvedValue(undefined);
+    const botApp = createApp(db, { telegram: { enabled: true, chatId: "-100", send } });
+    const res = await request(botApp).post("/api/bookings").send({
+      customerName: "Bot",
+      customerPhone: "+49123456789",
+      website: "spam",
+    });
+    expect(res.status).toBe(201);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(send).not.toHaveBeenCalled();
+  });
+
+  it("does not post rejected submissions to Telegram", async () => {
+    const send = vi.fn().mockResolvedValue(undefined);
+    const botApp = createApp(db, { telegram: { enabled: true, chatId: "-100", send } });
+    const res = await request(botApp)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "asdfgh" });
+    expect(res.status).toBe(400);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(send).not.toHaveBeenCalled();
+  });
+
+  it("still answers 201 when the Telegram send fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    query.mockResolvedValue({ rows: [{ id: 23, status: "pending" }] });
+    const send = vi.fn().mockRejectedValue(new Error("telegram down"));
+    const botApp = createApp(db, { telegram: { enabled: true, chatId: "-100", send } });
+    const res = await request(botApp)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789" });
+    expect(res.status).toBe(201);
+    await vi.waitFor(() => expect(send).toHaveBeenCalled());
+    vi.restoreAllMocks();
+  });
+
+  it("does not post to Telegram when the database insert fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    query.mockRejectedValue(new Error("db down"));
+    const send = vi.fn().mockResolvedValue(undefined);
+    const botApp = createApp(db, { telegram: { enabled: true, chatId: "-100", send } });
+    const res = await request(botApp)
+      .post("/api/bookings")
+      .send({ customerName: "Anna", customerPhone: "+49123456789" });
+    expect(res.status).toBe(500);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(send).not.toHaveBeenCalled();
+    vi.restoreAllMocks();
+  });
 });

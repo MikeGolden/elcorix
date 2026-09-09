@@ -114,6 +114,11 @@ server/CDN — configure it there:
       automatically (`RETENTION_MONTHS`), delete on request via SQL.
 - [ ] SMTP credentials (`SMTP_*`) live in `.env` on the server only — never
       commit them; notifications degrade gracefully without them.
+- [ ] `TELEGRAM_BOT_TOKEN` likewise lives in `.env` only. A leaked token lets
+      anyone post as the studio's bot and read the chat via `getUpdates` —
+      revoke it with `/revoke` in @BotFather if it is ever exposed. Customer
+      names and phone numbers are sent to Telegram's servers, so the chat
+      belongs in the privacy policy's list of recipients.
 
 ## Reporting a vulnerability
 
