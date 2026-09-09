@@ -1,14 +1,19 @@
 /**
- * The site's indexable routes, in one place.
+ * The site's indexable routes, in one place — language-less: each entry is
+ * one page in every language, and `src/i18n/routing.ts` supplies the
+ * segments (`/de/prices`, `/en/prices`, `/uk/prices`).
  *
- * Three things read this table and must never drift apart:
- *   - `src/App.tsx` — the router (every path here needs a <Route>),
- *   - `public/sitemap.xml` — the same URLs, with these changefreq values,
- *   - `vite/seoPrerender.ts` — writes one static HTML shell per entry.
+ * Everything downstream is derived from this table, so nothing can drift:
+ *   - `src/App.tsx` builds the router from it, once per language, and will
+ *     not compile until a new entry has a page component,
+ *   - `src/seo/sitemap.ts` emits routes × languages with their alternates,
+ *   - `vite/seoPrerender.ts` writes one static HTML shell per pair.
  *
- * `src/test/staticMeta.test.ts` fails the build if the sitemap and this
- * table disagree, or if a metaKey has no translation.
+ * `src/test/sitemap.test.ts` and `src/test/staticMeta.test.ts` assert the
+ * output, and fail if a metaKey has no translation.
  */
+import type { Features } from "../features";
+
 export type MetaKey =
   | "home"
   | "prices"

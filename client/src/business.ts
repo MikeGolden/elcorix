@@ -28,8 +28,8 @@ export const staticBusiness = {
   whatsapp: "https://wa.me/4915562514872",
   /**
    * Canonical production origin — used for <link rel="canonical">, Open
-   * Graph URLs and JSON-LD. Keep public/robots.txt and public/sitemap.xml
-   * in sync when changing it.
+   * Graph URLs and JSON-LD. Keep public/robots.txt in sync when changing it
+   * (sitemap.xml is generated from this value — see src/seo/sitemap.ts).
    */
   siteUrl: "https://elcorix.com",
   /**
