@@ -1,0 +1,262 @@
+@import "./fonts.css";
+@import "tailwindcss";
+
+/* Tailwind v4 scans for class names from the CSS file's folder down. The
+   markup lives above it (PHP templates) and beside it (the behaviour
+   bundle), so both roots are named explicitly. */
+@source "../*.php";
+@source "../inc/**/*.php";
+@source "../template-parts/**/*.php";
+@source "../assets/js/*.js";
+@source "../../../plugins/elcorix-core/**/*.php";
+
+/*
+ * elcorix visual language, taken from the Figma file
+ * (figma.com/design/L3SYAnqXeHiD81Ny4cdVmF/elcorix):
+ * white page, soft blue-grey bands, one deep indigo used for every
+ * heading, button and the footer, generous 16px corner radii on every
+ * photo and card, Manrope for headings and Inter for copy.
+ *
+ *   brand-600  section headings and links
+ *   brand-700  primary buttons, footer band, H1
+ *   ink-*      text scale (900 headline navy → 300 muted label)
+ *   line       hairlines and table rules
+ *   surface-soft   the pale band that alternates with white sections
+ */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #f2f5fc;
+  --color-brand-100: #e4eaf8;
+  --color-brand-200: #c9d5f0;
+  --color-brand-300: #9dafe0;
+  --color-brand-400: #6a83c9;
+  --color-brand-500: #4460b4;
+  --color-brand-600: #2c4aa8;
+  --color-brand-700: #26397f;
+  --color-brand-800: #1e2d64;
+  --color-brand-900: #16224a;
+
+  --color-ink-900: #14203f;
+  --color-ink-700: #3d4a6b;
+  --color-ink-500: #66708c;
+  --color-ink-300: #9aa3b8;
+
+  --color-line: #e4e8f0;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f4f6fa;
+
+  --radius-card: 1rem;
+  --radius-panel: 1.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-surface font-sans text-ink-500 antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-brand-700;
+    text-wrap: balance;
+  }
+
+  /* Anchor navigation must clear the sticky header. */
+  :where(section[id], div[id]) {
+    scroll-margin-top: 6rem;
+  }
+
+  /* <picture> is display:contents, so its children are laid out by the
+     surrounding grid/flex container. <source> defaults to display:block and
+     would claim a cell of its own, pushing the image out of place. */
+  picture > source {
+    display: none;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-700);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* The recurring pill button of the design. Tailwind v4 cannot @apply a
+     custom class, so the shared shape is repeated rather than composed. */
+  .btn-primary,
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5
+           text-sm font-semibold transition-colors disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-brand-700 text-white hover:bg-brand-800;
+  }
+
+  .btn-ghost {
+    @apply border border-brand-200 bg-white text-brand-700 hover:border-brand-400 hover:bg-brand-50;
+  }
+
+  /* "Mehr erfahren →" link used across the cards. */
+  .link-more {
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-brand-400
+           transition-colors hover:text-brand-600;
+  }
+
+  .field {
+    @apply w-full min-w-0 appearance-none rounded-card border border-transparent bg-white px-5 py-4
+           text-[0.95rem] leading-6 text-ink-900 transition-colors
+           placeholder:text-ink-300 focus:border-brand-400 focus:outline-none;
+  }
+
+  /*
+   * Safari (iOS above all) gives date/time inputs an intrinsic width that
+   * ignores `width: 100%`, so the control spills out of its grid column, and it
+   * centres the value inside that box. Reset both so they line up with the
+   * text fields next to them.
+   */
+  .field[type="date"],
+  .field[type="time"],
+  select.field {
+    /* 1.5rem line + 2rem padding + 2px border — the text fields' exact box. */
+    @apply block h-[calc(3.5rem+2px)] text-left;
+  }
+
+  .field[type="date"]::-webkit-date-and-time-value,
+  .field[type="time"]::-webkit-date-and-time-value {
+    @apply m-0 text-left;
+  }
+
+  .field[type="date"]::-webkit-calendar-picker-indicator,
+  .field[type="time"]::-webkit-calendar-picker-indicator {
+    @apply cursor-pointer opacity-60;
+  }
+
+  /*
+   * Scroll reveal (assets/js/app.js). Everything wearing `.reveal` starts
+   * transparent and 1.75rem low; one shared IntersectionObserver flips
+   * data-revealed the first time the element enters the viewport and it
+   * eases into place.
+   *
+   * Every rule below is scoped to `.js`, a class an inline snippet in
+   * <head> puts on <html>. The server renders `data-revealed="false"`, so
+   * without that class — JavaScript off, or a crawler that never runs it —
+   * nothing is ever hidden in the first place. The React build got this
+   * from `typeof IntersectionObserver === "undefined"`; a rendered page has
+   * to decide it in CSS instead.
+   *
+   * The end state is `transform: none`, not `translate3d(0,0,0)`: a lingering
+   * transform would make the element a containing block and break the
+   * `position: fixed` overlays (lightbox, cookie banner) rendered inside it.
+   */
+  .js .reveal,
+  .js .reveal-fade {
+    opacity: 0;
+    transition:
+      opacity 650ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 650ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .js .reveal {
+    transform: translate3d(0, 1.75rem, 0);
+  }
+
+  .js .reveal[data-revealed="true"],
+  .js .reveal-fade[data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* No animation may ever swallow content: visitors who ask for less motion,
+     and anyone printing the page, get every block at full opacity. */
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal,
+    .js .reveal-fade {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media print {
+    .js .reveal,
+    .js .reveal-fade {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /*
+   * The works slider scrolls, but its scrollbar is not part of the design.
+   * Written as a class rather than as Tailwind's `[&::-webkit-scrollbar]`
+   * arbitrary variant: that spelling needs a bare `&` inside an HTML class
+   * attribute, and escaping it changes what Tailwind's scanner sees.
+   */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /*
+   * Body copy that comes out of the editor rather than out of a template:
+   * the section paragraphs and the legal pages. The Figma sets each
+   * paragraph's lead-in in a darker semibold, which the editor writes as
+   * plain <strong>.
+   */
+  .elcorix-prose strong,
+  .elcorix-prose b {
+    @apply font-semibold text-ink-900;
+  }
+
+  .elcorix-prose > :first-child {
+    margin-top: 0;
+  }
+
+  .elcorix-prose a {
+    @apply font-medium text-brand-600 underline underline-offset-4;
+  }
+
+  .elcorix-prose ul {
+    @apply list-disc space-y-1 pl-5;
+  }
+
+  .elcorix-prose ol {
+    @apply list-decimal space-y-1 pl-5;
+  }
+
+  /*
+   * The legal pages (Impressum, Datenschutz, AGB, Leitbild) are one
+   * editor document each, so the ruled section head the React
+   * <LegalSection> drew around every block is expressed as a rule on the
+   * <h2> instead. Same result, and an editor can add a section by typing
+   * a heading.
+   */
+  .elcorix-legal h2 {
+    @apply mt-10 border-t border-line pt-8 text-lg font-bold;
+  }
+
+  .elcorix-legal p {
+    @apply mt-3;
+  }
+
+  /* Native select arrow replaced with our own chevron. */
+  .field-select {
+    @apply bg-[length:1.15rem] bg-[right_1.25rem_center] bg-no-repeat pr-12;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  }
+
+  /* WordPress's own body classes must not paint over the design. */
+  .admin-bar .site-header {
+    top: var(--wp-admin--admin-bar--height, 32px);
+  }
+}

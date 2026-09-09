@@ -1,0 +1,362 @@
+{
+  "nav": {
+    "label": "Menü",
+    "skipToContent": "Zum Inhalt springen",
+    "home": "Startseite",
+    "forWhom": "Für wen ist es geeignet?",
+    "technology": "Unsere Technologie",
+    "specialist": "Über die Meisterin",
+    "work": "Unsere Arbeiten",
+    "prices": "Unsere Preisliste",
+    "booking": "Termin buchen",
+    "consultation": "Angebot anfordern",
+    "contact": "Kontakt",
+    "gallery": "Galerie"
+  },
+  "cta": {
+    "book": "Termin vereinbaren",
+    "consultation": "Beratung erhalten",
+    "whatsapp": "Über WhatsApp schreiben",
+    "learnMore": "Mehr erfahren",
+    "moreDevices": "Mehr über unsere Geräte erfahren",
+    "fullPriceList": "Vollständige Preisliste ansehen"
+  },
+  "meta": {
+    "home": {
+      "title": "Dauerhafte Laser-Haarentfernung in Kempten",
+      "description": "Dauerhafte Laser-Haarentfernung in Kempten mit moderner Diodenlaser-Technologie – individuell auf Haut- und Haartyp abgestimmt. Termin online buchen."
+    },
+    "prices": {
+      "title": "Preisliste",
+      "description": "Preise für Laser-Haarentfernung in Kempten: alle Zonen für Frauen und Männer sowie Paketlösungen mit 6er- und 8er-Preisen."
+    },
+    "gallery": {
+      "title": "Unsere Arbeiten",
+      "description": "Einblicke in unser Studio in Kempten und in die Behandlungen, die wir jeden Tag durchführen."
+    },
+    "booking": {
+      "title": "Termin vereinbaren",
+      "description": "Buchen Sie Ihre Laser-Haarentfernung in Kempten online – Zone, Termin und Uhrzeit in wenigen Minuten."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "description": "Kontakt zu elcorix in Kempten: Adresse, Telefon, WhatsApp, E-Mail, Öffnungszeiten und Anfahrt."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "description": "Wie elcorix personenbezogene Daten auf dieser Website verarbeitet – Informationen nach DSGVO."
+    },
+    "imprint": {
+      "title": "Impressum",
+      "description": "Rechtliche Angaben zum Betreiber dieser Website."
+    },
+    "terms": {
+      "title": "AGB",
+      "description": "Allgemeine Geschäftsbedingungen für Behandlungen bei elcorix in Kempten."
+    },
+    "mission": {
+      "title": "Leitbild",
+      "description": "Wofür elcorix steht: Sicherheit, ehrliche Beratung und eine Behandlung, bei der Sie sich wohlfühlen."
+    },
+    "notFound": {
+      "title": "Seite nicht gefunden",
+      "description": "Diese Seite existiert nicht."
+    }
+  },
+  "hero": {
+    "title": "Dauerhafte Laser-Haarentfernung in Kempten",
+    "imageAlt": "Laser-Haarentfernung an den Beinen im Studio",
+    "servicesLabel": "Unsere Leistungen",
+    "serviceName": "Haarentfernung.",
+    "serviceCount": "20 Leistungen"
+  },
+  "forWhom": {
+    "title": "Für wen ist es geeignet?",
+    "items": {
+      "convenience": {
+        "title": "Wann Laser-Haarentfernung das Leben wirklich erleichtert"
+      },
+      "irritation": {
+        "title": "Rasieren führt jedes Mal zu Hautirritationen"
+      },
+      "shaving": {
+        "title": "Sie sind es leid, sich ständig zu rasieren"
+      },
+      "beard": {
+        "title": "Sie haben einen Bart, müssen aber ständig die Konturen nachrasieren"
+      }
+    }
+  },
+  "technology": {
+    "title": "Moderne Diodenlaser-Technologie – individuell auf Ihre Haut abgestimmt",
+    "imageAlt": "Diodenlaser-Gerät im Behandlungsraum",
+    "p1": "In unserem Studio arbeiten wir mit dem modernen <b>ALIX TWIN KI Smart 5000 8W – einem intelligenten System für professionelle</b> und besonders komfortable Haarentfernung. Vier aufeinander abgestimmte Wellenlängen – 755, 808, 940 und 1064 nm mit Boost – ermöglichen die Behandlung unterschiedlicher Haut- und Haartypen.",
+    "p2": "<b>Ein KI-Scanner analysiert Hauttyp,</b> Haarfarbe und Haardichte und unterstützt uns dabei, die Einstellungen individuell anzupassen. Das leistungsstarke Kühlsystem kühlt das Handstück auf <b>bis zu −26 °C und macht die Behandlung deutlich angenehmer.</b>",
+    "p3": "<b>Verschiedene Aufsätze erlauben präzises Arbeiten</b> an kleinen sowie großen Körperzonen – für eine schnelle, schonende und individuell abgestimmte Behandlung."
+  },
+  "specialist": {
+    "title": "Ihre Haut in erfahrenen Händen",
+    "imageAlt": "Elena, Spezialistin für professionelle Laser-Haarentfernung",
+    "p1": "Mein Name ist Elena und ich bin Ihre <b>Spezialistin für professionelle Laser-Haarentfernung.</b> Seit [Anzahl] Jahren begleite ich Frauen und Männer auf dem Weg zu glatter Haut und einem gepflegten Körpergefühl.",
+    "p2": "Durch meine Ausbildungen in den Bereichen [Ausbildungen/Spezialisierungen] <b>sowie regelmäßige Weiterbildungen arbeite ich nach modernen Qualitäts- und Hygienestandards.</b>",
+    "p3": "Bei jeder Behandlung nehme ich mir Zeit für eine persönliche Beratung, analysiere Ihren Haut- und Haartyp und passe die Einstellungen des Geräts individuell an. <b>Mir ist wichtig, dass Sie sich während der gesamten Behandlung sicher, wohl und gut aufgehoben fühlen.</b>",
+    "certificateAlt": "Zertifikat: Fachkraft für professionelle Haarentfernung"
+  },
+  "work": {
+    "title": "Sehen Sie sich unsere Arbeiten an",
+    "prev": "Vorherige Bilder",
+    "next": "Nächste Bilder",
+    "alts": {
+      "n1": "Laser-Haarentfernung an den Beinen im Behandlungsstuhl",
+      "n2": "Nahaufnahme des Handstücks bei der Achselbehandlung",
+      "n3": "Achselbehandlung bei einem Kunden mit Schutzbrille",
+      "n4": "Behandlung der Bartkonturen im Gesicht"
+    }
+  },
+  "lightbox": {
+    "label": "Bildansicht",
+    "open": "Bild öffnen: {{name}}",
+    "close": "Bildansicht schließen",
+    "prev": "Vorheriges Bild",
+    "next": "Nächstes Bild",
+    "counter": "{{current}} von {{total}}"
+  },
+  "prices": {
+    "title": "Beliebte Leistungen und Preise",
+    "pageTitle": "Preisliste",
+    "intro": "Alle Preise gelten pro Sitzung und Zone. Wie viele Sitzungen nötig sind, hängt von Haut- und Haartyp ab – das besprechen wir in der kostenlosen Beratung vor der ersten Behandlung.",
+    "note": "Alle Preise verstehen sich inklusive MwSt. Kombinationen mehrerer Zonen und individuelle Paketlösungen stellen wir Ihnen gern persönlich zusammen. Bitte sagen Sie Termine mindestens 24 Stunden vorher ab.",
+    "groups": {
+      "women": "Leistungen für Frauen",
+      "men": "Leistungen für Männer",
+      "packages": "Paketlösungen für Frauen"
+    },
+    "columns": {
+      "package": "Paket",
+      "zones": "Enthaltene Zonen",
+      "single": "Einzelbehandlung",
+      "six": "6er-Paket",
+      "eight": "8er-Paket"
+    },
+    "women": {
+      "upperLip": "Oberlippe",
+      "chin": "Kinn",
+      "underarms": "Achseln",
+      "bikiniClassic": "Bikinizone klassisch",
+      "intimateComplete": "Intim Complete – inkl. Pofalte",
+      "armsFull": "Arme komplett inkl. Hände/Finger",
+      "lowerLegs": "Unterschenkel inkl. Knie",
+      "legsFull": "Beine komplett inkl. Füße/Zehen"
+    },
+    "men": {
+      "beardContour": "Bartkontur",
+      "throat": "Hals",
+      "neck": "Nacken",
+      "underarms": "Achseln",
+      "shoulders": "Schultern",
+      "chest": "Brust",
+      "backFull": "Rücken komplett",
+      "intimateComplete": "Intim Complete inkl. Pofalte"
+    },
+    "packages": {
+      "p1": {
+        "name": "Oberlippe",
+        "zones": "Achseln + Intim Complete inkl. Pofalte"
+      },
+      "p2": {
+        "name": "Kinn",
+        "zones": "Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
+      },
+      "p3": {
+        "name": "Achseln",
+        "zones": "Achseln + Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
+      },
+      "p4": {
+        "name": "Bikinizone klassisch",
+        "zones": "Achseln + Intim Complete inkl. Pofalte + Beine komplett inkl. Füße/Zehen"
+      },
+      "p5": {
+        "name": "Intim Complete – inkl. Pofalte",
+        "zones": "Achseln, Arme, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett"
+      }
+    }
+  },
+  "booking": {
+    "title": "Termin vereinbaren",
+    "intro": "Wählen Sie im Kalender eine Zone, einen freien Termin und eine Uhrzeit. Die Bestätigung erhalten Sie per E-Mail oder SMS.",
+    "widgetTitle": "Altegio Online-Terminbuchung",
+    "fallbackQuestion": "Kalender lädt nicht?",
+    "fallbackLink": "Buchungskalender von {{businessName}} in einem neuen Tab öffnen",
+    "consentTitle": "Externer Buchungskalender",
+    "consentText": "Unser Online-Kalender wird von Altegio bereitgestellt. Beim Laden setzt Altegio Cookies und verarbeitet Ihre IP-Adresse – bei einer Online-Zahlung zusätzlich Ihre Zahlungsdaten auf den Seiten von Altegio. Einzelheiten finden Sie in unserer Datenschutzerklärung.",
+    "consentLoad": "Kalender laden und Altegio-Cookies akzeptieren"
+  },
+  "consultation": {
+    "title": "Kostenlose Beratung anfordern",
+    "intro": "Hinterlassen Sie Ihren Namen und Ihre Telefonnummer sowie Ihren Wunschtermin – wir melden uns und stimmen alles Weitere persönlich mit Ihnen ab.",
+    "name": "Name",
+    "phone": "Telefonnummer",
+    "phoneError": "Bitte geben Sie eine gültige Telefonnummer ein, z. B. +49 155 625 14 872.",
+    "date": "Datum des Besuchs",
+    "time": "Uhrzeit des Besuchs",
+    "timeAny": "Keine Präferenz",
+    "dateRequired": "Bitte wählen Sie zu der Uhrzeit auch ein Datum aus.",
+    "datePast": "Bitte wählen Sie ein Datum, das nicht in der Vergangenheit liegt.",
+    "consentMarketing": "Ich möchte per E-Mail und telefonisch über Angebote und Neuigkeiten informiert werden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen.",
+    "consentPrivacy": "Mit dem Absenden des Formulars stimme ich zu, dass meine Angaben zur Bearbeitung meiner Terminanfrage verwendet werden. Informationen zur Verarbeitung Ihrer personenbezogenen Daten finden Sie in unserer <privacyLink>Datenschutzerklärung</privacyLink>.",
+    "sending": "Wird gesendet…",
+    "success": "Vielen Dank! Wir melden uns während der Öffnungszeiten bei Ihnen.",
+    "error": "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an."
+  },
+  "contact": {
+    "title": "Kontakt & Terminvereinbarung",
+    "pageTitle": "Kontakt",
+    "intro": "Haben Sie Fragen zur Laser-Haarentfernung oder möchten Sie herausfinden, welche Behandlung zu Ihnen passt? Kontaktieren Sie uns oder vereinbaren Sie direkt einen kostenlosen und unverbindlichen Beratungstermin. Wir nehmen uns Zeit für Sie und beraten Sie persönlich.",
+    "addressLabel": "Adresse",
+    "phoneLabel": "Telefon / WhatsApp",
+    "emailLabel": "E-Mail",
+    "hoursTitle": "Öffnungszeiten",
+    "hours": {
+      "weekdaysLabel": "Dienstag bis Samstag",
+      "weekdays": "09:00 bis 19:00 Uhr",
+      "closedLabel": "Sonntag und Montag",
+      "closed": "geschlossen"
+    },
+    "whatsapp": "Über WhatsApp schreiben",
+    "formTitle": "Schreiben Sie uns",
+    "formLabel": "Kontaktformular",
+    "name": "Name",
+    "email": "E-Mail",
+    "message": "Nachricht",
+    "messagePlaceholder": "Wie können wir Ihnen helfen?",
+    "privacyConsent": "Ich habe die <privacyLink>Datenschutzerklärung</privacyLink> gelesen und bin damit einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden.",
+    "send": "Nachricht senden",
+    "sending": "Wird gesendet…",
+    "success": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
+    "error": "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns an.",
+    "map": {
+      "title": "Karte mit dem Standort des Studios"
+    }
+  },
+  "gallery": {
+    "title": "Unsere Arbeiten",
+    "intro": "Einblicke in unser Studio in Kempten – und in die Behandlungen, die wir jeden Tag durchführen.",
+    "alts": {
+      "hero": "Laser-Haarentfernung an den Beinen im Studio",
+      "n1": "Laser-Haarentfernung an den Beinen im Behandlungsstuhl",
+      "n2": "Nahaufnahme des Handstücks bei der Achselbehandlung",
+      "n3": "Achselbehandlung bei einem Kunden mit Schutzbrille",
+      "n4": "Behandlung der Bartkonturen im Gesicht",
+      "technology": "Diodenlaser-Gerät im Behandlungsraum",
+      "specialist": "Elena, Spezialistin für Laser-Haarentfernung"
+    }
+  },
+  "consent": {
+    "title": "Cookies & externe Dienste",
+    "description": "Wir verwenden nur technisch notwendigen Speicher (Ihre Sprache und diese Cookie-Entscheidung). Der Buchungskalender von Altegio ist ein externer Dienst, der beim Laden Cookies setzt – wir laden ihn nur mit Ihrer Einwilligung. Ihre Auswahl können Sie jederzeit über „Cookie-Einstellungen“ im Footer ändern.",
+    "privacyLink": "Datenschutzerklärung",
+    "acceptAll": "Alle akzeptieren",
+    "necessaryOnly": "Nur notwendige"
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "intro": "Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Hier erfahren Sie, welche Daten wir auf dieser Website verarbeiten, zu welchem Zweck und welche Rechte Ihnen nach der Datenschutz-Grundverordnung (DSGVO) zustehen.",
+    "sections": {
+      "controller": {
+        "title": "Verantwortlicher",
+        "body": "Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist {{businessName}}, {{address}}. E-Mail: {{email}}, Telefon: {{phone}}."
+      },
+      "hosting": {
+        "title": "Zugriffsdaten",
+        "body": "Beim Besuch dieser Website werden technische Zugriffsdaten (IP-Adresse, Datum und Uhrzeit, Browsertyp) in Server-Logs verarbeitet, um die Seite sicher auszuliefern und Missbrauch zu erkennen (Art. 6 Abs. 1 lit. f DSGVO). Log-Daten werden nach kurzer Zeit gelöscht und nicht mit anderen Daten zusammengeführt."
+      },
+      "contactForm": {
+        "title": "Kontaktformular",
+        "body": "Wenn Sie das Kontaktformular nutzen, speichern wir Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO). Ist der E-Mail-Versand konfiguriert, senden wir Ihnen zusätzlich eine Eingangsbestätigung. Nachrichten werden gelöscht, sobald Ihre Anfrage erledigt ist, spätestens nach 12 Monaten."
+      },
+      "booking": {
+        "title": "Online-Terminbuchung und Zahlungen (Altegio)",
+        "body": "Termine werden über den externen Dienst Altegio (alteg.io) gebucht. Der Buchungskalender wird erst nach Ihrer Einwilligung eingebunden (Art. 6 Abs. 1 lit. a DSGVO). Nach dem Laden verarbeitet Altegio Ihre IP-Adresse und setzt Cookies; die von Ihnen eingegebenen Daten – Name, Telefonnummer, E-Mail, gewählte Leistung und bei Online-Zahlung Ihre Zahlungsdaten – werden von Altegio auf dessen eigenen Seiten verarbeitet. Einzelheiten entnehmen Sie bitte der Datenschutzerklärung von Altegio. Beratungs- und Terminanfragen über unser Formular speichern wir zusätzlich selbst, damit unser Team sich bei Ihnen melden kann; sie werden nach Erledigung gelöscht, spätestens nach 12 Monaten. Ihre Einwilligung können Sie jederzeit über „Cookie-Einstellungen“ im Footer widerrufen."
+      },
+      "storage": {
+        "title": "Cookies und lokaler Speicher",
+        "body": "Diese Website setzt keine eigenen Tracking-Cookies. Wir nutzen den lokalen Speicher Ihres Browsers für zwei rein funktionale Zwecke: Ihre Sprachauswahl (i18nextLng) und Ihre Cookie-Entscheidung (cookie-consent). Für funktionale Speicherung dieser Art ist keine Einwilligung erforderlich. Cookies von Altegio werden erst gesetzt, wenn Sie den Buchungskalender akzeptieren. Die Karte im Kontaktbereich wird beim Aufruf der Seite direkt von OpenStreetMap geladen. Dabei wird Ihre IP-Adresse an OpenStreetMap übertragen."
+      },
+      "rights": {
+        "title": "Ihre Rechte",
+        "body": "Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer personenbezogenen Daten, auf Datenübertragbarkeit, auf Einschränkung der Verarbeitung sowie ein Widerspruchsrecht; erteilte Einwilligungen können Sie mit Wirkung für die Zukunft widerrufen. Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren; für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA)."
+      }
+    }
+  },
+  "imprint": {
+    "title": "Impressum",
+    "operatorTitle": "Betreiber der Website",
+    "ownerLabel": "Inhaberin",
+    "contactTitle": "Kontakt",
+    "vatLabel": "Umsatzsteuer-ID",
+    "responsibleLabel": "Verantwortlich für den Inhalt",
+    "dispute": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: https://ec.europa.eu/consumers/odr. Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+  },
+  "terms": {
+    "title": "Allgemeine Geschäftsbedingungen",
+    "intro": "Diese Bedingungen gelten für alle Behandlungen und Terminvereinbarungen bei elcorix. Bitte lassen Sie sie vor der Veröffentlichung rechtlich prüfen und an Ihre tatsächlichen Abläufe anpassen.",
+    "sections": {
+      "scope": {
+        "title": "Geltungsbereich",
+        "body": "Diese Bedingungen gelten für alle über diese Website oder telefonisch vereinbarten Behandlungen. Abweichende Vereinbarungen bedürfen der Textform."
+      },
+      "appointments": {
+        "title": "Terminvereinbarung",
+        "body": "Termine können online über den Buchungskalender, telefonisch, per WhatsApp oder über das Beratungsformular vereinbart werden. Der Vertrag kommt mit der Bestätigung des Termins durch uns zustande."
+      },
+      "cancellation": {
+        "title": "Absage und Verschiebung",
+        "body": "Bitte sagen Sie vereinbarte Termine mindestens 24 Stunden vorher ab oder verschieben Sie sie. Bei kurzfristigerer Absage oder Nichterscheinen können wir einen Ausfallbetrag berechnen."
+      },
+      "payment": {
+        "title": "Preise und Zahlung",
+        "body": "Es gelten die zum Zeitpunkt der Buchung ausgewiesenen Preise inklusive Mehrwertsteuer. Paketpreise gelten für die jeweils angegebene Anzahl an Sitzungen. Die Zahlung erfolgt im Studio oder – sofern angeboten – online über Altegio."
+      },
+      "liability": {
+        "title": "Mitwirkung und Haftung",
+        "body": "Für eine sichere Behandlung benötigen wir zutreffende Angaben zu Hauttyp, Medikamenten und Vorerkrankungen sowie die Einhaltung der Vor- und Nachsorgehinweise. Für Schäden, die auf unvollständigen Angaben oder auf der Nichtbeachtung dieser Hinweise beruhen, können wir nicht haften."
+      }
+    },
+    "note": "Stand: bitte vor der Veröffentlichung durch eine Rechtsberatung prüfen lassen."
+  },
+  "mission": {
+    "title": "Unser Leitbild",
+    "intro": "elcorix steht für dauerhafte Haarentfernung, die sich sicher, ehrlich und angenehm anfühlt. Drei Punkte sind uns dabei besonders wichtig.",
+    "sections": {
+      "safety": {
+        "title": "Sicherheit zuerst",
+        "body": "Jede Behandlung beginnt mit einer Analyse von Haut- und Haartyp und einer Probefläche. Wir arbeiten nach dokumentierten Protokollen, mit Einmalmaterialien und geprüfter Technik – und sagen offen, wenn eine Behandlung nicht geeignet ist."
+      },
+      "honesty": {
+        "title": "Ehrliche Beratung",
+        "body": "Wir versprechen keine Ergebnisse, die wir nicht halten können. Sie erfahren vorab, wie viele Sitzungen realistisch nötig sind, was das kostet und welche Alternativen es gibt – ohne Verkaufsdruck."
+      },
+      "care": {
+        "title": "Zeit für Sie",
+        "body": "Wir planen ausreichend Zeit pro Termin ein, damit Sie in Ruhe ankommen, Fragen stellen und sich während der gesamten Behandlung gut aufgehoben fühlen."
+      }
+    }
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "text": "Diese Seite existiert nicht oder wurde verschoben. Vielleicht suchen Sie unsere Preisliste, unsere Arbeiten oder die Online-Terminbuchung?",
+    "cta": "Zurück zur Startseite"
+  },
+  "footer": {
+    "sitemap": "Sitemap",
+    "label": "Rechtliches",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "terms": "AGB",
+    "mission": "Leitbild",
+    "cookieSettings": "Cookie-Einstellungen"
+  },
+  "languageSwitcher": {
+    "label": "Sprache"
+  }
+}

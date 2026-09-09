@@ -1,0 +1,18 @@
+/*
+Theme Name: elcorix
+Theme URI: https://elcorix.com
+Author: elcorix
+Description: The elcorix laser hair-removal site — a classic PHP theme built to the elcorix Figma file, with the same Tailwind design tokens, the same one-page landing layout and the same deep routes the React build had. Content comes from the elcorix Core plugin; this theme is presentation only.
+Version: 1.0.0
+Requires at least: 6.4
+Tested up to: 6.7
+Requires PHP: 8.1
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: elcorix
+Tags: one-column, custom-colors, translation-ready, block-styles
+
+This file exists because WordPress identifies a theme by it. The site's
+actual stylesheet is built from src/app.css into assets/css/app.css by
+Tailwind — see the README. Nothing here is loaded on the front end.
+*/

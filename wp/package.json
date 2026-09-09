@@ -1,0 +1,19 @@
+{
+  "name": "elcorix-wordpress",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build steps for the elcorix WordPress theme: the Tailwind stylesheet and the self-hosted font faces.",
+  "scripts": {
+    "build": "npm run build:fonts && npm run build:css",
+    "build:css": "tailwindcss -i themes/elcorix/src/app.css -o themes/elcorix/assets/css/app.css --minify",
+    "watch:css": "tailwindcss -i themes/elcorix/src/app.css -o themes/elcorix/assets/css/app.css --watch",
+    "build:fonts": "node tools/build-fonts.mjs",
+    "i18n": "node tools/i18n-from-react.mjs ../client/src/i18n/locales themes/elcorix/languages",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

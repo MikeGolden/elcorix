@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The plugin's pure logic — validation, price formatting, the Altegio id,
+  the JSON-LD — runs without WordPress, so it needs no test scaffold beyond
+  this. Anything that touches the database or hooks belongs in a WordPress
+  integration suite instead, and is covered by the Playwright specs.
+-->
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+	bootstrap="plugins/elcorix-core/tests/bootstrap.php"
+	colors="true"
+	failOnWarning="true"
+	failOnRisky="true">
+	<testsuites>
+		<testsuite name="elcorix">
+			<directory>plugins/elcorix-core/tests</directory>
+		</testsuite>
+	</testsuites>
+	<source>
+		<include>
+			<directory suffix=".php">plugins/elcorix-core/includes</directory>
+		</include>
+	</source>
+</phpunit>
