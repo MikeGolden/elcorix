@@ -5,10 +5,18 @@ import App from "../App";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import i18n, { createI18nInstance } from "../i18n";
 
-function renderApp() {
+function renderApp(path = "/") {
   return render(
-    <MemoryRouter initialEntries={["/"]}>
+    <MemoryRouter initialEntries={[path]}>
       <App />
+    </MemoryRouter>,
+  );
+}
+
+function renderSwitcher(path = "/en") {
+  return render(
+    <MemoryRouter initialEntries={[path]}>
+      <LanguageSwitcher />
     </MemoryRouter>,
   );
 }
@@ -36,7 +44,24 @@ describe("internationalization", () => {
         name: "Dauerhafte Laser-Haarentfernung in Kempten",
       }),
     ).toBeInTheDocument();
+    // The URL carries the language now; localStorage only remembers it for
+    // the next visit to an unprefixed URL.
     expect(window.localStorage.getItem("i18nextLng")).toBe("de");
+  });
+
+  it("renders the language named by the URL, not the one that was stored", () => {
+    window.localStorage.setItem("i18nextLng", "en");
+    renderApp("/uk");
+    expect(screen.getByRole("heading", { name: "Кому це підходить?" })).toBeInTheDocument();
+    expect(document.documentElement.lang).toBe("uk");
+  });
+
+  it("renders Russian under /ru — a separate locale, not the Ukrainian one", () => {
+    renderApp("/ru");
+    expect(screen.getByRole("heading", { name: "Кому это подходит?" })).toBeInTheDocument();
+    expect(document.documentElement.lang).toBe("ru");
+    // Cyrillic is not enough: /ru must not fall through to the uk bundle.
+    expect(screen.queryByRole("heading", { name: "Кому це підходить?" })).toBeNull();
   });
 
   it("updates the html lang attribute when the language changes", async () => {
@@ -46,29 +71,12 @@ describe("internationalization", () => {
     expect(document.documentElement.lang).toBe("de");
   });
 
-  it("defaults to German when nothing is stored and the browser language is unsupported", () => {
-    Object.defineProperty(window.navigator, "language", {
-      value: "fr-FR",
-      configurable: true,
-    });
-    Object.defineProperty(window.navigator, "languages", {
-      value: ["fr-FR"],
-      configurable: true,
-    });
-    window.localStorage.clear();
-    try {
-      const instance = createI18nInstance();
-      expect(instance.resolvedLanguage).toBe("de");
-    } finally {
-      Reflect.deleteProperty(window.navigator, "language");
-      Reflect.deleteProperty(window.navigator, "languages");
-    }
-  });
-
-  it("prefers the language persisted in localStorage over everything else", () => {
-    window.localStorage.setItem("i18nextLng", "uk");
-    const instance = createI18nInstance();
-    expect(instance.resolvedLanguage).toBe("uk");
+  it("starts a fresh instance in German unless told otherwise", () => {
+    // The URL decides the language (see routing.test.ts); an instance
+    // created without one is German, the business's own language.
+    expect(createI18nInstance().resolvedLanguage).toBe("de");
+    expect(createI18nInstance(false, "uk").resolvedLanguage).toBe("uk");
+    expect(createI18nInstance(false, "ru").resolvedLanguage).toBe("ru");
   });
 
   it("falls back to English for keys missing in the active language", async () => {
@@ -81,8 +89,8 @@ describe("internationalization", () => {
 });
 
 describe("LanguageSwitcher", () => {
-  it("renders all three language options with flag icons", async () => {
-    render(<LanguageSwitcher />);
+  it("renders every language option with an icon", async () => {
+    renderSwitcher();
     const user = userEvent.setup();
 
     const trigger = screen.getByRole("button", { name: "Language" });
@@ -95,6 +103,7 @@ describe("LanguageSwitcher", () => {
       "English",
       "Deutsch",
       "Українська",
+      "Русский",
     ]);
     for (const option of options) {
       expect(option.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
@@ -105,8 +114,28 @@ describe("LanguageSwitcher", () => {
     );
   });
 
+  it("marks the language of the current URL as selected", async () => {
+    renderSwitcher("/uk/prices");
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Language" }));
+    expect(screen.getByRole("option", { name: "Українська" })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+  });
+
+  it("marks Russian as selected under /ru", async () => {
+    renderSwitcher("/ru/prices");
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Language" }));
+    expect(screen.getByRole("option", { name: "Русский" })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+  });
+
   it("closes on Escape and returns focus to the trigger", async () => {
-    render(<LanguageSwitcher />);
+    renderSwitcher();
     const user = userEvent.setup();
     const trigger = screen.getByRole("button", { name: "Language" });
     await user.click(trigger);

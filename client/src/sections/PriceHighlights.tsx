@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import LocalizedLink from "../components/LocalizedLink";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import { PackagePriceTable, ZonePriceTables } from "../components/PriceTables";
@@ -22,9 +22,9 @@ export default function PriceHighlights() {
         <PackagePriceTable />
       </Reveal>
       <Reveal className="mt-10 flex justify-end" delay={90}>
-        <Link to="/prices" className="btn-primary">
+        <LocalizedLink to="/prices" className="btn-primary">
           {t("cta.fullPriceList")}
-        </Link>
+        </LocalizedLink>
       </Reveal>
     </section>
   );

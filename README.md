@@ -113,11 +113,30 @@ database volume.
 ## Internationalization
 
 The client is fully translated with [react-i18next](https://react.i18next.com/)
-into **English (en)**, **German (de)** and **Ukrainian (uk)**.
+into **English (en)**, **German (de)**, **Ukrainian (uk)** and **Russian (ru)**.
 
-- Detection order: `localStorage` (`i18nextLng`) → browser language → **German**
-  (the business default). The user's choice is persisted to `localStorage`, and
-  `<html lang>` is kept in sync on every change.
+### Language URLs
+
+Every page lives under a language segment — `/de/prices`, `/en/prices`,
+`/uk/prices`, `/ru/prices` — so each translation has its own address that can
+be linked, shared, cached and indexed, and they can declare each other as
+hreflang alternates. `client/src/i18n/routing.ts` owns that mapping (React-, i18next-
+and DOM-free, so the router, the meta tags, the prerender plugin and the
+sitemap all derive their URLs from it).
+
+- **The URL decides the language.** `LanguageLayout` in `App.tsx` calls
+  `changeLanguage` for whichever segment the router matched, so a shared
+  `/uk/prices` link opens in Ukrainian whatever the visitor picked before.
+- **Anything unprefixed redirects.** `/`, an old `/prices` link and a locale
+  the site does not have (`/fr/prices`) all redirect — path, query and hash
+  intact — to `localStorage` (`i18nextLng`) → browser language → **German**.
+  The redirect uses `replace`, so it never lands in the back-button history.
+- **Links go through `LocalizedLink`**, not `Link`: a bare `<Link to="/prices">`
+  would drop the segment and bounce the visitor through the redirect. Anchor
+  links use `useAnchorHref()`, which returns `#prices` on the home page and
+  `/de#prices` elsewhere.
+- `<html lang>` follows the active language; the choice is still persisted to
+  `localStorage`, but only to pick the target for the next unprefixed visit.
 - Missing keys fall back to **English**.
 - Translations live in `client/src/i18n/locales/<lng>/common.json`; the i18n
   instance is initialized in `client/src/i18n/index.ts` (imported first in
@@ -125,16 +144,25 @@ into **English (en)**, **German (de)** and **Ukrainian (uk)**.
   augments i18next with the English resource shape, so a typo in a `t()` key is
   a compile error.
 - The header's `LanguageSwitcher` (accessible listbox dropdown, keyboard
-  navigable) uses small inline SVG flags from `client/src/components/flags/`.
+  navigable) uses small inline SVG icons from `client/src/components/flags/`.
+  Russian is the one option without a flag: it is offered as a language, not a
+  country, and a good part of the clientele that reads it is Ukrainian — so it
+  gets the neutral lettered `BadgeRU` chip instead.
 
 **Adding a key:** add it to `en/common.json` first (it is the type source and
-the fallback), then mirror it in `de` and `uk`. A unit test
+the fallback), then mirror it in `de`, `uk` and `ru`. A unit test
 (`src/test/translations.test.ts`) fails if the key sets ever diverge.
 
 **Adding a language:** create `client/src/i18n/locales/<lng>/common.json` with
-the full key set, register it in `resources` and `supportedLanguages` in
-`client/src/i18n/index.ts`, add an entry (label + flag component) to
-`LanguageSwitcher`, and extend the completeness test.
+the full key set, register it in `resources` in `client/src/i18n/index.ts` and
+in `supportedLanguages` in `client/src/i18n/routing.ts` (that one list gives it
+a URL segment, a route tree, a prerendered shell per route, hreflang alternates
+and sitemap entries), add its `og:locale` to `client/src/seo/meta.ts`, add an
+entry (label + icon component) to `LanguageSwitcher`, and extend the
+completeness test. If the language has a server-side auto-reply, add it to
+`SUPPORTED_LANGS` and the `confirmation` map in `server/src/routes/contact.ts`
+too — that list is separate from the client's on purpose, so an untranslated
+auto-reply falls back to German rather than shipping half-translated.
 
 Business data that must not be translated (name, address, phone, e-mail,
 Instagram) stays in `client/src/config.ts`.
@@ -213,7 +241,7 @@ npm run start -w server
 
 ## GDPR / privacy
 
-- **Cookie consent banner** (all three languages) on first visit; “Accept
+- **Cookie consent banner** (every language) on first visit; “Accept
   all” and “Only necessary” have equal prominence, the decision is stored in
   `localStorage` (`cookie-consent`, with timestamp as the consent record) and
   can be changed any time via “Cookie settings” in the footer.

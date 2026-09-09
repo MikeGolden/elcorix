@@ -42,7 +42,7 @@ describe("cookie consent banner", () => {
     ).toBeInTheDocument();
     expect(
       within(banner).getByRole("link", { name: /privacy policy/i }),
-    ).toHaveAttribute("href", "/privacy");
+    ).toHaveAttribute("href", "/en/privacy");
   });
 
   it("does not appear when a decision is already stored", () => {
@@ -133,10 +133,10 @@ describe("legal pages", () => {
     const footer = screen.getByRole("contentinfo");
     expect(
       within(footer).getByRole("link", { name: "Privacy policy" }),
-    ).toHaveAttribute("href", "/privacy");
+    ).toHaveAttribute("href", "/en/privacy");
     expect(within(footer).getByRole("link", { name: "Imprint" })).toHaveAttribute(
       "href",
-      "/imprint",
+      "/en/imprint",
     );
   });
 });

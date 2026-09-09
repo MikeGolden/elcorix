@@ -95,6 +95,43 @@ describe("POST /api/contact", () => {
       }),
     );
   });
+
+  it("confirms in Russian when the client says the visitor is reading /ru", async () => {
+    query.mockResolvedValue({ rows: [{ id: 43, created_at: new Date() }] });
+    const send = vi.fn().mockResolvedValue(undefined);
+    const mailApp = createApp(db, {
+      mailer: { enabled: true, notifyAddress: "owner@example.com", send },
+    });
+    const res = await request(mailApp)
+      .post("/api/contact")
+      .send({ ...valid, lang: "ru" });
+    expect(res.status).toBe(201);
+    await vi.waitFor(() => expect(send).toHaveBeenCalledTimes(2));
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "anna@example.com",
+        subject: expect.stringContaining("Мы получили ваше сообщение"),
+      }),
+    );
+  });
+
+  it("falls back to German for a language the auto-reply has no copy for", async () => {
+    query.mockResolvedValue({ rows: [{ id: 44, created_at: new Date() }] });
+    const send = vi.fn().mockResolvedValue(undefined);
+    const mailApp = createApp(db, {
+      mailer: { enabled: true, notifyAddress: "owner@example.com", send },
+    });
+    await request(mailApp)
+      .post("/api/contact")
+      .send({ ...valid, lang: "ru-RU" });
+    await vi.waitFor(() => expect(send).toHaveBeenCalledTimes(2));
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "anna@example.com",
+        subject: expect.stringContaining("Wir haben Ihre Nachricht erhalten"),
+      }),
+    );
+  });
 });
 
 describe("validateContact", () => {

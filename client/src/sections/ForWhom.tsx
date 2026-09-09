@@ -1,14 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
 import { reasons } from "../content";
-import { anchorHref } from "../anchors";
+import { useAnchorHref } from "../i18n/useLanguage";
 import { ArrowRightIcon } from "../components/icons";
 
 export default function ForWhom() {
   const { t } = useTranslation();
-  const { pathname } = useLocation();
+  const anchor = useAnchorHref();
   return (
     <section
       id="for-whom"
@@ -42,7 +42,7 @@ export default function ForWhom() {
                 {t(`forWhom.items.${reason.key}.title` as "forWhom.items.shaving.title")}
               </h3>
               <Link
-                to={anchorHref(pathname, "consultation")}
+                to={anchor("consultation")}
                 className="link-more mt-3"
               >
                 {t("cta.learnMore")}

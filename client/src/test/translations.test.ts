@@ -1,6 +1,7 @@
 import en from "../i18n/locales/en/common.json";
 import de from "../i18n/locales/de/common.json";
 import uk from "../i18n/locales/uk/common.json";
+import ru from "../i18n/locales/ru/common.json";
 
 function flattenKeys(value: unknown, prefix = ""): string[] {
   if (typeof value === "object" && value !== null) {
@@ -26,6 +27,7 @@ describe("translation completeness", () => {
   it.each([
     ["de", de],
     ["uk", uk],
+    ["ru", ru],
   ] as const)("%s contains exactly the same key set as en", (_language, resources) => {
     expect(flattenKeys(resources).sort()).toEqual(enKeys);
   });
@@ -34,6 +36,7 @@ describe("translation completeness", () => {
     ["en", en],
     ["de", de],
     ["uk", uk],
+    ["ru", ru],
   ] as const)("%s has no empty translations", (_language, resources) => {
     for (const [key, value] of flattenEntries(resources)) {
       expect(typeof value, key).toBe("string");

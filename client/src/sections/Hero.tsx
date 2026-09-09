@@ -1,9 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo, { webpFor } from "../components/Photo";
 import { images } from "../images";
-import { anchorHref } from "../anchors";
+import LocalizedLink from "../components/LocalizedLink";
+import { useAnchorHref } from "../i18n/useLanguage";
 
 /**
  * Hero of the Figma one-pager: the copy sits in the 1200px column while
@@ -22,7 +23,7 @@ import { anchorHref } from "../anchors";
  */
 export default function Hero() {
   const { t } = useTranslation();
-  const { pathname } = useLocation();
+  const anchor = useAnchorHref();
   return (
     // -mt-19/pt-19 = the header's height: the section starts under the
     // header without moving any of its content. The copy's right padding
@@ -42,7 +43,7 @@ export default function Hero() {
         <Reveal
           as={Link}
           delay={90}
-          to={anchorHref(pathname, "booking")}
+          to={anchor("booking")}
           className="btn-primary mt-8"
         >
           {t("cta.book")}
@@ -50,7 +51,7 @@ export default function Hero() {
 
         <Reveal className="mt-12" delay={270}>
           <p className="text-sm font-bold text-brand-700">{t("hero.servicesLabel")}</p>
-          <Link
+          <LocalizedLink
             to="/prices"
             className="mt-4 inline-flex items-center gap-4 rounded-panel p-2 pr-6 transition-colors hover:bg-surface-soft"
           >
@@ -67,7 +68,7 @@ export default function Hero() {
               <span className="font-bold text-brand-700">{t("hero.serviceName")}</span>{" "}
               <span className="text-ink-300">{t("hero.serviceCount")}</span>
             </span>
-          </Link>
+          </LocalizedLink>
         </Reveal>
 
         <Photo

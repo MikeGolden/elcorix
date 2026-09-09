@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import LocalizedLink from "./LocalizedLink";
 import { useTranslation } from "react-i18next";
 import { business } from "../config";
 import { useConsent } from "../consent/ConsentContext";
@@ -38,9 +38,9 @@ export default function Footer() {
             <ul className="flex flex-wrap gap-x-8 gap-y-3">
               {legalLinks.map((link) => (
                 <li key={link.to}>
-                  <Link to={link.to} className={linkClass}>
+                  <LocalizedLink to={link.to} className={linkClass}>
                     {t(link.key)}
-                  </Link>
+                  </LocalizedLink>
                 </li>
               ))}
               <li>

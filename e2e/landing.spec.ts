@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Landing page", () => {
   test("shows every section of the Figma layout", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     await expect(
       page.getByRole("heading", {
         level: 1,
@@ -24,7 +24,7 @@ test.describe("Landing page", () => {
   });
 
   test("the anchor menu jumps to a section on the same page", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByTestId("menu-toggle").click();
     await page
