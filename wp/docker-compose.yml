@@ -1,0 +1,100 @@
+# The WordPress rewrite of the elcorix site.
+#
+#   docker compose up -d --build
+#   docker compose run --rm wpcli wp core install ...   (see wp/README.md)
+#
+# Only the web container is published. The database is reachable from the
+# compose network alone — the same posture the Express build had, where
+# Postgres was never exposed either.
+
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-elcorix}
+      MARIADB_USER: ${DB_USER:-elcorix}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-elcorix}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-elcorix-root}
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Nightly logical backups into ./backups (BACKUP_KEEP_DAYS rotates them).
+  # A named volume is not a backup — copy this folder off the host.
+  db-backup:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MYSQL_PWD: ${DB_PASSWORD:-elcorix}
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: >
+      sh -c 'while true; do
+        mariadb-dump -h db -u ${DB_USER:-elcorix} ${DB_NAME:-elcorix} > "/backups/elcorix-$$(date +%Y%m%d-%H%M%S).sql" &&
+        find /backups -name "elcorix-*.sql" -mtime +$${BACKUP_KEEP_DAYS} -delete;
+        sleep 86400;
+      done'
+
+  wordpress:
+    build:
+      context: ./docker
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: ${DB_NAME:-elcorix}
+      WORDPRESS_DB_USER: ${DB_USER:-elcorix}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-elcorix}
+      # Disabling the file editor and direct updates keeps a compromised
+      # admin account from writing PHP into the container.
+      WORDPRESS_CONFIG_EXTRA: |
+        define('DISALLOW_FILE_EDIT', true);
+        define('DISALLOW_FILE_MODS', ${DISALLOW_FILE_MODS:-false});
+        define('WP_HOME', '${SITE_URL:-http://localhost:8080}');
+        define('WP_SITEURL', '${SITE_URL:-http://localhost:8080}');
+        define('AUTOMATIC_UPDATER_DISABLED', true);
+    volumes:
+      - wp-data:/var/www/html
+      - ./themes/elcorix:/var/www/html/wp-content/themes/elcorix
+      - ./plugins/elcorix-core:/var/www/html/wp-content/plugins/elcorix-core
+      # The seeder reads its content from here.
+      - ./tools:/var/www/html/wp-content/elcorix-tools:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # One-shot helper: `docker compose run --rm wpcli wp <command>`.
+  wpcli:
+    build:
+      context: ./docker
+    profiles: ["cli"]
+    user: "33:33"
+    entrypoint: ["wp"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: ${DB_NAME:-elcorix}
+      WORDPRESS_DB_USER: ${DB_USER:-elcorix}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-elcorix}
+    volumes:
+      - wp-data:/var/www/html
+      - ./themes/elcorix:/var/www/html/wp-content/themes/elcorix
+      - ./plugins/elcorix-core:/var/www/html/wp-content/plugins/elcorix-core
+      - ./tools:/var/www/html/wp-content/elcorix-tools:ro
+    working_dir: /var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db-data:
+  wp-data:

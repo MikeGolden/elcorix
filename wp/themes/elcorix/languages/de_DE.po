@@ -1,0 +1,319 @@
+msgid ""
+msgstr "Project-Id-Version: elcorix 1.0.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nLanguage: de_DE\nPlural-Forms: nplurals=2; plural=(n != 1);\nX-Generator: tools/i18n-from-react.mjs\n"
+
+#. from nav.skipToContent in the React build
+msgid "Skip to content"
+msgstr "Zum Inhalt springen"
+
+#. from nav.forWhom in the React build
+msgid "Who is it for?"
+msgstr "Für wen ist es geeignet?"
+
+#. from nav.technology in the React build
+msgid "Our technology"
+msgstr "Unsere Technologie"
+
+#. from nav.specialist in the React build
+msgid "About the specialist"
+msgstr "Über die Meisterin"
+
+#. from nav.work in the React build
+msgid "Our work"
+msgstr "Unsere Arbeiten"
+
+#. from nav.prices in the React build
+msgid "Our price list"
+msgstr "Unsere Preisliste"
+
+#. from nav.consultation in the React build
+msgid "Request a quote"
+msgstr "Angebot anfordern"
+
+#. from nav.contact in the React build
+msgid "Contact"
+msgstr "Kontakt"
+
+#. from nav.label in the React build
+msgid "Menu"
+msgstr "Menü"
+
+#. from cta.book in the React build
+msgid "Book an appointment"
+msgstr "Termin vereinbaren"
+
+#. from cta.consultation in the React build
+msgid "Get a consultation"
+msgstr "Beratung erhalten"
+
+#. from cta.whatsapp in the React build
+msgid "Message us on WhatsApp"
+msgstr "Über WhatsApp schreiben"
+
+#. from cta.learnMore in the React build
+msgid "Learn more"
+msgstr "Mehr erfahren"
+
+#. from cta.moreDevices in the React build
+msgid "Learn more about our devices"
+msgstr "Mehr über unsere Geräte erfahren"
+
+#. from cta.fullPriceList in the React build
+msgid "See the full price list"
+msgstr "Vollständige Preisliste ansehen"
+
+#. from footer.label in the React build
+msgid "Legal"
+msgstr "Rechtliches"
+
+#. from footer.imprint in the React build
+msgid "Imprint"
+msgstr "Impressum"
+
+#. from footer.privacy in the React build
+msgctxt "footer link"
+msgid "Privacy policy"
+msgstr "Datenschutz"
+
+#. from footer.terms in the React build
+msgid "Terms"
+msgstr "AGB"
+
+#. from footer.mission in the React build
+msgid "Mission"
+msgstr "Leitbild"
+
+#. from footer.sitemap in the React build
+msgid "Sitemap"
+msgstr "Sitemap"
+
+#. from footer.cookieSettings in the React build
+msgid "Cookie settings"
+msgstr "Cookie-Einstellungen"
+
+#. from languageSwitcher.label in the React build
+msgid "Language"
+msgstr "Sprache"
+
+#. from prices.groups.women in the React build
+msgid "Services for women"
+msgstr "Leistungen für Frauen"
+
+#. from prices.groups.men in the React build
+msgid "Services for men"
+msgstr "Leistungen für Männer"
+
+#. from prices.groups.packages in the React build
+msgid "Package deals for women"
+msgstr "Paketlösungen für Frauen"
+
+#. from prices.columns.package in the React build
+msgid "Package"
+msgstr "Paket"
+
+#. from prices.columns.zones in the React build
+msgid "Zones included"
+msgstr "Enthaltene Zonen"
+
+#. from prices.columns.single in the React build
+msgid "Single treatment"
+msgstr "Einzelbehandlung"
+
+#. from prices.columns.six in the React build
+msgid "6-session package"
+msgstr "6er-Paket"
+
+#. from prices.columns.eight in the React build
+msgid "8-session package"
+msgstr "8er-Paket"
+
+#. from booking.widgetTitle in the React build
+msgid "Altegio online booking"
+msgstr "Altegio Online-Terminbuchung"
+
+#. from booking.fallbackQuestion in the React build
+msgid "Calendar not loading?"
+msgstr "Kalender lädt nicht?"
+
+#. from booking.fallbackLink in the React build
+msgid "Open the %s booking calendar in a new tab"
+msgstr "Buchungskalender von %s in einem neuen Tab öffnen"
+
+#. from booking.consentTitle in the React build
+msgid "External booking calendar"
+msgstr "Externer Buchungskalender"
+
+#. from booking.consentText in the React build
+msgid "Our online calendar is provided by Altegio. When it loads, Altegio sets cookies and processes your IP address — and, if you pay online, your payment data on Altegio's pages. Details are in our privacy policy."
+msgstr "Unser Online-Kalender wird von Altegio bereitgestellt. Beim Laden setzt Altegio Cookies und verarbeitet Ihre IP-Adresse – bei einer Online-Zahlung zusätzlich Ihre Zahlungsdaten auf den Seiten von Altegio. Einzelheiten finden Sie in unserer Datenschutzerklärung."
+
+#. from booking.consentLoad in the React build
+msgid "Load calendar and accept Altegio cookies"
+msgstr "Kalender laden und Altegio-Cookies akzeptieren"
+
+#. from consultation.name in the React build
+msgid "Name"
+msgstr "Name"
+
+#. from consultation.phone in the React build
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+#. from consultation.phoneError in the React build
+msgid "Please enter a valid phone number, e.g. +49 155 625 14 872."
+msgstr "Bitte geben Sie eine gültige Telefonnummer ein, z. B. +49 155 625 14 872."
+
+#. from consultation.date in the React build
+msgid "Preferred date"
+msgstr "Datum des Besuchs"
+
+#. from consultation.time in the React build
+msgid "Preferred time"
+msgstr "Uhrzeit des Besuchs"
+
+#. from consultation.timeAny in the React build
+msgid "No preference"
+msgstr "Keine Präferenz"
+
+#. from consultation.dateRequired in the React build
+msgid "Please also choose a date for the time you picked."
+msgstr "Bitte wählen Sie zu der Uhrzeit auch ein Datum aus."
+
+#. from consultation.datePast in the React build
+msgid "Please choose a date that is not in the past."
+msgstr "Bitte wählen Sie ein Datum, das nicht in der Vergangenheit liegt."
+
+#. from consultation.consentMarketing in the React build
+msgid "I would like to receive offers and news by e-mail and phone. I can withdraw this consent at any time with effect for the future."
+msgstr "Ich möchte per E-Mail und telefonisch über Angebote und Neuigkeiten informiert werden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen."
+
+#. from consultation.consentPrivacy in the React build
+msgid "By submitting this form I agree that my details may be used to handle my appointment request. Information on how we process your personal data is in our %1$sprivacy policy%2$s."
+msgstr "Mit dem Absenden des Formulars stimme ich zu, dass meine Angaben zur Bearbeitung meiner Terminanfrage verwendet werden. Informationen zur Verarbeitung Ihrer personenbezogenen Daten finden Sie in unserer %1$sDatenschutzerklärung%2$s."
+
+#. from consultation.sending in the React build
+msgid "Sending…"
+msgstr "Wird gesendet…"
+
+#. from consultation.success in the React build
+msgid "Thank you! We will get back to you during opening hours."
+msgstr "Vielen Dank! Wir melden uns während der Öffnungszeiten bei Ihnen."
+
+#. from consultation.error in the React build
+msgid "Something went wrong. Please try again or call us directly."
+msgstr "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an."
+
+#. from contact.addressLabel in the React build
+msgid "Address"
+msgstr "Adresse"
+
+#. from contact.phoneLabel in the React build
+msgid "Phone / WhatsApp"
+msgstr "Telefon / WhatsApp"
+
+#. from contact.emailLabel in the React build
+msgid "E-mail"
+msgstr "E-Mail"
+
+#. from contact.hoursTitle in the React build
+msgid "Opening hours"
+msgstr "Öffnungszeiten"
+
+#. from contact.formTitle in the React build
+msgid "Write to us"
+msgstr "Schreiben Sie uns"
+
+#. from contact.formLabel in the React build
+msgid "Contact form"
+msgstr "Kontaktformular"
+
+#. from contact.message in the React build
+msgid "Message"
+msgstr "Nachricht"
+
+#. from contact.messagePlaceholder in the React build
+msgid "How can we help you?"
+msgstr "Wie können wir Ihnen helfen?"
+
+#. from contact.privacyConsent in the React build
+msgid "I have read the %1$sprivacy policy%2$s and agree that my details are processed to answer my enquiry."
+msgstr "Ich habe die %1$sDatenschutzerklärung%2$s gelesen und bin damit einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden."
+
+#. from contact.send in the React build
+msgid "Send message"
+msgstr "Nachricht senden"
+
+#. from contact.success in the React build
+msgid "Thank you! We will get back to you shortly."
+msgstr "Vielen Dank! Wir melden uns in Kürze bei Ihnen."
+
+#. from contact.error in the React build
+msgid "Something went wrong. Please try again or call us."
+msgstr "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns an."
+
+#. from contact.map.title in the React build
+msgid "Map showing the studio location"
+msgstr "Karte mit dem Standort des Studios"
+
+#. from work.prev in the React build
+msgid "Previous images"
+msgstr "Vorherige Bilder"
+
+#. from work.next in the React build
+msgid "Next images"
+msgstr "Nächste Bilder"
+
+#. from lightbox.label in the React build
+msgid "Image viewer"
+msgstr "Bildansicht"
+
+#. from lightbox.open in the React build
+msgid "Open image: %s"
+msgstr "Bild öffnen: %s"
+
+#. from lightbox.close in the React build
+msgid "Close image viewer"
+msgstr "Bildansicht schließen"
+
+#. from lightbox.prev in the React build
+msgid "Previous image"
+msgstr "Vorheriges Bild"
+
+#. from lightbox.next in the React build
+msgid "Next image"
+msgstr "Nächstes Bild"
+
+#. from lightbox.counter in the React build
+msgid "%1$d of %2$d"
+msgstr "%1$d von %2$d"
+
+#. from consent.title in the React build
+msgid "Cookies & external services"
+msgstr "Cookies & externe Dienste"
+
+#. from consent.description in the React build
+msgid "We only use storage that is technically required (your language and this cookie decision). The Altegio booking calendar is an external service that sets cookies when it loads — we load it only with your consent. You can change your choice at any time under “Cookie settings” in the footer."
+msgstr "Wir verwenden nur technisch notwendigen Speicher (Ihre Sprache und diese Cookie-Entscheidung). Der Buchungskalender von Altegio ist ein externer Dienst, der beim Laden Cookies setzt – wir laden ihn nur mit Ihrer Einwilligung. Ihre Auswahl können Sie jederzeit über „Cookie-Einstellungen“ im Footer ändern."
+
+#. from consent.privacyLink in the React build
+msgid "Privacy policy"
+msgstr "Datenschutzerklärung"
+
+#. from consent.acceptAll in the React build
+msgid "Accept all"
+msgstr "Alle akzeptieren"
+
+#. from consent.necessaryOnly in the React build
+msgid "Only necessary"
+msgstr "Nur notwendige"
+
+#. from notFound.title in the React build
+msgid "Page not found"
+msgstr "Seite nicht gefunden"
+
+#. from notFound.text in the React build
+msgid "This page does not exist or has been moved. Maybe you were looking for our price list, our work or the online booking?"
+msgstr "Diese Seite existiert nicht oder wurde verschoben. Vielleicht suchen Sie unsere Preisliste, unsere Arbeiten oder die Online-Terminbuchung?"
+
+#. from notFound.cta in the React build
+msgid "Back to the home page"
+msgstr "Zurück zur Startseite"

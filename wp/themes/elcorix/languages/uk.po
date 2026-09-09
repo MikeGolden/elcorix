@@ -1,0 +1,319 @@
+msgid ""
+msgstr "Project-Id-Version: elcorix 1.0.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nLanguage: uk\nPlural-Forms: nplurals=2; plural=(n != 1);\nX-Generator: tools/i18n-from-react.mjs\n"
+
+#. from nav.skipToContent in the React build
+msgid "Skip to content"
+msgstr "Перейти до вмісту"
+
+#. from nav.forWhom in the React build
+msgid "Who is it for?"
+msgstr "Кому це підходить?"
+
+#. from nav.technology in the React build
+msgid "Our technology"
+msgstr "Наша технологія"
+
+#. from nav.specialist in the React build
+msgid "About the specialist"
+msgstr "Про майстриню"
+
+#. from nav.work in the React build
+msgid "Our work"
+msgstr "Наші роботи"
+
+#. from nav.prices in the React build
+msgid "Our price list"
+msgstr "Наш прайс-лист"
+
+#. from nav.consultation in the React build
+msgid "Request a quote"
+msgstr "Отримати пропозицію"
+
+#. from nav.contact in the React build
+msgid "Contact"
+msgstr "Контакти"
+
+#. from nav.label in the React build
+msgid "Menu"
+msgstr "Меню"
+
+#. from cta.book in the React build
+msgid "Book an appointment"
+msgstr "Записатися на прийом"
+
+#. from cta.consultation in the React build
+msgid "Get a consultation"
+msgstr "Отримати консультацію"
+
+#. from cta.whatsapp in the React build
+msgid "Message us on WhatsApp"
+msgstr "Написати у WhatsApp"
+
+#. from cta.learnMore in the React build
+msgid "Learn more"
+msgstr "Дізнатися більше"
+
+#. from cta.moreDevices in the React build
+msgid "Learn more about our devices"
+msgstr "Дізнатися більше про наше обладнання"
+
+#. from cta.fullPriceList in the React build
+msgid "See the full price list"
+msgstr "Переглянути повний прайс-лист"
+
+#. from footer.label in the React build
+msgid "Legal"
+msgstr "Правова інформація"
+
+#. from footer.imprint in the React build
+msgid "Imprint"
+msgstr "Вихідні дані"
+
+#. from footer.privacy in the React build
+msgctxt "footer link"
+msgid "Privacy policy"
+msgstr "Конфіденційність"
+
+#. from footer.terms in the React build
+msgid "Terms"
+msgstr "Умови"
+
+#. from footer.mission in the React build
+msgid "Mission"
+msgstr "Принципи"
+
+#. from footer.sitemap in the React build
+msgid "Sitemap"
+msgstr "Карта сайту"
+
+#. from footer.cookieSettings in the React build
+msgid "Cookie settings"
+msgstr "Налаштування cookie"
+
+#. from languageSwitcher.label in the React build
+msgid "Language"
+msgstr "Мова"
+
+#. from prices.groups.women in the React build
+msgid "Services for women"
+msgstr "Послуги для жінок"
+
+#. from prices.groups.men in the React build
+msgid "Services for men"
+msgstr "Послуги для чоловіків"
+
+#. from prices.groups.packages in the React build
+msgid "Package deals for women"
+msgstr "Пакетні пропозиції для жінок"
+
+#. from prices.columns.package in the React build
+msgid "Package"
+msgstr "Пакет"
+
+#. from prices.columns.zones in the React build
+msgid "Zones included"
+msgstr "Зони, що входять"
+
+#. from prices.columns.single in the React build
+msgid "Single treatment"
+msgstr "Один сеанс"
+
+#. from prices.columns.six in the React build
+msgid "6-session package"
+msgstr "Пакет на 6"
+
+#. from prices.columns.eight in the React build
+msgid "8-session package"
+msgstr "Пакет на 8"
+
+#. from booking.widgetTitle in the React build
+msgid "Altegio online booking"
+msgstr "Онлайн-запис Altegio"
+
+#. from booking.fallbackQuestion in the React build
+msgid "Calendar not loading?"
+msgstr "Календар не завантажується?"
+
+#. from booking.fallbackLink in the React build
+msgid "Open the %s booking calendar in a new tab"
+msgstr "Відкрити календар запису %s у новій вкладці"
+
+#. from booking.consentTitle in the React build
+msgid "External booking calendar"
+msgstr "Зовнішній календар запису"
+
+#. from booking.consentText in the React build
+msgid "Our online calendar is provided by Altegio. When it loads, Altegio sets cookies and processes your IP address — and, if you pay online, your payment data on Altegio's pages. Details are in our privacy policy."
+msgstr "Наш онлайн-календар надає сервіс Altegio. Під час завантаження Altegio встановлює файли cookie й обробляє вашу IP-адресу, а в разі онлайн-оплати — ще й ваші платіжні дані на сторінках Altegio. Деталі — у нашій політиці конфіденційності."
+
+#. from booking.consentLoad in the React build
+msgid "Load calendar and accept Altegio cookies"
+msgstr "Завантажити календар і прийняти cookie Altegio"
+
+#. from consultation.name in the React build
+msgid "Name"
+msgstr "Ім'я"
+
+#. from consultation.phone in the React build
+msgid "Phone number"
+msgstr "Номер телефону"
+
+#. from consultation.phoneError in the React build
+msgid "Please enter a valid phone number, e.g. +49 155 625 14 872."
+msgstr "Введіть, будь ласка, дійсний номер телефону, напр. +49 155 625 14 872."
+
+#. from consultation.date in the React build
+msgid "Preferred date"
+msgstr "Бажана дата візиту"
+
+#. from consultation.time in the React build
+msgid "Preferred time"
+msgstr "Бажаний час візиту"
+
+#. from consultation.timeAny in the React build
+msgid "No preference"
+msgstr "Будь-який час"
+
+#. from consultation.dateRequired in the React build
+msgid "Please also choose a date for the time you picked."
+msgstr "Оберіть, будь ласка, також дату для вказаного часу."
+
+#. from consultation.datePast in the React build
+msgid "Please choose a date that is not in the past."
+msgstr "Оберіть, будь ласка, дату, яка не в минулому."
+
+#. from consultation.consentMarketing in the React build
+msgid "I would like to receive offers and news by e-mail and phone. I can withdraw this consent at any time with effect for the future."
+msgstr "Я хочу отримувати пропозиції та новини електронною поштою й телефоном. Свою згоду я можу відкликати будь-коли з дією на майбутнє."
+
+#. from consultation.consentPrivacy in the React build
+msgid "By submitting this form I agree that my details may be used to handle my appointment request. Information on how we process your personal data is in our %1$sprivacy policy%2$s."
+msgstr "Надсилаючи форму, я погоджуюся, що мої дані будуть використані для опрацювання запиту на запис. Інформацію про обробку персональних даних наведено в нашій %1$sполітиці конфіденційності%2$s."
+
+#. from consultation.sending in the React build
+msgid "Sending…"
+msgstr "Надсилання…"
+
+#. from consultation.success in the React build
+msgid "Thank you! We will get back to you during opening hours."
+msgstr "Дякуємо! Ми зв'яжемося з вами в робочі години."
+
+#. from consultation.error in the React build
+msgid "Something went wrong. Please try again or call us directly."
+msgstr "Щось пішло не так. Спробуйте ще раз або зателефонуйте нам."
+
+#. from contact.addressLabel in the React build
+msgid "Address"
+msgstr "Адреса"
+
+#. from contact.phoneLabel in the React build
+msgid "Phone / WhatsApp"
+msgstr "Телефон / WhatsApp"
+
+#. from contact.emailLabel in the React build
+msgid "E-mail"
+msgstr "Електронна пошта"
+
+#. from contact.hoursTitle in the React build
+msgid "Opening hours"
+msgstr "Години роботи"
+
+#. from contact.formTitle in the React build
+msgid "Write to us"
+msgstr "Напишіть нам"
+
+#. from contact.formLabel in the React build
+msgid "Contact form"
+msgstr "Форма зворотного зв'язку"
+
+#. from contact.message in the React build
+msgid "Message"
+msgstr "Повідомлення"
+
+#. from contact.messagePlaceholder in the React build
+msgid "How can we help you?"
+msgstr "Чим ми можемо допомогти?"
+
+#. from contact.privacyConsent in the React build
+msgid "I have read the %1$sprivacy policy%2$s and agree that my details are processed to answer my enquiry."
+msgstr "Я прочитав(ла) %1$sполітику конфіденційності%2$s і погоджуюся, що мої дані будуть оброблені для відповіді на мій запит."
+
+#. from contact.send in the React build
+msgid "Send message"
+msgstr "Надіслати повідомлення"
+
+#. from contact.success in the React build
+msgid "Thank you! We will get back to you shortly."
+msgstr "Дякуємо! Ми невдовзі зв'яжемося з вами."
+
+#. from contact.error in the React build
+msgid "Something went wrong. Please try again or call us."
+msgstr "Щось пішло не так. Спробуйте ще раз або зателефонуйте нам."
+
+#. from contact.map.title in the React build
+msgid "Map showing the studio location"
+msgstr "Карта з розташуванням студії"
+
+#. from work.prev in the React build
+msgid "Previous images"
+msgstr "Попередні зображення"
+
+#. from work.next in the React build
+msgid "Next images"
+msgstr "Наступні зображення"
+
+#. from lightbox.label in the React build
+msgid "Image viewer"
+msgstr "Перегляд зображення"
+
+#. from lightbox.open in the React build
+msgid "Open image: %s"
+msgstr "Відкрити зображення: %s"
+
+#. from lightbox.close in the React build
+msgid "Close image viewer"
+msgstr "Закрити перегляд зображення"
+
+#. from lightbox.prev in the React build
+msgid "Previous image"
+msgstr "Попереднє зображення"
+
+#. from lightbox.next in the React build
+msgid "Next image"
+msgstr "Наступне зображення"
+
+#. from lightbox.counter in the React build
+msgid "%1$d of %2$d"
+msgstr "%1$d з %2$d"
+
+#. from consent.title in the React build
+msgid "Cookies & external services"
+msgstr "Файли cookie та зовнішні сервіси"
+
+#. from consent.description in the React build
+msgid "We only use storage that is technically required (your language and this cookie decision). The Altegio booking calendar is an external service that sets cookies when it loads — we load it only with your consent. You can change your choice at any time under “Cookie settings” in the footer."
+msgstr "Ми використовуємо лише технічно необхідне сховище (вашу мову та це рішення щодо cookie). Календар запису Altegio — це зовнішній сервіс, який під час завантаження встановлює cookie; ми завантажуємо його лише з вашої згоди. Свій вибір ви можете будь-коли змінити через «Налаштування cookie» внизу сторінки."
+
+#. from consent.privacyLink in the React build
+msgid "Privacy policy"
+msgstr "Політика конфіденційності"
+
+#. from consent.acceptAll in the React build
+msgid "Accept all"
+msgstr "Прийняти всі"
+
+#. from consent.necessaryOnly in the React build
+msgid "Only necessary"
+msgstr "Лише необхідні"
+
+#. from notFound.title in the React build
+msgid "Page not found"
+msgstr "Сторінку не знайдено"
+
+#. from notFound.text in the React build
+msgid "This page does not exist or has been moved. Maybe you were looking for our price list, our work or the online booking?"
+msgstr "Такої сторінки не існує або її перенесено. Можливо, ви шукали наш прайс-лист, наші роботи чи онлайн-запис?"
+
+#. from notFound.cta in the React build
+msgid "Back to the home page"
+msgstr "Повернутися на головну"

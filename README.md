@@ -1,5 +1,12 @@
 # elcorix
 
+> **This branch is the WordPress rewrite.** The React/Express/Postgres
+> build described below is still what `main` ships and is untouched here;
+> `wp/` holds the same site rebuilt as a classic WordPress theme plus one
+> plugin. Start at [wp/README.md](./wp/README.md) — it covers the setup,
+> where each piece of content is now edited, and the three places the two
+> builds deliberately differ.
+
 Landing page and booking API for **elcorix**, a laser hair-removal studio in
 Kempten (Allgäu), Germany.
 

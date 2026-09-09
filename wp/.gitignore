@@ -1,0 +1,14 @@
+# Build tooling for the theme's stylesheet only — the built CSS is
+# committed, so a deploy needs no Node.
+node_modules/
+
+# Local compose configuration and the nightly database dumps.
+.env
+backups/
+
+# Playwright output.
+test-results/
+playwright-report/
+
+# Composer, when PHPUnit is installed the usual way.
+vendor/

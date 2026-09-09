@@ -1,0 +1,362 @@
+{
+  "nav": {
+    "label": "Menu",
+    "skipToContent": "Skip to content",
+    "home": "Home",
+    "forWhom": "Who is it for?",
+    "technology": "Our technology",
+    "specialist": "About the specialist",
+    "work": "Our work",
+    "prices": "Our price list",
+    "booking": "Book an appointment",
+    "consultation": "Request a quote",
+    "contact": "Contact",
+    "gallery": "Gallery"
+  },
+  "cta": {
+    "book": "Book an appointment",
+    "consultation": "Get a consultation",
+    "whatsapp": "Message us on WhatsApp",
+    "learnMore": "Learn more",
+    "moreDevices": "Learn more about our devices",
+    "fullPriceList": "See the full price list"
+  },
+  "meta": {
+    "home": {
+      "title": "Permanent laser hair removal in Kempten",
+      "description": "Permanent laser hair removal in Kempten with modern diode laser technology, matched to your skin and hair type. Book online."
+    },
+    "prices": {
+      "title": "Price list",
+      "description": "Laser hair removal prices in Kempten: every zone for women and men, plus package deals with 6- and 8-session rates."
+    },
+    "gallery": {
+      "title": "Our work",
+      "description": "A look inside our studio in Kempten and at the treatments we carry out every day."
+    },
+    "booking": {
+      "title": "Book an appointment",
+      "description": "Book your laser hair removal in Kempten online — pick a zone, a date and a time in a couple of minutes."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Contact elcorix in Kempten: address, phone, WhatsApp, e-mail, opening hours and directions."
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "description": "How elcorix processes personal data on this website — GDPR information."
+    },
+    "imprint": {
+      "title": "Imprint",
+      "description": "Legal information about the operator of this website (Impressum)."
+    },
+    "terms": {
+      "title": "Terms and conditions",
+      "description": "General terms and conditions for treatments at elcorix in Kempten."
+    },
+    "mission": {
+      "title": "Our mission",
+      "description": "What elcorix stands for: safety, honest advice and treatments you feel comfortable with."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "This page does not exist."
+    }
+  },
+  "hero": {
+    "title": "Permanent laser hair removal in Kempten",
+    "imageAlt": "Laser hair removal on the legs in the studio",
+    "servicesLabel": "Our services",
+    "serviceName": "Hair removal.",
+    "serviceCount": "20 services"
+  },
+  "forWhom": {
+    "title": "Who is it for?",
+    "items": {
+      "convenience": {
+        "title": "When laser hair removal genuinely makes life easier"
+      },
+      "irritation": {
+        "title": "Shaving leaves your skin irritated every time"
+      },
+      "shaving": {
+        "title": "You are tired of shaving over and over again"
+      },
+      "beard": {
+        "title": "You have a beard but keep having to shave the contours"
+      }
+    }
+  },
+  "technology": {
+    "title": "Modern diode laser technology — matched to your skin",
+    "imageAlt": "Diode laser device in the treatment room",
+    "p1": "Our studio works with the modern <b>ALIX TWIN AI Smart 5000 8W — an intelligent system for professional</b> and especially comfortable hair removal. Four coordinated wavelengths — 755, 808, 940 and 1064 nm with Boost — make it possible to treat different skin and hair types.",
+    "p2": "<b>An AI scanner analyses skin type,</b> hair colour and hair density and helps us adjust the settings individually. The powerful cooling system chills the handpiece to <b>as low as −26 °C, which makes the treatment far more comfortable.</b>",
+    "p3": "<b>Interchangeable tips allow precise work</b> on small as well as large body zones — for a fast, gentle and individually tuned treatment."
+  },
+  "specialist": {
+    "title": "Your skin in experienced hands",
+    "imageAlt": "Elena, specialist for professional laser hair removal",
+    "p1": "My name is Elena and I am your <b>specialist for professional laser hair removal.</b> For [number] years I have been helping women and men on their way to smooth skin and a well-cared-for feeling.",
+    "p2": "Through my training in [qualifications/specialisations] <b>and regular further education, I work to modern quality and hygiene standards.</b>",
+    "p3": "For every treatment I take the time for a personal consultation, analyse your skin and hair type and adjust the device settings individually. <b>What matters to me is that you feel safe, comfortable and well looked after throughout.</b>",
+    "certificateAlt": "Certificate: specialist for professional hair removal"
+  },
+  "work": {
+    "title": "Take a look at our work",
+    "prev": "Previous images",
+    "next": "Next images",
+    "alts": {
+      "n1": "Laser hair removal on the legs in the treatment chair",
+      "n2": "Close-up of the handpiece during an underarm treatment",
+      "n3": "Underarm treatment on a client wearing protective goggles",
+      "n4": "Treatment of the beard contours on the face"
+    }
+  },
+  "lightbox": {
+    "label": "Image viewer",
+    "open": "Open image: {{name}}",
+    "close": "Close image viewer",
+    "prev": "Previous image",
+    "next": "Next image",
+    "counter": "{{current}} of {{total}}"
+  },
+  "prices": {
+    "title": "Popular services and prices",
+    "pageTitle": "Price list",
+    "intro": "All prices are per session and per zone. How many sessions you need depends on your skin and hair type — we go through that in the free consultation before your first treatment.",
+    "note": "All prices include VAT. We are happy to put together combinations of several zones and individual packages in person. Please cancel appointments at least 24 hours in advance.",
+    "groups": {
+      "women": "Services for women",
+      "men": "Services for men",
+      "packages": "Package deals for women"
+    },
+    "columns": {
+      "package": "Package",
+      "zones": "Zones included",
+      "single": "Single treatment",
+      "six": "6-session package",
+      "eight": "8-session package"
+    },
+    "women": {
+      "upperLip": "Upper lip",
+      "chin": "Chin",
+      "underarms": "Underarms",
+      "bikiniClassic": "Bikini line, classic",
+      "intimateComplete": "Intimate complete — incl. buttock crease",
+      "armsFull": "Full arms incl. hands/fingers",
+      "lowerLegs": "Lower legs incl. knees",
+      "legsFull": "Full legs incl. feet/toes"
+    },
+    "men": {
+      "beardContour": "Beard contour",
+      "throat": "Throat",
+      "neck": "Neck",
+      "underarms": "Underarms",
+      "shoulders": "Shoulders",
+      "chest": "Chest",
+      "backFull": "Full back",
+      "intimateComplete": "Intimate complete incl. buttock crease"
+    },
+    "packages": {
+      "p1": {
+        "name": "Upper lip",
+        "zones": "Underarms + intimate complete incl. buttock crease"
+      },
+      "p2": {
+        "name": "Chin",
+        "zones": "Intimate complete incl. buttock crease + lower legs incl. knees"
+      },
+      "p3": {
+        "name": "Underarms",
+        "zones": "Underarms + intimate complete incl. buttock crease + lower legs incl. knees"
+      },
+      "p4": {
+        "name": "Bikini line, classic",
+        "zones": "Underarms + intimate complete incl. buttock crease + full legs incl. feet/toes"
+      },
+      "p5": {
+        "name": "Intimate complete — incl. buttock crease",
+        "zones": "Underarms, arms, stomach, back, full buttocks, intimate complete and full legs"
+      }
+    }
+  },
+  "booking": {
+    "title": "Book an appointment",
+    "intro": "Pick a zone, a free date and a time in the calendar below. You will receive a confirmation by e-mail or SMS.",
+    "widgetTitle": "Altegio online booking",
+    "fallbackQuestion": "Calendar not loading?",
+    "fallbackLink": "Open the {{businessName}} booking calendar in a new tab",
+    "consentTitle": "External booking calendar",
+    "consentText": "Our online calendar is provided by Altegio. When it loads, Altegio sets cookies and processes your IP address — and, if you pay online, your payment data on Altegio's pages. Details are in our privacy policy.",
+    "consentLoad": "Load calendar and accept Altegio cookies"
+  },
+  "consultation": {
+    "title": "Request a free consultation",
+    "intro": "Leave your name, phone number and preferred appointment — we will call you back and arrange the details personally.",
+    "name": "Name",
+    "phone": "Phone number",
+    "phoneError": "Please enter a valid phone number, e.g. +49 155 625 14 872.",
+    "date": "Preferred date",
+    "time": "Preferred time",
+    "timeAny": "No preference",
+    "dateRequired": "Please also choose a date for the time you picked.",
+    "datePast": "Please choose a date that is not in the past.",
+    "consentMarketing": "I would like to receive offers and news by e-mail and phone. I can withdraw this consent at any time with effect for the future.",
+    "consentPrivacy": "By submitting this form I agree that my details may be used to handle my appointment request. Information on how we process your personal data is in our <privacyLink>privacy policy</privacyLink>.",
+    "sending": "Sending…",
+    "success": "Thank you! We will get back to you during opening hours.",
+    "error": "Something went wrong. Please try again or call us directly."
+  },
+  "contact": {
+    "title": "Contact & appointments",
+    "pageTitle": "Contact",
+    "intro": "Do you have questions about laser hair removal, or would you like to find out which treatment suits you? Get in touch or book a free, no-obligation consultation straight away. We take the time to advise you personally.",
+    "addressLabel": "Address",
+    "phoneLabel": "Phone / WhatsApp",
+    "emailLabel": "E-mail",
+    "hoursTitle": "Opening hours",
+    "hours": {
+      "weekdaysLabel": "Tuesday to Saturday",
+      "weekdays": "09:00 to 19:00",
+      "closedLabel": "Sunday and Monday",
+      "closed": "closed"
+    },
+    "whatsapp": "Message us on WhatsApp",
+    "formTitle": "Write to us",
+    "formLabel": "Contact form",
+    "name": "Name",
+    "email": "E-mail",
+    "message": "Message",
+    "messagePlaceholder": "How can we help you?",
+    "privacyConsent": "I have read the <privacyLink>privacy policy</privacyLink> and agree that my details are processed to answer my enquiry.",
+    "send": "Send message",
+    "sending": "Sending…",
+    "success": "Thank you! We will get back to you shortly.",
+    "error": "Something went wrong. Please try again or call us.",
+    "map": {
+      "title": "Map showing the studio location"
+    }
+  },
+  "gallery": {
+    "title": "Our work",
+    "intro": "A look inside our studio in Kempten — and at the treatments we carry out every day.",
+    "alts": {
+      "hero": "Laser hair removal on the legs in the studio",
+      "n1": "Laser hair removal on the legs in the treatment chair",
+      "n2": "Close-up of the handpiece during an underarm treatment",
+      "n3": "Underarm treatment on a client wearing protective goggles",
+      "n4": "Treatment of the beard contours on the face",
+      "technology": "Diode laser device in the treatment room",
+      "specialist": "Elena, specialist for laser hair removal"
+    }
+  },
+  "consent": {
+    "title": "Cookies & external services",
+    "description": "We only use storage that is technically required (your language and this cookie decision). The Altegio booking calendar is an external service that sets cookies when it loads — we load it only with your consent. You can change your choice at any time under “Cookie settings” in the footer.",
+    "privacyLink": "Privacy policy",
+    "acceptAll": "Accept all",
+    "necessaryOnly": "Only necessary"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "intro": "We take the protection of your personal data seriously. This notice explains what data we process on this website, why we process it, and the rights you have under the EU General Data Protection Regulation (GDPR).",
+    "sections": {
+      "controller": {
+        "title": "Controller",
+        "body": "The controller responsible for processing personal data on this website is {{businessName}}, {{address}}. E-mail: {{email}}, phone: {{phone}}."
+      },
+      "hosting": {
+        "title": "Access data",
+        "body": "When you visit this site, technical access data (IP address, date and time, browser type) is processed in server logs to deliver the site securely and detect abuse (Art. 6 (1) (f) GDPR). Log data is deleted after a short period and is not merged with other data."
+      },
+      "contactForm": {
+        "title": "Contact form",
+        "body": "If you use the contact form, we store your name, e-mail address and message in order to answer your enquiry (Art. 6 (1) (b) GDPR). If e-mail notifications are configured, we additionally send you a confirmation of receipt. Messages are deleted once your enquiry is resolved, at the latest after 12 months."
+      },
+      "booking": {
+        "title": "Online booking and payments (Altegio)",
+        "body": "Appointments are booked through the external service Altegio (alteg.io). The booking calendar is embedded only after you give consent (Art. 6 (1) (a) GDPR). Once loaded, Altegio processes your IP address and sets cookies, and the data you enter — name, phone number, e-mail, selected service and, for online payments, your payment details — is processed by Altegio on its own pages. Please refer to Altegio's privacy policy for details. Consultation and appointment requests made through our form are additionally stored by us so our staff can follow up; they are deleted once handled, at the latest after 12 months. You can withdraw your consent at any time via “Cookie settings” in the footer."
+      },
+      "storage": {
+        "title": "Cookies and local storage",
+        "body": "This website sets no tracking cookies of its own. We use your browser's local storage for two strictly functional purposes: your language preference (i18nextLng) and your cookie decision (cookie-consent). Functional storage of this kind requires no consent. Cookies from Altegio are set only after you accept the booking calendar. The map in the contact section is loaded directly from OpenStreetMap when the page opens; your IP address is transmitted to OpenStreetMap in the process."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "You have the right to access, rectify and erase your personal data, to receive a copy of it, to restrict or object to its processing, and to withdraw any consent with effect for the future. You also have the right to lodge a complaint with a data protection supervisory authority; the authority competent for us is the Bavarian Data Protection Authority (BayLDA)."
+      }
+    }
+  },
+  "imprint": {
+    "title": "Imprint",
+    "operatorTitle": "Site operator",
+    "ownerLabel": "Owner",
+    "contactTitle": "Contact",
+    "vatLabel": "VAT ID",
+    "responsibleLabel": "Responsible for content",
+    "dispute": "The European Commission provides a platform for online dispute resolution: https://ec.europa.eu/consumers/odr. We are neither obliged nor willing to participate in dispute resolution proceedings before a consumer arbitration board."
+  },
+  "terms": {
+    "title": "Terms and conditions",
+    "intro": "These terms apply to all treatments and appointments at elcorix. Please have them reviewed legally and adapted to your actual processes before going live.",
+    "sections": {
+      "scope": {
+        "title": "Scope",
+        "body": "These terms apply to all treatments arranged through this website or by phone. Any deviating agreement must be made in text form."
+      },
+      "appointments": {
+        "title": "Booking an appointment",
+        "body": "Appointments can be arranged through the online calendar, by phone, via WhatsApp or through the consultation form. The contract comes into effect when we confirm the appointment."
+      },
+      "cancellation": {
+        "title": "Cancellations and rescheduling",
+        "body": "Please cancel or reschedule an appointment at least 24 hours in advance. For later cancellations or no-shows we may charge a cancellation fee."
+      },
+      "payment": {
+        "title": "Prices and payment",
+        "body": "The prices shown at the time of booking apply and include VAT. Package prices cover the stated number of sessions. Payment is made in the studio or, where offered, online through Altegio."
+      },
+      "liability": {
+        "title": "Your part and our liability",
+        "body": "A safe treatment depends on accurate information about your skin type, medication and pre-existing conditions, and on following the before- and aftercare instructions. We cannot accept liability for harm caused by incomplete information or by disregarding those instructions."
+      }
+    },
+    "note": "Draft — please have this reviewed by a lawyer before publishing."
+  },
+  "mission": {
+    "title": "Our mission",
+    "intro": "elcorix stands for permanent hair removal that feels safe, honest and comfortable. Three things matter most to us.",
+    "sections": {
+      "safety": {
+        "title": "Safety first",
+        "body": "Every treatment starts with an analysis of your skin and hair type and a patch test. We work to documented protocols, with single-use materials and tested equipment — and we say so openly when a treatment is not suitable."
+      },
+      "honesty": {
+        "title": "Honest advice",
+        "body": "We do not promise results we cannot deliver. You will know in advance how many sessions are realistically needed, what that costs and what the alternatives are — with no sales pressure."
+      },
+      "care": {
+        "title": "Time for you",
+        "body": "We schedule enough time per appointment so you can settle in, ask questions and feel well looked after from start to finish."
+      }
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "This page does not exist or has been moved. Maybe you were looking for our price list, our work or the online booking?",
+    "cta": "Back to the home page"
+  },
+  "footer": {
+    "sitemap": "Sitemap",
+    "label": "Legal",
+    "privacy": "Privacy policy",
+    "imprint": "Imprint",
+    "terms": "Terms",
+    "mission": "Mission",
+    "cookieSettings": "Cookie settings"
+  },
+  "languageSwitcher": {
+    "label": "Language"
+  }
+}
