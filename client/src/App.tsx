@@ -13,7 +13,8 @@ import {
   supportedLanguages,
   type SupportedLanguage,
 } from "./i18n/routing";
-import { siteRoutes, type MetaKey } from "./seo/routes";
+import { publicRoutes, type MetaKey } from "./seo/routes";
+import { features } from "./config";
 import HomePage from "./pages/HomePage";
 import PricesPage from "./pages/PricesPage";
 import GalleryPage from "./pages/GalleryPage";
@@ -27,8 +28,11 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 /**
  * One element per entry in the route table. Keyed by `MetaKey` so a route
- * added to `seo/routes.ts` — the same table the prerendered shells are
- * built from — fails to compile until it has a page here.
+ * added to `seo/routes.ts` — the same table the sitemap and the prerendered
+ * shells are built from — fails to compile until it has a page here.
+ *
+ * Entries for routes behind an off feature flag stay here: the page keeps
+ * compiling and comes back the moment the flag is on.
  */
 const pages: Record<MetaKey, ReactElement> = {
   home: <HomePage />,
@@ -75,6 +79,7 @@ function LanguageRedirect() {
 
 export default function App() {
   const { t } = useTranslation();
+  const routes = publicRoutes(features);
   return (
     <ConsentProvider>
       <div className="flex min-h-screen flex-col bg-surface text-ink-500">
@@ -94,7 +99,7 @@ export default function App() {
                 path={`/${language}`}
                 element={<LanguageLayout language={language} />}
               >
-                {siteRoutes.map((route) =>
+                {routes.map((route) =>
                   route.path === "/" ? (
                     <Route key={route.metaKey} index element={pages[route.metaKey]} />
                   ) : (

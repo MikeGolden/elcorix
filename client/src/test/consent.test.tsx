@@ -2,13 +2,34 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
-import { CONSENT_STORAGE_KEY, type ConsentState } from "../consent/ConsentContext";
+import BookingPage from "../pages/BookingPage";
+import {
+  CONSENT_STORAGE_KEY,
+  ConsentProvider,
+  type ConsentState,
+} from "../consent/ConsentContext";
 
 function renderAt(path: string) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <App />
     </MemoryRouter>,
+  );
+}
+
+/**
+ * `/booking` is behind the (off) Altegio feature flag, so the page is
+ * mounted directly. The consent gate is the reason the embed can come back
+ * at any time without a GDPR review, so it stays fully covered while the
+ * block is hidden.
+ */
+function renderBookingPage() {
+  return render(
+    <ConsentProvider>
+      <MemoryRouter initialEntries={["/en/booking"]}>
+        <BookingPage />
+      </MemoryRouter>
+    </ConsentProvider>,
   );
 }
 
@@ -79,7 +100,7 @@ describe("cookie consent banner", () => {
 describe("Altegio embed consent gate", () => {
   it("shows a placeholder instead of the iframe without consent", () => {
     storeConsent(false);
-    renderAt("/booking");
+    renderBookingPage();
     expect(screen.getByTestId("altegio-consent-placeholder")).toBeInTheDocument();
     expect(screen.queryByTestId("altegio-widget")).not.toBeInTheDocument();
     // The no-cookie fallback link must still be offered.
@@ -90,7 +111,7 @@ describe("Altegio embed consent gate", () => {
 
   it("loads the iframe after consenting via the placeholder button", async () => {
     storeConsent(false);
-    renderAt("/booking");
+    renderBookingPage();
     await userEvent.click(
       screen.getByRole("button", { name: /load calendar and accept/i }),
     );
@@ -100,7 +121,7 @@ describe("Altegio embed consent gate", () => {
 
   it("loads the iframe directly when consent was given earlier", () => {
     storeConsent(true);
-    renderAt("/booking");
+    renderBookingPage();
     expect(screen.getByTestId("altegio-widget")).toBeInTheDocument();
     expect(
       screen.queryByTestId("altegio-consent-placeholder"),

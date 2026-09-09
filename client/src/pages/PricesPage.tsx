@@ -1,10 +1,14 @@
+import { Link } from "react-router-dom";
 import LocalizedLink from "../components/LocalizedLink";
 import { useTranslation } from "react-i18next";
 import { PackagePriceTable, ZonePriceTables } from "../components/PriceTables";
 import { usePageMeta } from "../seo/usePageMeta";
+import { features } from "../config";
+import { useAnchorHref } from "../i18n/useLanguage";
 
 export default function PricesPage() {
   const { t } = useTranslation();
+  const anchor = useAnchorHref();
   usePageMeta("prices");
   return (
     <section
@@ -26,9 +30,18 @@ export default function PricesPage() {
       <p className="mt-12 max-w-2xl text-sm leading-relaxed text-ink-500">
         {t("prices.note")}
       </p>
-      <LocalizedLink to="/booking" className="btn-primary mt-8">
-        {t("cta.book")}
-      </LocalizedLink>
+      {/* /booking only exists while the Altegio flag is on (src/features.ts);
+          otherwise the CTA goes to the consultation request on the landing
+          page, which needs no third party. */}
+      {features.altegio ? (
+        <LocalizedLink to="/booking" className="btn-primary mt-8">
+          {t("cta.book")}
+        </LocalizedLink>
+      ) : (
+        <Link to={anchor("consultation")} className="btn-primary mt-8">
+          {t("cta.consultation")}
+        </Link>
+      )}
     </section>
   );
 }

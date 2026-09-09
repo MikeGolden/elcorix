@@ -10,17 +10,23 @@ test.describe("Scroll animations", () => {
     await expect(headline).toHaveCSS("opacity", "1");
 
     // Two screens further down, nothing has been revealed yet.
-    await expect(page.locator("#booking")).toHaveAttribute("data-revealed", "false");
+    // #booking used to be the probe here; it is behind an off feature flag
+    // (client/src/features.ts), so the consultation card two screens down
+    // takes its place. That card is the <Reveal>, not the <section>.
+    await expect(page.locator("#consultation .reveal")).toHaveAttribute(
+      "data-revealed",
+      "false",
+    );
   });
 
   test("a section reveals itself when it is scrolled into view", async ({ page }) => {
     await page.goto("/en");
-    const booking = page.locator("#booking");
+    const consultation = page.locator("#consultation .reveal");
 
-    await booking.scrollIntoViewIfNeeded();
+    await consultation.scrollIntoViewIfNeeded();
 
-    await expect(booking).toHaveAttribute("data-revealed", "true");
-    await expect(booking).toHaveCSS("opacity", "1");
+    await expect(consultation).toHaveAttribute("data-revealed", "true");
+    await expect(consultation).toHaveCSS("opacity", "1");
     // The reveal transform must never widen the page.
     expect(
       await page.evaluate(
@@ -66,7 +72,7 @@ test.describe("Scroll animations", () => {
     await page.goto("/en");
 
     // No scrolling at all: the section below the fold is already solid.
-    await expect(page.locator("#booking")).toHaveCSS("opacity", "1");
+    await expect(page.locator("#consultation")).toHaveCSS("opacity", "1");
     await expect(page.locator("#consultation .reveal")).toHaveCSS("opacity", "1");
     await context.close();
   });

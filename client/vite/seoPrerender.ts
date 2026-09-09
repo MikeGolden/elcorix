@@ -8,7 +8,8 @@ import {
   supportedLanguages,
   type SupportedLanguage,
 } from "../src/i18n/routing";
-import { siteRoutes } from "../src/seo/routes";
+import { featuresFrom, type Features } from "../src/features";
+import { publicRoutes, siteRoutes, type SiteRoute } from "../src/seo/routes";
 import { buildSitemap } from "../src/seo/sitemap";
 import { injectSeoBlock, replaceSeoBlock, seoBlock } from "../src/seo/staticHead";
 
@@ -34,12 +35,13 @@ import { injectSeoBlock, replaceSeoBlock, seoBlock } from "../src/seo/staticHead
  *     back to for `/` and for unknown URLs, both of which the router then
  *     redirects to a language.
  *  2. after the bundle is written, every language of every route in
- *     `siteRoutes` gets its own `dist/<lang>/<path>/index.html`: the same
+ *     `publicRoutes` gets its own `dist/<lang>/<path>/index.html`: the same
  *     built document with that block swapped for the route's own, in that
  *     language, and `<html lang>` set to match. nginx serves them via
  *     `try_files $uri $uri/index.html /index.html`.
- *  3. `dist/sitemap.xml` is generated from the same route table, so the
- *     URLs and their hreflang alternates cannot drift from the router.
+ *  3. `dist/sitemap.xml` is generated from the same route list, so the
+ *     URLs and their hreflang alternates cannot drift from the router —
+ *     including when a feature flag hides one of the routes.
  *
  * The shells carry no rendered body: React still owns everything below
  * <head>, so no hydration, LCP or consent behaviour changes. Full SSG was
@@ -59,11 +61,15 @@ function setHtmlLang(html: string, language: SupportedLanguage): string {
 export function seoPrerender(): Plugin {
   let config: ResolvedConfig;
   let bookingUrl = altegioBookingUrlFor(sanitizeCompanyId(undefined));
+  // Replaced in configResolved, once loadEnv has run. The flags decide
+  // which routes get a shell and a sitemap entry — a route hidden in the
+  // app must not be handed to crawlers here.
+  let routes: readonly SiteRoute[] = publicRoutes(featuresFrom({}));
 
   const home = siteRoutes.find((route) => route.path === "/");
   if (!home) throw new Error('siteRoutes must contain the "/" route');
 
-  const sitemap = () => buildSitemap(new Date().toISOString().slice(0, 10), siteRoutes);
+  const sitemap = () => buildSitemap(new Date().toISOString().slice(0, 10), routes);
 
   return {
     name: "elcorix:seo-prerender",
@@ -75,6 +81,10 @@ export function seoPrerender(): Plugin {
       bookingUrl = altegioBookingUrlFor(
         sanitizeCompanyId(env.VITE_ALTEGIO_COMPANY_ID ?? process.env.VITE_ALTEGIO_COMPANY_ID),
       );
+      const features: Features = featuresFrom({
+        VITE_ENABLE_ALTEGIO: env.VITE_ENABLE_ALTEGIO ?? process.env.VITE_ENABLE_ALTEGIO,
+      });
+      routes = publicRoutes(features);
     },
 
     // The sitemap is generated, so there is no file in public/ for the dev
@@ -111,7 +121,7 @@ export function seoPrerender(): Plugin {
 
       let written = 0;
       for (const language of supportedLanguages) {
-        for (const route of siteRoutes) {
+        for (const route of routes) {
           const target = shellPath(outDir, language, route.path);
           await mkdir(dirname(target), { recursive: true });
           await writeFile(
@@ -126,7 +136,7 @@ export function seoPrerender(): Plugin {
       await writeFile(join(outDir, "sitemap.xml"), sitemap(), "utf8");
 
       config.logger.info(
-        `seo-prerender: wrote ${written} route shells (${supportedLanguages.length} languages × ${siteRoutes.length} routes) and sitemap.xml`,
+        `seo-prerender: wrote ${written} route shells (${supportedLanguages.length} languages × ${routes.length} routes) and sitemap.xml`,
       );
     },
   };

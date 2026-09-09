@@ -12,7 +12,9 @@ const routes = [
   { path: "/de/prices", title: "Preisliste — elcorix" },
   { path: "/de/contact", title: "Kontakt — elcorix" },
   { path: "/en/prices", title: "Price list — elcorix" },
-  { path: "/uk/booking", title: "Записатися на прийом — elcorix" },
+  // /uk/booking used to be here. The Altegio booking route is behind an off
+  // feature flag (client/src/features.ts), so no shell is written for it —
+  // put it back alongside the flag.
   { path: "/uk/gallery", title: "Наші роботи — elcorix" },
   { path: "/ru/gallery", title: "Наши работы — elcorix" },
   { path: "/de/imprint", title: "Impressum — elcorix" },
@@ -65,8 +67,8 @@ test.describe("Prerendered route shells", () => {
     const response = await request.get("/sitemap.xml");
     expect(response.status()).toBe(200);
     const xml = await response.text();
-    // 9 routes × 4 languages.
-    expect(xml.match(/<loc>/g)).toHaveLength(36);
+    // 8 public routes (Altegio is flagged off) × 4 languages.
+    expect(xml.match(/<loc>/g)).toHaveLength(32);
     expect(xml).toContain("<loc>https://elcorix.com/uk/prices</loc>");
     expect(xml).toContain("<loc>https://elcorix.com/ru/prices</loc>");
     expect(xml).toContain('hreflang="x-default"');

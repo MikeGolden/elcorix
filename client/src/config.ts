@@ -5,6 +5,7 @@
 // import it without an environment; this module adds everything that is
 // derived from `import.meta.env` at build time.
 import { staticBusiness, sanitizeCompanyId, altegioBookingUrlFor } from "./business";
+import { featuresFrom } from "./features";
 
 export const business = {
   ...staticBusiness,
@@ -13,6 +14,9 @@ export const business = {
 } as const;
 
 export const altegioBookingUrl = altegioBookingUrlFor(business.altegioCompanyId);
+
+/** Build-time feature flags — see src/features.ts. */
+export const features = featuresFrom(import.meta.env);
 
 /** `tel:` href without the spaces the display format carries. */
 export const telHref = `tel:${business.phone.replace(/\s/g, "")}`;

@@ -5,6 +5,7 @@ import Photo, { webpFor } from "../components/Photo";
 import { images } from "../images";
 import LocalizedLink from "../components/LocalizedLink";
 import { useAnchorHref } from "../i18n/useLanguage";
+import { features } from "../config";
 
 /**
  * Hero of the Figma one-pager: the copy sits in the 1200px column while
@@ -24,6 +25,12 @@ import { useAnchorHref } from "../i18n/useLanguage";
 export default function Hero() {
   const { t } = useTranslation();
   const anchor = useAnchorHref();
+  // With the Altegio booking section hidden (src/features.ts) there is no
+  // #booking on the page, so the primary CTA takes the visitor to the
+  // consultation request instead of scrolling nowhere.
+  const cta = features.altegio
+    ? { to: anchor("booking"), label: t("cta.book") }
+    : { to: anchor("consultation"), label: t("cta.consultation") };
   return (
     // -mt-19/pt-19 = the header's height: the section starts under the
     // header without moving any of its content. The copy's right padding
@@ -43,10 +50,10 @@ export default function Hero() {
         <Reveal
           as={Link}
           delay={90}
-          to={anchor("booking")}
+          to={cta.to}
           className="btn-primary mt-8"
         >
-          {t("cta.book")}
+          {cta.label}
         </Reveal>
 
         <Reveal className="mt-12" delay={270}>

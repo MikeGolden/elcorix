@@ -37,14 +37,17 @@ test.describe("Landing page", () => {
       .toBeGreaterThan(500);
   });
 
-  test("navigates to the booking page with the Altegio widget", async ({ page }) => {
-    await page.goto("/");
+  // While the Altegio flag is off (client/src/features.ts) the price list's
+  // CTA leads to the consultation request instead of /booking. Restore the
+  // "Book an appointment" → /booking → widget path together with the flag.
+  test("leads from the price list to the consultation request", async ({ page }) => {
+    await page.goto("/en");
     await page.getByRole("button", { name: "Accept all" }).click();
     await page.getByRole("link", { name: "See the full price list" }).click();
     await expect(page).toHaveURL(/\/prices$/);
-    await page.getByRole("link", { name: "Book an appointment" }).first().click();
-    await expect(page).toHaveURL(/\/booking$/);
-    await expect(page.getByTestId("altegio-widget")).toBeVisible();
-    await expect(page.getByTestId("altegio-widget")).toHaveAttribute("src", /alteg\.io/);
+    await page.getByRole("link", { name: "Get a consultation" }).first().click();
+    await expect(page).toHaveURL(/\/en#consultation$/);
+    await expect(page.getByRole("heading", { name: "Request a free consultation" })).toBeVisible();
+    await expect(page.getByTestId("altegio-widget")).toHaveCount(0);
   });
 });
