@@ -35,7 +35,7 @@ test.describe("Static SEO head (dev server)", () => {
     const data = JSON.parse(match![1]);
     expect(data["@type"]).toBe("BeautySalon");
     expect(data.address.addressLocality).toBe("Kempten (Allgäu)");
-    expect(data.openingHoursSpecification).toHaveLength(2);
+    expect(data.openingHoursSpecification).toHaveLength(1);
   });
 
   test("the app reuses those tags instead of appending its own", async ({ page }) => {

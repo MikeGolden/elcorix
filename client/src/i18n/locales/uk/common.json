@@ -217,12 +217,10 @@
     "emailLabel": "Електронна пошта",
     "hoursTitle": "Години роботи",
     "hours": {
-      "weekdaysLabel": "Понеділок – п'ятниця",
+      "weekdaysLabel": "Вівторок – субота",
       "weekdays": "з 09:00 до 19:00",
-      "saturdayLabel": "Субота",
-      "saturday": "за попереднім записом з 09:00 до 15:00",
-      "sundayLabel": "Неділя",
-      "sunday": "зачинено"
+      "closedLabel": "Неділя та понеділок",
+      "closed": "зачинено"
     },
     "whatsapp": "Написати у WhatsApp",
     "formTitle": "Напишіть нам",
