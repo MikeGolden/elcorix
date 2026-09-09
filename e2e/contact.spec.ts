@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Contact page", () => {
   test("shows tel, mailto and instagram links", async ({ page }) => {
-    await page.goto("/contact");
+    await page.goto("/en/contact");
     // Scope to <main>: the footer repeats the phone/e-mail links.
     const main = page.getByRole("main");
     await expect(main.getByRole("link", { name: /\+49 155/ }).first()).toHaveAttribute(
@@ -21,7 +21,7 @@ test.describe("Contact page", () => {
   });
 
   test("shows the opening hours from the design", async ({ page }) => {
-    await page.goto("/contact");
+    await page.goto("/en/contact");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { name: "Opening hours" })).toBeVisible();
     await expect(page.getByText("09:00 to 19:00")).toBeVisible();
@@ -36,7 +36,7 @@ test.describe("Contact page", () => {
         body: JSON.stringify({ id: 1 }),
       }),
     );
-    await page.goto("/contact");
+    await page.goto("/en/contact");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("E-mail").fill("anna@example.com");

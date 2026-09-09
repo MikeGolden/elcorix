@@ -1,5 +1,5 @@
 import { FormEvent, useCallback, useState } from "react";
-import { Link } from "react-router-dom";
+import LocalizedLink from "./LocalizedLink";
 import { Trans, useTranslation } from "react-i18next";
 import { isValidPhone } from "../phone";
 
@@ -235,7 +235,7 @@ export default function ConsultationForm() {
               i18nKey="consultation.consentPrivacy"
               components={{
                 privacyLink: (
-                  <Link to="/privacy" className="font-medium text-brand-600 underline underline-offset-2" />
+                  <LocalizedLink to="/privacy" className="font-medium text-brand-600 underline underline-offset-2" />
                 ),
               }}
             />

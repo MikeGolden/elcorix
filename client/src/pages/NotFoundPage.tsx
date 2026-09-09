@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import LocalizedLink from "../components/LocalizedLink";
 import { useTranslation } from "react-i18next";
 import { usePageMeta } from "../seo/usePageMeta";
 
@@ -19,9 +19,9 @@ export default function NotFoundPage() {
       <p className="mx-auto mt-4 max-w-xl text-[0.95rem] leading-relaxed">
         {t("notFound.text")}
       </p>
-      <Link to="/" className="btn-primary mt-9">
+      <LocalizedLink to="/" className="btn-primary mt-9">
         {t("notFound.cta")}
-      </Link>
+      </LocalizedLink>
     </section>
   );
 }

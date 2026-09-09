@@ -25,7 +25,7 @@ test.describe("Docker stack smoke", () => {
   });
 
   test("stores a real contact message end-to-end", async ({ page }) => {
-    await page.goto("/contact");
+    await page.goto("/en/contact");
     await page.getByRole("button", { name: /only necessary|nur notwendige/i }).click();
     await page.getByLabel(/^name$/i).fill("Smoke Test");
     await page.getByLabel(/e-mail/i).fill("smoke@example.com");
@@ -36,7 +36,7 @@ test.describe("Docker stack smoke", () => {
   });
 
   test("SPA fallback serves client-side routes and 404 page", async ({ page }) => {
-    await page.goto("/prices");
+    await page.goto("/en/prices");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await page.goto("/definitely-not-a-page");
     await expect(page.getByText("404")).toBeVisible();

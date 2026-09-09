@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Deep-link routes", () => {
   test("prices page lists both zone tables and the package table", async ({ page }) => {
-    await page.goto("/prices");
+    await page.goto("/en/prices");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Price list" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Services for women" })).toBeVisible();
@@ -14,36 +14,39 @@ test.describe("Deep-link routes", () => {
   });
 
   test("gallery page shows images with alt text", async ({ page }) => {
-    await page.goto("/gallery");
+    await page.goto("/en/gallery");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Our work" })).toBeVisible();
     await expect(page.getByAltText("Diode laser device in the treatment room")).toBeVisible();
   });
 
   test("terms and mission pages are reachable", async ({ page }) => {
-    await page.goto("/terms");
+    await page.goto("/en/terms");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(
       page.getByRole("heading", { level: 1, name: "Terms and conditions" }),
     ).toBeVisible();
-    await page.goto("/mission");
+    await page.goto("/en/mission");
     await expect(
       page.getByRole("heading", { level: 1, name: "Our mission" }),
     ).toBeVisible();
   });
 
   test("unknown routes render the 404 page", async ({ page }) => {
+    // Unprefixed: the router redirects it into the visitor's language
+    // first, and only then finds nothing to render.
     await page.goto("/no-such-page");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(
       page.getByRole("heading", { level: 1, name: "Page not found" }),
     ).toBeVisible();
+    await expect(page).toHaveURL(/\/en\/no-such-page$/);
     await page.getByRole("link", { name: "Back to the home page" }).click();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/\/en$/);
   });
 
   test("booking page offers the cookie-free consultation request", async ({ page }) => {
-    await page.goto("/booking");
+    await page.goto("/en/booking");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.route("**/api/bookings", (route) =>
       route.fulfill({
@@ -63,13 +66,13 @@ test.describe("Deep-link routes", () => {
   });
 
   test("scroll position resets when navigating between pages", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await expect
       .poll(async () => page.evaluate(() => window.scrollY))
       .toBeGreaterThan(500);
-    await page.goto("/prices");
+    await page.goto("/en/prices");
     await expect.poll(async () => page.evaluate(() => window.scrollY)).toBe(0);
   });
 });

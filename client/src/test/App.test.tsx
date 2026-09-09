@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, useLocation } from "react-router-dom";
 import App from "../App";
 import { navAnchors } from "../content";
 import en from "../i18n/locales/en/common.json";
@@ -12,13 +12,26 @@ function label(key: string): string {
     .reduce<unknown>((node, part) => (node as Record<string, unknown>)[part], en) as string;
 }
 
+/** Reports the URL the router settled on, after any language redirect. */
+function LocationProbe() {
+  const { pathname, hash } = useLocation();
+  return <span data-testid="location">{`${pathname}${hash}`}</span>;
+}
+
 function renderAt(path: string) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <App />
+      <LocationProbe />
     </MemoryRouter>,
   );
 }
+
+/**
+ * jsdom's navigator reports en-US and the tests start with empty storage,
+ * so an unprefixed path redirects to the English tree.
+ */
+const currentPath = () => screen.getByTestId("location").textContent;
 
 describe("App", () => {
   it("renders every landing section of the Figma layout on the home page", () => {
@@ -54,7 +67,7 @@ describe("App", () => {
     for (const anchor of navAnchors) {
       expect(within(nav).getByRole("link", { name: label(anchor.key) })).toHaveAttribute(
         "href",
-        `/#${anchor.id}`,
+        `/en#${anchor.id}`,
       );
     }
   });
@@ -66,7 +79,7 @@ describe("App", () => {
     const nav = screen.getByRole("navigation", { name: "Menu" });
     expect(within(nav).getByRole("link", { name: /our price list/i })).toHaveAttribute(
       "href",
-      "/#prices",
+      "/en#prices",
     );
   });
 
@@ -99,19 +112,19 @@ describe("App", () => {
     const footer = screen.getByRole("navigation", { name: "Legal" });
     expect(within(footer).getByRole("link", { name: "Imprint" })).toHaveAttribute(
       "href",
-      "/imprint",
+      "/en/imprint",
     );
     expect(within(footer).getByRole("link", { name: "Privacy policy" })).toHaveAttribute(
       "href",
-      "/privacy",
+      "/en/privacy",
     );
     expect(within(footer).getByRole("link", { name: "Terms" })).toHaveAttribute(
       "href",
-      "/terms",
+      "/en/terms",
     );
     expect(within(footer).getByRole("link", { name: "Mission" })).toHaveAttribute(
       "href",
-      "/mission",
+      "/en/mission",
     );
   });
 
@@ -125,5 +138,83 @@ describe("App", () => {
     // "Upper lip" is both a zone and the name of the first package.
     expect(screen.getAllByText("Upper lip").length).toBeGreaterThan(0);
     expect(screen.getByRole("table")).toBeInTheDocument();
+  });
+});
+
+describe("language routing", () => {
+  it("sends an unprefixed URL to the visitor's language, keeping the path", () => {
+    renderAt("/prices");
+    expect(currentPath()).toBe("/en/prices");
+    expect(screen.getByRole("heading", { level: 1, name: /price list/i })).toBeInTheDocument();
+  });
+
+  it("sends the bare root to the language home page", () => {
+    renderAt("/");
+    expect(currentPath()).toBe("/en");
+  });
+
+  it("honours the language stored from an earlier visit", () => {
+    window.localStorage.setItem("i18nextLng", "uk");
+    renderAt("/contact");
+    expect(currentPath()).toBe("/uk/contact");
+  });
+
+  it("drops a language the site does not have instead of 404ing", () => {
+    // An old link to a locale that was never published still lands on the
+    // page the visitor asked for, in a language the site does have.
+    renderAt("/fr/prices");
+    expect(currentPath()).toBe("/en/prices");
+  });
+
+  it("renders the page in the language its URL names, whatever is stored", () => {
+    window.localStorage.setItem("i18nextLng", "en");
+    renderAt("/de/prices");
+    expect(currentPath()).toBe("/de/prices");
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Preisliste" }),
+    ).toBeInTheDocument();
+    expect(document.documentElement.lang).toBe("de");
+  });
+
+  it("keeps the query and the hash across the redirect", () => {
+    renderAt("/prices?zone=beard#packages");
+    expect(currentPath()).toBe("/en/prices#packages");
+  });
+
+  it("keeps an unknown page unknown instead of redirecting it home", () => {
+    renderAt("/no-such-page");
+    expect(currentPath()).toBe("/en/no-such-page");
+    expect(
+      screen.getByRole("heading", { level: 1, name: /page not found/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("404s inside the language tree rather than redirecting again", () => {
+    renderAt("/en/no-such-page");
+    expect(currentPath()).toBe("/en/no-such-page");
+    expect(
+      screen.getByRole("heading", { level: 1, name: /page not found/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("switching language moves to the same page under the new segment", async () => {
+    renderAt("/prices");
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("language-switcher"));
+    await user.click(screen.getByRole("option", { name: "Українська" }));
+    expect(currentPath()).toBe("/uk/prices");
+    expect(document.documentElement.lang).toBe("uk");
+  });
+
+  it("switches on to Russian without going through the redirect", async () => {
+    renderAt("/uk/prices");
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("language-switcher"));
+    await user.click(screen.getByRole("option", { name: "Русский" }));
+    expect(currentPath()).toBe("/ru/prices");
+    expect(document.documentElement.lang).toBe("ru");
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Прайс-лист" }),
+    ).toBeInTheDocument();
   });
 });

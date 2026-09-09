@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { business, telHref } from "../config";
 import { navAnchors } from "../content";
-import { anchorHref } from "../anchors";
+import { useAnchorHref } from "../i18n/useLanguage";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
 import { CloseIcon, MenuIcon, WhatsAppIcon } from "./icons";
@@ -14,6 +14,7 @@ const roundButton =
 export default function Header() {
   const { t } = useTranslation();
   const { pathname, hash } = useLocation();
+  const anchor = useAnchorHref();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -85,7 +86,7 @@ export default function Header() {
         <div ref={menuRef} className="relative ml-auto flex items-center gap-2 sm:gap-3">
           <LanguageSwitcher />
           <Link
-            to={anchorHref(pathname, "consultation")}
+            to={anchor("consultation")}
             className="btn-primary hidden px-6 py-3 text-sm sm:inline-flex"
           >
             {t("cta.consultation")}
@@ -122,7 +123,7 @@ export default function Header() {
                 {navAnchors.map((item) => (
                   <li key={item.id}>
                     <Link
-                      to={anchorHref(pathname, item.id)}
+                      to={anchor(item.id)}
                       className="block rounded-xl px-4 py-2.5 text-[0.95rem] font-semibold text-brand-700 transition-colors hover:bg-brand-50"
                     >
                       {t(item.key)}
@@ -131,7 +132,7 @@ export default function Header() {
                 ))}
                 <li className="pt-1 sm:hidden">
                   <Link
-                    to={anchorHref(pathname, "consultation")}
+                    to={anchor("consultation")}
                     className="btn-primary w-full"
                   >
                     {t("cta.consultation")}

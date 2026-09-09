@@ -1,16 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
 import { images } from "../images";
-import { anchorHref } from "../anchors";
+import { useAnchorHref } from "../i18n/useLanguage";
 
 /** The lead-in of each paragraph is bold in the Figma. */
 const strong = { b: <strong className="font-semibold text-ink-900" /> };
 
 export default function Technology() {
   const { t } = useTranslation();
-  const { pathname } = useLocation();
+  const anchor = useAnchorHref();
   return (
     <section
       id="technology"
@@ -46,7 +46,7 @@ export default function Technology() {
               <Trans i18nKey="technology.p3" components={strong} />
             </p>
           </div>
-          <Link to={anchorHref(pathname, "consultation")} className="btn-primary mt-8">
+          <Link to={anchor("consultation")} className="btn-primary mt-8">
             {t("cta.moreDevices")}
           </Link>
         </Reveal>

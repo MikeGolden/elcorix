@@ -39,7 +39,7 @@ describe("ContactPage", () => {
     expect(checkbox).toBeRequired();
     expect(
       screen.getByRole("link", { name: /privacy policy/i }),
-    ).toHaveAttribute("href", "/privacy");
+    ).toHaveAttribute("href", "/en/privacy");
   });
 
   it("submits the contact form and shows a success message", async () => {

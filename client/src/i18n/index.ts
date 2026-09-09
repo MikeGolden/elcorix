@@ -1,47 +1,54 @@
 import i18next, { type i18n as I18n } from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import en from "./locales/en/common.json";
 import de from "./locales/de/common.json";
 import uk from "./locales/uk/common.json";
+import ru from "./locales/ru/common.json";
+import {
+  defaultLanguage,
+  isSupportedLanguage,
+  languageFromLocation,
+  rememberLanguage,
+  supportedLanguages,
+  type SupportedLanguage,
+} from "./routing";
 
-export const supportedLanguages = ["en", "de", "uk"] as const;
-export type SupportedLanguage = (typeof supportedLanguages)[number];
+export * from "./routing";
 
 export const resources = {
   en: { common: en },
   de: { common: de },
   uk: { common: uk },
+  ru: { common: ru },
 } as const;
 
 /**
- * Detection order: localStorage (i18nextLng) → browser language → German.
- * The business is in Füssen, so German is the default when nothing is
- * stored and the browser language is unsupported. English is the fallback
- * for individual missing keys (`fallbackLng`).
+ * The active language is decided by the URL, not by i18next: every page
+ * lives under `/de`, `/en`, `/uk` or `/ru` (see ./routing), and `LanguageLayout`
+ * calls `changeLanguage` for whichever segment the router matched. So no
+ * language detector is plugged in here — detection only picks the redirect
+ * target for an unprefixed URL, which `detectPreferredLanguage` does.
+ *
+ * English stays the per-key fallback: a string missing from `de`, `uk` or `ru`
+ * renders in English rather than as a raw key.
  */
-export function createI18nInstance(bindReact = false): I18n {
+export function createI18nInstance(
+  bindReact = false,
+  language: SupportedLanguage = defaultLanguage,
+): I18n {
   const instance = i18next.createInstance();
-
-  const detector = new LanguageDetector();
-  detector.addDetector({ name: "defaultToGerman", lookup: () => "de" });
-  instance.use(detector);
 
   if (bindReact) instance.use(initReactI18next);
 
   void instance.init({
     resources,
+    lng: language,
     ns: ["common"],
     defaultNS: "common",
     fallbackLng: "en",
     supportedLngs: [...supportedLanguages],
     nonExplicitSupportedLngs: true,
     load: "languageOnly",
-    detection: {
-      order: ["localStorage", "navigator", "defaultToGerman"],
-      lookupLocalStorage: "i18nextLng",
-      caches: ["localStorage"],
-    },
     interpolation: { escapeValue: false },
     // Resources are bundled, no async backend — init synchronously so the
     // first render (and tests) never see a half-initialized instance.
@@ -51,10 +58,16 @@ export function createI18nInstance(bindReact = false): I18n {
   return instance;
 }
 
-const i18n = createI18nInstance(true);
+/**
+ * Seeded from the URL so the very first paint is already in the right
+ * language — the alternative is a frame of German on `/en/prices`.
+ */
+const i18n = createI18nInstance(true, languageFromLocation(window.location.pathname));
 
 function syncDocumentLanguage() {
-  document.documentElement.lang = i18n.resolvedLanguage ?? "de";
+  const language = i18n.resolvedLanguage ?? defaultLanguage;
+  document.documentElement.lang = language;
+  if (isSupportedLanguage(language)) rememberLanguage(language);
 }
 
 syncDocumentLanguage();

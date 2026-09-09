@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState, type ComponentType, type KeyboardEvent } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FlagDE, FlagGB, FlagUA } from "./flags";
-import type { SupportedLanguage } from "../i18n";
+import { BadgeRU, FlagDE, FlagGB, FlagUA } from "./flags";
+import {
+  localizedPath,
+  splitLanguagePath,
+  stripForeignLanguagePrefix,
+  type SupportedLanguage,
+} from "../i18n/routing";
+import { useCurrentLanguage } from "../i18n/useLanguage";
 
 type LanguageOption = {
   code: SupportedLanguage;
@@ -13,19 +20,24 @@ const languageOptions: LanguageOption[] = [
   { code: "en", label: "English", Flag: FlagGB },
   { code: "de", label: "Deutsch", Flag: FlagDE },
   { code: "uk", label: "Українська", Flag: FlagUA },
+  // Russian is a language option, not a country one — see BadgeRU.
+  { code: "ru", label: "Русский", Flag: BadgeRU },
 ];
 
 const flagClass = "h-4 w-6 shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgba(20,32,63,0.12)]";
 
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const { pathname, search, hash } = useLocation();
+  const language = useCurrentLanguage();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const optionRefs = useRef<Array<HTMLLIElement | null>>([]);
 
   const current =
-    languageOptions.find((option) => option.code === i18n.resolvedLanguage) ??
+    languageOptions.find((option) => option.code === language) ??
     languageOptions.find((option) => option.code === "de")!;
 
   useEffect(() => {
@@ -49,8 +61,17 @@ export default function LanguageSwitcher() {
     triggerRef.current?.focus();
   }
 
+  /**
+   * The language lives in the URL, so picking one is a navigation: the same
+   * page under the other language segment, query and hash preserved.
+   * `changeLanguage` runs here too rather than only in the route effect, so
+   * the labels never render one frame behind the URL. Pushed, not replaced —
+   * "back" should undo a language switch like any other navigation.
+   */
   function select(code: SupportedLanguage) {
+    const path = splitLanguagePath(pathname)?.path ?? stripForeignLanguagePrefix(pathname);
     void i18n.changeLanguage(code);
+    navigate(`${localizedPath(code, path)}${search}${hash}`);
     close();
   }
 

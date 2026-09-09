@@ -7,7 +7,7 @@ import { test, expect } from "@playwright/test";
  */
 test.describe("Hero and image delivery", () => {
   test("the hero photo is painted on load, never behind a reveal", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     const hero = page.getByTestId("hero-photo");
 
     await expect(hero).toBeVisible();
@@ -23,14 +23,14 @@ test.describe("Hero and image delivery", () => {
   test("the hero is preloaded so the fetch starts before the bundle runs", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/en");
     const preload = page.locator('link[rel="preload"][as="image"]');
     await expect(preload).toHaveCount(1);
     await expect(preload).toHaveAttribute("href", /hero.*\.webp$/);
   });
 
   test("the hero really loads the WebP, not the fallback in its src", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     const hero = page.getByTestId("hero-photo");
     // <picture> leaves the JPEG on the <img src> as the fallback; what the
     // browser actually chose is currentSrc.
@@ -45,7 +45,7 @@ test.describe("Hero and image delivery", () => {
       if (request.resourceType() === "image") images.push(request.url());
     });
 
-    await page.goto("/");
+    await page.goto("/en");
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForLoadState("networkidle");
 
@@ -57,7 +57,7 @@ test.describe("Hero and image delivery", () => {
   });
 
   test("every photo reserves its space, so nothing below it jumps", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     const missing = await page.evaluate(() =>
       [...document.querySelectorAll("img")]
         .filter((img) => {

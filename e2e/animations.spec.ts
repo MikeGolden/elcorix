@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 /** The section reveals are one-shot, so each check runs on a fresh load. */
 test.describe("Scroll animations", () => {
   test("the hero settles in on load while the sections below wait", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
 
     const headline = page.getByRole("heading", { level: 1 });
     await expect(headline).toHaveAttribute("data-revealed", "true");
@@ -14,7 +14,7 @@ test.describe("Scroll animations", () => {
   });
 
   test("a section reveals itself when it is scrolled into view", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     const booking = page.locator("#booking");
 
     await booking.scrollIntoViewIfNeeded();
@@ -32,7 +32,7 @@ test.describe("Scroll animations", () => {
   });
 
   test("the whole page is readable after scrolling through it", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     // Walk down in viewport-sized steps, the way a visitor scrolls, so every
     // section really passes through the observer's view.
     await page.evaluate(async () => {
@@ -63,7 +63,7 @@ test.describe("Scroll animations", () => {
   }) => {
     const context = await browser.newContext({ reducedMotion: "reduce" });
     const page = await context.newPage();
-    await page.goto("/");
+    await page.goto("/en");
 
     // No scrolling at all: the section below the fold is already solid.
     await expect(page.locator("#booking")).toHaveCSS("opacity", "1");

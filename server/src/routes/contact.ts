@@ -4,7 +4,7 @@ import { sendInBackground, type Mailer } from "../mailer.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const SUPPORTED_LANGS = ["en", "de", "uk"] as const;
+const SUPPORTED_LANGS = ["en", "de", "uk", "ru"] as const;
 type Lang = (typeof SUPPORTED_LANGS)[number];
 
 /**
@@ -27,6 +27,10 @@ const confirmation: Record<Lang, { subject: string; text: string }> = {
   uk: {
     subject: "Ми отримали ваше повідомлення — elcorix",
     text: `Дякуємо за ваше повідомлення! Ми відповімо вам якнайшвидше, зазвичай протягом одного робочого дня.\n\n${BUSINESS_SIGNATURE}`,
+  },
+  ru: {
+    subject: "Мы получили ваше сообщение — elcorix",
+    text: `Спасибо за ваше сообщение! Мы ответим вам как можно скорее, обычно в течение одного рабочего дня.\n\n${BUSINESS_SIGNATURE}`,
   },
 };
 

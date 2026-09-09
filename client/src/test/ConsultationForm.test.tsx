@@ -31,7 +31,7 @@ describe("ConsultationForm", () => {
     expect(screen.getByRole("checkbox", { name: /offers and news/i })).not.toBeRequired();
     expect(screen.getByRole("link", { name: /privacy policy/i })).toHaveAttribute(
       "href",
-      "/privacy",
+      "/en/privacy",
     );
   });
 

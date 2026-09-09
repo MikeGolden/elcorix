@@ -33,7 +33,7 @@ test.describe("GDPR consent", () => {
   test("footer cookie settings reopen the banner to change the decision", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/en");
     await page.getByRole("button", { name: "Accept all" }).click();
     await expect(page.getByRole("dialog")).toBeHidden();
 
@@ -66,7 +66,7 @@ test.describe("GDPR consent", () => {
   });
 
   test("contact form requires accepting the privacy policy", async ({ page }) => {
-    await page.goto("/contact");
+    await page.goto("/en/contact");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("E-mail").fill("anna@example.com");

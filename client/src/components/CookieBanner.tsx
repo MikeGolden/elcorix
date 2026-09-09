@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import LocalizedLink from "./LocalizedLink";
 import { useTranslation } from "react-i18next";
 import { useConsent } from "../consent/ConsentContext";
 
@@ -27,9 +27,9 @@ export default function CookieBanner() {
           </h2>
           <p className="mt-1.5 text-sm leading-relaxed">
             {t("consent.description")}{" "}
-            <Link to="/privacy" className="font-medium text-brand-600 underline underline-offset-4">
+            <LocalizedLink to="/privacy" className="font-medium text-brand-600 underline underline-offset-4">
               {t("consent.privacyLink")}
-            </Link>
+            </LocalizedLink>
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-3">

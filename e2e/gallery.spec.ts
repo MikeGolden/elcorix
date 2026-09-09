@@ -5,7 +5,7 @@ const secondWorkAlt = "Close-up of the handpiece during an underarm treatment";
 
 test.describe("Work gallery", () => {
   test("opens a work photo full screen and pages through the set", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     await page.getByRole("button", { name: "Only necessary" }).click();
 
     await page.getByTestId("work-tile-1").click();
@@ -33,7 +33,7 @@ test.describe("Work gallery", () => {
   });
 
   test("the slider arrow scrolls the track", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/en");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await page.setViewportSize({ width: 900, height: 900 });
 
@@ -46,7 +46,7 @@ test.describe("Work gallery", () => {
   });
 
   test("gallery page tiles open in the viewer too", async ({ page }) => {
-    await page.goto("/gallery");
+    await page.goto("/en/gallery");
     await page.getByRole("button", { name: "Only necessary" }).click();
 
     await page

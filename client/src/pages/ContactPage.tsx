@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import LocalizedLink from "../components/LocalizedLink";
 import { Trans, useTranslation } from "react-i18next";
 import ContactSection from "../sections/ContactSection";
 import { usePageMeta } from "../seo/usePageMeta";
@@ -124,7 +124,7 @@ export default function ContactPage() {
                   i18nKey="contact.privacyConsent"
                   components={{
                     privacyLink: (
-                      <Link
+                      <LocalizedLink
                         to="/privacy"
                         className="font-medium text-brand-600 underline underline-offset-2"
                       />

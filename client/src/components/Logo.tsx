@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import LocalizedLink from "./LocalizedLink";
 import { business } from "../config";
 
 /**
@@ -9,7 +9,7 @@ import { business } from "../config";
  */
 export default function Logo({ variant = "dark" }: { variant?: "dark" | "light" }) {
   return (
-    <Link
+    <LocalizedLink
       to="/"
       aria-label={business.name}
       className={`inline-flex transition-opacity hover:opacity-80 ${
@@ -30,6 +30,6 @@ export default function Logo({ variant = "dark" }: { variant?: "dark" | "light" 
           <path d="M14448 2663 c683 -921 827 -1118 825 -1124 -1 -4 -245 -348 -542 -763 l-540 -756 463 0 463 0 303 456 c234 350 307 452 315 442 5 -8 158 -213 339 -456 l329 -442 450 0 c358 0 447 3 440 13 -12 14 -296 397 -600 807 -116 157 -274 371 -352 475 -77 105 -141 192 -141 195 0 3 226 311 501 685 275 374 523 710 550 748 l49 67 -459 0 -459 0 -297 -442 c-164 -244 -303 -449 -309 -456 -10 -10 -22 1 -62 56 -27 37 -179 242 -338 455 l-289 387 -448 0 -449 0 258 -347z" />
         </g>
       </svg>
-    </Link>
+    </LocalizedLink>
   );
 }

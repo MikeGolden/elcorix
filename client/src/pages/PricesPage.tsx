@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import LocalizedLink from "../components/LocalizedLink";
 import { useTranslation } from "react-i18next";
 import { PackagePriceTable, ZonePriceTables } from "../components/PriceTables";
 import { usePageMeta } from "../seo/usePageMeta";
@@ -26,9 +26,9 @@ export default function PricesPage() {
       <p className="mt-12 max-w-2xl text-sm leading-relaxed text-ink-500">
         {t("prices.note")}
       </p>
-      <Link to="/booking" className="btn-primary mt-8">
+      <LocalizedLink to="/booking" className="btn-primary mt-8">
         {t("cta.book")}
-      </Link>
+      </LocalizedLink>
     </section>
   );
 }
