@@ -52,3 +52,10 @@ Thumbs.db
 # web-sized crops under client/public/images/ are committed.
 NewPics/
 Claude outputs/
+
+# Cloudflare Pages build output (regenerate with ./deploy/build.sh)
+deploy/cloudflare/
+
+# Local scratch folders not meant for the repo
+wp/
+Fix/
