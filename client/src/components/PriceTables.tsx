@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import {
+  formatPercent,
   formatPrice,
+  formatPriceExact,
   menPackages,
   menPrices,
   packageDeal,
@@ -21,7 +23,11 @@ import {
 function zoneLabel(group: PackageGroup, key: string) {
   return `prices.${group}.${key}` as "prices.women.upperLip";
 }
-function packageLabel(group: PackageGroup, key: string, field: "name" | "zones") {
+function packageLabel(
+  group: PackageGroup,
+  key: string,
+  field: "name" | "zones" | "excluded",
+) {
   return `prices.packages.${group}.${key}.${field}` as "prices.packages.women.smoothDuo.name";
 }
 
@@ -99,13 +105,13 @@ function PackageDealCell({
       </span>
       <span className="whitespace-nowrap text-xs leading-tight text-ink-500">
         {t("prices.packageMeta.perTreatment", {
-          price: formatPrice(language, deal.perTreatment),
+          price: formatPriceExact(language, deal.perTreatment),
         })}
       </span>
       <span className="whitespace-nowrap rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold leading-tight text-brand-700">
         {t("prices.packageMeta.save", {
-          percent: deal.advertisedPercent,
           amount: formatPrice(language, deal.saved),
+          percent: formatPercent(language, deal.savedPercent),
         })}
       </span>
     </div>
@@ -113,11 +119,63 @@ function PackageDealCell({
 }
 
 /**
+ * The single-treatment price, with the sheet's own subtitle under it. The
+ * subtitle is what keeps the column from reading as a package price: every
+ * other number in the row is a total for six or eight sessions.
+ */
+function SinglePrice({
+  price,
+  language,
+  align,
+}: {
+  price: number;
+  language: string;
+  align: "left" | "right";
+}) {
+  const { t } = useTranslation();
+  return (
+    <div className={align === "right" ? "text-right" : "text-left"}>
+      <span className="whitespace-nowrap text-[1.05rem] font-bold leading-tight text-ink-900">
+        {formatPrice(language, price)}
+      </span>
+      <span className="block whitespace-nowrap text-xs leading-tight text-ink-500">
+        {t("prices.packageMeta.perSingle")}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * The zones a package covers, and — on the two Body Complete rows — what it
+ * does not cover. The sheet of 2026-09-14 puts the exclusion inside the cell
+ * rather than in a footnote under the table, so a visitor reading one row
+ * never has to look elsewhere to learn what is missing from it.
+ */
+function ZoneCell({ group, packageKey }: { group: PackageGroup; packageKey: string }) {
+  const { t, i18n } = useTranslation();
+  const excludedKey = packageLabel(group, packageKey, "excluded");
+  // Only the two Body Complete rows carry the key; `t` is typed over the
+  // whole resource, so the leaf type is asserted here like the keys above.
+  const excluded: string | null = i18n.exists(excludedKey)
+    ? (t(excludedKey) as string)
+    : null;
+  return (
+    <>
+      <span className="block">{t(packageLabel(group, packageKey, "zones"))}</span>
+      {excluded === null ? null : (
+        <span className="mt-1 block text-ink-300">{excluded}</span>
+      )}
+    </>
+  );
+}
+
+/**
  * One combined-package table. Women and men use the same component, so the
  * two tables cannot drift apart in structure or in visual logic.
  *
- * Desktop is the five-column table: Angebot | Enthaltene Zonen |
- * Einzelbehandlung | 6er-Paket | 8er-Paket. Below `md` the same rows are
+ * Desktop is the five-column table: Paket | Enthaltene Zonen |
+ * Einzelbehandlung | 6 Behandlungen | 8 Behandlungen — the sheet's own
+ * columns, in its order. Below `lg` the same rows are
  * cards — five columns, two of them three lines tall, do not survive a
  * phone width, and a horizontally scrolled table hides exactly the two
  * columns the visitor came for.
@@ -136,7 +194,6 @@ function PackageTable<G extends PackageGroup>({
   const id = `prices-packages-${group}`;
   const heading =
     group === "women" ? "prices.groups.packagesWomen" : "prices.groups.packagesMen";
-  const note = group === "women" ? "prices.packageNotes.women" : "prices.packageNotes.men";
   const columns = ["package", "zones", "single", "six", "eight"] as const;
 
   return (
@@ -164,6 +221,11 @@ function PackageTable<G extends PackageGroup>({
                   }`}
                 >
                   {t(`prices.columns.${column}` as "prices.columns.package")}
+                  {column === "six" || column === "eight" ? (
+                    <span className="block text-[0.7rem] font-semibold uppercase tracking-wide text-brand-700">
+                      {t(`prices.columnBadges.${column}` as "prices.columnBadges.six")}
+                    </span>
+                  ) : null}
                 </th>
               ))}
             </tr>
@@ -178,10 +240,10 @@ function PackageTable<G extends PackageGroup>({
                   {t(packageLabel(group, row.key, "name"))}
                 </th>
                 <td className="px-4 py-4 align-top text-ink-500">
-                  {t(packageLabel(group, row.key, "zones"))}
+                  <ZoneCell group={group} packageKey={row.key} />
                 </td>
-                <td className="whitespace-nowrap px-4 py-4 text-right align-top font-semibold text-ink-700">
-                  {formatPrice(language, row.single)}
+                <td className="px-4 py-4 text-right align-top">
+                  <SinglePrice price={row.single} language={language} align="right" />
                 </td>
                 <td className="px-4 py-4 align-top">
                   <PackageDealCell
@@ -211,20 +273,21 @@ function PackageTable<G extends PackageGroup>({
               {t(packageLabel(group, row.key, "name"))}
             </p>
             <p className="mt-1 text-sm text-ink-500">
-              {t(packageLabel(group, row.key, "zones"))}
+              <ZoneCell group={group} packageKey={row.key} />
             </p>
             <dl className="mt-4 grid gap-4 sm:grid-cols-3">
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
                   {t("prices.columns.single")}
                 </dt>
-                <dd className="mt-1 text-[1.05rem] font-bold text-ink-900">
-                  {formatPrice(language, row.single)}
+                <dd className="mt-1">
+                  <SinglePrice price={row.single} language={language} align="left" />
                 </dd>
               </div>
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
                   {t("prices.columns.six")}
+                  <span className="block text-brand-700">{t("prices.columnBadges.six")}</span>
                 </dt>
                 <dd className="mt-1">
                   <PackageDealCell
@@ -237,6 +300,7 @@ function PackageTable<G extends PackageGroup>({
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
                   {t("prices.columns.eight")}
+                  <span className="block text-brand-700">{t("prices.columnBadges.eight")}</span>
                 </dt>
                 <dd className="mt-1">
                   <PackageDealCell
@@ -250,8 +314,6 @@ function PackageTable<G extends PackageGroup>({
           </li>
         ))}
       </ul>
-
-      <p className="mt-4 px-4 text-xs leading-relaxed text-ink-500">{t(note)}</p>
     </section>
   );
 }

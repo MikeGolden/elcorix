@@ -78,61 +78,30 @@ export const menPackages: PricePackage<"men">[] = [
  * What a package saves against paying for each session separately.
  *
  * Every figure the table prints is derived from the two prices in the row,
- * so the small print can never contradict the price next to it. Both are
- * rounded to whole units, which is how the studio's price sheet reads
- * ("ca. 103 € pro Behandlung", "Sie sparen 20 %").
+ * so the small print can never contradict the price next to it. Nothing is
+ * rounded here: the handover sheet of 2026-09-14 prints the per-treatment
+ * price to the cent ("103,17 € / Behandlung") and the saving to a tenth of a
+ * point ("Sie sparen 155 € · 20,0 %"), so the rounding is left to the
+ * formatters, which do it the way Intl does — half away from zero.
  */
 export type PackageDeal = {
   total: number;
+  /** Exact price per session: the package total divided by its sessions. */
   perTreatment: number;
   /** Exact euros saved against six or eight single treatments. */
   saved: number;
-  /** That saving as a percentage of the undiscounted price, rounded. */
+  /** That saving as a percentage of the undiscounted price, unrounded. */
   savedPercent: number;
-  /** What the table prints — see TIER_DISCOUNT. */
-  advertisedPercent: number;
 };
-
-/**
- * The discount each package size advertises. The studio sells "6er = 20 %,
- * 8er = 26 %" as the offer itself, so the pill states the tier rather than
- * each row's own arithmetic — Mykhailo's call on 2026-09-10, together with
- * "prices stay as they are".
- *
- * Ten of the eleven rows land on their tier exactly. Intim Clean is the one
- * that does not: 99 € × 6 = 594 €, minus 479 € is 19,4 %, and it still
- * prints 20 %. The euro figure beside it (115 €) is always the real one.
- *
- * `PriceTables.test.tsx` fails if any row drifts more than a point from its
- * tier, so a future price edit cannot quietly turn this into a claim that is
- * plainly wrong.
- */
-export const TIER_DISCOUNT: Record<number, number> = { 6: 20, 8: 26 };
-
-/**
- * Half-to-even, the rule the studio's price sheet was calculated with:
- * 1.239 € / 8 = 154,875 → 155, but 999 € / 6 = 166,5 → 166 and
- * 669 € / 6 = 111,5 → 112. Math.round() rounds every half up and would
- * print 167 and 127 where the printed price list says 166 and 126.
- */
-function roundHalfToEven(value: number): number {
-  const floor = Math.floor(value);
-  const rest = value - floor;
-  if (rest > 0.5) return floor + 1;
-  if (rest < 0.5) return floor;
-  return floor % 2 === 0 ? floor : floor + 1;
-}
 
 export function packageDeal(single: number, sessions: number, total: number): PackageDeal {
   const undiscounted = single * sessions;
   const saved = undiscounted - total;
-  const savedPercent = Math.round((saved / undiscounted) * 100);
   return {
     total,
-    perTreatment: roundHalfToEven(total / sessions),
+    perTreatment: total / sessions,
     saved,
-    savedPercent,
-    advertisedPercent: TIER_DISCOUNT[sessions] ?? savedPercent,
+    savedPercent: (saved / undiscounted) * 100,
   };
 }
 
@@ -143,16 +112,49 @@ export function packageDeal(single: number, sessions: number, total: number): Pa
  */
 const formatters = new Map<string, Intl.NumberFormat>();
 
-export function formatPrice(language: string, price: number): string {
-  let formatter = formatters.get(language);
+function euro(language: string, digits: number): Intl.NumberFormat {
+  const cacheKey = `${language}:${digits}`;
+  let formatter = formatters.get(cacheKey);
   if (formatter === undefined) {
     formatter = new Intl.NumberFormat(language, {
       style: "currency",
       currency: "EUR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
     });
-    formatters.set(language, formatter);
+    formatters.set(cacheKey, formatter);
   }
-  return formatter.format(price);
+  return formatter;
+}
+
+/** Whole euros: every price the studio actually charges is a round number. */
+export function formatPrice(language: string, price: number): string {
+  return euro(language, 0).format(price);
+}
+
+/**
+ * To the cent — only for the per-treatment line, which is a division and
+ * almost never lands on a whole euro.
+ */
+export function formatPriceExact(language: string, price: number): string {
+  return euro(language, 2).format(price);
+}
+
+const percentFormatters = new Map<string, Intl.NumberFormat>();
+
+/**
+ * One decimal, always — the sheet prints "20,0 %" and "26,0 %", not "20 %".
+ * The number only; the "%" sign and its spacing live in the translation, so
+ * each language can set them itself.
+ */
+export function formatPercent(language: string, percent: number): string {
+  let formatter = percentFormatters.get(language);
+  if (formatter === undefined) {
+    formatter = new Intl.NumberFormat(language, {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
+    percentFormatters.set(language, formatter);
+  }
+  return formatter.format(percent);
 }

@@ -28,16 +28,20 @@ export default function PricesPage() {
       <p className="mt-12 max-w-2xl text-sm leading-relaxed text-ink-500">
         {t("prices.note")}
       </p>
-      {/* /booking only exists while the Altegio flag is on (src/features.ts);
-          otherwise the CTA goes to the consultation request on the landing
-          page, which needs no third party. */}
+      {/* The sheet of 2026-09-14 fixes the wording of this one button
+          („Kostenlose Beratung mit Testimpuls buchen"), so both branches
+          carry the same label and only the destination differs: /booking
+          exists while the Altegio flag is on (src/features.ts), otherwise
+          the CTA goes to the consultation request on the landing page,
+          which needs no third party. It is deliberately NOT cta.consultation
+          — that one also labels the header button and the form's submit. */}
       {features.altegio ? (
         <LocalizedLink to="/booking" className="btn-primary mt-8">
-          {t("cta.book")}
+          {t("cta.consultationTest")}
         </LocalizedLink>
       ) : (
         <Link to={anchor("consultation")} className="btn-primary mt-8">
-          {t("cta.consultation")}
+          {t("cta.consultationTest")}
         </Link>
       )}
     </section>

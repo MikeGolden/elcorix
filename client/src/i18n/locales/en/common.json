@@ -19,7 +19,8 @@
     "whatsapp": "Message us on WhatsApp",
     "learnMore": "Learn more",
     "moreDevices": "Learn more about our devices",
-    "fullPriceList": "See the full price list"
+    "fullPriceList": "See the full price list",
+    "consultationTest": "Book a free consultation with a test pulse"
   },
   "meta": {
     "home": {
@@ -133,11 +134,15 @@
       "packagesMen": "Combined packages for men"
     },
     "columns": {
-      "package": "Offer",
+      "package": "Package",
       "zones": "Zones included",
       "single": "Single treatment",
-      "six": "6-session package",
-      "eight": "8-session package"
+      "six": "6 treatments",
+      "eight": "8 treatments"
+    },
+    "columnBadges": {
+      "six": "Popular choice",
+      "eight": "Best saving"
     },
     "women": {
       "upperLip": "Upper lip",
@@ -178,8 +183,9 @@
           "zones": "Underarms + intimate complete incl. buttock crease + full legs incl. feet/toes"
         },
         "bodyCompleteWoman": {
-          "name": "Body Complete Woman*",
-          "zones": "Underarms, arms, stomach, back, full buttocks, intimate complete and full legs"
+          "name": "Body Complete Woman",
+          "zones": "Underarms, arms, stomach, back, full buttocks, intimate complete and full legs",
+          "excluded": "Not included: face, throat, neck, chest area"
         }
       },
       "men": {
@@ -204,19 +210,17 @@
           "zones": "Chest + stomach + full back"
         },
         "bodyCompleteMan": {
-          "name": "Body Complete Man*",
-          "zones": "Underarms, arms, chest, stomach, back, full buttocks, intimate complete and full legs"
+          "name": "Body Complete Man",
+          "zones": "Underarms, arms, chest, stomach, back, full buttocks, intimate complete and full legs",
+          "excluded": "Not included: face, beard area, throat, neck"
         }
       }
     },
     "packageMeta": {
       "total": "{{price}} total",
-      "perTreatment": "approx. {{price}} per treatment",
-      "save": "You save {{percent}}% ({{amount}})"
-    },
-    "packageNotes": {
-      "women": "* Body Complete Woman: face, throat, neck and chest area are not included.",
-      "men": "* Body Complete Man: face, beard area, throat and neck are not included."
+      "perTreatment": "{{price}} / treatment",
+      "perSingle": "per treatment",
+      "save": "You save {{amount}} · {{percent}}%"
     }
   },
   "booking": {
