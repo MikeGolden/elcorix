@@ -2,90 +2,156 @@ import { render, screen, within } from "@testing-library/react";
 import i18n from "../i18n";
 import { PriceGroup } from "../components/PriceTables";
 import {
-  TIER_DISCOUNT,
+  formatPercent,
   formatPrice,
+  formatPriceExact,
   menPackages,
   packageDeal,
   womenPackages,
 } from "../pricing";
 
 /**
- * The studio's printed price sheet, as Mykhailo supplied it: for every
- * package, the per-treatment price and the saving it advertises. Nothing in
- * the app stores these — they are derived from `single` and the package
- * price — so this table is what proves the derivation reproduces the sheet.
+ * ELCORIX_Laser_Pakete_Website_Developer_Handover_2026-09-14.xlsx, sheet
+ * `01_Pakete_kompakt`, transcribed cell for cell: for each package the
+ * single price, then per package size the total, the per-treatment price,
+ * the euros saved and the percentage the sheet prints.
+ *
+ * Nothing in the app stores the last three — they are derived from `single`
+ * and the package total — so this table is what proves the derivation
+ * reproduces the studio's own document, to the cent and to the tenth of a
+ * point. A price edit that no longer matches the sheet fails here.
  */
-const SHEET: Record<string, { six: [number, number]; eight: [number, number] }> = {
-  smoothDuo: { six: [103, 155], eight: [95, 273] },
-  smoothLegs: { six: [135, 205], eight: [125, 353] },
-  smoothTrio: { six: [166, 255], eight: [155, 433] },
-  smoothComplete: { six: [200, 295], eight: [185, 513] },
-  bodyCompleteWoman: { six: [255, 385], eight: [236, 663] },
-  clearBack: { six: [95, 145], eight: [89, 243] },
-  strongTorso: { six: [112, 165], eight: [102, 293] },
-  coolClean: { six: [126, 195], eight: [117, 333] },
-  intimClean: { six: [80, 115], eight: [74, 203] },
-  businessBody: { six: [175, 265], eight: [162, 453] },
-  bodyCompleteMan: { six: [280, 415], eight: [259, 723] },
+type SheetCell = { total: number; per: number; saved: number; percent: number };
+const SHEET: Record<string, { single: number; six: SheetCell; eight: SheetCell }> = {
+  smoothDuo: {
+    single: 129,
+    six: { total: 619, per: 103.17, saved: 155, percent: 20.0 },
+    eight: { total: 759, per: 94.88, saved: 273, percent: 26.5 },
+  },
+  smoothLegs: {
+    single: 169,
+    six: { total: 809, per: 134.83, saved: 205, percent: 20.2 },
+    eight: { total: 999, per: 124.88, saved: 353, percent: 26.1 },
+  },
+  smoothTrio: {
+    single: 209,
+    six: { total: 999, per: 166.5, saved: 255, percent: 20.3 },
+    eight: { total: 1239, per: 154.88, saved: 433, percent: 25.9 },
+  },
+  smoothComplete: {
+    single: 249,
+    six: { total: 1199, per: 199.83, saved: 295, percent: 19.7 },
+    eight: { total: 1479, per: 184.88, saved: 513, percent: 25.8 },
+  },
+  bodyCompleteWoman: {
+    single: 319,
+    six: { total: 1529, per: 254.83, saved: 385, percent: 20.1 },
+    eight: { total: 1889, per: 236.13, saved: 663, percent: 26.0 },
+  },
+  clearBack: {
+    single: 119,
+    six: { total: 569, per: 94.83, saved: 145, percent: 20.3 },
+    eight: { total: 709, per: 88.63, saved: 243, percent: 25.5 },
+  },
+  strongTorso: {
+    single: 139,
+    six: { total: 669, per: 111.5, saved: 165, percent: 19.8 },
+    eight: { total: 819, per: 102.38, saved: 293, percent: 26.3 },
+  },
+  coolClean: {
+    single: 159,
+    six: { total: 759, per: 126.5, saved: 195, percent: 20.4 },
+    eight: { total: 939, per: 117.38, saved: 333, percent: 26.2 },
+  },
+  intimClean: {
+    single: 99,
+    six: { total: 479, per: 79.83, saved: 115, percent: 19.4 },
+    eight: { total: 589, per: 73.63, saved: 203, percent: 25.6 },
+  },
+  businessBody: {
+    single: 219,
+    six: { total: 1049, per: 174.83, saved: 265, percent: 20.2 },
+    eight: { total: 1299, per: 162.38, saved: 453, percent: 25.9 },
+  },
+  bodyCompleteMan: {
+    single: 349,
+    six: { total: 1679, per: 279.83, saved: 415, percent: 19.8 },
+    eight: { total: 2069, per: 258.63, saved: 723, percent: 25.9 },
+  },
 };
 
-describe("packageDeal", () => {
-  it("reproduces every line of the studio's price sheet", () => {
-    const rows = [...womenPackages, ...menPackages];
-    expect(rows).toHaveLength(11);
-    for (const row of rows) {
-      const expected = SHEET[row.key];
-      expect(expected, row.key).toBeDefined();
-      const six = packageDeal(row.single, 6, row.six);
-      expect([six.perTreatment, six.saved], `${row.key} 6er`).toEqual(expected.six);
-      const eight = packageDeal(row.single, 8, row.eight);
-      expect([eight.perTreatment, eight.saved], `${row.key} 8er`).toEqual(expected.eight);
+const ROWS = [...womenPackages, ...menPackages];
+
+/** Every package, each with its 6er and 8er line from the sheet. */
+const LINES = ROWS.flatMap((row) =>
+  ([6, 8] as const).map((sessions) => ({
+    key: row.key,
+    sessions,
+    single: row.single,
+    total: sessions === 6 ? row.six : row.eight,
+    sheet: sessions === 6 ? SHEET[row.key]?.six : SHEET[row.key]?.eight,
+  })),
+);
+
+describe("the package prices", () => {
+  it("are the eleven rows of the sheet, at the sheet's prices", () => {
+    expect(ROWS).toHaveLength(11);
+    expect(Object.keys(SHEET)).toHaveLength(11);
+    for (const row of ROWS) {
+      const sheet = SHEET[row.key];
+      expect(sheet, row.key).toBeDefined();
+      expect([row.single, row.six, row.eight], row.key).toEqual([
+        sheet.single,
+        sheet.six.total,
+        sheet.eight.total,
+      ]);
     }
   });
+});
 
-  it("prints the tier discount, and no row drifts more than a point from it", () => {
-    for (const row of [...womenPackages, ...menPackages]) {
-      for (const [sessions, total] of [
-        [6, row.six],
-        [8, row.eight],
-      ] as const) {
-        const deal = packageDeal(row.single, sessions, total);
-        expect(deal.advertisedPercent, row.key).toBe(TIER_DISCOUNT[sessions]);
-        // The guard: a price edit that pulls a row away from its advertised
-        // tier has to be noticed, not silently printed. Intim Clean's 6er is
-        // the widest gap today at 0,64 points (19,4 % against 20 %).
-        const exact = ((row.single * sessions - total) / (row.single * sessions)) * 100;
-        expect(
-          Math.abs(exact - TIER_DISCOUNT[sessions]),
-          `${row.key} ${sessions}er advertises ${TIER_DISCOUNT[sessions]} % but saves ${exact.toFixed(1)} %`,
-        ).toBeLessThanOrEqual(1);
-      }
+describe("packageDeal", () => {
+  it("reproduces every derived figure the sheet prints", () => {
+    for (const line of LINES) {
+      const deal = packageDeal(line.single, line.sessions, line.total);
+      const label = `${line.key} ${line.sessions}er`;
+      expect(deal.total, label).toBe(line.sheet.total);
+      expect(deal.saved, label).toBe(line.sheet.saved);
+      // The sheet rounds both of these for display; comparing the formatted
+      // string is what proves the site prints the same characters it does.
+      expect(formatPriceExact("de", deal.perTreatment), label).toBe(
+        formatPriceExact("de", line.sheet.per),
+      );
+      expect(formatPercent("de", deal.savedPercent), label).toBe(
+        formatPercent("de", line.sheet.percent),
+      );
     }
   });
 
   it("never claims a saving the prices do not support", () => {
-    for (const row of [...womenPackages, ...menPackages]) {
-      for (const [sessions, total] of [
-        [6, row.six],
-        [8, row.eight],
-      ] as const) {
-        const deal = packageDeal(row.single, sessions, total);
-        expect(deal.saved).toBe(row.single * sessions - total);
-        expect(deal.saved).toBeGreaterThan(0);
-        expect(deal.perTreatment).toBeLessThan(row.single);
-      }
+    for (const line of LINES) {
+      const deal = packageDeal(line.single, line.sessions, line.total);
+      expect(deal.saved).toBe(line.single * line.sessions - line.total);
+      expect(deal.saved).toBeGreaterThan(0);
+      expect(deal.perTreatment).toBeLessThan(line.single);
+      // Every row's pill states that row's own arithmetic — there is no
+      // advertised tier any more, so no row can drift away from one.
+      expect(deal.savedPercent).toBeCloseTo((deal.saved / (line.single * line.sessions)) * 100, 10);
     }
   });
 });
 
 describe("PriceGroup", () => {
+  beforeEach(async () => {
+    await i18n.changeLanguage("en");
+  });
+
   it("puts the single zones first and the packages under them", () => {
     render(<PriceGroup group="men" />);
     const headings = screen.getAllByRole("heading").map((node) => node.textContent);
     expect(headings).toEqual(["Services for men", "Combined packages for men"]);
   });
 
-  it("gives both tables the same five columns", () => {
+  it("gives both tables the sheet's five columns, with its two badges", () => {
     render(
       <>
         <PriceGroup group="women" />
@@ -99,11 +165,11 @@ describe("PriceGroup", () => {
         .getAllByRole("columnheader")
         .map((cell) => cell.textContent);
       expect(headers).toEqual([
-        "Offer",
+        "Package",
         "Zones included",
         "Single treatment",
-        "6-session package",
-        "8-session package",
+        "6 treatmentsPopular choice",
+        "8 treatmentsBest saving",
       ]);
     }
   });
@@ -116,36 +182,55 @@ describe("PriceGroup", () => {
     const cells = within(row).getAllByRole("cell");
     expect(cells).toHaveLength(4);
 
-    const [first] = womenPackages;
     expect(within(row).getByRole("rowheader")).toHaveTextContent("Smooth Duo");
     expect(cells[0]).toHaveTextContent("Underarms + intimate complete incl. buttock crease");
-    expect(cells[1]).toHaveTextContent(formatPrice("en", first.single));
+    expect(cells[1]).toHaveTextContent(formatPrice("en", 129));
+    expect(cells[1]).toHaveTextContent("per treatment");
 
     const six = cells[2].textContent ?? "";
     expect(six).toContain(formatPrice("en", 619));
-    expect(six).toContain(formatPrice("en", 103));
-    expect(six).toContain("20%");
+    expect(six).toContain(formatPriceExact("en", 103.17));
     expect(six).toContain(formatPrice("en", 155));
+    expect(six).toContain("20.0%");
 
     const eight = cells[3].textContent ?? "";
     expect(eight).toContain(formatPrice("en", 759));
-    expect(eight).toContain(formatPrice("en", 95));
-    expect(eight).toContain("26%");
+    expect(eight).toContain(formatPriceExact("en", 94.88));
     expect(eight).toContain(formatPrice("en", 273));
+    expect(eight).toContain("26.5%");
   });
 
-  it("renders the German wording of the derived lines and the footnote", async () => {
+  it("prints the German wording of the sheet's derived lines", async () => {
     await i18n.changeLanguage("de");
     render(<PriceGroup group="men" />);
     const row = within(screen.getByRole("table")).getAllByRole("row")[6];
-    expect(within(row).getByRole("rowheader")).toHaveTextContent("Body Complete Man*");
+    expect(within(row).getByRole("rowheader")).toHaveTextContent("Body Complete Man");
     const six = within(row).getAllByRole("cell")[2];
     // \s, not a literal space: Intl puts a non-breaking space before €.
     expect(six.textContent).toMatch(/1\.679\s€ gesamt/);
-    expect(six.textContent).toMatch(/ca\.\s280\s€ pro Behandlung/);
-    expect(six.textContent).toMatch(/Sie sparen 20\s% \(415\s€\)/);
-    expect(
-      screen.getByText(/Gesicht, Bartbereich, Hals und Nacken sind nicht enthalten/),
-    ).toBeInTheDocument();
+    expect(six.textContent).toMatch(/279,83\s€ \/ Behandlung/);
+    expect(six.textContent).toMatch(/Sie sparen 415\s€ · 19,8\s%/);
+  });
+
+  it("names the exclusions inside the row, not in a footnote", async () => {
+    await i18n.changeLanguage("de");
+    render(<PriceGroup group="men" />);
+    const table = screen.getByRole("table");
+    const row = within(table).getAllByRole("row")[6];
+    expect(within(row).getByRole("rowheader")).toHaveTextContent("Body Complete Man");
+    expect(within(row).getAllByRole("cell")[0]).toHaveTextContent(
+      "Nicht enthalten: Gesicht, Bartbereich, Hals, Nacken",
+    );
+    // The asterisk and the footnote it pointed at are both gone.
+    expect(table.textContent).not.toContain("*");
+    expect(screen.queryByText(/sind nicht enthalten/)).not.toBeInTheDocument();
+  });
+
+  it("carries no exclusion line on a package that has none", async () => {
+    await i18n.changeLanguage("de");
+    render(<PriceGroup group="men" />);
+    const row = within(screen.getByRole("table")).getAllByRole("row")[1];
+    expect(within(row).getByRole("rowheader")).toHaveTextContent("Clear Back");
+    expect(within(row).getAllByRole("cell")[0].textContent).toBe("Rücken komplett");
   });
 });

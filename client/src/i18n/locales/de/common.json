@@ -19,7 +19,8 @@
     "whatsapp": "Über WhatsApp schreiben",
     "learnMore": "Mehr erfahren",
     "moreDevices": "Mehr über unsere Geräte erfahren",
-    "fullPriceList": "Vollständige Preisliste ansehen"
+    "fullPriceList": "Vollständige Preisliste ansehen",
+    "consultationTest": "Kostenlose Beratung mit Testimpuls buchen"
   },
   "meta": {
     "home": {
@@ -133,11 +134,15 @@
       "packagesMen": "Kombinierte Pakete für Männer"
     },
     "columns": {
-      "package": "Angebot",
+      "package": "Paket",
       "zones": "Enthaltene Zonen",
       "single": "Einzelbehandlung",
-      "six": "6er-Paket",
-      "eight": "8er-Paket"
+      "six": "6 Behandlungen",
+      "eight": "8 Behandlungen"
+    },
+    "columnBadges": {
+      "six": "Beliebte Wahl",
+      "eight": "Beste Ersparnis"
     },
     "women": {
       "upperLip": "Oberlippe",
@@ -178,8 +183,9 @@
           "zones": "Achseln + Intim Complete inkl. Pofalte + Beine komplett inkl. Füße/Zehen"
         },
         "bodyCompleteWoman": {
-          "name": "Body Complete Woman*",
-          "zones": "Achseln, Arme, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett"
+          "name": "Body Complete Woman",
+          "zones": "Achseln, Arme, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett",
+          "excluded": "Nicht enthalten: Gesicht, Hals, Nacken, Brustbereich"
         }
       },
       "men": {
@@ -204,19 +210,17 @@
           "zones": "Brust + Bauch + Rücken komplett"
         },
         "bodyCompleteMan": {
-          "name": "Body Complete Man*",
-          "zones": "Achseln, Arme, Brust, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett"
+          "name": "Body Complete Man",
+          "zones": "Achseln, Arme, Brust, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett",
+          "excluded": "Nicht enthalten: Gesicht, Bartbereich, Hals, Nacken"
         }
       }
     },
     "packageMeta": {
       "total": "{{price}} gesamt",
-      "perTreatment": "ca. {{price}} pro Behandlung",
-      "save": "Sie sparen {{percent}} % ({{amount}})"
-    },
-    "packageNotes": {
-      "women": "* Body Complete Woman: Gesicht, Hals, Nacken und Brustbereich sind nicht enthalten.",
-      "men": "* Body Complete Man: Gesicht, Bartbereich, Hals und Nacken sind nicht enthalten."
+      "perTreatment": "{{price}} / Behandlung",
+      "perSingle": "pro Behandlung",
+      "save": "Sie sparen {{amount}} · {{percent}} %"
     }
   },
   "booking": {
