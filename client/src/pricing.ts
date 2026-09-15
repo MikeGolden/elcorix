@@ -105,12 +105,22 @@ export function packageDeal(single: number, sessions: number, total: number): Pa
   };
 }
 
+/** Look one up, build it on the first miss only. */
+function getOrCreate<T>(cache: Map<string, T>, key: string, create: () => T): T {
+  let value = cache.get(key);
+  if (value === undefined) {
+    value = create();
+    cache.set(key, value);
+  }
+  return value;
+}
+
 /**
  * Constructing an Intl.NumberFormat is expensive — it resolves locale data
  * on every call — and the price tables format 31 cells per render. Building
  * one formatter per language and reusing it turns that into 31 lookups.
  */
-const formatters = new Map<string, Intl.NumberFormat>();
+const currencyFormatters = new Map<string, Intl.NumberFormat>();
 
 /**
  * `currencyDisplay: "narrowSymbol"` is load-bearing, not a nicety: Ukrainian
@@ -119,19 +129,18 @@ const formatters = new Map<string, Intl.NumberFormat>();
  * "1.239 €". It changes nothing in the other three locales.
  */
 function euro(language: string, digits: number): Intl.NumberFormat {
-  const cacheKey = `${language}:${digits}`;
-  let formatter = formatters.get(cacheKey);
-  if (formatter === undefined) {
-    formatter = new Intl.NumberFormat(language, {
-      style: "currency",
-      currency: "EUR",
-      currencyDisplay: "narrowSymbol",
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits,
-    });
-    formatters.set(cacheKey, formatter);
-  }
-  return formatter;
+  return getOrCreate(
+    currencyFormatters,
+    `${language}:${digits}`,
+    () =>
+      new Intl.NumberFormat(language, {
+        style: "currency",
+        currency: "EUR",
+        currencyDisplay: "narrowSymbol",
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits,
+      }),
+  );
 }
 
 /** Whole euros: every price the studio actually charges is a round number. */
@@ -155,13 +164,13 @@ const percentFormatters = new Map<string, Intl.NumberFormat>();
  * each language can set them itself.
  */
 export function formatPercent(language: string, percent: number): string {
-  let formatter = percentFormatters.get(language);
-  if (formatter === undefined) {
-    formatter = new Intl.NumberFormat(language, {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    });
-    percentFormatters.set(language, formatter);
-  }
-  return formatter.format(percent);
+  return getOrCreate(
+    percentFormatters,
+    language,
+    () =>
+      new Intl.NumberFormat(language, {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
+  ).format(percent);
 }
