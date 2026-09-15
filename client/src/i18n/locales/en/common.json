@@ -129,10 +129,11 @@
     "groups": {
       "women": "Services for women",
       "men": "Services for men",
-      "packages": "Package deals for women"
+      "packagesWomen": "Combined packages for women",
+      "packagesMen": "Combined packages for men"
     },
     "columns": {
-      "package": "Package",
+      "package": "Offer",
       "zones": "Zones included",
       "single": "Single treatment",
       "six": "6-session package",
@@ -159,26 +160,63 @@
       "intimateComplete": "Intimate complete incl. buttock crease"
     },
     "packages": {
-      "p1": {
-        "name": "Upper lip",
-        "zones": "Underarms + intimate complete incl. buttock crease"
+      "women": {
+        "smoothDuo": {
+          "name": "Smooth Duo",
+          "zones": "Underarms + intimate complete incl. buttock crease"
+        },
+        "smoothLegs": {
+          "name": "Smooth Legs",
+          "zones": "Intimate complete incl. buttock crease + lower legs incl. knees"
+        },
+        "smoothTrio": {
+          "name": "Smooth Trio",
+          "zones": "Underarms + intimate complete incl. buttock crease + lower legs incl. knees"
+        },
+        "smoothComplete": {
+          "name": "Smooth Complete",
+          "zones": "Underarms + intimate complete incl. buttock crease + full legs incl. feet/toes"
+        },
+        "bodyCompleteWoman": {
+          "name": "Body Complete Woman*",
+          "zones": "Underarms, arms, stomach, back, full buttocks, intimate complete and full legs"
+        }
       },
-      "p2": {
-        "name": "Chin",
-        "zones": "Intimate complete incl. buttock crease + lower legs incl. knees"
-      },
-      "p3": {
-        "name": "Underarms",
-        "zones": "Underarms + intimate complete incl. buttock crease + lower legs incl. knees"
-      },
-      "p4": {
-        "name": "Bikini line, classic",
-        "zones": "Underarms + intimate complete incl. buttock crease + full legs incl. feet/toes"
-      },
-      "p5": {
-        "name": "Intimate complete — incl. buttock crease",
-        "zones": "Underarms, arms, stomach, back, full buttocks, intimate complete and full legs"
+      "men": {
+        "clearBack": {
+          "name": "Clear Back",
+          "zones": "Full back"
+        },
+        "strongTorso": {
+          "name": "Strong Torso",
+          "zones": "Chest + stomach"
+        },
+        "coolClean": {
+          "name": "Cool & Clean",
+          "zones": "Underarms + shoulders + neck"
+        },
+        "intimClean": {
+          "name": "Intim Clean",
+          "zones": "Intimate complete incl. buttock crease"
+        },
+        "businessBody": {
+          "name": "Business Body",
+          "zones": "Chest + stomach + full back"
+        },
+        "bodyCompleteMan": {
+          "name": "Body Complete Man*",
+          "zones": "Underarms, arms, chest, stomach, back, full buttocks, intimate complete and full legs"
+        }
       }
+    },
+    "packageMeta": {
+      "total": "{{price}} total",
+      "perTreatment": "approx. {{price}} per treatment",
+      "save": "You save {{percent}}% ({{amount}})"
+    },
+    "packageNotes": {
+      "women": "* Body Complete Woman: face, throat, neck and chest area are not included.",
+      "men": "* Body Complete Man: face, beard area, throat and neck are not included."
     }
   },
   "booking": {

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import LocalizedLink from "../components/LocalizedLink";
 import { useTranslation } from "react-i18next";
-import { PackagePriceTable, ZonePriceTables } from "../components/PriceTables";
+import { PriceGroup } from "../components/PriceTables";
 import { usePageMeta } from "../seo/usePageMeta";
 import { features } from "../config";
 import { useAnchorHref } from "../i18n/useLanguage";
@@ -20,11 +20,9 @@ export default function PricesPage() {
       </h1>
       <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed">{t("prices.intro")}</p>
 
-      <div className="mt-12">
-        <ZonePriceTables />
-      </div>
-      <div className="mt-14">
-        <PackagePriceTable />
+      <div className="mt-12 grid gap-16">
+        <PriceGroup group="women" />
+        <PriceGroup group="men" />
       </div>
 
       <p className="mt-12 max-w-2xl text-sm leading-relaxed text-ink-500">

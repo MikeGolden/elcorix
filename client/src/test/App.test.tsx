@@ -174,9 +174,15 @@ describe("App", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /services for women/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /services for men/i })).toBeInTheDocument();
-    // "Upper lip" is both a zone and the name of the first package.
     expect(screen.getAllByText("Upper lip").length).toBeGreaterThan(0);
-    expect(screen.getByRole("table")).toBeInTheDocument();
+    // One package table per group, each under its own zone list.
+    expect(
+      screen.getByRole("heading", { name: /combined packages for women/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /combined packages for men/i }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("table")).toHaveLength(2);
   });
 });
 

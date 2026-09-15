@@ -1,7 +1,7 @@
 import LocalizedLink from "../components/LocalizedLink";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
-import { PackagePriceTable, ZonePriceTables } from "../components/PriceTables";
+import { PriceGroup } from "../components/PriceTables";
 
 export default function PriceHighlights() {
   const { t } = useTranslation();
@@ -15,11 +15,11 @@ export default function PriceHighlights() {
         {t("prices.title")}
       </Reveal>
       <Reveal className="mt-10" delay={90}>
-        <ZonePriceTables />
+        <PriceGroup group="women" />
       </Reveal>
-      {/* Its own reveal — the package table is a screen further down. */}
-      <Reveal className="mt-14">
-        <PackagePriceTable />
+      {/* Its own reveal — the men's block is a screen further down. */}
+      <Reveal className="mt-16">
+        <PriceGroup group="men" />
       </Reveal>
       <Reveal className="mt-10 flex justify-end" delay={90}>
         <LocalizedLink to="/prices" className="btn-primary">
