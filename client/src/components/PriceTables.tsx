@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import {
   formatPercent,
@@ -13,6 +14,17 @@ import {
   type PricePackage,
   type ZonePrice,
 } from "../pricing";
+
+/**
+ * The sheet's five columns, in its order: Paket | Enthaltene Zonen |
+ * Einzelbehandlung | 6 Behandlungen | 8 Behandlungen.
+ */
+const COLUMNS = ["package", "zones", "single", "six", "eight"] as const;
+type Column = (typeof COLUMNS)[number];
+
+/** The three that carry a figure, and so are shared between both layouts. */
+const PRICE_COLUMNS = ["single", "six", "eight"] as const;
+type PriceColumn = (typeof PRICE_COLUMNS)[number];
 
 /**
  * `prices.women.*` / `prices.men.*` / `prices.packages.<group>.*` are
@@ -170,6 +182,56 @@ function ZoneCell({ group, packageKey }: { group: PackageGroup; packageKey: stri
 }
 
 /**
+ * A column's name, with the sheet's badge under it on the two package
+ * columns. The table head and the cards' term list both render it, so the
+ * badge can never end up on one layout and not the other.
+ */
+function ColumnLabel({ column, badgeClassName }: { column: Column; badgeClassName: string }) {
+  const { t } = useTranslation();
+  return (
+    <>
+      {t(`prices.columns.${column}` as "prices.columns.package")}
+      {column === "six" || column === "eight" ? (
+        <span className={`block ${badgeClassName}`}>
+          {t(`prices.columnBadges.${column}` as "prices.columnBadges.six")}
+        </span>
+      ) : null}
+    </>
+  );
+}
+
+/**
+ * The three price fields of one package row, built once and placed twice.
+ *
+ * The arithmetic that turns a row into a deal lives here and nowhere else:
+ * the desktop table and the phone cards print the same package, so they must
+ * not each work out what it saves. `align` is all they disagree about.
+ */
+function priceCells(
+  row: PricePackage<"women"> | PricePackage<"men">,
+  language: string,
+  align: "left" | "right",
+): Record<PriceColumn, ReactNode> {
+  return {
+    single: <SinglePrice price={row.single} language={language} align={align} />,
+    six: (
+      <PackageDealCell
+        deal={packageDeal(row.single, 6, row.six)}
+        language={language}
+        align={align}
+      />
+    ),
+    eight: (
+      <PackageDealCell
+        deal={packageDeal(row.single, 8, row.eight)}
+        language={language}
+        align={align}
+      />
+    ),
+  };
+}
+
+/**
  * One combined-package table. Women and men use the same component, so the
  * two tables cannot drift apart in structure or in visual logic.
  *
@@ -180,12 +242,12 @@ function ZoneCell({ group, packageKey }: { group: PackageGroup; packageKey: stri
  * phone width, and a horizontally scrolled table hides exactly the two
  * columns the visitor came for.
  */
-function PackageTable<G extends PackageGroup>({
+function PackageTable({
   group,
   rows,
 }: {
-  group: G;
-  rows: PricePackage<G>[];
+  group: PackageGroup;
+  rows: PricePackage<"women">[] | PricePackage<"men">[];
 }) {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage ?? "de";
@@ -194,7 +256,6 @@ function PackageTable<G extends PackageGroup>({
   const id = `prices-packages-${group}`;
   const heading =
     group === "women" ? "prices.groups.packagesWomen" : "prices.groups.packagesMen";
-  const columns = ["package", "zones", "single", "six", "eight"] as const;
 
   return (
     <section aria-labelledby={id}>
@@ -210,7 +271,7 @@ function PackageTable<G extends PackageGroup>({
         <table className="w-full border-collapse text-left text-sm">
           <thead>
             <tr className="text-ink-900">
-              {columns.map((column) => (
+              {COLUMNS.map((column) => (
                 <th
                   key={column}
                   scope="col"
@@ -220,103 +281,83 @@ function PackageTable<G extends PackageGroup>({
                       : "whitespace-nowrap text-right"
                   }`}
                 >
-                  {t(`prices.columns.${column}` as "prices.columns.package")}
-                  {column === "six" || column === "eight" ? (
-                    <span className="block text-[0.7rem] font-semibold uppercase tracking-wide text-brand-700">
-                      {t(`prices.columnBadges.${column}` as "prices.columnBadges.six")}
-                    </span>
-                  ) : null}
+                  <ColumnLabel
+                    column={column}
+                    badgeClassName="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-700"
+                  />
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, index) => (
-              <tr key={row.key} className={index % 2 === 1 ? "bg-surface-soft" : ""}>
-                <th
-                  scope="row"
-                  className="whitespace-nowrap rounded-l-lg px-4 py-4 align-top font-semibold text-ink-900"
-                >
-                  {t(packageLabel(group, row.key, "name"))}
-                </th>
-                <td className="px-4 py-4 align-top text-ink-500">
-                  <ZoneCell group={group} packageKey={row.key} />
-                </td>
-                <td className="px-4 py-4 text-right align-top">
-                  <SinglePrice price={row.single} language={language} align="right" />
-                </td>
-                <td className="px-4 py-4 align-top">
-                  <PackageDealCell
-                    deal={packageDeal(row.single, 6, row.six)}
-                    language={language}
-                    align="right"
-                  />
-                </td>
-                <td className="rounded-r-lg px-4 py-4 align-top">
-                  <PackageDealCell
-                    deal={packageDeal(row.single, 8, row.eight)}
-                    language={language}
-                    align="right"
-                  />
-                </td>
-              </tr>
-            ))}
+            {rows.map((row, index) => {
+              const cells = priceCells(row, language, "right");
+              return (
+                <tr key={row.key} className={index % 2 === 1 ? "bg-surface-soft" : ""}>
+                  <th
+                    scope="row"
+                    className="whitespace-nowrap rounded-l-lg px-4 py-4 align-top font-semibold text-ink-900"
+                  >
+                    {t(packageLabel(group, row.key, "name"))}
+                  </th>
+                  <td className="px-4 py-4 align-top text-ink-500">
+                    <ZoneCell group={group} packageKey={row.key} />
+                  </td>
+                  <td className="px-4 py-4 text-right align-top">{cells.single}</td>
+                  <td className="px-4 py-4 align-top">{cells.six}</td>
+                  <td className="rounded-r-lg px-4 py-4 align-top">{cells.eight}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       {/* Phones and small tablets: the same five fields, stacked per package. */}
       <ul className="mt-4 grid gap-4 lg:hidden">
-        {rows.map((row) => (
-          <li key={row.key} className="rounded-card border border-line p-4">
-            <p className="font-semibold text-ink-900">
-              {t(packageLabel(group, row.key, "name"))}
-            </p>
-            <p className="mt-1 text-sm text-ink-500">
-              <ZoneCell group={group} packageKey={row.key} />
-            </p>
-            <dl className="mt-4 grid gap-4 sm:grid-cols-3">
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
-                  {t("prices.columns.single")}
-                </dt>
-                <dd className="mt-1">
-                  <SinglePrice price={row.single} language={language} align="left" />
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
-                  {t("prices.columns.six")}
-                  <span className="block text-brand-700">{t("prices.columnBadges.six")}</span>
-                </dt>
-                <dd className="mt-1">
-                  <PackageDealCell
-                    deal={packageDeal(row.single, 6, row.six)}
-                    language={language}
-                    align="left"
-                  />
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
-                  {t("prices.columns.eight")}
-                  <span className="block text-brand-700">{t("prices.columnBadges.eight")}</span>
-                </dt>
-                <dd className="mt-1">
-                  <PackageDealCell
-                    deal={packageDeal(row.single, 8, row.eight)}
-                    language={language}
-                    align="left"
-                  />
-                </dd>
-              </div>
-            </dl>
-          </li>
-        ))}
+        {rows.map((row) => {
+          const cells = priceCells(row, language, "left");
+          return (
+            <li key={row.key} className="rounded-card border border-line p-4">
+              <p className="font-semibold text-ink-900">
+                {t(packageLabel(group, row.key, "name"))}
+              </p>
+              <p className="mt-1 text-sm text-ink-500">
+                <ZoneCell group={group} packageKey={row.key} />
+              </p>
+              <dl className="mt-4 grid gap-4 sm:grid-cols-3">
+                {PRICE_COLUMNS.map((column) => (
+                  <div key={column}>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
+                      <ColumnLabel column={column} badgeClassName="text-brand-700" />
+                    </dt>
+                    <dd className="mt-1">{cells[column]}</dd>
+                  </div>
+                ))}
+              </dl>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
 }
+
+/**
+ * The two price lists a group is made of, paired here rather than at the
+ * call site: this is the one place that says the women's zones go with the
+ * women's packages.
+ *
+ * The `satisfies` is what makes that a rule rather than a convention — the
+ * mapped type instantiates per key, so hanging `menPackages` under `women`
+ * is a compile error, and a new group without both of its lists is too.
+ */
+const GROUPS = {
+  women: { zones: womenPrices, packages: womenPackages },
+  men: { zones: menPrices, packages: menPackages },
+} as const satisfies {
+  [G in PackageGroup]: { zones: ZonePrice<G>[]; packages: PricePackage<G>[] };
+};
 
 /**
  * One gendered price block: the single-zone list first, the combined
@@ -324,19 +365,11 @@ function PackageTable<G extends PackageGroup>({
  * one zone costs before the package that bundles several.
  */
 export function PriceGroup({ group }: { group: PackageGroup }) {
+  const { zones, packages } = GROUPS[group];
   return (
     <div className="grid gap-10">
-      {group === "women" ? (
-        <>
-          <ZoneTable group="women" rows={womenPrices} />
-          <PackageTable group="women" rows={womenPackages} />
-        </>
-      ) : (
-        <>
-          <ZoneTable group="men" rows={menPrices} />
-          <PackageTable group="men" rows={menPackages} />
-        </>
-      )}
+      <ZoneTable group={group} rows={zones} />
+      <PackageTable group={group} rows={packages} />
     </div>
   );
 }
