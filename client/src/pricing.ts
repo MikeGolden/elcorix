@@ -112,6 +112,12 @@ export function packageDeal(single: number, sessions: number, total: number): Pa
  */
 const formatters = new Map<string, Intl.NumberFormat>();
 
+/**
+ * `currencyDisplay: "narrowSymbol"` is load-bearing, not a nicety: Ukrainian
+ * CLDR has no default symbol for the euro, so without it every price on the
+ * Ukrainian pages reads "1 239 EUR" while German, English and Russian read
+ * "1.239 €". It changes nothing in the other three locales.
+ */
 function euro(language: string, digits: number): Intl.NumberFormat {
   const cacheKey = `${language}:${digits}`;
   let formatter = formatters.get(cacheKey);
@@ -119,6 +125,7 @@ function euro(language: string, digits: number): Intl.NumberFormat {
     formatter = new Intl.NumberFormat(language, {
       style: "currency",
       currency: "EUR",
+      currencyDisplay: "narrowSymbol",
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     });

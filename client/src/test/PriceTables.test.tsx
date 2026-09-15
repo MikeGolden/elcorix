@@ -140,6 +140,24 @@ describe("packageDeal", () => {
   });
 });
 
+describe("the euro sign", () => {
+  /**
+   * Ukrainian CLDR has no default symbol for the euro: without
+   * `currencyDisplay: "narrowSymbol"` every Ukrainian price renders
+   * "1 239 EUR" while the other three languages render "1.239 €". This is
+   * the test that stops that regressing quietly — it is invisible unless you
+   * read the Ukrainian pages.
+   */
+  it.each(["de", "en", "uk", "ru"])("is a sign, not a code, in %s", (language) => {
+    for (const price of [39, 1239, 2069]) {
+      expect(formatPrice(language, price)).toContain("€");
+      expect(formatPrice(language, price)).not.toContain("EUR");
+    }
+    expect(formatPriceExact(language, 103.166666)).toContain("€");
+    expect(formatPriceExact(language, 103.166666)).not.toContain("EUR");
+  });
+});
+
 describe("PriceGroup", () => {
   beforeEach(async () => {
     await i18n.changeLanguage("en");
