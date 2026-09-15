@@ -129,10 +129,11 @@
     "groups": {
       "women": "Leistungen für Frauen",
       "men": "Leistungen für Männer",
-      "packages": "Paketlösungen für Frauen"
+      "packagesWomen": "Kombinierte Pakete für Frauen",
+      "packagesMen": "Kombinierte Pakete für Männer"
     },
     "columns": {
-      "package": "Paket",
+      "package": "Angebot",
       "zones": "Enthaltene Zonen",
       "single": "Einzelbehandlung",
       "six": "6er-Paket",
@@ -159,26 +160,63 @@
       "intimateComplete": "Intim Complete inkl. Pofalte"
     },
     "packages": {
-      "p1": {
-        "name": "Oberlippe",
-        "zones": "Achseln + Intim Complete inkl. Pofalte"
+      "women": {
+        "smoothDuo": {
+          "name": "Smooth Duo",
+          "zones": "Achseln + Intim Complete inkl. Pofalte"
+        },
+        "smoothLegs": {
+          "name": "Smooth Legs",
+          "zones": "Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
+        },
+        "smoothTrio": {
+          "name": "Smooth Trio",
+          "zones": "Achseln + Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
+        },
+        "smoothComplete": {
+          "name": "Smooth Complete",
+          "zones": "Achseln + Intim Complete inkl. Pofalte + Beine komplett inkl. Füße/Zehen"
+        },
+        "bodyCompleteWoman": {
+          "name": "Body Complete Woman*",
+          "zones": "Achseln, Arme, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett"
+        }
       },
-      "p2": {
-        "name": "Kinn",
-        "zones": "Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
-      },
-      "p3": {
-        "name": "Achseln",
-        "zones": "Achseln + Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
-      },
-      "p4": {
-        "name": "Bikinizone klassisch",
-        "zones": "Achseln + Intim Complete inkl. Pofalte + Beine komplett inkl. Füße/Zehen"
-      },
-      "p5": {
-        "name": "Intim Complete – inkl. Pofalte",
-        "zones": "Achseln, Arme, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett"
+      "men": {
+        "clearBack": {
+          "name": "Clear Back",
+          "zones": "Rücken komplett"
+        },
+        "strongTorso": {
+          "name": "Strong Torso",
+          "zones": "Brust + Bauch"
+        },
+        "coolClean": {
+          "name": "Cool & Clean",
+          "zones": "Achseln + Schultern + Nacken"
+        },
+        "intimClean": {
+          "name": "Intim Clean",
+          "zones": "Intim Complete inkl. Pofalte"
+        },
+        "businessBody": {
+          "name": "Business Body",
+          "zones": "Brust + Bauch + Rücken komplett"
+        },
+        "bodyCompleteMan": {
+          "name": "Body Complete Man*",
+          "zones": "Achseln, Arme, Brust, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett"
+        }
       }
+    },
+    "packageMeta": {
+      "total": "{{price}} gesamt",
+      "perTreatment": "ca. {{price}} pro Behandlung",
+      "save": "Sie sparen {{percent}} % ({{amount}})"
+    },
+    "packageNotes": {
+      "women": "* Body Complete Woman: Gesicht, Hals, Nacken und Brustbereich sind nicht enthalten.",
+      "men": "* Body Complete Man: Gesicht, Bartbereich, Hals und Nacken sind nicht enthalten."
     }
   },
   "booking": {
