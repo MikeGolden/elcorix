@@ -5,6 +5,7 @@ import {
   formatPercent,
   formatPrice,
   formatPriceExact,
+  maxPackageSavingPercent,
   menPackages,
   packageDeal,
   womenPackages,
@@ -250,5 +251,17 @@ describe("PriceGroup", () => {
     const row = within(screen.getByRole("table")).getAllByRole("row")[1];
     expect(within(row).getByRole("rowheader")).toHaveTextContent("Clear Back");
     expect(within(row).getAllByRole("cell")[0].textContent).toBe("Rücken komplett");
+  });
+});
+
+describe("maxPackageSavingPercent", () => {
+  it("is the sheet's best saving rounded down, never up", () => {
+    const best = Math.max(
+      ...Object.values(SHEET).flatMap((row) => [row.six.percent, row.eight.percent]),
+    );
+    // Smooth Duo's 8er at 26,5 % in the sheet (26,45 % exact) — the teaser
+    // may say "up to 26 %", never "up to 27 %".
+    expect(best).toBe(26.5);
+    expect(maxPackageSavingPercent()).toBe(26);
   });
 });
