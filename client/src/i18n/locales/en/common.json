@@ -221,6 +221,10 @@
       "perTreatment": "{{price}} / treatment",
       "perSingle": "per treatment",
       "save": "You save {{amount}} · {{percent}}%"
+    },
+    "packagesTeaser": {
+      "text": "Want to save up to {{percent}}%?",
+      "link": "Check out our combined packages"
     }
   },
   "booking": {

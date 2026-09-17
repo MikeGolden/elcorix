@@ -360,6 +360,14 @@ const GROUPS = {
 };
 
 /**
+ * Only a group's single-zone list — the home page shows these and leaves the
+ * package tables to /prices, pointing there with `PackagesTeaser`.
+ */
+export function ZoneGroup({ group }: { group: PackageGroup }) {
+  return <ZoneTable group={group} rows={GROUPS[group].zones} />;
+}
+
+/**
  * One gendered price block: the single-zone list first, the combined
  * packages under it — the order Mykhailo chose, so the visitor reads what
  * one zone costs before the package that bundles several.
