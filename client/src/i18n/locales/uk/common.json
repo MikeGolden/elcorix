@@ -221,6 +221,10 @@
       "perTreatment": "{{price}} / сеанс",
       "perSingle": "за сеанс",
       "save": "Ви заощаджуєте {{amount}} · {{percent}} %"
+    },
+    "packagesTeaser": {
+      "text": "Хочете заощадити до {{percent}} %?",
+      "link": "Перегляньте наші комбіновані пакети"
     }
   },
   "booking": {

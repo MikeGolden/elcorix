@@ -50,4 +50,15 @@ test.describe("Landing page", () => {
     await expect(page.getByRole("heading", { name: "Request a free consultation" })).toBeVisible();
     await expect(page.getByTestId("altegio-widget")).toHaveCount(0);
   });
+
+  test("the packages teaser opens the package tables on the price page", async ({ page }) => {
+    await page.goto("/en");
+    await page.getByRole("button", { name: "Only necessary" }).click();
+    const prices = page.locator("#prices");
+    await expect(prices.getByRole("table")).toHaveCount(0);
+    await prices.getByRole("link", { name: /save up to \d+%/ }).click();
+    await expect(page).toHaveURL(/\/en\/prices#prices-packages-women$/);
+    const heading = page.getByRole("heading", { name: "Combined packages for women" });
+    await expect(heading).toBeInViewport();
+  });
 });

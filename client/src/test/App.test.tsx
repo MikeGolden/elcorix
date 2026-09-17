@@ -146,6 +146,20 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
+  it("shows only the zone prices on the home page and teases the packages", () => {
+    renderAt("/");
+    const prices = screen.getByRole("region", { name: /popular services and prices/i });
+    expect(within(prices).getByRole("heading", { name: /services for women/i })).toBeInTheDocument();
+    expect(within(prices).getByRole("heading", { name: /services for men/i })).toBeInTheDocument();
+    expect(within(prices).queryByRole("table")).not.toBeInTheDocument();
+    expect(
+      within(prices).queryByRole("heading", { name: /combined packages for/i }),
+    ).not.toBeInTheDocument();
+    const teaser = within(prices).getByRole("link", { name: /save up to 26%/i });
+    expect(teaser).toHaveTextContent("Check out our combined packages");
+    expect(teaser).toHaveAttribute("href", "/en/prices#prices-packages-women");
+  });
+
   it("links the four legal pages from the footer", () => {
     renderAt("/");
     const footer = screen.getByRole("navigation", { name: "Legal" });

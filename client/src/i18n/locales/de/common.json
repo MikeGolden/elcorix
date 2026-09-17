@@ -221,6 +221,10 @@
       "perTreatment": "{{price}} / Behandlung",
       "perSingle": "pro Behandlung",
       "save": "Sie sparen {{amount}} · {{percent}} %"
+    },
+    "packagesTeaser": {
+      "text": "Bis zu {{percent}} % sparen?",
+      "link": "Zu unseren kombinierten Paketen"
     }
   },
   "booking": {
