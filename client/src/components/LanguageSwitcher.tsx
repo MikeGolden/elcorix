@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState, type ComponentType, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BadgeRU, FlagDE, FlagGB, FlagUA } from "./flags";
 import {
   localizedPath,
   splitLanguagePath,
@@ -13,18 +12,14 @@ import { useCurrentLanguage } from "../i18n/useLanguage";
 type LanguageOption = {
   code: SupportedLanguage;
   label: string;
-  Flag: ComponentType<{ className?: string }>;
 };
 
 const languageOptions: LanguageOption[] = [
-  { code: "en", label: "English", Flag: FlagGB },
-  { code: "de", label: "Deutsch", Flag: FlagDE },
-  { code: "uk", label: "Українська", Flag: FlagUA },
-  // Russian is a language option, not a country one — see BadgeRU.
-  { code: "ru", label: "Русский", Flag: BadgeRU },
+  { code: "en", label: "English" },
+  { code: "de", label: "Deutsch" },
+  { code: "uk", label: "Українська" },
+  { code: "ru", label: "Русский" },
 ];
-
-const flagClass = "h-4 w-6 shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgba(20,32,63,0.12)]";
 
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
@@ -153,9 +148,8 @@ export default function LanguageSwitcher() {
               aria-current={option.code === current.code ? "true" : undefined}
               aria-label={option.label}
               onClick={() => select(option.code)}
-              className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-ink-700 hover:bg-surface-soft focus:bg-surface-soft focus:outline-none"
+              className="cursor-pointer px-4 py-2 text-sm text-ink-700 hover:bg-surface-soft focus:bg-surface-soft focus:outline-none"
             >
-              <option.Flag className={flagClass} />
               {option.label}
             </li>
           ))}

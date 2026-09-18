@@ -89,7 +89,7 @@ describe("internationalization", () => {
 });
 
 describe("LanguageSwitcher", () => {
-  it("renders every language option with an icon", async () => {
+  it("renders every language option as text only, without flags", async () => {
     renderSwitcher();
     const user = userEvent.setup();
 
@@ -106,7 +106,7 @@ describe("LanguageSwitcher", () => {
       "Русский",
     ]);
     for (const option of options) {
-      expect(option.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+      expect(option.querySelector("svg")).toBeNull();
     }
     expect(within(listbox).getByRole("option", { name: "English" })).toHaveAttribute(
       "aria-current",

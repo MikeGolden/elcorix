@@ -142,10 +142,8 @@ sitemap all derive their URLs from it).
   augments i18next with the English resource shape, so a typo in a `t()` key is
   a compile error.
 - The header's `LanguageSwitcher` (accessible listbox dropdown, keyboard
-  navigable) uses small inline SVG icons from `client/src/components/flags/`.
-  Russian is the one option without a flag: it is offered as a language, not a
-  country, and a good part of the clientele that reads it is Ukrainian — so it
-  gets the neutral lettered `BadgeRU` chip instead.
+  navigable) lists languages by name only — no flags: a language is not a
+  country.
 
 **Adding a key:** add it to `en/common.json` first (it is the type source and
 the fallback), then mirror it in `de`, `uk` and `ru`. A unit test
