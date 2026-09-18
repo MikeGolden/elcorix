@@ -46,10 +46,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # The Umami analytics database (profile "analytics") is dumped too
+    # when it exists; its dumps rotate on the same BACKUP_KEEP_DAYS.
     entrypoint: >
       sh -c 'while true; do
         pg_dump -h db -U kosmetic -d kosmetic -Fc -f "/backups/kosmetic-$$(date +%Y%m%d-%H%M%S).dump" &&
         find /backups -name "kosmetic-*.dump" -mtime +$${BACKUP_KEEP_DAYS} -delete;
+        if [ "$$(psql -h db -U kosmetic -d kosmetic -tAc "SELECT 1 FROM pg_database WHERE datname = '"'"'umami'"'"'")" = "1" ]; then
+          pg_dump -h db -U kosmetic -d umami -Fc -f "/backups/umami-$$(date +%Y%m%d-%H%M%S).dump";
+          find /backups -name "umami-*.dump" -mtime +$${BACKUP_KEEP_DAYS} -delete;
+        fi;
         sleep 86400;
       done'
 
@@ -99,14 +105,114 @@ services:
       args:
         VITE_ALTEGIO_COMPANY_ID: ${ALTEGIO_COMPANY_ID:-000000}
         VITE_ENABLE_ALTEGIO: ${VITE_ENABLE_ALTEGIO:-false}
-        VITE_ANALYTICS_SRC: ${VITE_ANALYTICS_SRC:-}
-        VITE_ANALYTICS_DOMAIN: ${VITE_ANALYTICS_DOMAIN:-}
+        # Umami tracker (profile "analytics" below). Empty id = no tracker,
+        # no analytics section in the privacy policy — see client/src/analytics.ts.
+        VITE_UMAMI_WEBSITE_ID: ${UMAMI_WEBSITE_ID:-}
+        VITE_UMAMI_DOMAINS: ${UMAMI_DOMAINS:-elcorix.com,elcorix.de,elcorix.eu}
     restart: unless-stopped
     ports:
       - "${WEB_PORT:-8080}:80"
     depends_on:
       server:
         condition: service_healthy
+
+  # ── Analytics: self-hosted Umami ────────────────────────────────────
+  # Opt-in with the "analytics" profile — put COMPOSE_PROFILES=analytics in
+  # .env on the server (CI and local runs stay without it). Umami gets its
+  # own role and database in the existing Postgres, the dashboard is served
+  # on stats.<domain> by Caddy (docker/Caddyfile), and nginx exposes only
+  # the tracker script and its collect endpoint first-party under /u/
+  # (docker/nginx.conf). Setup: README → "Analytics (Umami)".
+  #
+  # All three services start only when UMAMI_DB_PASSWORD and
+  # UMAMI_APP_SECRET are set — the check sits in umami-db-init because a
+  # `${VAR:?}` here would break `docker compose up` without the profile too.
+
+  # One-shot: creates/updates the umami role and database, then exits.
+  umami-db-init:
+    logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
+    image: postgres:16-alpine
+    profiles: [analytics]
+    restart: "no"
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:-kosmetic}
+      UMAMI_DB_PASSWORD: ${UMAMI_DB_PASSWORD:-}
+      UMAMI_APP_SECRET: ${UMAMI_APP_SECRET:-}
+    volumes:
+      - ./docker/umami-db-init.sql:/umami-db-init.sql:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: >
+      sh -c 'if [ -z "$$UMAMI_DB_PASSWORD" ] || [ -z "$$UMAMI_APP_SECRET" ]; then
+        echo "umami: set UMAMI_DB_PASSWORD and UMAMI_APP_SECRET in .env (openssl rand -hex 32)" >&2; exit 1;
+      fi;
+      psql -h db -U kosmetic -d kosmetic -q -v umami_password="$$UMAMI_DB_PASSWORD" -f /umami-db-init.sql'
+
+  umami:
+    logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
+    # Major-version pin: minor/patch updates arrive with `docker compose
+    # pull`; a v4 needs a deliberate change here (and a look at the notes).
+    image: ghcr.io/umami-software/umami:3
+    profiles: [analytics]
+    restart: unless-stopped
+    init: true
+    environment:
+      # Use a hex password (openssl rand -hex 32): it goes into a URL.
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD:-}@db:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET:-}
+      # The anonymous visitor hash (IP + user agent + salt) changes every
+      # day, so nobody is recognised across days. The privacy policy states
+      # this — do not switch to "month" without changing the policy.
+      SALT_ROTATION: day
+      # Read the visitor IP only from X-Forwarded-For. Caddy overwrites that
+      # header with the real client address; without this Umami would trust
+      # whichever of true-client-ip / cf-connecting-ip / x-real-ip … a
+      # visitor chooses to send.
+      CLIENT_IP_HEADER: x-forwarded-for
+      # No calls home to Umami's servers from the dashboard.
+      DISABLE_TELEMETRY: "1"
+      DISABLE_UPDATES: "1"
+      # Enables two-factor login on the dashboard (openssl rand -hex 32).
+      TWO_FACTOR_ENCRYPTION_KEY: ${UMAMI_2FA_KEY:-}
+    depends_on:
+      umami-db-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/heartbeat"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+    # Loopback only: the public way in is Caddy (stats.<domain>). Locally,
+    # or through an SSH tunnel, the dashboard is http://localhost:3002.
+    ports:
+      - "127.0.0.1:${UMAMI_PORT:-3002}:3000"
+
+  # Deletes analytics data older than UMAMI_RETENTION_MONTHS once a day —
+  # the limit the privacy policy promises. Connects as the umami role, so
+  # it cannot touch the customer database.
+  umami-retention:
+    logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
+    image: postgres:16-alpine
+    profiles: [analytics]
+    restart: unless-stopped
+    environment:
+      PGPASSWORD: ${UMAMI_DB_PASSWORD:-}
+      UMAMI_RETENTION_MONTHS: ${UMAMI_RETENTION_MONTHS:-14}
+    volumes:
+      - ./docker/umami-retention.sql:/umami-retention.sql:ro
+    depends_on:
+      umami:
+        condition: service_healthy
+    entrypoint: >
+      sh -c 'while true; do
+        psql -h db -U umami -d umami -q -v keep_months="$$UMAMI_RETENTION_MONTHS" -f /umami-retention.sql;
+        sleep 86400;
+      done'
 
   # Enforces the seven-day limit on server logs from the privacy policy
   # (§ 3). Docker's json-file driver only rotates by size, so once a day

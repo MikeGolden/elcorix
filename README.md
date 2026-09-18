@@ -302,12 +302,65 @@ build time for crawlers, and again at runtime for the visitor's language.
 - `robots.txt`, SVG favicon and apple-touch-icon in `client/public/` — keep
   the origin there in sync with `siteUrl` in `client/src/business.ts`.
 
-## Analytics (optional)
+## Analytics (Umami)
 
-Set `VITE_ANALYTICS_SRC` and `VITE_ANALYTICS_DOMAIN` at build time to inject
-a privacy-friendly, cookie-free analytics script (self-hosted Plausible or
-Umami — no consent banner needed). Remember to allow the script origin in
-the CSP (`docker/nginx.conf`).
+Self-hosted [Umami](https://umami.is) v3 on the same server — open source,
+no cookies, no consent banner, no data leaving the host. It is opt-in: the
+compose services sit behind the `analytics` profile and the client only
+contains the tracker when it is built with a website id.
+
+How it fits together:
+
+- **Database:** its own `umami` role and database inside the existing
+  Postgres (`umami-db-init`, idempotent). That role cannot connect to the
+  `kosmetic` database with the customer requests. `db-backup` dumps it
+  next to the site's database.
+- **Dashboard:** `https://stats.elcorix.de` (Caddy, `docker/Caddyfile`), and
+  on the host at `127.0.0.1:3002` for SSH tunnels.
+- **Tracker:** loaded first-party from `/u/p.js`, posting to `/u/api/send`.
+  nginx passes exactly those two URLs to Umami, so there is no CSP change
+  and fewer ad-blocker losses. `client/src/analytics.ts` does not load it at
+  all for browsers that send Global Privacy Control or Do Not Track.
+- **Privacy:** no IP addresses are stored, and the visitor hash rotates daily
+  (`SALT_ROTATION=day`). `umami-retention` deletes raw data after
+  `UMAMI_RETENTION_MONTHS` (14). The privacy policy's section 11 says
+  exactly this and appears only in builds with the tracker (`"feature":
+  "analytics"` in `legal.json`). Change the code and the policy together.
+
+Setup on the server:
+
+1. DNS: an `A` (and `AAAA`) record `stats.elcorix.de` → the server.
+2. `.env`: `COMPOSE_PROFILES=analytics` (add `,offsite` if you use it),
+   `UMAMI_DB_PASSWORD`, `UMAMI_APP_SECRET` and `UMAMI_2FA_KEY`, each from
+   `openssl rand -hex 32`.
+3. `docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d`
+4. Open `https://stats.elcorix.de` and log in as `admin` / `umami`.
+   **Change that password right away** (the dashboard is public) and turn on
+   two-factor login under Profile.
+5. Settings → Websites → Add: name `elcorix`, domain `elcorix.com`. Copy
+   its website id into `.env` as `UMAMI_WEBSITE_ID`.
+6. Rebuild the client so the id is baked in:
+   `docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d --build client`
+
+What gets tracked:
+
+| Event | When | Data |
+| --- | --- | --- |
+| pageview | every route change (automatic) | path, title, referrer, UTM/click-ids |
+| `consultation-request` | consultation form accepted by the API | `preferredDate`: yes/no |
+| `contact-message` | contact form accepted by the API | — |
+| `phone-click`, `email-click`, `whatsapp-click`, `instagram-click` | tap on any such link, site-wide | `placement`: `header`, `footer` or the section id |
+| `booking-consent` | Altegio calendar opted into (feature flag off today) | — |
+
+Nothing a visitor types is ever sent. A new link to one of those channels
+is picked up automatically (one delegated listener). A new event name goes
+into the `AnalyticsEvent` union.
+
+For marketing attribution, tag every link you place outside the site, e.g.
+the Instagram bio `https://elcorix.com/de?utm_source=instagram&utm_medium=social&utm_campaign=bio`,
+and the Google Business profile `…?utm_source=google&utm_medium=maps&utm_campaign=gbp`.
+Umami's UTM, Attribution, Funnel (`/` → `/de/prices` →
+`consultation-request`) and Goals reports then work out of the box.
 
 ## Contact details
 

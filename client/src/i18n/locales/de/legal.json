@@ -252,7 +252,7 @@
   },
   "privacy": {
     "lead": [],
-    "stand": "Stand: 17. September 2026",
+    "stand": "Stand: 18. September 2026",
     "preamble": [],
     "sections": [
       {
@@ -367,7 +367,29 @@
         ]
       },
       {
-        "title": "11. OpenStreetMap",
+        "title": "11. Reichweitenmessung mit Umami",
+        "feature": "analytics",
+        "paragraphs": [
+          "Um zu erfahren, wie unsere Website genutzt wird und über welche Wege Besucherinnen und Besucher zu uns finden – etwa über Instagram, Suchmaschinen oder einzelne Werbeaktionen –, setzen wir die Open-Source-Software Umami ein. Wir betreiben Umami selbst auf unserem Server bei Hetzner in Deutschland (siehe Abschnitt 3). Die Daten werden weder an den Hersteller von Umami noch an sonstige Dritte übermittelt.",
+          "Umami setzt keine Cookies und legt keine Informationen auf Ihrem Endgerät ab. Bei jedem Seitenaufruf und bei den unten genannten Interaktionen werden folgende Angaben verarbeitet:",
+          {
+            "list": [
+              "aufgerufene Seite, Seitentitel und Zeitpunkt;",
+              "Kampagnenparameter in der Adresse (zum Beispiel utm_source oder utm_campaign) sowie Klick-Kennungen von Werbeplattformen (zum Beispiel gclid oder fbclid), sofern die Adresse solche enthält;",
+              "Referrer-URL, also die Seite, von der Sie zu uns gekommen sind;",
+              "Browser, Betriebssystem, Gerätetyp, Bildschirmgröße und Spracheinstellung;",
+              "ungefährer Standort (Land, Region, Stadt), der aus der IP-Adresse abgeleitet wird;",
+              "Interaktionen ohne deren Inhalt: das erfolgreiche Absenden des Beratungs- oder Kontaktformulars sowie das Antippen der Telefonnummer, der E-Mail-Adresse, des WhatsApp- oder des Instagram-Links, jeweils mit dem Seitenbereich, in dem sich der Link befindet."
+            ]
+          },
+          "Ihre IP-Adresse wird nicht gespeichert. Sie wird zusammen mit der Browserkennung (User-Agent) und einem täglich wechselnden geheimen Wert zu einer nicht umkehrbaren Kennung verrechnet, mit der die Aufrufe eines Tages zusammengefasst werden. Eine Wiedererkennung an späteren Tagen, eine websiteübergreifende Profilbildung oder eine Zusammenführung mit Ihren Formularangaben findet nicht statt. Wir werten die Daten nur zusammengefasst aus und versuchen nicht, einzelne Personen zu identifizieren.",
+          "Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. f DSGVO. Unser berechtigtes Interesse liegt darin, die Nutzung unserer Website statistisch auszuwerten, die Wirksamkeit unserer Werbemaßnahmen zu messen und Website und Angebot zu verbessern.",
+          "Die Daten werden nach spätestens 14 Monaten automatisch gelöscht. In Sicherungskopien können sie bis zu 14 Tage länger enthalten sein (siehe Abschnitt 6).",
+          "Sie können der Reichweitenmessung jederzeit widersprechen: Sendet Ihr Browser das Signal „Global Privacy Control“ oder „Do Not Track“, wird Umami nicht geladen. Ebenso werden keine Daten erfasst, wenn Sie JavaScript deaktivieren oder einen Inhaltsblocker verwenden."
+        ]
+      },
+      {
+        "title": "12. OpenStreetMap",
         "paragraphs": [
           "Zur Darstellung unseres Standorts binden wir eine Karte von OpenStreetMap über einen sogenannten iFrame ein. Anbieter ist:",
           "OpenStreetMap Foundation\nSt John’s Innovation Centre\nCowley Road\nCambridge CB4 0WS\nVereinigtes Königreich",
@@ -377,7 +399,7 @@
         ]
       },
       {
-        "title": "12. WhatsApp-Link",
+        "title": "13. WhatsApp-Link",
         "paragraphs": [
           "Unsere Website enthält einen Link, über den Sie eine Unterhaltung bei WhatsApp beginnen können. Solange Sie den Link nicht anklicken, wird allein aufgrund dieses Links keine Verbindung zu WhatsApp hergestellt.",
           "Wenn Sie den Link anklicken oder uns über WhatsApp schreiben, werden Sie zum Dienst von WhatsApp weitergeleitet. Dabei verarbeitet WhatsApp unter anderem Ihre IP-Adresse und weitere technische Daten. Wenn Sie uns eine Nachricht senden, erhalten und verarbeiten wir insbesondere Ihre Telefonnummer, gegebenenfalls Ihren Profilnamen, den Nachrichteninhalt sowie Kommunikations- und Zeitdaten.",
@@ -388,7 +410,7 @@
         ]
       },
       {
-        "title": "13. Instagram-Link",
+        "title": "14. Instagram-Link",
         "paragraphs": [
           "Unsere Website enthält lediglich einen externen Link zu unserem Instagram-Auftritt. Solange Sie den Link nicht anklicken, wird über diesen Link keine Verbindung zu Instagram hergestellt.",
           "Nach dem Anklicken verlassen Sie unsere Website. Instagram beziehungsweise Meta verarbeitet dann eigenverantwortlich Daten über Ihren Zugriff und Ihre weitere Nutzung. Anbieter für Nutzer im Europäischen Wirtschaftsraum ist Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland.",
@@ -396,7 +418,7 @@
         ]
       },
       {
-        "title": "14. Empfänger personenbezogener Daten",
+        "title": "15. Empfänger personenbezogener Daten",
         "paragraphs": [
           "Innerhalb von ELCORIX erhalten nur diejenigen Personen Zugriff auf personenbezogene Daten, die sie zur Bearbeitung der jeweiligen Anfrage benötigen. Darüber hinaus können Daten im erforderlichen Umfang an folgende Kategorien von Empfängern übermittelt werden:",
           {
@@ -411,14 +433,14 @@
         ]
       },
       {
-        "title": "15. Übermittlungen in Drittländer",
+        "title": "16. Übermittlungen in Drittländer",
         "paragraphs": [
           "Eine Übermittlung personenbezogener Daten in ein Land außerhalb der Europäischen Union oder des Europäischen Wirtschaftsraums erfolgt nur, wenn dafür die Voraussetzungen der Art. 44 ff. DSGVO erfüllt sind. Dies kann insbesondere auf Grundlage eines Angemessenheitsbeschlusses der Europäischen Kommission oder geeigneter Garantien wie den Standardvertragsklauseln der Europäischen Kommission erfolgen.",
           "Beim Aufruf externer Dienste wie WhatsApp oder Instagram können die jeweiligen Anbieter Daten auch in Drittländern verarbeiten. Einzelheiten ergeben sich aus den Datenschutzhinweisen der jeweiligen Anbieter."
         ]
       },
       {
-        "title": "16. Ihre Rechte",
+        "title": "17. Ihre Rechte",
         "paragraphs": [
           "Sie haben nach Maßgabe der gesetzlichen Voraussetzungen insbesondere folgende Rechte:",
           {
@@ -440,7 +462,7 @@
         ]
       },
       {
-        "title": "17. Beschwerderecht",
+        "title": "18. Beschwerderecht",
         "paragraphs": [
           "Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren. Für nichtöffentliche Unternehmen mit Sitz in Bayern ist insbesondere zuständig:",
           "Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)\nhttps://www.lda.bayern.de/",
@@ -448,13 +470,13 @@
         ]
       },
       {
-        "title": "18. Keine automatisierte Entscheidungsfindung",
+        "title": "19. Keine automatisierte Entscheidungsfindung",
         "paragraphs": [
           "Eine ausschließlich automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO findet nicht statt."
         ]
       },
       {
-        "title": "19. Aktualisierung dieser Datenschutzerklärung",
+        "title": "20. Aktualisierung dieser Datenschutzerklärung",
         "paragraphs": [
           "Wir passen diese Datenschutzerklärung an, wenn sich die Website, die eingesetzten Dienste oder die rechtlichen Anforderungen ändern. Die jeweils aktuelle Fassung ist auf dieser Website abrufbar."
         ]

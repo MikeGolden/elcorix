@@ -64,6 +64,40 @@ describe("ConsultationForm", () => {
     expect(await screen.findByRole("status")).toHaveTextContent(/thank you/i);
   });
 
+  it("counts a sent request as a conversion without any of its content", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true }));
+    const umamiTrack = vi.fn();
+    vi.stubGlobal("umami", { track: umamiTrack });
+    renderForm();
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText("Name"), "Anna");
+    await user.type(screen.getByLabelText(/phone number/i), "+49 155 1234567");
+    await user.click(screen.getByRole("button", { name: /get a consultation/i }));
+    await screen.findByRole("status");
+
+    expect(umamiTrack).toHaveBeenCalledTimes(1);
+    expect(umamiTrack).toHaveBeenCalledWith("consultation-request", { preferredDate: "no" });
+    expect(JSON.stringify(umamiTrack.mock.calls)).not.toMatch(/Anna|1234567/);
+    vi.unstubAllGlobals();
+  });
+
+  it("does not count a request the API rejected", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 500 }));
+    const umamiTrack = vi.fn();
+    vi.stubGlobal("umami", { track: umamiTrack });
+    renderForm();
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText("Name"), "Anna");
+    await user.type(screen.getByLabelText(/phone number/i), "+49 155 1234567");
+    await user.click(screen.getByRole("button", { name: /get a consultation/i }));
+    await screen.findByRole("alert");
+
+    expect(umamiTrack).not.toHaveBeenCalled();
+    vi.unstubAllGlobals();
+  });
+
   it("blocks submission and explains when the phone number is not a number", async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true }) as unknown as Mock;
     vi.stubGlobal("fetch", fetchMock);

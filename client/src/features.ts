@@ -14,13 +14,34 @@
  */
 export type Features = {
   altegio: boolean;
+  analytics: boolean;
 };
 
-/** Anything but the exact string "true" leaves a flag off. */
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Umami identifies a website by a UUID. Anything else — empty, a typo, a
+ * leftover placeholder — counts as "not configured" rather than loading a
+ * tracker that silently records nothing.
+ */
+export function isUmamiWebsiteId(value: string | undefined): value is string {
+  return value !== undefined && UUID.test(value.trim());
+}
+
+/**
+ * Anything but the exact string "true" leaves `altegio` off.
+ *
+ * `analytics` — self-hosted Umami (see `analytics.ts`), on when
+ * `VITE_UMAMI_WEBSITE_ID` holds a website id. The flag also shows the
+ * privacy policy's analytics section, so the policy describes the tracker
+ * exactly when the build contains it.
+ */
 export function featuresFrom(env: {
   readonly VITE_ENABLE_ALTEGIO?: string;
+  readonly VITE_UMAMI_WEBSITE_ID?: string;
 }): Features {
   return {
     altegio: env.VITE_ENABLE_ALTEGIO === "true",
+    analytics: isUmamiWebsiteId(env.VITE_UMAMI_WEBSITE_ID),
   };
 }
