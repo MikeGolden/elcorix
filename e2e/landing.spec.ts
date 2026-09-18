@@ -43,8 +43,8 @@ test.describe("Landing page", () => {
   test("leads from the price list to the consultation request", async ({ page }) => {
     await page.goto("/en");
     await page.getByRole("button", { name: "Accept all" }).click();
-    await page.getByRole("link", { name: "See the full price list" }).click();
-    await expect(page).toHaveURL(/\/prices$/);
+    await page.getByTestId("packages-teaser").click();
+    await expect(page).toHaveURL(/\/prices#prices-packages-women$/);
     await page.getByRole("link", { name: "Get a consultation" }).first().click();
     await expect(page).toHaveURL(/\/en#consultation$/);
     await expect(page.getByRole("heading", { name: "Request a free consultation" })).toBeVisible();
@@ -56,7 +56,7 @@ test.describe("Landing page", () => {
     await page.getByRole("button", { name: "Only necessary" }).click();
     const prices = page.locator("#prices");
     await expect(prices.getByRole("table")).toHaveCount(0);
-    await prices.getByRole("link", { name: /save up to \d+%/ }).click();
+    await prices.getByTestId("packages-teaser").click();
     await expect(page).toHaveURL(/\/en\/prices#prices-packages-women$/);
     const heading = page.getByRole("heading", { name: "Combined packages for women" });
     await expect(heading).toBeInViewport();

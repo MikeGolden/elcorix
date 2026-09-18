@@ -4,9 +4,7 @@ Landing page and booking API for **elcorix**, a laser hair-removal studio in
 Kempten (Allgäu), Germany.
 
 The front end is built to the elcorix Figma file
-(`figma.com/design/L3SYAnqXeHiD81Ny4cdVmF/elcorix`) — see
-[DESIGN_PROPOSAL.md](./DESIGN_PROPOSAL.md) for the design system it derives
-from that file (palette, type scale, section inventory, known deviations).
+(`figma.com/design/L3SYAnqXeHiD81Ny4cdVmF/elcorix`).
 
 ## Stack
 
@@ -253,7 +251,7 @@ npm run start -w server
   third-party loads until the visitor explicitly asks for the map.
 - **Contact form** requires a privacy-policy checkbox before submitting.
 - **Stored requests are auto-deleted** after `RETENTION_MONTHS` (default 12).
-- **Legal pages**: `/privacy` (privacy policy, GDPR Art. 13 information) and
+- **Legal pages**: `/datenschutz` (privacy policy, GDPR Art. 13 information) and
   `/imprint` (German Impressum, §5 DDG), linked from the footer. Replace the
   `owner` and `vatId` placeholders in `client/src/config.ts` and have the
   privacy text reviewed before going live.

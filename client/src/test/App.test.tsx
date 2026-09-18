@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import App from "../App";
@@ -155,12 +155,19 @@ describe("App", () => {
     expect(
       within(prices).queryByRole("heading", { name: /combined packages for/i }),
     ).not.toBeInTheDocument();
-    const teaser = within(prices).getByRole("link", { name: /save up to 26%/i });
-    expect(teaser).toHaveTextContent("Check out our combined packages");
+    // One link in the section, and it is the teaser.
+    const [teaser] = within(prices).getAllByRole("link");
+    expect(within(prices).getAllByRole("link")).toHaveLength(1);
+    expect(teaser).toHaveAccessibleName("Want to save up to 30%?");
     expect(teaser).toHaveAttribute("href", "/en/prices#prices-packages-women");
   });
 
-  it("links the four legal pages from the footer", () => {
+  it("redirects the old /privacy URL to /datenschutz", async () => {
+    renderAt("/de/privacy");
+    await waitFor(() => expect(currentPath()).toBe("/de/datenschutz"));
+  });
+
+  it("links the legal pages from the footer", () => {
     renderAt("/");
     const footer = screen.getByRole("navigation", { name: "Legal" });
     expect(within(footer).getByRole("link", { name: "Imprint" })).toHaveAttribute(
@@ -169,11 +176,19 @@ describe("App", () => {
     );
     expect(within(footer).getByRole("link", { name: "Privacy policy" })).toHaveAttribute(
       "href",
-      "/en/privacy",
+      "/en/datenschutz",
     );
     expect(within(footer).getByRole("link", { name: "Terms" })).toHaveAttribute(
       "href",
       "/en/terms",
+    );
+    expect(within(footer).getByRole("link", { name: "Appointment terms" })).toHaveAttribute(
+      "href",
+      "/en/appointment-terms",
+    );
+    expect(within(footer).getByRole("link", { name: "Package terms" })).toHaveAttribute(
+      "href",
+      "/en/package-terms",
     );
     expect(within(footer).getByRole("link", { name: "Mission" })).toHaveAttribute(
       "href",
@@ -197,6 +212,49 @@ describe("App", () => {
       screen.getByRole("heading", { name: /combined packages for men/i }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole("table")).toHaveLength(2);
+  });
+});
+
+describe("contract documents (AGB, Terminbedingungen, Paketbedingungen)", () => {
+  it("shows the binding German AGB on /de/terms, with no translation note", async () => {
+    renderAt("/de/terms");
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Allgemeine Geschäftsbedingungen (AGB)" }),
+    ).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "9. Haftung" })).toBeInTheDocument();
+    expect(screen.getByText("Stand: 15.09.2026")).toBeInTheDocument();
+    expect(screen.queryByTestId("legal-translation-note")).not.toBeInTheDocument();
+    const related = screen.getByRole("navigation", { name: "Weitere Bedingungen" });
+    expect(within(related).getByRole("link", { name: "Terminbedingungen" })).toHaveAttribute(
+      "href",
+      "/de/appointment-terms",
+    );
+    expect(within(related).getByRole("link", { name: "Paketbedingungen" })).toHaveAttribute(
+      "href",
+      "/de/package-terms",
+    );
+  });
+
+  it("marks a translation as non-binding and links to the German page", async () => {
+    renderAt("/en/package-terms");
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Special Conditions for Treatment Packages" }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "4. Change of zones and transfer" }),
+    ).toBeInTheDocument();
+    const note = screen.getByTestId("legal-translation-note");
+    expect(note).toHaveTextContent(/only the german version is legally binding/i);
+    expect(within(note).getByRole("link", { name: "Read the German version" })).toHaveAttribute(
+      "href",
+      "/de/package-terms",
+    );
+  });
+
+  it("serves the appointment terms in Ukrainian", async () => {
+    renderAt("/uk/appointment-terms");
+    expect(screen.getByRole("heading", { level: 1, name: "Умови запису" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "3. Пізнє скасування" })).toBeInTheDocument();
   });
 });
 

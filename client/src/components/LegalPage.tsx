@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 
-/** Shared shell for the four legal pages (Impressum, Datenschutz, AGB, Leitbild). */
+/**
+ * Shared shell for the legal pages (Impressum, Datenschutz, Leitbild and the
+ * three contract documents rendered by `LegalDocument`).
+ */
 export default function LegalPage({
   id,
   title,

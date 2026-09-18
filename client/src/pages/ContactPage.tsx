@@ -94,8 +94,12 @@ export default function ContactPage() {
                   required
                   rows={5}
                   placeholder={t("contact.messagePlaceholder")}
+                  aria-describedby="contact-message-hint"
                   className="field"
                 />
+                <p id="contact-message-hint" className="mt-2 text-xs leading-relaxed text-ink-500">
+                  {t("contact.sensitiveDataHint")}
+                </p>
               </div>
             </div>
 
@@ -111,28 +115,20 @@ export default function ContactPage() {
               />
             </div>
 
-            <div className="mt-6 flex items-start gap-3 text-xs leading-relaxed">
-              <input
-                id="contact-privacy"
-                name="privacyConsent"
-                type="checkbox"
-                required
-                className="mt-0.5 h-4 w-4 shrink-0 accent-brand-700"
+            {/* A note, not a consent checkbox — see ConsultationForm. */}
+            <p data-testid="contact-privacy-note" className="mt-6 text-xs leading-relaxed">
+              <Trans
+                i18nKey="contact.privacyNote"
+                components={{
+                  privacyLink: (
+                    <LocalizedLink
+                      to="/datenschutz"
+                      className="font-medium text-brand-600 underline underline-offset-2"
+                    />
+                  ),
+                }}
               />
-              <label htmlFor="contact-privacy">
-                <Trans
-                  i18nKey="contact.privacyConsent"
-                  components={{
-                    privacyLink: (
-                      <LocalizedLink
-                        to="/privacy"
-                        className="font-medium text-brand-600 underline underline-offset-2"
-                      />
-                    ),
-                  }}
-                />
-              </label>
-            </div>
+            </p>
 
             <div className="mt-8 text-center">
               <button

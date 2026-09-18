@@ -105,22 +105,6 @@ export function packageDeal(single: number, sessions: number, total: number): Pa
   };
 }
 
-/**
- * The biggest saving any package offers, in whole percent, ROUNDED DOWN —
- * the home page advertises it as "up to N %", so it may understate the best
- * row but never overstate it. Derived from the same rows the tables print,
- * so a price change moves the teaser with it.
- */
-export function maxPackageSavingPercent(): number {
-  const best = Math.max(
-    ...[...womenPackages, ...menPackages].flatMap((p) => [
-      packageDeal(p.single, 6, p.six).savedPercent,
-      packageDeal(p.single, 8, p.eight).savedPercent,
-    ]),
-  );
-  return Math.floor(best);
-}
-
 /** Look one up, build it on the first miss only. */
 function getOrCreate<T>(cache: Map<string, T>, key: string, create: () => T): T {
   let value = cache.get(key);

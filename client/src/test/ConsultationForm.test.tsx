@@ -25,13 +25,16 @@ describe("ConsultationForm", () => {
     vi.restoreAllMocks();
   });
 
-  it("requires the privacy consent and leaves the marketing opt-in optional", () => {
+  it("links the privacy policy instead of asking for consent, and keeps the phone-only opt-in optional", () => {
     renderForm();
-    expect(screen.getByRole("checkbox", { name: /privacy policy/i })).toBeRequired();
-    expect(screen.getByRole("checkbox", { name: /offers and news/i })).not.toBeRequired();
+    // Processing a request rests on Art. 6 (1) (b) GDPR, not on consent.
+    expect(screen.queryByRole("checkbox", { name: /privacy policy/i })).toBeNull();
+    const optIn = screen.getByRole("checkbox", { name: /by phone about offers and news/i });
+    expect(optIn).not.toBeRequired();
+    expect(optIn).not.toBeChecked();
     expect(screen.getByRole("link", { name: /privacy policy/i })).toHaveAttribute(
       "href",
-      "/en/privacy",
+      "/en/datenschutz",
     );
   });
 
@@ -47,7 +50,6 @@ describe("ConsultationForm", () => {
     await user.type(screen.getByLabelText(/preferred date/i), date);
     await user.selectOptions(screen.getByLabelText(/preferred time/i), "10:30");
     await user.click(screen.getByRole("checkbox", { name: /offers and news/i }));
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -70,7 +72,6 @@ describe("ConsultationForm", () => {
 
     await user.type(screen.getByLabelText("Name"), "Anna");
     await user.type(screen.getByLabelText(/phone number/i), "asdfgh");
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
 
     expect(fetchMock).not.toHaveBeenCalled();
@@ -93,7 +94,6 @@ describe("ConsultationForm", () => {
     await user.type(screen.getByLabelText("Name"), "Anna");
     await user.type(screen.getByLabelText(/phone number/i), "+49 155 1234567");
     await user.selectOptions(screen.getByLabelText(/preferred time/i), "10:30");
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
 
     expect(fetchMock).not.toHaveBeenCalled();
@@ -110,7 +110,6 @@ describe("ConsultationForm", () => {
     await user.type(screen.getByLabelText("Name"), "Anna");
     await user.type(screen.getByLabelText(/phone number/i), "+49 155 1234567");
     await user.selectOptions(screen.getByLabelText(/preferred time/i), "10:30");
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
     expect(screen.getByText(/also choose a date/i)).toBeInTheDocument();
 
@@ -130,7 +129,6 @@ describe("ConsultationForm", () => {
     await user.type(screen.getByLabelText("Name"), "Anna");
     await user.type(screen.getByLabelText(/phone number/i), "+49 155 1234567");
     await user.type(screen.getByLabelText(/preferred date/i), futureDate(-30));
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
 
     // First layer: the `min` attribute makes the field natively invalid, so
     // clicking submit never reaches the handler.
@@ -157,13 +155,72 @@ describe("ConsultationForm", () => {
 
   it("offers appointment times on the half hour only", () => {
     renderForm();
-    const slots = screen
-      .getAllByRole("option")
-      .map((option) => (option as HTMLOptionElement).value)
+    // Scope to the time select: the phone field's country code is a select
+    // of its own and its options would otherwise land in this list.
+    const slots = Array.from(
+      (screen.getByLabelText(/preferred time/i) as HTMLSelectElement).options,
+    )
+      .map((option) => option.value)
       .filter(Boolean);
     expect(slots[0]).toBe("09:00");
     expect(slots.at(-1)).toBe("18:30");
     expect(slots.every((slot) => /^\d\d:(00|30)$/.test(slot))).toBe(true);
+  });
+
+  it("sends the number with the country code picked next to it", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true }) as unknown as Mock;
+    vi.stubGlobal("fetch", fetchMock);
+    renderForm();
+    const user = userEvent.setup();
+
+    // Germany is the default — the studio is in Füssen.
+    expect(screen.getByLabelText(/country code/i)).toHaveValue("DE");
+
+    await user.type(screen.getByLabelText("Name"), "Anna");
+    await user.selectOptions(screen.getByLabelText(/country code/i), "UA");
+    await user.type(screen.getByLabelText(/phone number/i), "50 123 4567");
+    await user.click(screen.getByRole("button", { name: /get a consultation/i }));
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(JSON.parse(String(init.body))).toMatchObject({
+      customerPhone: "+380 50 123 4567",
+    });
+  });
+
+  it("drops the trunk zero people type out of habit", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true }) as unknown as Mock;
+    vi.stubGlobal("fetch", fetchMock);
+    renderForm();
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText("Name"), "Anna");
+    await user.type(screen.getByLabelText(/phone number/i), "0155 1234567");
+    await user.click(screen.getByRole("button", { name: /get a consultation/i }));
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(JSON.parse(String(init.body))).toMatchObject({
+      customerPhone: "+49 155 1234567",
+    });
+  });
+
+  it("moves a country code typed into the number field into the selector", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true }) as unknown as Mock;
+    vi.stubGlobal("fetch", fetchMock);
+    renderForm();
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText("Name"), "Anna");
+    await user.type(screen.getByLabelText(/phone number/i), "+43 660 1234567");
+    expect(screen.getByLabelText(/country code/i)).toHaveValue("AT");
+    // Typed digit by digit, so what follows the code keeps its spacing.
+    expect(screen.getByLabelText(/phone number/i)).toHaveValue("660 1234567");
+
+    await user.click(screen.getByRole("button", { name: /get a consultation/i }));
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(JSON.parse(String(init.body))).toMatchObject({
+      customerPhone: "+43 660 1234567",
+    });
   });
 
   it("shows an error message when the request fails", async () => {
@@ -172,7 +229,6 @@ describe("ConsultationForm", () => {
     const user = userEvent.setup();
     await user.type(screen.getByLabelText("Name"), "Anna");
     await user.type(screen.getByLabelText(/phone number/i), "+49 155 1234567");
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/something went wrong/i);
   });

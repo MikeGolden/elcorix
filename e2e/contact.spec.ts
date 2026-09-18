@@ -10,7 +10,7 @@ test.describe("Contact page", () => {
       /^tel:\+49/,
     );
     await expect(
-      main.getByRole("link", { name: "info@elcorix.com" }).first(),
+      main.getByRole("link", { name: "info@elcorix.de" }).first(),
     ).toHaveAttribute("href", /^mailto:/);
     await expect(
       main.getByRole("link", { name: "@elcorix", exact: true }),
@@ -41,7 +41,6 @@ test.describe("Contact page", () => {
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("E-mail").fill("anna@example.com");
     await page.getByRole("textbox", { name: "Message" }).fill("I would like an appointment.");
-    await page.getByRole("checkbox", { name: /privacy policy/i }).check();
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByRole("status")).toHaveText(/thank you/i);
   });

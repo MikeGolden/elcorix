@@ -48,8 +48,7 @@ Thumbs.db
 # Local Claude Code settings
 .claude/settings.local.json
 
-# Photo library and working scratch — the originals are large; only the
-# web-sized crops under client/public/images/ are committed.
+# Local scratch
 NewPics/
 Claude outputs/
 
@@ -59,3 +58,5 @@ deploy/cloudflare/
 # Local scratch folders not meant for the repo
 wp/
 Fix/
+
+Datenschutz/

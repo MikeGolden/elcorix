@@ -33,13 +33,15 @@ describe("ContactPage", () => {
     ).toHaveAttribute("href", business.instagram);
   });
 
-  it("requires consenting to the privacy policy before submitting", () => {
+  it("links the privacy policy without a consent checkbox and warns against health data", () => {
     renderPage();
-    const checkbox = screen.getByRole("checkbox", { name: /privacy policy/i });
-    expect(checkbox).toBeRequired();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    expect(screen.getByLabelText(/message/i)).toHaveAccessibleDescription(
+      /do not send health data or treatment photos/i,
+    );
     expect(
       screen.getByRole("link", { name: /privacy policy/i }),
-    ).toHaveAttribute("href", "/en/privacy");
+    ).toHaveAttribute("href", "/en/datenschutz");
   });
 
   it("submits the contact form and shows a success message", async () => {
@@ -53,7 +55,6 @@ describe("ContactPage", () => {
     await user.type(screen.getByLabelText(/name/i), "Anna");
     await user.type(screen.getByLabelText(/e-mail/i), "anna@example.com");
     await user.type(screen.getByLabelText(/message/i), "Hello!");
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     expect(await screen.findByRole("status")).toHaveTextContent(/thank you/i);
@@ -78,7 +79,6 @@ describe("ContactPage", () => {
     await user.type(screen.getByLabelText(/name/i), "Anna");
     await user.type(screen.getByLabelText(/e-mail/i), "anna@example.com");
     await user.type(screen.getByLabelText(/message/i), "Hello!");
-    await user.click(screen.getByRole("checkbox", { name: /privacy policy/i }));
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(

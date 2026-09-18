@@ -1,9 +1,9 @@
 /**
  * Telegram notifications for consultation requests.
  *
- * A Telegram bot created with @BotFather posts every request from the
- * consultation form into the studio's chat, so staff see it on their phone
- * without waiting for e-mail. This is a one-way channel: the server calls
+ * A Telegram bot created with @BotFather posts a content-free "new request"
+ * ping into the studio's chat for every consultation request, so staff know
+ * to check the inbox (see BOOKING_NOTIFICATION for why it carries no data). This is a one-way channel: the server calls
  * the Bot API, nothing calls us back — no webhook, no polling, no commands,
  * and therefore no public endpoint to secure.
  *
@@ -30,7 +30,7 @@ export interface TelegramNotifier {
   enabled: boolean;
   /** The chat requests are posted to, or null when disabled. */
   chatId: string | null;
-  /** `text` may contain the small HTML subset Telegram supports. */
+  /** Sent as plain text. */
   send(text: string): Promise<void>;
 }
 
@@ -44,54 +44,17 @@ export const disabledTelegram: TelegramNotifier = {
 };
 
 /**
- * Escape the five characters Telegram's HTML parse mode reacts to. Visitor
- * input is attacker-controlled: a name containing "<b>" must arrive as
- * those characters, not as markup that breaks the rest of the message.
+ * The one message the bot ever posts for a consultation request.
+ *
+ * Deliberately content-free: the privacy policy of 17.09.2026 (§ 6) says
+ * that no personal data from form requests reaches Telegram — no name,
+ * phone, e-mail, preferred slot or message. Telegram only tells staff that
+ * something is waiting; the request itself is read from the e-mail inbox or
+ * the database. Do not add request fields (not even the row id) without
+ * changing the privacy policy first.
  */
-export function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-export interface BookingNotification {
-  customerName: string;
-  customerPhone: string;
-  service?: string | null;
-  preferredAt?: string | null;
-  marketingConsent?: boolean;
-  /** Row id in booking_requests, so staff can quote it. */
-  id?: number | string;
-}
-
-/**
- * The chat message for one consultation request. Every visitor-supplied
- * value goes through escapeHtml; the labels are ours and don't.
- */
-export function formatBookingRequest(booking: BookingNotification): string {
-  const dash = "—";
-  const value = (raw: string | null | undefined) => {
-    const trimmed = typeof raw === "string" ? raw.trim() : "";
-    return trimmed === "" ? dash : escapeHtml(trimmed);
-  };
-  const lines = [
-    "<b>New consultation request</b>",
-    "",
-    `Name: ${value(booking.customerName)}`,
-    `Phone: ${value(booking.customerPhone)}`,
-    `Service: ${value(booking.service)}`,
-    `Preferred: ${value(booking.preferredAt)}`,
-    `Marketing opt-in: ${booking.marketingConsent === true ? "yes" : "no"}`,
-  ];
-  if (booking.id !== undefined && booking.id !== null) {
-    lines.push(`Request #${escapeHtml(String(booking.id))}`);
-  }
-  lines.push("", "Please call back and enter the appointment in Altegio.");
-  return lines.join("\n");
-}
+export const BOOKING_NOTIFICATION =
+  "Neue Anfrage eingegangen – bitte im geschützten System prüfen.";
 
 /**
  * Build a notifier from TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID. Both are
@@ -144,7 +107,6 @@ export function createTelegramFromEnv(
         body: JSON.stringify({
           chat_id: chatId,
           text: text.slice(0, MAX_TEXT),
-          parse_mode: "HTML",
           disable_web_page_preview: true,
         }),
         signal: AbortSignal.timeout(TIMEOUT_MS),

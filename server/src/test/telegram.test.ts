@@ -2,8 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   createTelegramFromEnv,
   disabledTelegram,
-  escapeHtml,
-  formatBookingRequest,
+  BOOKING_NOTIFICATION,
   notifyInBackground,
   type TelegramNotifier,
 } from "../telegram.js";
@@ -78,8 +77,8 @@ describe("createTelegramFromEnv", () => {
     expect(JSON.parse(String(init.body))).toMatchObject({
       chat_id: "-1001234567890",
       text: "<b>Hi</b>",
-      parse_mode: "HTML",
     });
+    expect(JSON.parse(String(init.body))).not.toHaveProperty("parse_mode");
   });
 
   it("truncates to Telegram's 4096-character limit instead of being rejected", async () => {
@@ -118,55 +117,13 @@ describe("disabledTelegram", () => {
   });
 });
 
-describe("escapeHtml", () => {
-  it("neutralises markup a visitor typed into the form", () => {
-    expect(escapeHtml('<b>Anna</b> & "co"')).toBe(
-      "&lt;b&gt;Anna&lt;/b&gt; &amp; &quot;co&quot;",
+describe("BOOKING_NOTIFICATION", () => {
+  it("carries no personal data, as the privacy policy promises", () => {
+    expect(BOOKING_NOTIFICATION).toBe(
+      "Neue Anfrage eingegangen – bitte im geschützten System prüfen.",
     );
-  });
-});
-
-describe("formatBookingRequest", () => {
-  const booking = {
-    customerName: "Anna",
-    customerPhone: "+49123456789",
-    service: "Facial",
-    preferredAt: "2030-01-02 10:30",
-    marketingConsent: true,
-    id: 7,
-  };
-
-  it("lists everything staff need to call back", () => {
-    const text = formatBookingRequest(booking);
-    expect(text).toContain("Anna");
-    expect(text).toContain("+49123456789");
-    expect(text).toContain("Facial");
-    expect(text).toContain("2030-01-02 10:30");
-    expect(text).toContain("Marketing opt-in: yes");
-    expect(text).toContain("#7");
-  });
-
-  it("shows a dash for the fields the visitor left empty", () => {
-    const text = formatBookingRequest({
-      customerName: "Anna",
-      customerPhone: "+49123456789",
-      service: null,
-      preferredAt: "",
-    });
-    expect(text).toContain("Service: —");
-    expect(text).toContain("Preferred: —");
-    expect(text).toContain("Marketing opt-in: no");
-    expect(text).not.toContain("Request #");
-  });
-
-  it("escapes visitor input so a name cannot break the message markup", () => {
-    const text = formatBookingRequest({
-      customerName: "<b>Anna</b>",
-      customerPhone: "+49123456789",
-    });
-    expect(text).toContain("&lt;b&gt;Anna&lt;/b&gt;");
-    // Our own heading is the only real markup left.
-    expect(text.match(/<b>/g)).toHaveLength(1);
+    // No digits (phone, id, date or time) can hide in a fixed text.
+    expect(BOOKING_NOTIFICATION).not.toMatch(/\d/);
   });
 });
 

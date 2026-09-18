@@ -27,7 +27,7 @@ export default function CookieBanner() {
           </h2>
           <p className="mt-1.5 text-sm leading-relaxed">
             {t("consent.description")}{" "}
-            <LocalizedLink to="/privacy" className="font-medium text-brand-600 underline underline-offset-4">
+            <LocalizedLink to="/datenschutz" className="font-medium text-brand-600 underline underline-offset-4">
               {t("consent.privacyLink")}
             </LocalizedLink>
           </p>

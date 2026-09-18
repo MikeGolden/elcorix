@@ -1,33 +1,12 @@
-import { useTranslation } from "react-i18next";
-import { business } from "../config";
-import LegalPage, { LegalSection } from "../components/LegalPage";
-import { usePageMeta } from "../seo/usePageMeta";
+import LegalDocument from "../components/LegalDocument";
 
-const sectionKeys = [
-  "controller",
-  "hosting",
-  "contactForm",
-  "booking",
-  "storage",
-  "rights",
-] as const;
-
+/**
+ * "Datenschutzerklärung" — the studio's text, Stand 17.09.2026, paragraph
+ * for paragraph in `locales/de/legal.json` under `privacy`. EN/UK/RU are
+ * courtesy translations. It describes what the code does — Telegram gets
+ * no request data, requests are kept ≤ 6 months, logs ≤ 7 days — so if an
+ * integration changes, change the policy with it.
+ */
 export default function PrivacyPage() {
-  const { t } = useTranslation();
-  usePageMeta("privacy");
-  const controllerDetails = {
-    businessName: business.name,
-    address: business.address,
-    email: business.email,
-    phone: business.phone,
-  };
-  return (
-    <LegalPage id="privacy" title={t("privacy.title")} intro={t("privacy.intro")}>
-      {sectionKeys.map((key) => (
-        <LegalSection key={key} title={t(`privacy.sections.${key}.title`)}>
-          <p>{t(`privacy.sections.${key}.body`, controllerDetails)}</p>
-        </LegalSection>
-      ))}
-    </LegalPage>
-  );
+  return <LegalDocument document="privacy" />;
 }

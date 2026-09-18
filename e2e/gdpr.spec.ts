@@ -64,6 +64,10 @@ test.describe("GDPR consent", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "Privacy policy" }),
     ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Right to object", exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText(/Hetzner Online GmbH/).first()).toBeVisible();
 
     await footer.getByRole("link", { name: "Imprint" }).click();
     await expect(
@@ -71,16 +75,16 @@ test.describe("GDPR consent", () => {
     ).toBeVisible();
   });
 
-  test("contact form requires accepting the privacy policy", async ({ page }) => {
+  test("forms link the privacy policy instead of asking for consent", async ({ page }) => {
     await page.goto("/en/contact");
     await page.getByRole("button", { name: "Only necessary" }).click();
-    await page.getByLabel("Name").fill("Anna");
-    await page.getByLabel("E-mail").fill("anna@example.com");
-    await page.getByRole("textbox", { name: "Message" }).fill("Hello!");
-    // Without the checkbox the browser blocks submission (required).
-    await page.getByRole("button", { name: "Send message" }).click();
-    await expect(page.getByRole("status")).toHaveCount(0);
-    const checkbox = page.getByRole("checkbox", { name: /privacy policy/i });
-    await expect(checkbox).toHaveJSProperty("validity.valueMissing", true);
+    const form = page.getByRole("form", { name: "Contact form" });
+    await expect(form.getByRole("checkbox")).toHaveCount(0);
+    await expect(page.getByText("Please do not send health data or treatment photos through this form.")).toBeVisible();
+    await form.getByRole("link", { name: "privacy policy" }).click();
+    await expect(page).toHaveURL(/\/en\/datenschutz$/);
+    await expect(
+      page.getByRole("heading", { name: "6. Storage and transmission of form requests" }),
+    ).toBeVisible();
   });
 });

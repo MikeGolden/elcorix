@@ -203,4 +203,13 @@
     @apply bg-[length:1.15rem] bg-[right_1.25rem_center] bg-no-repeat pr-12;
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   }
+
+  /*
+   * Narrow variant for the phone field's country code: the chevron and the
+   * horizontal padding move in so "🇩🇪 +49" still fits a 6.5rem box next to
+   * the number itself.
+   */
+  .field-select-compact {
+    @apply bg-[right_0.6rem_center] px-3 pr-8;
+  }
 }

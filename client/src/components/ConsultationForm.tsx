@@ -2,6 +2,13 @@ import { FormEvent, useCallback, useState } from "react";
 import LocalizedLink from "./LocalizedLink";
 import { Trans, useTranslation } from "react-i18next";
 import { isValidPhone } from "../phone";
+import {
+  COUNTRIES,
+  DEFAULT_COUNTRY,
+  composePhone,
+  countryLabel,
+  splitInternational,
+} from "../countryCodes";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -32,8 +39,8 @@ function today() {
 
 /**
  * The consultation request from the Figma ("Beratung erhalten"): name,
- * phone, preferred date and time, an optional marketing opt-in and a
- * required privacy consent.
+ * phone, preferred date and time, an optional (phone-only) marketing
+ * opt-in and a link to the privacy policy.
  *
  * It talks only to our own API — no third-party script, no cookies — so
  * visitors who decline the Altegio calendar can still get an appointment.
@@ -44,6 +51,11 @@ export default function ConsultationForm() {
   const { t } = useTranslation();
   const [status, setStatus] = useState<Status>("idle");
   const [phoneError, setPhoneError] = useState(false);
+  // The country code lives in its own select; the text field holds the
+  // national part only. Both are controlled so a pasted "+43 660 …" can be
+  // pulled apart into the two of them.
+  const [country, setCountry] = useState(DEFAULT_COUNTRY);
+  const [phone, setPhone] = useState("");
   const [dateError, setDateError] = useState<"missing" | "past" | null>(null);
 
   // The `min` attribute is only a hint the browser may or may not enforce,
@@ -54,12 +66,28 @@ export default function ConsultationForm() {
     form.querySelector<HTMLInputElement>(id)?.focus();
   }, []);
 
+  /**
+   * Visitors habitually type the country code into the number field —
+   * "+49 155 …", "0049 155 …". Move it into the select instead of letting
+   * it end up duplicated ("+49 +49 155 …") in the request.
+   */
+  function handlePhoneChange(value: string) {
+    const split = splitInternational(value);
+    if (split) {
+      setCountry(split.iso);
+      setPhone(split.national);
+    } else {
+      setPhone(value);
+    }
+    if (phoneError) setPhoneError(false);
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    const phone = String(data.get("customerPhone") ?? "");
-    if (!isValidPhone(phone)) {
+    const fullPhone = composePhone(country, phone);
+    if (!isValidPhone(fullPhone)) {
       // Keep the browser's own bubble out of it: the message belongs in the
       // form, in the visitor's language.
       setPhoneError(true);
@@ -89,7 +117,7 @@ export default function ConsultationForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           customerName: data.get("customerName"),
-          customerPhone: data.get("customerPhone"),
+          customerPhone: fullPhone,
           // Date first, time only alongside it (guarded above).
           preferredAt: date === "" ? "" : [date, time].filter(Boolean).join(" "),
           marketingConsent: data.get("marketingConsent") === "on",
@@ -99,6 +127,8 @@ export default function ConsultationForm() {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       form.reset();
+      setPhone("");
+      setCountry(DEFAULT_COUNTRY);
       setPhoneError(false);
       setDateError(null);
       setStatus("sent");
@@ -129,27 +159,49 @@ export default function ConsultationForm() {
           />
         </div>
         <div>
-          <label htmlFor="consult-phone" className="sr-only">
-            {t("consultation.phone")}
-          </label>
-          <input
-            id="consult-phone"
-            name="customerPhone"
-            type="tel"
-            inputMode="tel"
-            required
-            maxLength={50}
-            autoComplete="tel"
-            aria-invalid={phoneError || undefined}
-            aria-describedby={phoneError ? "consult-phone-error" : undefined}
-            onChange={() => phoneError && setPhoneError(false)}
-            onBlur={(event) => {
-              const value = event.currentTarget.value;
-              setPhoneError(value.trim() !== "" && !isValidPhone(value));
-            }}
-            placeholder={t("consultation.phone")}
-            className="field"
-          />
+          <div className="flex items-start gap-2">
+            <label htmlFor="consult-country" className="sr-only">
+              {t("consultation.countryCode")}
+            </label>
+            <select
+              id="consult-country"
+              name="countryCode"
+              value={country}
+              onChange={(event) => {
+                setCountry(event.currentTarget.value);
+                setPhoneError(false);
+              }}
+              className="field field-select field-select-compact w-[6.5rem] shrink-0"
+            >
+              {COUNTRIES.map((item) => (
+                <option key={item.iso} value={item.iso}>
+                  {countryLabel(item)}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="consult-phone" className="sr-only">
+              {t("consultation.phone")}
+            </label>
+            <input
+              id="consult-phone"
+              name="customerPhone"
+              type="tel"
+              inputMode="tel"
+              required
+              maxLength={50}
+              autoComplete="tel"
+              value={phone}
+              aria-invalid={phoneError || undefined}
+              aria-describedby={phoneError ? "consult-phone-error" : undefined}
+              onChange={(event) => handlePhoneChange(event.currentTarget.value)}
+              onBlur={(event) => {
+                const value = event.currentTarget.value.trim();
+                setPhoneError(value !== "" && !isValidPhone(composePhone(country, value)));
+              }}
+              placeholder={t("consultation.phone")}
+              className="field"
+            />
+          </div>
           {phoneError && (
             <p id="consult-phone-error" className="mt-2 text-xs font-medium text-red-600">
               {t("consultation.phoneError")}
@@ -222,25 +274,21 @@ export default function ConsultationForm() {
           />
           <label htmlFor="consult-marketing">{t("consultation.consentMarketing")}</label>
         </div>
-        <div className="flex items-start gap-3">
-          <input
-            id="consult-privacy"
-            name="privacyConsent"
-            type="checkbox"
-            required
-            className="mt-0.5 h-4 w-4 shrink-0 accent-brand-700"
+        {/*
+          A note, not a checkbox: the request is processed to answer it
+          (Art. 6 (1) (b) GDPR), not on consent — see the privacy policy of
+          17.09.2026 and the studio's pre-launch checklist.
+        */}
+        <p data-testid="consult-privacy-note">
+          <Trans
+            i18nKey="consultation.privacyNote"
+            components={{
+              privacyLink: (
+                <LocalizedLink to="/datenschutz" className="font-medium text-brand-600 underline underline-offset-2" />
+              ),
+            }}
           />
-          <label htmlFor="consult-privacy">
-            <Trans
-              i18nKey="consultation.consentPrivacy"
-              components={{
-                privacyLink: (
-                  <LocalizedLink to="/privacy" className="font-medium text-brand-600 underline underline-offset-2" />
-                ),
-              }}
-            />
-          </label>
-        </div>
+        </p>
       </div>
 
       <div className="mt-8 text-center">

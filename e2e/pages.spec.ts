@@ -7,8 +7,8 @@ test.describe("Deep-link routes", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Price list" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Services for women" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Services for men" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Package deals for women" })).toBeVisible();
-    await expect(page.getByRole("table")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Combined packages for women" })).toBeVisible();
+    await expect(page.getByRole("table")).toHaveCount(2); // one package table per gender
     await expect(page.getByText("Beard contour")).toBeVisible();
     await expect(page).toHaveTitle(/Price list — elcorix/);
   });
@@ -24,8 +24,18 @@ test.describe("Deep-link routes", () => {
     await page.goto("/en/terms");
     await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(
-      page.getByRole("heading", { level: 1, name: "Terms and conditions" }),
+      page.getByRole("heading", { level: 1, name: "General Terms and Conditions (GTC)" }),
     ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "9. Liability" })).toBeVisible();
+    await page.getByRole("link", { name: "Read the German version" }).click();
+    await expect(page).toHaveURL(/\/de\/terms$/);
+    await expect(page.getByRole("heading", { name: "9. Haftung" })).toBeVisible();
+    await page.goto("/en/package-terms");
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Special Conditions for Treatment Packages" }),
+    ).toBeVisible();
+    await page.goto("/en/appointment-terms");
+    await expect(page.getByRole("heading", { level: 1, name: "Appointment Terms" })).toBeVisible();
     await page.goto("/en/mission");
     await expect(
       page.getByRole("heading", { level: 1, name: "Our mission" }),
@@ -75,10 +85,11 @@ test.describe("Deep-link routes", () => {
     );
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("Phone number").fill("+49 155 1234567");
-    await page.getByLabel("Preferred date").fill("2026-09-15");
+    // A fixed date goes stale — the form rejects past dates.
+    const nextWeek = new Date(Date.now() + 7 * 86_400_000).toISOString().slice(0, 10);
+    await page.getByLabel("Preferred date").fill(nextWeek);
     // The time field is a select of half-hour slots, not a free-text input.
     await page.getByLabel("Preferred time").selectOption("10:30");
-    await page.getByRole("checkbox", { name: /privacy policy/i }).check();
     await page.getByRole("button", { name: "Get a consultation" }).click();
     await expect(page.getByRole("status")).toHaveText(/we will get back to you/i);
   });
