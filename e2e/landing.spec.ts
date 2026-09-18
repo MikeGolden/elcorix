@@ -13,7 +13,7 @@ test.describe("Landing page", () => {
     for (const name of [
       "Who is it for?",
       "Modern diode laser technology — matched to your skin",
-      "Your skin in experienced hands",
+      "Who treats you",
       "Take a look at our work",
       "Popular services and prices",
       "Request a free consultation",

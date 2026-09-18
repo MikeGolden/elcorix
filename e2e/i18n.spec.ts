@@ -20,7 +20,7 @@ test.describe("Internationalization", () => {
       page.getByRole("heading", { name: "Für wen ist es geeignet?" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Ihre Haut in erfahrenen Händen" }),
+      page.getByRole("heading", { name: "Wer Sie behandelt" }),
     ).toBeVisible();
 
     await page.getByTestId("language-switcher").click();
@@ -28,7 +28,7 @@ test.describe("Internationalization", () => {
     await expect(page).toHaveURL(/\/uk$/);
     await expect(page.getByRole("heading", { name: "Кому це підходить?" })).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Ваша шкіра в досвідчених руках" }),
+      page.getByRole("heading", { name: "Хто з вами працює" }),
     ).toBeVisible();
 
     await page.reload();
@@ -62,7 +62,7 @@ test.describe("Internationalization", () => {
     await expect(page).toHaveURL(/\/ru$/);
     await expect(page.getByRole("heading", { name: "Кому это подходит?" })).toBeVisible();
     await expect(
-      page.getByRole("heading", { name: "Ваша кожа в опытных руках" }),
+      page.getByRole("heading", { name: "Кто с вами работает" }),
     ).toBeVisible();
   });
 
