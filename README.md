@@ -84,7 +84,9 @@ docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d --build
 
 **Backups:** the `db-backup` service writes a nightly `pg_dump` into
 `./backups/` and keeps `BACKUP_KEEP_DAYS` (default 14) days of dumps.
-Copy that folder off the host regularly — a Docker volume is not a backup.
+The opt-in `offsite-backup` service (`--profile offsite`) copies them,
+encrypted with restic, to a Hetzner Storage Box. Setup, firewall and SSH
+hardening: [SECURITY.md → Server hardening](SECURITY.md#server-hardening-hetzner).
 
 **Publishing images:** `.github/workflows/deploy.yml` builds and pushes
 both images to GHCR on every push to `main`.

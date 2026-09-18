@@ -107,8 +107,8 @@ server/CDN — configure it there:
 - [ ] Set `CORS_ALLOWED_ORIGINS` only if the client is on a different origin.
 - [ ] Postgres: dedicated user with least privilege (INSERT/SELECT on the two
       tables only), TLS to the database. Nightly `pg_dump` backups are
-      automated by the `db-backup` compose service — copy `./backups/` off
-      the host regularly.
+      automated by the `db-backup` compose service; the `offsite-backup`
+      service copies them off the host (see "Off-site backups" below).
 - [ ] Personal data (contact messages, booking requests) falls under GDPR:
       the privacy policy documents the processing, retention is enforced
       automatically (`RETENTION_MONTHS`), delete on request via SQL.
@@ -119,6 +119,125 @@ server/CDN — configure it there:
       revoke it with `/revoke` in @BotFather if it is ever exposed. Customer
       names and phone numbers are sent to Telegram's servers, so the chat
       belongs in the privacy policy's list of recipients.
+
+## Server hardening (Hetzner)
+
+Production runs on a Hetzner server with Docker and the Caddy overlay. Only
+Caddy publishes ports; Postgres, the API and nginx are reachable only on the
+internal compose network.
+
+### Firewall: Hetzner Cloud Firewall, not UFW
+
+Docker writes its own iptables rules for published ports, and those skip
+UFW's rules: a UFW `deny 443` does not stop traffic to Caddy. Filter in the
+**Hetzner Cloud Firewall** instead. It sits in front of the VM, so Docker
+cannot get around it. Inbound rules (they apply to IPv4 and IPv6):
+
+| Protocol / port | Source | Purpose |
+|---|---|---|
+| TCP 22 | your IP only, or none (see SSH) | SSH |
+| TCP 80 | any | ACME HTTP challenge, redirect to HTTPS |
+| TCP 443 | any | HTTPS |
+| UDP 443 | any | HTTP/3 (published by `docker-compose.tls.yml`) |
+| ICMP | any | ping, path-MTU discovery |
+
+Everything else inbound is dropped; outbound stays open. On a dedicated
+(Robot) server the firewall is stateless: also allow TCP 32768–65535 with
+the ACK flag, or return traffic breaks.
+
+Always start with the TLS overlay. Without it the nginx container publishes
+`WEB_PORT` (8080) on every interface.
+
+Check from outside the server:
+
+```sh
+nmap -Pn -p- <server-ip>          # expect 80, 443 (and 22 if kept open)
+nmap -Pn -sU -p 443 <server-ip>
+```
+
+and on it: `sudo ss -tulpn` (what listens on `0.0.0.0` / `[::]`).
+
+### SSH
+
+- Keys only, in `/etc/ssh/sshd_config`: `PasswordAuthentication no`,
+  `KbdInteractiveAuthentication no`, `PermitRootLogin no`. Work from a
+  sudo user.
+- Preferred: SSH over Tailscale or WireGuard and remove TCP 22 from the
+  Cloud Firewall. The Hetzner web console is the fallback when the tunnel
+  is down.
+- If 22 stays public: fail2ban to cut log noise. The keys are what protect
+  the server.
+
+### Host and images
+
+- `unattended-upgrades` with automatic reboot at night.
+- Images only pick up security fixes on rebuild. About monthly:
+  `docker compose -f docker-compose.yml -f docker-compose.tls.yml pull`
+  and `... up -d --build`.
+- `.env` holds the database, SMTP and Telegram secrets: `chmod 600 .env`.
+- Set a real `POSTGRES_PASSWORD`. Changing it in `.env` does **not**
+  change it on an existing database volume. Change it in Postgres first
+  (`docker compose exec db psql -U kosmetic -c "ALTER USER kosmetic
+  PASSWORD '...'"`), then in `.env`, then restart.
+- Every container runs with `no-new-privileges`; Caddy additionally drops
+  all capabilities except `NET_BIND_SERVICE`.
+- Hetzner's outbound block on ports 25 and 465 (new accounts) does not
+  affect the default `SMTP_PORT=587`.
+
+### Off-site backups
+
+`./backups` sits on the same disk as the database. Two layers:
+
+1. **Hetzner server backups** (Cloud Console → server → Backups, about
+   +20% of the server price, 7 daily images). Covers the whole machine.
+2. **`offsite-backup` service**: restic copies the dumps, encrypted on the
+   server, to a Hetzner Storage Box and keeps `OFFSITE_KEEP` (default 14
+   days, matching `BACKUP_KEEP_DAYS`) of snapshots.
+
+One-time setup on the server, in the repo folder (replace `uXXXXXX` with
+the Storage Box user; enable "SSH support" for the box in the Hetzner
+console first):
+
+```sh
+mkdir -p docker/restic-ssh && cd docker/restic-ssh
+ssh-keygen -t ed25519 -N '' -f id_ed25519 -C elcorix-restic
+cat id_ed25519.pub | ssh -p 23 uXXXXXX@uXXXXXX.your-storagebox.de install-ssh-key
+ssh-keyscan -p 23 uXXXXXX.your-storagebox.de > known_hosts
+cat > config <<'CFG'
+Host storagebox
+  HostName uXXXXXX.your-storagebox.de
+  User uXXXXXX
+  Port 23
+  IdentityFile /root/.ssh/id_ed25519
+  StrictHostKeyChecking yes
+CFG
+cd ../..
+```
+
+In `.env`: `RESTIC_REPOSITORY=sftp:storagebox:elcorix-restic` and a long
+random `RESTIC_PASSWORD` (`openssl rand -base64 32`). **Store that password
+outside the server too**: without it the backups cannot be decrypted.
+Then start with the profile:
+
+```sh
+docker compose -f docker-compose.yml -f docker-compose.tls.yml --profile offsite up -d
+docker compose logs -f offsite-backup    # first run starts after 10 minutes
+```
+
+Test a restore once:
+
+```sh
+docker compose --profile offsite run --rm --entrypoint sh offsite-backup -c \
+  'cp /ssh/* /root/.ssh/ && chmod 600 /root/.ssh/* && restic snapshots && restic restore latest --target /tmp/r && ls -R /tmp/r'
+```
+
+and load a dump into a scratch database with `pg_restore`.
+
+### Monitoring
+
+An external uptime check (e.g. UptimeRobot) on
+`https://elcorix.com/api/health`: it returns 503 when Postgres is down and
+also catches an expired certificate.
 
 ## Reporting a vulnerability
 

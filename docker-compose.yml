@@ -3,6 +3,9 @@
 # 17.09.2026, § 3) promises they are deleted after at most seven days.
 # The size cap below only bounds disk use — Docker has no age limit — so the
 # log-retention service further down enforces the seven days.
+# Every service: a process can never gain privileges it did not start with
+# (setuid binaries, file capabilities). Dropping privileges — postgres and
+# nginx starting as root and switching user — still works.
 x-logging: &default-logging
   driver: json-file
   options:
@@ -12,6 +15,7 @@ x-logging: &default-logging
 services:
   db:
     logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
@@ -31,6 +35,7 @@ services:
   # copy ./backups off the host regularly.
   db-backup:
     logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
@@ -50,6 +55,7 @@ services:
 
   server:
     logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
     build:
       context: .
       dockerfile: server/Dockerfile
@@ -86,6 +92,7 @@ services:
 
   client:
     logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
     build:
       context: .
       dockerfile: client/Dockerfile
@@ -108,6 +115,7 @@ services:
   # older. It needs the host's container log directory, read-write.
   log-retention:
     logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
     image: alpine:3.20
     restart: unless-stopped
     environment:
@@ -118,5 +126,30 @@ services:
     entrypoint: >
       sh -c 'while true; do sh /prune-logs.sh /containers; sleep 86400; done'
 
+  # Encrypted off-site copy of ./backups — a dump on the same disk as the
+  # database dies with the server. restic over SFTP to a Hetzner Storage
+  # Box (or any restic repository). Opt-in: runs only with
+  # `--profile offsite`; setup in SECURITY.md → "Off-site backups".
+  # Dumps hold customer contact data: restic encrypts them client-side, and
+  # OFFSITE_KEEP (default 14d) matches BACKUP_KEEP_DAYS so deleted requests
+  # do not outlive the retention promised in the privacy policy.
+  offsite-backup:
+    logging: *default-logging
+    security_opt: ["no-new-privileges:true"]
+    image: restic/restic:0.18.0
+    profiles: [offsite]
+    restart: unless-stopped
+    environment:
+      RESTIC_REPOSITORY: ${RESTIC_REPOSITORY:-}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:-}
+      OFFSITE_KEEP: ${OFFSITE_KEEP:-14d}
+    volumes:
+      - ./backups:/backups:ro
+      - ./docker/restic-ssh:/ssh:ro
+      - ./docker/offsite-backup.sh:/offsite-backup.sh:ro
+      - restic-cache:/root/.cache/restic
+    entrypoint: ["sh", "/offsite-backup.sh"]
+
 volumes:
   db-data:
+  restic-cache:
