@@ -68,7 +68,7 @@ test.describe("Prerendered route shells", () => {
     expect(response.status()).toBe(200);
     const xml = await response.text();
     // 8 public routes (Altegio is flagged off) × 4 languages.
-    expect(xml.match(/<loc>/g)).toHaveLength(32);
+    expect(xml.match(/<loc>/g)).toHaveLength(40);
     expect(xml).toContain("<loc>https://elcorix.com/uk/prices</loc>");
     expect(xml).toContain("<loc>https://elcorix.com/ru/prices</loc>");
     expect(xml).toContain('hreflang="x-default"');

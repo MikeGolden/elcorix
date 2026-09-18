@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import { ZoneGroup } from "../components/PriceTables";
 import { ArrowRightIcon } from "../components/icons";
-import { maxPackageSavingPercent } from "../pricing";
 
 /**
  * The home page shows the single-zone prices only. The combined packages
@@ -29,32 +28,24 @@ export default function PriceHighlights() {
       <Reveal className="mt-12" delay={90}>
         <PackagesTeaser />
       </Reveal>
-      <Reveal className="mt-10 flex justify-end" delay={90}>
-        <LocalizedLink to="/prices" className="btn-primary">
-          {t("cta.fullPriceList")}
-        </LocalizedLink>
-      </Reveal>
     </section>
   );
 }
 
-/** The whole band is the link, so the question and the arrow are one target. */
+/** The whole band is the one link to the package tables. */
 function PackagesTeaser() {
   const { t } = useTranslation();
   return (
     <LocalizedLink
       to="/prices#prices-packages-women"
       data-testid="packages-teaser"
-      className="group flex flex-col gap-3 rounded-2xl bg-brand-50 px-6 py-6 transition-colors
-        hover:bg-brand-100 sm:flex-row sm:items-center sm:justify-between sm:px-8"
+      className="group flex items-center justify-between gap-4 rounded-2xl bg-brand-900 px-6 py-6
+        transition-colors hover:bg-brand-800 sm:px-8"
     >
-      <span className="text-xl font-bold text-ink-900 sm:text-2xl">
-        {t("prices.packagesTeaser.text", { percent: maxPackageSavingPercent() })}
+      <span className="text-xl font-bold text-white sm:text-2xl">
+        {t("prices.packagesTeaser")}
       </span>
-      <span className="inline-flex items-center gap-2 text-[0.95rem] font-semibold text-brand-700">
-        {t("prices.packagesTeaser.link")}
-        <ArrowRightIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-      </span>
+      <ArrowRightIcon className="h-6 w-6 shrink-0 text-white transition-transform group-hover:translate-x-1" />
     </LocalizedLink>
   );
 }

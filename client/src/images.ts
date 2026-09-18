@@ -1,13 +1,13 @@
 /**
  * Central image registry.
  *
- * Every photo is derived from the studio's own `NewPics/` set and
+ * Every photo is derived from the studio's own photo set and
  * committed to `client/public/images/`, served first-party (no CDN
  * request — required by the nginx CSP `img-src 'self'` and the site's
  * GDPR posture). No other photography is used anywhere on the site.
  *
  * Each entry below is one image slot of the elcorix Figma layout; the
- * crops and sizes were produced from the originals in `NewPics/`.
+ * crops and sizes were produced from the studio's originals.
  *
  * Every path here names the JPEG/PNG original. A WebP twin of the same
  * name sits next to it — regenerate with `npm run images -w client` — and

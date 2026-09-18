@@ -19,7 +19,6 @@
     "whatsapp": "Über WhatsApp schreiben",
     "learnMore": "Mehr erfahren",
     "moreDevices": "Mehr über unsere Geräte erfahren",
-    "fullPriceList": "Vollständige Preisliste ansehen",
     "consultationTest": "Kostenlose Beratung mit Testimpuls buchen"
   },
   "meta": {
@@ -53,7 +52,15 @@
     },
     "terms": {
       "title": "AGB",
-      "description": "Allgemeine Geschäftsbedingungen für Behandlungen bei elcorix in Kempten."
+      "description": "Allgemeine Geschäftsbedingungen für kosmetische Laserbehandlungen bei elcorix in Kempten."
+    },
+    "appointmentTerms": {
+      "title": "Terminbedingungen",
+      "description": "Absage, Umbuchung, Verspätung und kostenlose Erstberatung – die Terminbedingungen von elcorix in Kempten."
+    },
+    "packageTerms": {
+      "title": "Paketbedingungen",
+      "description": "Laufzeit, Verlängerung, Zonenwechsel, Übertragung und Schlussabrechnung von Behandlungspaketen bei elcorix in Kempten."
     },
     "mission": {
       "title": "Leitbild",
@@ -126,7 +133,7 @@
     "title": "Beliebte Leistungen und Preise",
     "pageTitle": "Preisliste",
     "intro": "Alle Preise gelten pro Sitzung und Zone. Wie viele Sitzungen nötig sind, hängt von Haut- und Haartyp ab – das besprechen wir in der kostenlosen Beratung vor der ersten Behandlung.",
-    "note": "Alle Preise verstehen sich inklusive MwSt. Kombinationen mehrerer Zonen und individuelle Paketlösungen stellen wir Ihnen gern persönlich zusammen. Bitte sagen Sie Termine mindestens 24 Stunden vorher ab.",
+    "note": "Alle Preise sind Endpreise. Gemäß § 19 UStG (Kleinunternehmerregelung) wird keine Umsatzsteuer ausgewiesen. Kombinationen mehrerer Zonen und individuelle Paketlösungen stellen wir Ihnen gern persönlich zusammen. Bitte sagen Sie Termine mindestens 24 Stunden vorher ab.",
     "groups": {
       "women": "Leistungen für Frauen",
       "men": "Leistungen für Männer",
@@ -222,10 +229,7 @@
       "perSingle": "pro Behandlung",
       "save": "Sie sparen {{amount}} · {{percent}} %"
     },
-    "packagesTeaser": {
-      "text": "Bis zu {{percent}} % sparen?",
-      "link": "Zu unseren kombinierten Paketen"
-    }
+    "packagesTeaser": "Bis zu 30 % sparen?"
   },
   "booking": {
     "title": "Termin vereinbaren",
@@ -242,14 +246,15 @@
     "intro": "Hinterlassen Sie Ihren Namen und Ihre Telefonnummer sowie Ihren Wunschtermin – wir melden uns und stimmen alles Weitere persönlich mit Ihnen ab.",
     "name": "Name",
     "phone": "Telefonnummer",
+    "countryCode": "Ländervorwahl",
     "phoneError": "Bitte geben Sie eine gültige Telefonnummer ein, z. B. +49 155 625 14 872.",
     "date": "Datum des Besuchs",
     "time": "Uhrzeit des Besuchs",
     "timeAny": "Keine Präferenz",
     "dateRequired": "Bitte wählen Sie zu der Uhrzeit auch ein Datum aus.",
     "datePast": "Bitte wählen Sie ein Datum, das nicht in der Vergangenheit liegt.",
-    "consentMarketing": "Ich möchte per E-Mail und telefonisch über Angebote und Neuigkeiten informiert werden. Meine Einwilligung kann ich jederzeit mit Wirkung für die Zukunft widerrufen.",
-    "consentPrivacy": "Mit dem Absenden des Formulars stimme ich zu, dass meine Angaben zur Bearbeitung meiner Terminanfrage verwendet werden. Informationen zur Verarbeitung Ihrer personenbezogenen Daten finden Sie in unserer <privacyLink>Datenschutzerklärung</privacyLink>.",
+    "consentMarketing": "Ich willige ein, dass ELCORIX mich telefonisch über Angebote und Neuigkeiten informiert. Die Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerrufbar.",
+    "privacyNote": "Informationen zur Verarbeitung Ihrer Daten finden Sie in unserer <privacyLink>Datenschutzerklärung</privacyLink>.",
     "sending": "Wird gesendet…",
     "success": "Vielen Dank! Wir melden uns während der Öffnungszeiten bei Ihnen.",
     "error": "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an."
@@ -275,7 +280,8 @@
     "email": "E-Mail",
     "message": "Nachricht",
     "messagePlaceholder": "Wie können wir Ihnen helfen?",
-    "privacyConsent": "Ich habe die <privacyLink>Datenschutzerklärung</privacyLink> gelesen und bin damit einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden.",
+    "sensitiveDataHint": "Bitte senden Sie über dieses Formular keine Gesundheitsdaten oder Behandlungsfotos.",
+    "privacyNote": "Informationen zur Verarbeitung Ihrer Daten finden Sie in unserer <privacyLink>Datenschutzerklärung</privacyLink>.",
     "send": "Nachricht senden",
     "sending": "Wird gesendet…",
     "success": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
@@ -305,70 +311,33 @@
     "necessaryOnly": "Nur notwendige"
   },
   "privacy": {
-    "title": "Datenschutzerklärung",
-    "intro": "Der Schutz Ihrer personenbezogenen Daten ist uns wichtig. Hier erfahren Sie, welche Daten wir auf dieser Website verarbeiten, zu welchem Zweck und welche Rechte Ihnen nach der Datenschutz-Grundverordnung (DSGVO) zustehen.",
-    "sections": {
-      "controller": {
-        "title": "Verantwortlicher",
-        "body": "Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist {{businessName}}, {{address}}. E-Mail: {{email}}, Telefon: {{phone}}."
-      },
-      "hosting": {
-        "title": "Zugriffsdaten",
-        "body": "Beim Besuch dieser Website werden technische Zugriffsdaten (IP-Adresse, Datum und Uhrzeit, Browsertyp) in Server-Logs verarbeitet, um die Seite sicher auszuliefern und Missbrauch zu erkennen (Art. 6 Abs. 1 lit. f DSGVO). Log-Daten werden nach kurzer Zeit gelöscht und nicht mit anderen Daten zusammengeführt."
-      },
-      "contactForm": {
-        "title": "Kontaktformular",
-        "body": "Wenn Sie das Kontaktformular nutzen, speichern wir Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO). Ist der E-Mail-Versand konfiguriert, senden wir Ihnen zusätzlich eine Eingangsbestätigung. Nachrichten werden gelöscht, sobald Ihre Anfrage erledigt ist, spätestens nach 12 Monaten."
-      },
-      "booking": {
-        "title": "Online-Terminbuchung und Zahlungen (Altegio)",
-        "body": "Termine werden über den externen Dienst Altegio (alteg.io) gebucht. Der Buchungskalender wird erst nach Ihrer Einwilligung eingebunden (Art. 6 Abs. 1 lit. a DSGVO). Nach dem Laden verarbeitet Altegio Ihre IP-Adresse und setzt Cookies; die von Ihnen eingegebenen Daten – Name, Telefonnummer, E-Mail, gewählte Leistung und bei Online-Zahlung Ihre Zahlungsdaten – werden von Altegio auf dessen eigenen Seiten verarbeitet. Einzelheiten entnehmen Sie bitte der Datenschutzerklärung von Altegio. Beratungs- und Terminanfragen über unser Formular speichern wir zusätzlich selbst, damit unser Team sich bei Ihnen melden kann; sie werden nach Erledigung gelöscht, spätestens nach 12 Monaten. Um unser Team zu benachrichtigen, werden die Angaben einer solchen Anfrage – Name, Telefonnummer und Wunschtermin – zusätzlich per E-Mail und als Nachricht über Telegram an uns übermittelt; dabei werden sie von Telegram (Telegram FZ-LLC, Dubai, Vereinigte Arabische Emirate) außerhalb der EU verarbeitet (Art. 6 Abs. 1 lit. f DSGVO – unser berechtigtes Interesse an einer schnellen Rückmeldung). Ihre Einwilligung können Sie jederzeit über „Cookie-Einstellungen“ im Footer widerrufen."
-      },
-      "storage": {
-        "title": "Cookies und lokaler Speicher",
-        "body": "Diese Website setzt keine eigenen Tracking-Cookies. Wir nutzen den lokalen Speicher Ihres Browsers für zwei rein funktionale Zwecke: Ihre Sprachauswahl (i18nextLng) und Ihre Cookie-Entscheidung (cookie-consent). Für funktionale Speicherung dieser Art ist keine Einwilligung erforderlich. Cookies von Altegio werden erst gesetzt, wenn Sie den Buchungskalender akzeptieren. Die Karte im Kontaktbereich wird beim Aufruf der Seite direkt von OpenStreetMap geladen. Dabei wird Ihre IP-Adresse an OpenStreetMap übertragen."
-      },
-      "rights": {
-        "title": "Ihre Rechte",
-        "body": "Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer personenbezogenen Daten, auf Datenübertragbarkeit, auf Einschränkung der Verarbeitung sowie ein Widerspruchsrecht; erteilte Einwilligungen können Sie mit Wirkung für die Zukunft widerrufen. Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren; für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA)."
-      }
-    }
+    "title": "Datenschutzerklärung"
   },
   "imprint": {
     "title": "Impressum",
-    "operatorTitle": "Betreiber der Website",
-    "ownerLabel": "Inhaberin",
+    "operatorTitle": "Angaben gemäß § 5 DDG",
+    "tradingAs": "handelnd unter ELCORIX",
+    "country": "Deutschland",
     "contactTitle": "Kontakt",
-    "vatLabel": "Umsatzsteuer-ID",
-    "responsibleLabel": "Verantwortlich für den Inhalt",
-    "dispute": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: https://ec.europa.eu/consumers/odr. Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+    "phoneLabel": "Telefon",
+    "emailLabel": "E-Mail",
+    "disputeTitle": "Verbraucherstreitbeilegung",
+    "dispute": "Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
+    "stand": "Stand: 16.09.2026"
   },
   "terms": {
-    "title": "Allgemeine Geschäftsbedingungen",
-    "intro": "Diese Bedingungen gelten für alle Behandlungen und Terminvereinbarungen bei elcorix. Bitte lassen Sie sie vor der Veröffentlichung rechtlich prüfen und an Ihre tatsächlichen Abläufe anpassen.",
-    "sections": {
-      "scope": {
-        "title": "Geltungsbereich",
-        "body": "Diese Bedingungen gelten für alle über diese Website oder telefonisch vereinbarten Behandlungen. Abweichende Vereinbarungen bedürfen der Textform."
-      },
-      "appointments": {
-        "title": "Terminvereinbarung",
-        "body": "Termine können online über den Buchungskalender, telefonisch, per WhatsApp oder über das Beratungsformular vereinbart werden. Der Vertrag kommt mit der Bestätigung des Termins durch uns zustande."
-      },
-      "cancellation": {
-        "title": "Absage und Verschiebung",
-        "body": "Bitte sagen Sie vereinbarte Termine mindestens 24 Stunden vorher ab oder verschieben Sie sie. Bei kurzfristigerer Absage oder Nichterscheinen können wir einen Ausfallbetrag berechnen."
-      },
-      "payment": {
-        "title": "Preise und Zahlung",
-        "body": "Es gelten die zum Zeitpunkt der Buchung ausgewiesenen Preise inklusive Mehrwertsteuer. Paketpreise gelten für die jeweils angegebene Anzahl an Sitzungen. Die Zahlung erfolgt im Studio oder – sofern angeboten – online über Altegio."
-      },
-      "liability": {
-        "title": "Mitwirkung und Haftung",
-        "body": "Für eine sichere Behandlung benötigen wir zutreffende Angaben zu Hauttyp, Medikamenten und Vorerkrankungen sowie die Einhaltung der Vor- und Nachsorgehinweise. Für Schäden, die auf unvollständigen Angaben oder auf der Nichtbeachtung dieser Hinweise beruhen, können wir nicht haften."
-      }
-    },
-    "note": "Stand: bitte vor der Veröffentlichung durch eine Rechtsberatung prüfen lassen."
+    "title": "Allgemeine Geschäftsbedingungen (AGB)"
+  },
+  "appointmentTerms": {
+    "title": "Terminbedingungen"
+  },
+  "packageTerms": {
+    "title": "Besondere Bedingungen für Behandlungspakete"
+  },
+  "legalDocs": {
+    "translationNote": "Unverbindliche Übersetzung. Rechtlich maßgeblich ist allein die deutsche Fassung.",
+    "germanVersion": "Deutsche Fassung lesen",
+    "related": "Weitere Bedingungen"
   },
   "mission": {
     "title": "Unser Leitbild",
@@ -399,6 +368,8 @@
     "privacy": "Datenschutz",
     "imprint": "Impressum",
     "terms": "AGB",
+    "appointmentTerms": "Terminbedingungen",
+    "packageTerms": "Paketbedingungen",
     "mission": "Leitbild",
     "cookieSettings": "Cookie-Einstellungen"
   },

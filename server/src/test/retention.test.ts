@@ -1,5 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { cleanupExpiredRecords, startRetentionCleanup } from "../retention.js";
+import {
+  cleanupExpiredRecords,
+  MAX_RETENTION_MONTHS,
+  startRetentionCleanup,
+} from "../retention.js";
 import type { Queryable } from "../db/pool.js";
 
 const query = vi.fn();
@@ -92,10 +96,26 @@ describe("startRetentionCleanup", () => {
     },
   );
 
-  it("defaults to a 12-month window when the variable is unset", () => {
+  it("defaults to the 6-month window of the privacy policy when the variable is unset", () => {
     vi.stubEnv("RETENTION_MONTHS", undefined as unknown as string);
     const stop = startRetentionCleanup(db);
-    expect(query.mock.calls[0][1]).toEqual([12]);
+    expect(query.mock.calls[0][1]).toEqual([6]);
+    stop();
+  });
+
+  it("never keeps requests longer than the privacy policy allows", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.stubEnv("RETENTION_MONTHS", "12");
+    const stop = startRetentionCleanup(db);
+    expect(query.mock.calls[0][1]).toEqual([MAX_RETENTION_MONTHS]);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("exceeds"));
+    stop();
+  });
+
+  it("accepts a shorter window", () => {
+    vi.stubEnv("RETENTION_MONTHS", "3");
+    const stop = startRetentionCleanup(db);
+    expect(query.mock.calls[0][1]).toEqual([3]);
     stop();
   });
 

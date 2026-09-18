@@ -11,8 +11,10 @@ import Logo from "./Logo";
  */
 const legalLinks = [
   { to: "/imprint", key: "footer.imprint" },
-  { to: "/privacy", key: "footer.privacy" },
+  { to: "/datenschutz", key: "footer.privacy" },
   { to: "/terms", key: "footer.terms" },
+  { to: "/appointment-terms", key: "footer.appointmentTerms" },
+  { to: "/package-terms", key: "footer.packageTerms" },
   { to: "/mission", key: "footer.mission" },
 ] as const;
 

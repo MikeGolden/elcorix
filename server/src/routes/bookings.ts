@@ -3,7 +3,7 @@ import type { Queryable } from "../db/pool.js";
 import { sendInBackground, type Mailer } from "../mailer.js";
 import {
   disabledTelegram,
-  formatBookingRequest,
+  BOOKING_NOTIFICATION,
   notifyInBackground,
   type TelegramNotifier,
 } from "../telegram.js";
@@ -175,17 +175,7 @@ export function bookingsRouter(
       });
     }
 
-    notifyInBackground(
-      telegram,
-      formatBookingRequest({
-        customerName: customerName.trim(),
-        customerPhone: customerPhone.trim(),
-        service: typeof service === "string" ? service : null,
-        preferredAt: trimmedPreferredAt,
-        marketingConsent: marketingConsent === true,
-        id: created?.id,
-      }),
-    );
+    notifyInBackground(telegram, BOOKING_NOTIFICATION);
   });
 
   return router;

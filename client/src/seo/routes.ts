@@ -23,6 +23,8 @@ export type MetaKey =
   | "privacy"
   | "imprint"
   | "terms"
+  | "appointmentTerms"
+  | "packageTerms"
   | "mission"
   | "notFound";
 
@@ -55,7 +57,14 @@ export const siteRoutes: readonly SiteRoute[] = [
   { path: "/gallery", metaKey: "gallery", changefreq: "monthly", priority: "0.6" },
   { path: "/mission", metaKey: "mission", changefreq: "yearly", priority: "0.4" },
   { path: "/terms", metaKey: "terms", changefreq: "yearly", priority: "0.2" },
-  { path: "/privacy", metaKey: "privacy", changefreq: "yearly", priority: "0.2" },
+  {
+    path: "/appointment-terms",
+    metaKey: "appointmentTerms",
+    changefreq: "yearly",
+    priority: "0.2",
+  },
+  { path: "/package-terms", metaKey: "packageTerms", changefreq: "yearly", priority: "0.2" },
+  { path: "/datenschutz", metaKey: "privacy", changefreq: "yearly", priority: "0.2" },
   { path: "/imprint", metaKey: "imprint", changefreq: "yearly", priority: "0.2" },
 ] as const;
 

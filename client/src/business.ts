@@ -11,14 +11,17 @@
  */
 export const staticBusiness = {
   name: "elcorix",
-  /** Legal name / owner — required in the German Impressum. */
-  owner: "Elena Musterfrau",
-  vatId: "DE000000000",
+  /**
+   * Legal name of the owner, trading as ELCORIX — required in the German
+   * Impressum. No VAT ID: the studio uses the small-business scheme
+   * (§ 19 UStG), as the AGB of 15.09.2026 state.
+   */
+  owner: "Ian Kipenko",
   address: "Bodmanstraße 14, 87435 Kempten (Allgäu), Germany",
   /** Short form used in the contact block, as in the Figma. */
   addressShort: "Bodmanstraße 14, Kempten",
   phone: "+49 155 625 14 872",
-  email: "info@elcorix.com",
+  email: "info@elcorix.de",
   instagram: "https://instagram.com/elcorix",
   instagramHandle: "@elcorix",
   /**

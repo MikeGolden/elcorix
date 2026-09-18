@@ -1,0 +1,8 @@
+{
+  "name": "@kosmetic/cloudflare-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node worker.test.mjs"
+  }
+}

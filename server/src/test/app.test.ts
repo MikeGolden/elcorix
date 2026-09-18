@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 import { createApp } from "../app.js";
+import { BOOKING_NOTIFICATION } from "../telegram.js";
 import { validateContact } from "../routes/contact.js";
 import type { Queryable } from "../db/pool.js";
 
@@ -321,7 +322,7 @@ describe("POST /api/bookings", () => {
     );
   });
 
-  it("posts the request to Telegram when the bot is configured", async () => {
+  it("pings Telegram without any request data when the bot is configured", async () => {
     query.mockResolvedValue({ rows: [{ id: 21, status: "pending" }] });
     const send = vi.fn().mockResolvedValue(undefined);
     const botApp = createApp(db, { telegram: { enabled: true, chatId: "-100", send } });
@@ -333,11 +334,12 @@ describe("POST /api/bookings", () => {
     });
     expect(res.status).toBe(201);
     await vi.waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+    // Only the fixed ping — nothing the visitor entered (privacy policy § 6).
     const text = send.mock.calls[0][0] as string;
-    expect(text).toContain("Anna");
-    expect(text).toContain("+49123456789");
-    expect(text).toContain("10:30");
-    expect(text).toContain("#21");
+    expect(text).toBe(BOOKING_NOTIFICATION);
+    for (const personal of ["Anna", "+49123456789", "10:30", "21"]) {
+      expect(text).not.toContain(personal);
+    }
   });
 
   it("notifies both channels for the same request", async () => {

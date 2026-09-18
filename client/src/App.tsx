@@ -23,6 +23,8 @@ import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import ImprintPage from "./pages/ImprintPage";
 import TermsPage from "./pages/TermsPage";
+import AppointmentTermsPage from "./pages/AppointmentTermsPage";
+import PackageTermsPage from "./pages/PackageTermsPage";
 import MissionPage from "./pages/MissionPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
@@ -43,6 +45,8 @@ const pages: Record<MetaKey, ReactElement> = {
   privacy: <PrivacyPage />,
   imprint: <ImprintPage />,
   terms: <TermsPage />,
+  appointmentTerms: <AppointmentTermsPage />,
+  packageTerms: <PackageTermsPage />,
   mission: <MissionPage />,
   notFound: <NotFoundPage />,
 };
@@ -110,6 +114,11 @@ export default function App() {
                     />
                   ),
                 )}
+                {/* The privacy policy used to live at /privacy; keep old links working. */}
+                <Route
+                  path="privacy"
+                  element={<Navigate to={`/${language}/datenschutz`} replace />}
+                />
                 <Route path="*" element={pages.notFound} />
               </Route>
             ))}
