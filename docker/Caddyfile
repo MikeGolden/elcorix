@@ -4,15 +4,18 @@
 	email {$ACME_EMAIL}
 }
 
-{$SITE_DOMAIN} {
+# All three domains serve the site directly. Every page's canonical and
+# hreflang tags point at elcorix.com, so search engines index only .com
+# and treat .de/.eu as the same site rather than duplicate content.
+elcorix.com, elcorix.de, elcorix.eu {
 	# HSTS only over HTTPS — nginx must not set it (it serves plain HTTP
 	# inside the network). 6 months, extend once the setup is proven.
 	header Strict-Transport-Security "max-age=15552000"
 	reverse_proxy client:80
 }
 
-# Redirect www and the secondary domains to the primary one. Every name
-# here needs an A record pointing at this host, or its certificate fails.
-www.{$SITE_DOMAIN}, elcorix.de, www.elcorix.de, elcorix.eu, www.elcorix.eu {
-	redir https://{$SITE_DOMAIN}{uri} permanent
+# www.<domain> → <domain>, keeping the TLD the visitor typed.
+# {labels.1}.{labels.0} is "elcorix" + "." + "com"/"de"/"eu".
+www.elcorix.com, www.elcorix.de, www.elcorix.eu {
+	redir https://{labels.1}.{labels.0}{uri} permanent
 }
