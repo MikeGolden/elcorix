@@ -4,7 +4,8 @@
 #   docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d --build
 #
 # Requires SITE_DOMAIN (public DNS pointing at this host) and ACME_EMAIL
-# in .env. Ports 80+443 must be reachable from the internet.
+# in .env. Inbound TCP 80, TCP 443 and UDP 443 (HTTP/3) must be reachable
+# from the internet.
 services:
   caddy:
     image: caddy:2-alpine
@@ -14,9 +15,16 @@ services:
         max-size: "10m"
         max-file: "3"
     restart: unless-stopped
+    # Caddy needs no capability except binding 80/443.
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
     ports:
       - "80:80"
       - "443:443"
+      # HTTP/3 (QUIC). Caddy advertises h3 via Alt-Svc; without the UDP
+      # mapping browsers try it, fail, and fall back to h2.
+      - "443:443/udp"
     environment:
       SITE_DOMAIN: ${SITE_DOMAIN:?set SITE_DOMAIN in .env}
       ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}

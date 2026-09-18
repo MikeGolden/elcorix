@@ -25,6 +25,8 @@ data/
 
 # Database dumps from the db-backup compose service
 backups/
+# SSH key + host key for the offsite-backup service (never commit the key)
+docker/restic-ssh/
 
 # Caches
 .vite/
