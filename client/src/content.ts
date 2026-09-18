@@ -25,3 +25,20 @@ export const reasons: { key: ReasonKey; image: string }[] = [
   { key: "beard", image: images.reasons.beard },
 ];
 
+
+/**
+ * The six situations of the "Wann Laser-Haarentfernung das Leben wirklich
+ * erleichtert" article, in reading order. The first three are also cards
+ * above (same keys) and have a page of their own; the other three live
+ * only in the overview article. Copy: `forWhom.situations.<key>`.
+ */
+export const situations = [
+  "irritation",
+  "shaving",
+  "beard",
+  "face",
+  "hardToReach",
+  "ready",
+] as const;
+
+export type Situation = (typeof situations)[number];

@@ -69,6 +69,22 @@
     "notFound": {
       "title": "Page not found",
       "description": "This page does not exist."
+    },
+    "forWhomConvenience": {
+      "title": "When laser hair removal makes life easier",
+      "description": "Laser hair removal is about more than smooth skin: less shaving, less irritation, more freedom. Six situations where it really helps."
+    },
+    "forWhomIrritation": {
+      "title": "Irritation after shaving",
+      "description": "Red bumps, itching, nicks and ingrown hairs after shaving? Laser hair removal reduces hair growth for the long term and spares your skin."
+    },
+    "forWhomShaving": {
+      "title": "Tired of shaving all the time",
+      "description": "Shaving your legs, armpits, bikini line or face every few days? After a course of laser hair removal, looking after yourself gets simpler."
+    },
+    "forWhomBeard": {
+      "title": "A sharp beard outline",
+      "description": "The laser removes hair above the beard line and on the neck, so a sharp beard outline lasts longer without constant touch-ups."
     }
   },
   "hero": {
@@ -92,6 +108,37 @@
       },
       "beard": {
         "title": "You have a beard but keep having to shave the contours"
+      }
+    },
+    "others": "Other situations",
+    "article": {
+      "intro": "Laser hair removal is not just about smooth skin. For many people it is a way to stop shaving all the time, stop fighting irritation and stop planning their life around hair removal.",
+      "outro": "If you recognise yourself in even one of these situations, we will help you choose the right areas and put together a personal treatment plan."
+    },
+    "situations": {
+      "irritation": {
+        "title": "Shaving ends in irritation every time",
+        "body": "Red bumps, itching, nicks and ingrown hairs keep coming back — especially on the neck, in the armpits and in the bikini area. Laser hair removal reduces hair growth for the long term, so the razor irritates your skin far less often."
+      },
+      "shaving": {
+        "title": "You are tired of shaving all the time",
+        "body": "Legs, armpits, bikini line, face or neck need shaving every few days, sometimes every morning. It eats time and turns into an endless routine. After a course of laser hair removal, looking after yourself gets much simpler."
+      },
+      "beard": {
+        "title": "You have a beard, but its outline needs constant touching up",
+        "body": "Hair above the beard line or on the neck quickly spoils a neat look. You end up shaving the edges yourself or having them fixed at the barber's again and again. The laser removes hair outside the shape you choose, so a sharp beard outline lasts much longer."
+      },
+      "face": {
+        "title": "Unwanted facial hair needs constant attention",
+        "body": "Hair above the upper lip or on the chin has to be plucked, shaved and checked every time you look in the mirror. It stands out most in bright light. Laser hair removal reduces the growth, so you no longer have to deal with it every few days."
+      },
+      "hardToReach": {
+        "title": "Hair grows where it is hard to remove yourself",
+        "body": "The back, the shoulders or the back of the neck are hard to shave properly without help. What is left is regular waxing appointments or simply putting up with the unwanted hair. Laser hair removal reduces growth for the long term and makes hard-to-reach areas easy to look after."
+      },
+      "ready": {
+        "title": "You want to be ready for a holiday, the pool or a date without a last-minute shave",
+        "body": "A trip, a workout, the sauna, the pool or an unexpected date shouldn't start with the thought “I need to shave first”. Laser hair removal gives you more freedom — you can choose your clothes and make plans without constant preparation."
       }
     }
   },

@@ -26,6 +26,7 @@ import TermsPage from "./pages/TermsPage";
 import AppointmentTermsPage from "./pages/AppointmentTermsPage";
 import PackageTermsPage from "./pages/PackageTermsPage";
 import MissionPage from "./pages/MissionPage";
+import ForWhomPage from "./pages/ForWhomPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 /**
@@ -48,6 +49,10 @@ const pages: Record<MetaKey, ReactElement> = {
   appointmentTerms: <AppointmentTermsPage />,
   packageTerms: <PackageTermsPage />,
   mission: <MissionPage />,
+  forWhomConvenience: <ForWhomPage reason="convenience" />,
+  forWhomIrritation: <ForWhomPage reason="irritation" />,
+  forWhomShaving: <ForWhomPage reason="shaving" />,
+  forWhomBeard: <ForWhomPage reason="beard" />,
   notFound: <NotFoundPage />,
 };
 
