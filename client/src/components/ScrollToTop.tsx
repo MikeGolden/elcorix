@@ -7,9 +7,14 @@ import { useLocation } from "react-router-dom";
  * visitor mid-way down the next route. Hash links are handled here too:
  * the browser only auto-scrolls on a real document load, so a client-side
  * jump to `/#prices` has to scroll the target into view itself.
+ *
+ * Keyed on `location.key`, not just pathname/hash: clicking a link to the
+ * anchor you are already on (a second "Get a consultation" after scrolling
+ * away) leaves pathname and hash unchanged, but React Router still pushes a
+ * new location with a fresh key — so the jump fires every time.
  */
 export default function ScrollToTop() {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, key } = useLocation();
   useEffect(() => {
     if (hash === "") {
       window.scrollTo(0, 0);
@@ -21,6 +26,6 @@ export default function ScrollToTop() {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [pathname, hash]);
+  }, [pathname, hash, key]);
   return null;
 }
