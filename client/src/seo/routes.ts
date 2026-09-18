@@ -13,6 +13,7 @@
  * output, and fail if a metaKey has no translation.
  */
 import type { Features } from "../features";
+import type { ReasonKey } from "../images";
 
 export type MetaKey =
   | "home"
@@ -26,7 +27,24 @@ export type MetaKey =
   | "appointmentTerms"
   | "packageTerms"
   | "mission"
+  | "forWhomConvenience"
+  | "forWhomIrritation"
+  | "forWhomShaving"
+  | "forWhomBeard"
   | "notFound";
+
+/**
+ * One page per "Für wen ist es geeignet?" card on the landing page. The
+ * slugs are English in every language, like the rest of the site's paths.
+ * `convenience` is the overview article; the other three are the situations
+ * that have a card of their own.
+ */
+export const forWhomRoutes: Record<ReasonKey, { path: string; metaKey: MetaKey }> = {
+  convenience: { path: "/for-whom/laser-makes-life-easier", metaKey: "forWhomConvenience" },
+  irritation: { path: "/for-whom/shaving-irritation", metaKey: "forWhomIrritation" },
+  shaving: { path: "/for-whom/tired-of-shaving", metaKey: "forWhomShaving" },
+  beard: { path: "/for-whom/beard-contour", metaKey: "forWhomBeard" },
+};
 
 export type SiteRoute = {
   /** Router path, exactly as declared in App.tsx. */
@@ -56,6 +74,9 @@ export const siteRoutes: readonly SiteRoute[] = [
   { path: "/contact", metaKey: "contact", changefreq: "monthly", priority: "0.8" },
   { path: "/gallery", metaKey: "gallery", changefreq: "monthly", priority: "0.6" },
   { path: "/mission", metaKey: "mission", changefreq: "yearly", priority: "0.4" },
+  ...Object.values(forWhomRoutes).map(
+    ({ path, metaKey }): SiteRoute => ({ path, metaKey, changefreq: "monthly", priority: "0.7" }),
+  ),
   { path: "/terms", metaKey: "terms", changefreq: "yearly", priority: "0.2" },
   {
     path: "/appointment-terms",

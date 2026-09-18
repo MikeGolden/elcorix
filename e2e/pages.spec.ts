@@ -42,6 +42,33 @@ test.describe("Deep-link routes", () => {
     ).toBeVisible();
   });
 
+  test("every for-whom card opens its own page", async ({ page }) => {
+    await page.goto("/ru");
+    await page.getByRole("button", { name: "Только необходимые" }).click();
+    const cards = page.locator("#for-whom").getByRole("link", { name: "Узнать больше" });
+    await expect(cards).toHaveCount(4);
+
+    await cards.nth(3).click();
+    await expect(page).toHaveURL(/\/ru\/for-whom\/beard-contour$/);
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Борода есть, но её контур приходится постоянно поправлять",
+      }),
+    ).toBeVisible();
+    await expect(page).toHaveTitle(/Чёткий контур бороды — elcorix/);
+
+    // The overview article carries all six situations.
+    await page.getByRole("link", { name: /Когда лазерная эпиляция/ }).click();
+    await expect(page).toHaveURL(/\/ru\/for-whom\/laser-makes-life-easier$/);
+    await expect(page.locator("main").getByRole("heading", { level: 2 })).toHaveCount(7); // 6 situations + "others"
+
+    // Back to the section on the landing page.
+    await page.getByRole("link", { name: "Кому это подходит?" }).click();
+    await expect(page).toHaveURL(/\/ru#for-whom$/);
+    await expect(page.locator("#for-whom")).toBeInViewport();
+  });
+
   test("unknown routes render the 404 page", async ({ page }) => {
     // Unprefixed: the router redirects it into the visitor's language
     // first, and only then finds nothing to render.

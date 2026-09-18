@@ -69,6 +69,22 @@
     "notFound": {
       "title": "Seite nicht gefunden",
       "description": "Diese Seite existiert nicht."
+    },
+    "forWhomConvenience": {
+      "title": "Wann Laser-Haarentfernung das Leben erleichtert",
+      "description": "Laser-Haarentfernung ist mehr als glatte Haut: weniger Rasieren, weniger Hautirritationen, mehr Freiheit. Sechs Situationen, in denen sie wirklich hilft."
+    },
+    "forWhomIrritation": {
+      "title": "Hautirritationen nach der Rasur",
+      "description": "Rote Pünktchen, Juckreiz, Schnitte und eingewachsene Haare nach der Rasur? Die Laser-Haarentfernung reduziert den Haarwuchs langfristig und schont die Haut."
+    },
+    "forWhomShaving": {
+      "title": "Ständiges Rasieren satt",
+      "description": "Beine, Achseln, Bikinizone oder Gesicht alle paar Tage rasieren? Nach einer Behandlungsserie mit dem Laser wird die Körperpflege deutlich einfacher."
+    },
+    "forWhomBeard": {
+      "title": "Eine klare Bartkontur",
+      "description": "Der Laser entfernt Haare oberhalb der Bartlinie und am Hals – so bleibt die Bartkontur länger klar, ohne ständiges Nachrasieren."
     }
   },
   "hero": {
@@ -92,6 +108,37 @@
       },
       "beard": {
         "title": "Sie haben einen Bart, müssen aber ständig die Konturen nachrasieren"
+      }
+    },
+    "others": "Weitere Situationen",
+    "article": {
+      "intro": "Bei der Laser-Haarentfernung geht es nicht nur um glatte Haut. Für viele ist sie die Chance, nicht mehr ständig zu rasieren, nicht mehr gegen Hautirritationen anzukämpfen und das eigene Leben nicht mehr um die Haarentfernung herum zu planen.",
+      "outro": "Wenn Sie sich in mindestens einer dieser Situationen wiedererkennen, helfen wir Ihnen, die passenden Zonen auszuwählen, und erstellen einen persönlichen Behandlungsplan."
+    },
+    "situations": {
+      "irritation": {
+        "title": "Rasieren endet jedes Mal mit Hautirritationen",
+        "body": "Rote Pünktchen, Juckreiz, Schnitte und eingewachsene Haare kommen immer wieder – vor allem am Hals, in den Achseln und im Bikinibereich. Die Laser-Haarentfernung reduziert den Haarwuchs langfristig, sodass die Rasur Ihre Haut deutlich seltener strapaziert."
+      },
+      "shaving": {
+        "title": "Sie sind es leid, sich ständig zu rasieren",
+        "body": "Beine, Achseln, Bikinizone, Gesicht oder Hals müssen alle paar Tage rasiert werden, manchmal sogar jeden Morgen. Das kostet Zeit und wird zur endlosen Routine. Nach einer Behandlungsserie mit dem Laser wird die Körperpflege deutlich einfacher."
+      },
+      "beard": {
+        "title": "Sie tragen Bart, müssen die Kontur aber ständig nachrasieren",
+        "body": "Haare oberhalb der Bartlinie oder am Hals lassen den Bart schnell ungepflegt wirken. Die Konturen müssen regelmäßig selbst nachrasiert oder beim Barber korrigiert werden. Der Laser entfernt die Haare außerhalb der gewählten Form, sodass die Bartkontur viel länger klar bleibt."
+      },
+      "face": {
+        "title": "Unerwünschte Gesichtshaare wollen ständig kontrolliert werden",
+        "body": "Haare über der Oberlippe oder am Kinn werden gezupft, rasiert und bei jedem Blick in den Spiegel überprüft. Bei hellem Licht fallen sie besonders auf. Die Laser-Haarentfernung reduziert den Haarwuchs, sodass Sie sich nicht mehr alle paar Tage darum kümmern müssen."
+      },
+      "hardToReach": {
+        "title": "Haare wachsen dort, wo man sie selbst kaum entfernen kann",
+        "body": "Rücken, Schultern oder Nacken lassen sich ohne Hilfe kaum ordentlich rasieren. Bleiben nur regelmäßige Waxing-Termine – oder man findet sich mit den unerwünschten Haaren ab. Die Laser-Haarentfernung reduziert den Haarwuchs langfristig und macht schwer erreichbare Zonen pflegeleicht."
+      },
+      "ready": {
+        "title": "Bereit für Urlaub, Schwimmbad oder Date – ohne Rasur in letzter Minute",
+        "body": "Eine Reise, das Training, die Sauna, das Schwimmbad oder ein spontanes Date sollten nicht mit dem Gedanken beginnen: „Ich muss mich erst noch rasieren.“ Die Laser-Haarentfernung gibt Ihnen mehr Freiheit – Sie wählen Ihre Kleidung und planen, ohne sich ständig vorbereiten zu müssen."
       }
     }
   },
