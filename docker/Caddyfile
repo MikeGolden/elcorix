@@ -11,7 +11,8 @@
 	reverse_proxy client:80
 }
 
-# Redirect www to the apex domain.
-www.{$SITE_DOMAIN} {
+# Redirect www and the secondary domains to the primary one. Every name
+# here needs an A record pointing at this host, or its certificate fails.
+www.{$SITE_DOMAIN}, elcorix.de, www.elcorix.de, elcorix.eu, www.elcorix.eu {
 	redir https://{$SITE_DOMAIN}{uri} permanent
 }
