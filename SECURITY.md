@@ -97,9 +97,13 @@ server/CDN — configure it there:
       `docker/Caddyfile`) does all three automatically.
 - [ ] Client `Content-Security-Policy` — already set by
       [docker/nginx.conf](docker/nginx.conf); `frame-src` allows Altegio and
-      the click-to-load OpenStreetMap embed. If you enable the optional
-      analytics (`VITE_ANALYTICS_*`), add the script's origin to
-      `script-src` and `connect-src`.
+      the click-to-load OpenStreetMap embed. The Umami tracker is served
+      same-origin under `/u/`, so it needs no CSP change.
+- [ ] Umami (profile `analytics`): change the default `admin`/`umami` login
+      on `stats.<domain>` immediately and enable two-factor login
+      (`UMAMI_2FA_KEY`). `umami-db-init` revokes the PUBLIC `CONNECT` grant
+      on the `kosmetic` database. If you add a least-privilege app role
+      later, grant it `CONNECT` explicitly.
 - [ ] `X-Frame-Options: DENY` / `frame-ancestors 'none'` on the client site —
       the site itself must not be embeddable (clickjacking).
 - [ ] `Referrer-Policy: strict-origin-when-cross-origin`.

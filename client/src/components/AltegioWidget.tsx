@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { altegioBookingUrl, business } from "../config";
 import { useConsent } from "../consent/ConsentContext";
+import { track } from "../analytics";
 
 /**
  * Embeds the Altegio online-booking page (calendar, services, staff)
@@ -24,7 +25,14 @@ export default function AltegioWidget() {
         <p className="mx-auto mt-3 max-w-xl text-[0.95rem] leading-relaxed">
           {t("booking.consentText")}
         </p>
-        <button type="button" onClick={() => decide(true)} className="btn-primary mt-7">
+        <button
+          type="button"
+          onClick={() => {
+            decide(true);
+            track("booking-consent");
+          }}
+          className="btn-primary mt-7"
+        >
           {t("booking.consentLoad")}
         </button>
         <p className="mt-5 text-sm">

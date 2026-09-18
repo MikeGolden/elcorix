@@ -3,6 +3,7 @@ import LocalizedLink from "../components/LocalizedLink";
 import { Trans, useTranslation } from "react-i18next";
 import ContactSection from "../sections/ContactSection";
 import { usePageMeta } from "../seo/usePageMeta";
+import { track } from "../analytics";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -33,6 +34,7 @@ export default function ContactPage() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       form.reset();
       setStatus("sent");
+      track("contact-message");
     } catch {
       setStatus("error");
     }
