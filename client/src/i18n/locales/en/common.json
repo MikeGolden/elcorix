@@ -150,12 +150,33 @@
     "p3": "<b>Interchangeable tips allow precise work</b> on small as well as large body zones — for a fast, gentle and individually tuned treatment."
   },
   "specialist": {
-    "title": "Your skin in experienced hands",
+    "title": "Who treats you",
     "imageAlt": "Elena, specialist for professional laser hair removal",
-    "p1": "My name is Elena and I am your <b>specialist for professional laser hair removal.</b> For [number] years I have been helping women and men on their way to smooth skin and a well-cared-for feeling.",
-    "p2": "Through my training in [qualifications/specialisations] <b>and regular further education, I work to modern quality and hygiene standards.</b>",
-    "p3": "For every treatment I take the time for a personal consultation, analyse your skin and hair type and adjust the device settings individually. <b>What matters to me is that you feel safe, comfortable and well looked after throughout.</b>",
-    "certificateAlt": "Certificate: specialist for professional hair removal"
+    "p1": "I'm Elena, and at elcorix I do one thing: <b>laser hair removal.</b>",
+    "p2": "Before the first pulse we sit down and talk. I look at your skin and hair and ask about medication, sun and anything that could rule a treatment out. <b>If the laser isn't right for you, I'll tell you straight.</b>",
+    "p3": "Then I set the device for you: skin type, hair thickness, zone. <b>A test pulse shows how your skin reacts before we treat the whole area.</b>",
+    "p4": "After every session you get clear aftercare instructions. Questions between appointments are always welcome.",
+    "visit": {
+      "title": "How your visit works",
+      "steps": {
+        "consultation": {
+          "title": "Consultation",
+          "text": "Skin, hair, medication, sun: we check whether the laser suits you."
+        },
+        "testPulse": {
+          "title": "Test pulse",
+          "text": "One pulse on a small spot shows how your skin reacts."
+        },
+        "treatment": {
+          "title": "Treatment",
+          "text": "The device is set to your skin type, hair thickness and zone."
+        },
+        "aftercare": {
+          "title": "Aftercare",
+          "text": "You leave with clear instructions for the days that follow."
+        }
+      }
+    }
   },
   "work": {
     "title": "Take a look at our work",

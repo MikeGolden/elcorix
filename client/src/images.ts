@@ -26,10 +26,8 @@ export const images = {
   serviceThumb: "/images/service-thumb.jpg",
   /** "Moderne Diodenlaser-Technologie" — the device in the studio. */
   technology: "/images/technology.jpg",
-  /** Portrait of the specialist for "Ihre Haut in erfahrenen Händen". */
+  /** Portrait of the specialist for the "Wer Sie behandelt" section. */
   specialist: "/images/specialist.jpg",
-  /** The training certificate shown next to that portrait, as in the Figma. */
-  certificate: "/images/certificate.png",
   /** Square thumbnails for the "Für wen ist es geeignet?" cards. */
   reasons: {
     convenience: "/images/reason-convenience.jpg",

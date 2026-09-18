@@ -62,7 +62,7 @@ describe("App", () => {
     for (const name of [
       /who is it for\?/i,
       /modern diode laser technology/i,
-      /your skin in experienced hands/i,
+      /who treats you/i,
       /take a look at our work/i,
       /popular services and prices/i,
       /request a free consultation/i,
