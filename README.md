@@ -315,7 +315,7 @@ How it fits together:
   Postgres (`umami-db-init`, idempotent). That role cannot connect to the
   `kosmetic` database with the customer requests. `db-backup` dumps it
   next to the site's database.
-- **Dashboard:** `https://stats.elcorix.de` (Caddy, `docker/Caddyfile`), and
+- **Dashboard:** `https://stats.elcorix.de` (also `.com` and `.eu`; Caddy, `docker/Caddyfile`), and
   on the host at `127.0.0.1:3002` for SSH tunnels.
 - **Tracker:** loaded first-party from `/u/p.js`, posting to `/u/api/send`.
   nginx passes exactly those two URLs to Umami, so there is no CSP change
@@ -329,7 +329,8 @@ How it fits together:
 
 Setup on the server:
 
-1. DNS: an `A` (and `AAAA`) record `stats.elcorix.de` → the server.
+1. DNS: an `A` (and `AAAA`) record `stats` → the server in each of the
+   three zones (elcorix.de, elcorix.com, elcorix.eu).
 2. `.env`: `COMPOSE_PROFILES=analytics` (add `,offsite` if you use it),
    `UMAMI_DB_PASSWORD`, `UMAMI_APP_SECRET` and `UMAMI_2FA_KEY`, each from
    `openssl rand -hex 32`.

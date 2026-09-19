@@ -23,12 +23,15 @@ www.elcorix.de, www.elcorix.com, www.elcorix.eu {
 }
 
 # Umami analytics dashboard (docker-compose.yml → umami, profile
-# "analytics"). Needs a DNS A/AAAA record for stats.elcorix.de pointing at
-# this host before the first start, or the certificate request fails.
+# "analytics"), on all three domains like the site itself. Every name
+# listed here needs a DNS A/AAAA record pointing at this host, or its
+# certificate request fails (the others are unaffected). A stats.<domain>
+# that resolves here but is NOT listed gets no certificate at all and the
+# browser shows ERR_SSL_PROTOCOL_ERROR.
 # Only the dashboard lives here — visitors' browsers never talk to this
 # host: the tracker is served first-party under /u/ on the site domains.
 # Change the default admin/umami login immediately after the first start.
-stats.elcorix.de {
+stats.elcorix.de, stats.elcorix.com, stats.elcorix.eu {
 	header Strict-Transport-Security "max-age=15552000"
 	# Keep the dashboard out of search results.
 	header X-Robots-Tag "noindex, nofollow"
