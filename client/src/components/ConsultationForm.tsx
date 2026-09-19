@@ -2,6 +2,7 @@ import { FormEvent, useCallback, useState } from "react";
 import LocalizedLink from "./LocalizedLink";
 import { Trans, useTranslation } from "react-i18next";
 import { isValidPhone } from "../phone";
+import { track } from "../analytics";
 import {
   COUNTRIES,
   DEFAULT_COUNTRY,
@@ -132,6 +133,9 @@ export default function ConsultationForm() {
       setPhoneError(false);
       setDateError(null);
       setStatus("sent");
+      // Conversion for the analytics funnel — no form content, only
+      // whether a date was asked for.
+      track("consultation-request", { preferredDate: date === "" ? "no" : "yes" });
     } catch {
       setStatus("error");
     }

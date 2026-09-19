@@ -70,6 +70,24 @@ describe("ContactPage", () => {
     });
   });
 
+  it("counts a sent message as a conversion without its content", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ id: 1 }), { status: 201 }),
+    );
+    const umamiTrack = vi.fn();
+    vi.stubGlobal("umami", { track: umamiTrack });
+    renderPage();
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText(/name/i), "Anna");
+    await user.type(screen.getByLabelText(/e-mail/i), "anna@example.com");
+    await user.type(screen.getByLabelText(/message/i), "Hello!");
+    await user.click(screen.getByRole("button", { name: /send message/i }));
+    await screen.findByRole("status");
+
+    expect(umamiTrack.mock.calls).toEqual([["contact-message", undefined]]);
+    vi.unstubAllGlobals();
+  });
+
   it("shows an error message when the request fails", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response("{}", { status: 500 }),

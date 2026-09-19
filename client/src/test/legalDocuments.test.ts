@@ -36,7 +36,7 @@ describe("legal documents", () => {
     for (const key of ["terms", "appointmentTerms", "packageTerms"] as const) {
       expect(de[key].stand).toBe("Stand: 15.09.2026");
     }
-    expect(de.privacy.stand).toBe("Stand: 17. September 2026");
+    expect(de.privacy.stand).toBe("Stand: 18. September 2026");
   });
 
   it.each([
@@ -166,6 +166,28 @@ describe("legal documents", () => {
       expect(body).toContain("spätestens sechs Monate nach abschließender Bearbeitung");
       expect(body).toContain("spätestens nach 14 Tagen überschrieben");
       expect(body).toContain("nach spätestens sieben Tagen gelöscht");
+      // docker-compose.yml → umami-retention (UMAMI_RETENTION_MONTHS = 14).
+      expect(body).toContain("nach spätestens 14 Monaten automatisch gelöscht");
     });
+
+    it.each(Object.entries(all))(
+      "%s gates the Umami section behind the analytics flag, right after local storage",
+      (_l, documents) => {
+        const sections = documents.privacy.sections as {
+          title: string;
+          feature?: string;
+          paragraphs: LegalBlock[];
+        }[];
+        const gated = sections.filter((section) => section.feature !== undefined);
+        expect(gated.map((section) => section.feature)).toEqual(["analytics"]);
+        expect(gated[0]!.title).toMatch(/^11\. .*Umami/);
+        // Cross-references in the Umami text point at §3 and §6 only —
+        // sections before it, which keep their numbers when it is hidden.
+        const body = gated[0]!.paragraphs.flatMap(blockTexts).join(" ");
+        expect(body).toContain("Hetzner");
+        expect(body).toContain("14");
+        expect(body).toMatch(/Global Privacy Control/);
+      },
+    );
   });
 });

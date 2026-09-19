@@ -252,7 +252,7 @@
   },
   "privacy": {
     "lead": [],
-    "stand": "Last updated: 17 September 2026",
+    "stand": "Last updated: 18 September 2026",
     "preamble": [],
     "sections": [
       {
@@ -367,7 +367,29 @@
         ]
       },
       {
-        "title": "11. OpenStreetMap",
+        "title": "11. Audience measurement with Umami",
+        "feature": "analytics",
+        "paragraphs": [
+          "To learn how our website is used and how visitors find us – for example via Instagram, search engines or individual promotions – we use the open-source software Umami. We run Umami ourselves on our server at Hetzner in Germany (see section 3). The data is passed on neither to the maker of Umami nor to any other third party.",
+          "Umami sets no cookies and stores no information on your device. With every page view and the interactions listed below, the following data is processed:",
+          {
+            "list": [
+              "the page viewed, its title and the time;",
+              "campaign parameters in the address (for example utm_source or utm_campaign) and click identifiers of advertising platforms (for example gclid or fbclid), if the address contains them;",
+              "the referrer URL, i.e. the page you came to us from;",
+              "browser, operating system, device type, screen size and language setting;",
+              "approximate location (country, region, city), derived from the IP address;",
+              "interactions without their content: successfully submitting the consultation or contact form, and tapping the phone number, the e-mail address, the WhatsApp or the Instagram link, each with the part of the page the link is in."
+            ]
+          },
+          "Your IP address is not stored. Together with your browser identifier (user agent) and a secret value that changes daily, it is turned into an irreversible identifier that groups the page views of one day. There is no recognition on later days, no cross-site profiling and no combination with what you enter in our forms. We only evaluate the data in aggregate and do not try to identify individual people.",
+          "The legal basis is Art. 6 (1) (f) GDPR. Our legitimate interest lies in statistically evaluating the use of our website, measuring the effectiveness of our advertising and improving the website and our services.",
+          "The data is deleted automatically after 14 months at the latest. It may remain in backups for up to 14 days longer (see section 6).",
+          "You can object to the audience measurement at any time: if your browser sends the “Global Privacy Control” or “Do Not Track” signal, Umami is not loaded. Likewise, no data is collected if you disable JavaScript or use a content blocker."
+        ]
+      },
+      {
+        "title": "12. OpenStreetMap",
         "paragraphs": [
           "To show our location, we embed a map from OpenStreetMap via a so-called iFrame. The provider is:",
           "OpenStreetMap Foundation\nSt John’s Innovation Centre\nCowley Road\nCambridge CB4 0WS\nUnited Kingdom",
@@ -377,7 +399,7 @@
         ]
       },
       {
-        "title": "12. WhatsApp link",
+        "title": "13. WhatsApp link",
         "paragraphs": [
           "Our website contains a link that lets you start a conversation on WhatsApp. As long as you do not click the link, no connection to WhatsApp is established merely because of this link.",
           "If you click the link or write to us via WhatsApp, you are forwarded to the WhatsApp service. WhatsApp processes, among other things, your IP address and other technical data. If you send us a message, we receive and process in particular your phone number, where applicable your profile name, the content of the message and communication and time data.",
@@ -388,7 +410,7 @@
         ]
       },
       {
-        "title": "13. Instagram link",
+        "title": "14. Instagram link",
         "paragraphs": [
           "Our website merely contains an external link to our Instagram presence. As long as you do not click the link, no connection to Instagram is established via this link.",
           "After clicking, you leave our website. Instagram or Meta then processes data about your access and your further use under its own responsibility. The provider for users in the European Economic Area is Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Ireland.",
@@ -396,7 +418,7 @@
         ]
       },
       {
-        "title": "14. Recipients of personal data",
+        "title": "15. Recipients of personal data",
         "paragraphs": [
           "Within ELCORIX, only those persons who need personal data to handle the respective enquiry have access to it. In addition, data may be transferred to the extent necessary to the following categories of recipients:",
           {
@@ -411,14 +433,14 @@
         ]
       },
       {
-        "title": "15. Transfers to third countries",
+        "title": "16. Transfers to third countries",
         "paragraphs": [
           "Personal data is transferred to a country outside the European Union or the European Economic Area only if the requirements of Art. 44 et seq. GDPR are met. This may take place in particular on the basis of an adequacy decision of the European Commission or appropriate safeguards such as the standard contractual clauses of the European Commission.",
           "When external services such as WhatsApp or Instagram are accessed, the respective providers may also process data in third countries. Details can be found in the privacy notices of the respective providers."
         ]
       },
       {
-        "title": "16. Your rights",
+        "title": "17. Your rights",
         "paragraphs": [
           "Subject to the statutory requirements, you have in particular the following rights:",
           {
@@ -440,7 +462,7 @@
         ]
       },
       {
-        "title": "17. Right to lodge a complaint",
+        "title": "18. Right to lodge a complaint",
         "paragraphs": [
           "You have the right to lodge a complaint with a data protection supervisory authority. For non-public companies based in Bavaria, the competent authority is in particular:",
           "Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)\nhttps://www.lda.bayern.de/",
@@ -448,13 +470,13 @@
         ]
       },
       {
-        "title": "18. No automated decision-making",
+        "title": "19. No automated decision-making",
         "paragraphs": [
           "Solely automated decision-making, including profiling within the meaning of Art. 22 GDPR, does not take place."
         ]
       },
       {
-        "title": "19. Updates to this privacy policy",
+        "title": "20. Updates to this privacy policy",
         "paragraphs": [
           "We amend this privacy policy when the website, the services used or the legal requirements change. The current version is always available on this website."
         ]
