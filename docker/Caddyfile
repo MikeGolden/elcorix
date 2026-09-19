@@ -21,3 +21,16 @@ elcorix.de, elcorix.com, elcorix.eu {
 www.elcorix.de, www.elcorix.com, www.elcorix.eu {
 	redir https://{labels.1}.{labels.0}{uri} permanent
 }
+
+# Umami analytics dashboard (docker-compose.yml → umami, profile
+# "analytics"). Needs a DNS A/AAAA record for stats.elcorix.de pointing at
+# this host before the first start, or the certificate request fails.
+# Only the dashboard lives here — visitors' browsers never talk to this
+# host: the tracker is served first-party under /u/ on the site domains.
+# Change the default admin/umami login immediately after the first start.
+stats.elcorix.de {
+	header Strict-Transport-Security "max-age=15552000"
+	# Keep the dashboard out of search results.
+	header X-Robots-Tag "noindex, nofollow"
+	reverse_proxy umami:3000
+}

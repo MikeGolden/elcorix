@@ -111,6 +111,25 @@ function isShown(section: Section, features: Features): boolean {
   );
 }
 
+const CLAUSE_TITLE = /^\d+\.\s+/;
+
+/**
+ * Numbers the shown sections 1…n. The JSON numbers every section as if all
+ * features were on, so hiding one (the Umami section, "analytics", while
+ * the build has no tracker) would otherwise leave a gap — "10." followed by
+ * "12.". Only applies when every title is numbered; a document without
+ * hidden sections comes out exactly as written. Cross-references in the
+ * texts ("siehe Abschnitt 6") point at sections BEFORE any feature-gated
+ * one, so they stay valid.
+ */
+export function numberSections<T extends { title: string }>(sections: T[]): T[] {
+  if (!sections.every((section) => CLAUSE_TITLE.test(section.title))) return sections;
+  return sections.map((section, index) => ({
+    ...section,
+    title: section.title.replace(CLAUSE_TITLE, `${index + 1}. `),
+  }));
+}
+
 export default function LegalDocument({
   document,
   features = buildFeatures,
@@ -186,17 +205,19 @@ export default function LegalDocument({
         </p>
       ))}
 
-      {(content?.sections as Section[] | undefined)
-        ?.filter((section) => isShown(section, features))
-        .map((section) => (
-          <LegalSection key={section.title} title={section.title}>
-            <div className="space-y-3">
-              {section.paragraphs.map((block, index) => (
-                <LegalBlockView key={blockKey(block, index)} block={block} />
-              ))}
-            </div>
-          </LegalSection>
-        ))}
+      {numberSections(
+        ((content?.sections ?? []) as Section[]).filter((section) =>
+          isShown(section, features),
+        ),
+      ).map((section) => (
+        <LegalSection key={section.title} title={section.title}>
+          <div className="space-y-3">
+            {section.paragraphs.map((block, index) => (
+              <LegalBlockView key={blockKey(block, index)} block={block} />
+            ))}
+          </div>
+        </LegalSection>
+      ))}
     </LegalPage>
   );
 }

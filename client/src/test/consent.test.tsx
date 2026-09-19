@@ -164,7 +164,7 @@ describe("legal pages", () => {
   it("renders the German policy verbatim, with no translation note", async () => {
     storeConsent(true);
     renderAt("/de/datenschutz");
-    expect(await screen.findByText("Stand: 17. September 2026")).toBeInTheDocument();
+    expect(await screen.findByText("Stand: 18. September 2026")).toBeInTheDocument();
     expect(screen.queryByTestId("legal-translation-note")).toBeNull();
     expect(
       screen.getByText(

@@ -13,11 +13,12 @@ ENV VITE_ALTEGIO_COMPANY_ID=$VITE_ALTEGIO_COMPANY_ID
 # client/src/features.ts.
 ARG VITE_ENABLE_ALTEGIO=false
 ENV VITE_ENABLE_ALTEGIO=$VITE_ENABLE_ALTEGIO
-# Optional privacy-friendly analytics (see SECURITY.md for the CSP change).
-ARG VITE_ANALYTICS_SRC=
-ENV VITE_ANALYTICS_SRC=$VITE_ANALYTICS_SRC
-ARG VITE_ANALYTICS_DOMAIN=
-ENV VITE_ANALYTICS_DOMAIN=$VITE_ANALYTICS_DOMAIN
+# Self-hosted Umami analytics — off unless the website id is set; see
+# client/src/analytics.ts and README → "Analytics (Umami)".
+ARG VITE_UMAMI_WEBSITE_ID=
+ENV VITE_UMAMI_WEBSITE_ID=$VITE_UMAMI_WEBSITE_ID
+ARG VITE_UMAMI_DOMAINS=
+ENV VITE_UMAMI_DOMAINS=$VITE_UMAMI_DOMAINS
 COPY package.json package-lock.json ./
 COPY client/package.json client/
 COPY server/package.json server/
