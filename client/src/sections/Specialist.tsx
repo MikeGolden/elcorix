@@ -69,8 +69,8 @@ export default function Specialist() {
           <Photo
             src={images.specialist}
             alt={t("specialist.imageAlt")}
-            width="620"
-            height="1240"
+            width="896"
+            height="1195"
             loading="lazy"
             decoding="async"
             className="h-full min-h-64 w-full rounded-panel object-cover sm:max-xl:aspect-[3/4] sm:max-xl:h-auto sm:max-xl:object-top"
