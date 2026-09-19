@@ -19,15 +19,15 @@ test.describe("Static SEO head (dev server)", () => {
     expect(html).toContain("<title>elcorix — Dauerhafte Laser-Haarentfernung in Kempten</title>");
     // The dev server has no per-route shells; it serves the German home
     // block, which canonicalises to /de — the language "/" redirects to.
-    expect(html).toContain('<link rel="canonical" href="https://elcorix.com/de" />');
+    expect(html).toContain('<link rel="canonical" href="https://elcorix.de/de" />');
     expect(html).toContain('property="og:title"');
     expect(html).toContain('content="de_DE"');
     for (const language of ["en", "de", "uk", "ru"]) {
       expect(html).toContain(
-        `<link rel="alternate" hreflang="${language}" href="https://elcorix.com/${language}" />`,
+        `<link rel="alternate" hreflang="${language}" href="https://elcorix.de/${language}" />`,
       );
     }
-    expect(html).toContain('hreflang="x-default" href="https://elcorix.com/de"');
+    expect(html).toContain('hreflang="x-default" href="https://elcorix.de/de"');
     // Exactly one of each — a second <title> would be a duplicated tag.
     expect(html.match(/<title>/g)).toHaveLength(1);
     expect(html.match(/name="description"/g)).toHaveLength(1);
@@ -56,7 +56,7 @@ test.describe("Static SEO head (dev server)", () => {
 
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      "https://elcorix.com/en",
+      "https://elcorix.de/en",
     );
 
     await page.getByTestId("language-switcher").click();
@@ -65,7 +65,7 @@ test.describe("Static SEO head (dev server)", () => {
     await expect(page).toHaveTitle(/Dauerhafte Laser-Haarentfernung/);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      "https://elcorix.com/de",
+      "https://elcorix.de/de",
     );
 
     // One of each: usePageMeta must rewrite the prerendered tags, never

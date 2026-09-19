@@ -120,7 +120,7 @@ group and re-read the id from
 
 ## After the domain is attached
 
-`client/src/business.ts` hardcodes `siteUrl: "https://elcorix.com"`, so every
+`client/src/business.ts` hardcodes `siteUrl: "https://elcorix.de"`, so every
 canonical URL, `hreflang` and the sitemap point there regardless of where this
 is deployed. On a `*.pages.dev` URL that is a deliberate mismatch (it keeps
 preview deployments out of the index); once the real domain is attached to the

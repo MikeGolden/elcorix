@@ -34,7 +34,7 @@ export const staticBusiness = {
    * Graph URLs and JSON-LD. Keep public/robots.txt in sync when changing it
    * (sitemap.xml is generated from this value — see src/seo/sitemap.ts).
    */
-  siteUrl: "https://elcorix.com",
+  siteUrl: "https://elcorix.de",
   /**
    * Studio coordinates for the map and the JSON-LD — the Bodmanstraße 14
    * building itself (OSM way/112674650, geocoded via Nominatim).

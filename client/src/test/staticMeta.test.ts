@@ -51,20 +51,20 @@ describe("shared title and canonical rules", () => {
   });
 
   it("builds absolute canonicals with the language segment", () => {
-    expect(canonicalUrl("de", "/")).toBe("https://elcorix.com/de");
-    expect(canonicalUrl("de", "/prices")).toBe("https://elcorix.com/de/prices");
-    expect(canonicalUrl("uk", "/prices")).toBe("https://elcorix.com/uk/prices");
+    expect(canonicalUrl("de", "/")).toBe("https://elcorix.de/de");
+    expect(canonicalUrl("de", "/prices")).toBe("https://elcorix.de/de/prices");
+    expect(canonicalUrl("uk", "/prices")).toBe("https://elcorix.de/uk/prices");
   });
 
   it("declares every language plus x-default as hreflang alternates", () => {
     // A page's alternates include the page itself — that is what tells
     // Google the URLs are one cluster and not near-duplicates.
     expect(alternateLinks("/prices")).toEqual([
-      { hreflang: "en", href: "https://elcorix.com/en/prices" },
-      { hreflang: "de", href: "https://elcorix.com/de/prices" },
-      { hreflang: "uk", href: "https://elcorix.com/uk/prices" },
-      { hreflang: "ru", href: "https://elcorix.com/ru/prices" },
-      { hreflang: "x-default", href: "https://elcorix.com/de/prices" },
+      { hreflang: "en", href: "https://elcorix.de/en/prices" },
+      { hreflang: "de", href: "https://elcorix.de/de/prices" },
+      { hreflang: "uk", href: "https://elcorix.de/uk/prices" },
+      { hreflang: "ru", href: "https://elcorix.de/ru/prices" },
+      { hreflang: "x-default", href: "https://elcorix.de/de/prices" },
     ]);
   });
 
@@ -91,17 +91,17 @@ describe("static head blocks", () => {
     expect(head.title).toBe(`${de.meta.prices.title} — elcorix`);
     expect(block).toContain(`<title>${head.title}</title>`);
     expect(block).toContain(`content="${de.meta.prices.description}"`);
-    expect(block).toContain('<link rel="canonical" href="https://elcorix.com/de/prices" />');
+    expect(block).toContain('<link rel="canonical" href="https://elcorix.de/de/prices" />');
     expect(block).toContain('content="de_DE"');
 
     const ukrainian = seoBlock(prices, "uk", BOOKING_URL);
     expect(ukrainian).toContain(`<title>${uk.meta.prices.title} — elcorix</title>`);
-    expect(ukrainian).toContain('<link rel="canonical" href="https://elcorix.com/uk/prices" />');
+    expect(ukrainian).toContain('<link rel="canonical" href="https://elcorix.de/uk/prices" />');
     expect(ukrainian).toContain('content="uk_UA"');
 
     const russian = seoBlock(prices, "ru", BOOKING_URL);
     expect(russian).toContain(`<title>${ru.meta.prices.title} — elcorix</title>`);
-    expect(russian).toContain('<link rel="canonical" href="https://elcorix.com/ru/prices" />');
+    expect(russian).toContain('<link rel="canonical" href="https://elcorix.de/ru/prices" />');
     expect(russian).toContain('content="ru_RU"');
   });
 
@@ -109,11 +109,11 @@ describe("static head blocks", () => {
     const block = seoBlock(prices, "en", BOOKING_URL);
     for (const language of supportedLanguages) {
       expect(block).toContain(
-        `<link rel="alternate" hreflang="${language}" href="https://elcorix.com/${language}/prices" />`,
+        `<link rel="alternate" hreflang="${language}" href="https://elcorix.de/${language}/prices" />`,
       );
     }
     expect(block).toContain(
-      '<link rel="alternate" hreflang="x-default" href="https://elcorix.com/de/prices" />',
+      '<link rel="alternate" hreflang="x-default" href="https://elcorix.de/de/prices" />',
     );
     // Its own locale is not repeated as an alternate.
     expect(block).toContain('<meta property="og:locale" content="en_GB" />');
@@ -176,8 +176,8 @@ describe("injecting the block into index.html", () => {
     );
 
     expect(prices.match(/<title>/g)).toHaveLength(1);
-    expect(prices).toContain('href="https://elcorix.com/en/prices"');
-    expect(prices).not.toContain('<link rel="canonical" href="https://elcorix.com/de" />');
+    expect(prices).toContain('href="https://elcorix.de/en/prices"');
+    expect(prices).not.toContain('<link rel="canonical" href="https://elcorix.de/de" />');
     expect(prices).toContain('<meta charset="UTF-8" />');
     expect(prices).toContain("<body></body>");
   });

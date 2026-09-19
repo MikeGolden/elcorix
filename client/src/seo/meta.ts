@@ -28,7 +28,7 @@ export function composeTitle(path: string, pageTitle: string): string {
     : `${pageTitle} — ${staticBusiness.name}`;
 }
 
-/** Absolute URL of one page in one language: https://elcorix.com/de/prices */
+/** Absolute URL of one page in one language: https://elcorix.de/de/prices */
 export function canonicalUrl(language: SupportedLanguage, path: string): string {
   return `${staticBusiness.siteUrl}${localizedPath(language, path)}`;
 }
