@@ -4,10 +4,12 @@
 	email {$ACME_EMAIL}
 }
 
-# All three domains serve the site directly. Every page's canonical and
-# hreflang tags point at elcorix.com, so search engines index only .com
-# and treat .de/.eu as the same site rather than duplicate content.
-elcorix.com, elcorix.de, elcorix.eu {
+# All three domains serve the site directly — no cross-domain redirects.
+# elcorix.de is the main domain: every page's canonical and hreflang tags
+# and the sitemap point at it (siteUrl in client/src/business.ts), so
+# search engines index .de and treat .com/.eu as the same site rather
+# than duplicate content.
+elcorix.de, elcorix.com, elcorix.eu {
 	# HSTS only over HTTPS — nginx must not set it (it serves plain HTTP
 	# inside the network). 6 months, extend once the setup is proven.
 	header Strict-Transport-Security "max-age=15552000"
@@ -16,6 +18,6 @@ elcorix.com, elcorix.de, elcorix.eu {
 
 # www.<domain> → <domain>, keeping the TLD the visitor typed.
 # {labels.1}.{labels.0} is "elcorix" + "." + "com"/"de"/"eu".
-www.elcorix.com, www.elcorix.de, www.elcorix.eu {
+www.elcorix.de, www.elcorix.com, www.elcorix.eu {
 	redir https://{labels.1}.{labels.0}{uri} permanent
 }

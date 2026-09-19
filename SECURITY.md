@@ -236,7 +236,7 @@ and load a dump into a scratch database with `pg_restore`.
 ### Monitoring
 
 An external uptime check (e.g. UptimeRobot) on
-`https://elcorix.com/api/health`: it returns 503 when Postgres is down and
+`https://elcorix.de/api/health`: it returns 503 when Postgres is down and
 also catches an expired certificate.
 
 ## Reporting a vulnerability

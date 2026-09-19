@@ -54,7 +54,7 @@ await check("GET /de/prices/ serves the prerendered shell", async () => {
   const r = await get("/de/prices/");
   eq(r.status, 200, "status");
   const html = await r.text();
-  if (!html.includes('canonical" href="https://elcorix.com/de/prices"')) throw new Error("wrong shell");
+  if (!html.includes('canonical" href="https://elcorix.de/de/prices"')) throw new Error("wrong shell");
 });
 await check("GET /uk/contact serves the Ukrainian shell", async () => {
   const html = await (await get("/uk/contact")).text();

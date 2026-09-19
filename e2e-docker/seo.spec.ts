@@ -29,9 +29,9 @@ test.describe("Prerendered route shells", () => {
       const html = await response.text();
       expect(html).toContain(`<title>${route.title}</title>`);
       expect(html).toContain(
-        `<link rel="canonical" href="https://elcorix.com${route.path}" />`,
+        `<link rel="canonical" href="https://elcorix.de${route.path}" />`,
       );
-      expect(html).toContain(`content="https://elcorix.com${route.path}"`);
+      expect(html).toContain(`content="https://elcorix.de${route.path}"`);
       expect(html.match(/<title>/g)).toHaveLength(1);
       expect(html).toContain('type="application/ld+json"');
 
@@ -39,7 +39,7 @@ test.describe("Prerendered route shells", () => {
       for (const language of ["en", "de", "uk", "ru"]) {
         const alternate = route.path.replace(/^\/[a-z]{2}/, `/${language}`);
         expect(html).toContain(
-          `<link rel="alternate" hreflang="${language}" href="https://elcorix.com${alternate}" />`,
+          `<link rel="alternate" hreflang="${language}" href="https://elcorix.de${alternate}" />`,
         );
       }
     });
@@ -48,11 +48,11 @@ test.describe("Prerendered route shells", () => {
   test("each language home page keeps its own head", async ({ request }) => {
     const german = await (await request.get("/de")).text();
     expect(german).toContain("<title>elcorix — Dauerhafte Laser-Haarentfernung in Kempten</title>");
-    expect(german).toContain('<link rel="canonical" href="https://elcorix.com/de" />');
+    expect(german).toContain('<link rel="canonical" href="https://elcorix.de/de" />');
     expect(german).toContain('<html lang="de"');
 
     const english = await (await request.get("/en")).text();
-    expect(english).toContain('<link rel="canonical" href="https://elcorix.com/en" />');
+    expect(english).toContain('<link rel="canonical" href="https://elcorix.de/en" />');
     expect(english).toContain('<html lang="en"');
   });
 
@@ -60,7 +60,7 @@ test.describe("Prerendered route shells", () => {
     // nginx falls back to dist/index.html for "/" and for anything unknown;
     // the router then redirects the visitor to their own language.
     const html = await (await request.get("/")).text();
-    expect(html).toContain('<link rel="canonical" href="https://elcorix.com/de" />');
+    expect(html).toContain('<link rel="canonical" href="https://elcorix.de/de" />');
   });
 
   test("the generated sitemap is served and lists every language", async ({ request }) => {
@@ -69,8 +69,8 @@ test.describe("Prerendered route shells", () => {
     const xml = await response.text();
     // 14 public routes (Altegio is flagged off) × 4 languages.
     expect(xml.match(/<loc>/g)).toHaveLength(56);
-    expect(xml).toContain("<loc>https://elcorix.com/uk/prices</loc>");
-    expect(xml).toContain("<loc>https://elcorix.com/ru/prices</loc>");
+    expect(xml).toContain("<loc>https://elcorix.de/uk/prices</loc>");
+    expect(xml).toContain("<loc>https://elcorix.de/ru/prices</loc>");
     expect(xml).toContain('hreflang="x-default"');
   });
 

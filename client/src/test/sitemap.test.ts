@@ -52,7 +52,7 @@ describe("generated sitemap", () => {
   it("carries the route table's changefreq and priority", () => {
     const prices = sitemap
       .split("<url>")
-      .find((block) => block.includes("<loc>https://elcorix.com/de/prices</loc>"))!;
+      .find((block) => block.includes("<loc>https://elcorix.de/de/prices</loc>"))!;
     const route = siteRoutes.find((entry) => entry.path === "/prices")!;
     expect(prices).toContain(`<changefreq>${route.changefreq}</changefreq>`);
     expect(prices).toContain(`<priority>${route.priority}</priority>`);
@@ -72,6 +72,6 @@ describe("generated sitemap", () => {
     // The sitemap is written into dist/ by the prerender plugin, so the
     // origin in robots.txt has to match the one the URLs are built from.
     const robots = readFileSync(resolve(process.cwd(), "public/robots.txt"), "utf8");
-    expect(robots).toContain("Sitemap: https://elcorix.com/sitemap.xml");
+    expect(robots).toContain("Sitemap: https://elcorix.de/sitemap.xml");
   });
 });
