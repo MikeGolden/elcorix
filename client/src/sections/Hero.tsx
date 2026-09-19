@@ -93,7 +93,8 @@ export default function Hero() {
           {...{ fetchpriority: "high" }}
           className="mt-10 aspect-[16/10] w-full rounded-panel object-cover
                      lg:absolute lg:inset-y-0 lg:right-0 lg:mt-0 lg:aspect-auto lg:h-full
-                     lg:w-1/2 lg:rounded-l-panel lg:rounded-r-none"
+                     lg:w-1/2 lg:rounded-l-panel lg:rounded-r-none
+                     lg:object-[60%_50%] xl:object-[78%_50%]"
         />
       </div>
     </section>

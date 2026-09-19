@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const firstWorkAlt = "Laser hair removal on the legs in the treatment chair";
+const firstWorkAlt = "Laser hair removal on the legs on the treatment couch";
 const secondWorkAlt = "Close-up of the handpiece during an underarm treatment";
 
 test.describe("Work gallery", () => {
