@@ -1,13 +1,55 @@
 version: 2
+
 updates:
+  # ---------------------------------------------------------------- npm ----
   - package-ecosystem: npm
-    directory: "/"
+    directory: "/" # root package.json + the client/ and server/ workspaces
     schedule:
       interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 3
+    labels: ["dependencies"]
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
     groups:
+      # Everything safe lands in one PR per week.
       minor-and-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
+      # Majors still get raised, but as ONE PR to review deliberately,
+      # not one per package.
+      majors:
+        patterns: ["*"]
+        update-types: ["major"]
+    ignore:
+      # React 19 is a deliberate migration (react-router 7 + @types churn),
+      # not a Dependabot merge. Drop these four entries when we do it.
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      # Express 5 changes routing and error semantics; hold it until the
+      # docker-smoke integration job is green again.
+      - dependency-name: "express"
+        update-types: ["version-update:semver-major"]
+
+  # ------------------------------------------------------ github actions ----
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: weekly
+      interval: monthly
+    open-pull-requests-limit: 2
+    labels: ["dependencies"]
+    commit-message:
+      prefix: "ci"
+    groups:
+      # One PR for all action bumps instead of five.
+      actions:
+        patterns: ["*"]
