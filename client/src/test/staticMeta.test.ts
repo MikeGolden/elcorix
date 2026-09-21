@@ -52,8 +52,10 @@ describe("shared title and canonical rules", () => {
 
   it("builds absolute canonicals with the language segment", () => {
     expect(canonicalUrl("de", "/")).toBe("https://elcorix.de/de");
-    expect(canonicalUrl("de", "/prices")).toBe("https://elcorix.de/de/prices");
-    expect(canonicalUrl("uk", "/prices")).toBe("https://elcorix.de/uk/prices");
+    expect(canonicalUrl("de", "/prices")).toBe("https://elcorix.de/de/preise");
+    // Percent-encoded: the URL that goes out to a crawler, a log or a
+    // shared link, not the Cyrillic the address bar shows.
+    expect(canonicalUrl("uk", "/prices")).toBe("https://elcorix.de/uk/%D1%86%D1%96%D0%BD%D0%B8");
   });
 
   it("declares every language plus x-default as hreflang alternates", () => {
@@ -61,10 +63,10 @@ describe("shared title and canonical rules", () => {
     // Google the URLs are one cluster and not near-duplicates.
     expect(alternateLinks("/prices")).toEqual([
       { hreflang: "en", href: "https://elcorix.de/en/prices" },
-      { hreflang: "de", href: "https://elcorix.de/de/prices" },
-      { hreflang: "uk", href: "https://elcorix.de/uk/prices" },
-      { hreflang: "ru", href: "https://elcorix.de/ru/prices" },
-      { hreflang: "x-default", href: "https://elcorix.de/de/prices" },
+      { hreflang: "de", href: "https://elcorix.de/de/preise" },
+      { hreflang: "uk", href: "https://elcorix.de/uk/%D1%86%D1%96%D0%BD%D0%B8" },
+      { hreflang: "ru", href: "https://elcorix.de/ru/%D1%86%D0%B5%D0%BD%D1%8B" },
+      { hreflang: "x-default", href: "https://elcorix.de/de/preise" },
     ]);
   });
 
@@ -91,29 +93,31 @@ describe("static head blocks", () => {
     expect(head.title).toBe(`${de.meta.prices.title} — elcorix`);
     expect(block).toContain(`<title>${head.title}</title>`);
     expect(block).toContain(`content="${de.meta.prices.description}"`);
-    expect(block).toContain('<link rel="canonical" href="https://elcorix.de/de/prices" />');
+    expect(block).toContain('<link rel="canonical" href="https://elcorix.de/de/preise" />');
     expect(block).toContain('content="de_DE"');
 
     const ukrainian = seoBlock(prices, "uk", BOOKING_URL);
     expect(ukrainian).toContain(`<title>${uk.meta.prices.title} — elcorix</title>`);
-    expect(ukrainian).toContain('<link rel="canonical" href="https://elcorix.de/uk/prices" />');
+    expect(ukrainian).toContain('<link rel="canonical" href="https://elcorix.de/uk/%D1%86%D1%96%D0%BD%D0%B8" />');
     expect(ukrainian).toContain('content="uk_UA"');
 
     const russian = seoBlock(prices, "ru", BOOKING_URL);
     expect(russian).toContain(`<title>${ru.meta.prices.title} — elcorix</title>`);
-    expect(russian).toContain('<link rel="canonical" href="https://elcorix.de/ru/prices" />');
+    expect(russian).toContain('<link rel="canonical" href="https://elcorix.de/ru/%D1%86%D0%B5%D0%BD%D1%8B" />');
     expect(russian).toContain('content="ru_RU"');
   });
 
   it("declares the hreflang alternates every crawler needs", () => {
     const block = seoBlock(prices, "en", BOOKING_URL);
     for (const language of supportedLanguages) {
+      // Each language points at the others by *their* slug — the whole
+      // point of hreflang once the URLs stop being identical.
       expect(block).toContain(
-        `<link rel="alternate" hreflang="${language}" href="https://elcorix.de/${language}/prices" />`,
+        `<link rel="alternate" hreflang="${language}" href="${canonicalUrl(language, "/prices")}" />`,
       );
     }
     expect(block).toContain(
-      '<link rel="alternate" hreflang="x-default" href="https://elcorix.de/de/prices" />',
+      '<link rel="alternate" hreflang="x-default" href="https://elcorix.de/de/preise" />',
     );
     // Its own locale is not repeated as an alternate.
     expect(block).toContain('<meta property="og:locale" content="en_GB" />');

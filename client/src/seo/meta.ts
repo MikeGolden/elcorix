@@ -1,11 +1,11 @@
 import { staticBusiness } from "../business";
 import {
   defaultLanguage,
-  localizedPath,
   normalizePath,
   supportedLanguages,
   type SupportedLanguage,
 } from "../i18n/routing";
+import { localizedRoutePath } from "./routePaths";
 
 /**
  * Title/canonical/locale rules shared by the two places that emit page
@@ -28,9 +28,13 @@ export function composeTitle(path: string, pageTitle: string): string {
     : `${pageTitle} — ${staticBusiness.name}`;
 }
 
-/** Absolute URL of one page in one language: https://elcorix.de/de/prices */
+/**
+ * Absolute URL of one page in one language: https://elcorix.de/de/preise.
+ * `path` is the canonical route path; the language's own slug and the
+ * percent-encoding come from `routePaths`.
+ */
 export function canonicalUrl(language: SupportedLanguage, path: string): string {
-  return `${staticBusiness.siteUrl}${localizedPath(language, path)}`;
+  return `${staticBusiness.siteUrl}${localizedRoutePath(language, path)}`;
 }
 
 export type AlternateLink = { hreflang: string; href: string };

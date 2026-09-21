@@ -72,20 +72,31 @@ export function resetRevealObserver(): void {
  * so scrolling back up never replays the movement and nothing flickers
  * while the visitor reads.
  *
- * Content must never be lost to an animation, so there are three ways out:
- * without IntersectionObserver (old browsers, jsdom) the element renders
- * revealed from the very first paint, and `prefers-reduced-motion` and
- * `@media print` flatten it in CSS — see `.reveal` in index.css.
+ * Content must never be lost to an animation, so there are four ways out:
+ * without IntersectionObserver (old browsers, jsdom) the element reveals
+ * itself on mount, `prefers-reduced-motion` and `@media print` flatten it
+ * in CSS, and a `<noscript>` rule in index.html does the same for a
+ * visitor with no JavaScript at all — see `.reveal` in index.css.
+ *
+ * The first render is always the unrevealed one, in the browser and in
+ * `entry-server.tsx` alike. It has to be: the prerendered markup is
+ * hydrated, not replaced, and React only reuses the server's DOM when the
+ * client's first render agrees with it attribute for attribute. Deciding
+ * from `typeof IntersectionObserver` — which is undefined in Node and
+ * defined in every browser — is exactly the disagreement that would throw
+ * the whole tree away and re-render it.
  */
 export function useReveal<T extends HTMLElement = HTMLElement>() {
   const ref = useRef<T>(null);
-  const [revealed, setRevealed] = useState(
-    () => typeof IntersectionObserver === "undefined",
-  );
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const element = ref.current;
     if (revealed || !element) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setRevealed(true);
+      return;
+    }
     return watch(element, () => setRevealed(true));
   }, [revealed]);
 

@@ -14,5 +14,18 @@ export default defineConfig({
     baseURL: process.env.BASE_URL ?? "http://localhost:8080",
     trace: "on-first-retry",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    {
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        // Same escape hatch as playwright.config.ts: an image that ships
+        // its own Chromium (CI, the sandbox used to verify this suite)
+        // points Playwright at it instead of downloading one.
+        ...(process.env.PW_CHROMIUM_PATH
+          ? { launchOptions: { executablePath: process.env.PW_CHROMIUM_PATH } }
+          : {}),
+      },
+    },
+  ],
 });

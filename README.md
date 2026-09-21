@@ -117,24 +117,37 @@ into **English (en)**, **German (de)**, **Ukrainian (uk)** and **Russian (ru)**.
 
 ### Language URLs
 
-Every page lives under a language segment — `/de/prices`, `/en/prices`,
-`/uk/prices`, `/ru/prices` — so each translation has its own address that can
-be linked, shared, cached and indexed, and they can declare each other as
-hreflang alternates. `client/src/i18n/routing.ts` owns that mapping (React-, i18next-
-and DOM-free, so the router, the meta tags, the prerender plugin and the
-sitemap all derive their URLs from it).
+Every page lives under a language segment **and carries that language's own
+slug** — `/de/preise`, `/en/prices`, `/uk/ціни`, `/ru/цены` — so each
+translation has an address that reads in its own language, can be linked,
+shared, cached and indexed, and declares the others as hreflang alternates.
+Two files own this: `client/src/i18n/routing.ts` maps URL ↔ language
+(React-, i18next- and DOM-free), and `client/src/seo/routes.ts` gives each
+route its slug per language, which `client/src/seo/routePaths.ts` translates
+in both directions for the router, the links, the meta tags, the prerender
+and the sitemap.
 
 - **The URL decides the language.** `LanguageLayout` in `App.tsx` calls
   `changeLanguage` for whichever segment the router matched, so a shared
-  `/uk/prices` link opens in Ukrainian whatever the visitor picked before.
-- **Anything unprefixed redirects.** `/`, an old `/prices` link and a locale
-  the site does not have (`/fr/prices`) all redirect — path, query and hash
-  intact — to `localStorage` (`i18nextLng`) → browser language → **German**.
-  The redirect uses `replace`, so it never lands in the back-button history.
-- **Links go through `LocalizedLink`**, not `Link`: a bare `<Link to="/prices">`
-  would drop the segment and bounce the visitor through the redirect. Anchor
-  links use `useAnchorHref()`, which returns `#prices` on the home page and
-  `/de#prices` elsewhere.
+  `/uk/ціни` link opens in Ukrainian whatever the visitor picked before.
+- **Encoded or decoded.** Routes and files use the real slug (`/uk/ціни`) —
+  React Router decodes the pathname before matching, and so does nginx
+  before `try_files`. Everything that goes out into the world — links,
+  canonicals, hreflang, the sitemap — is percent-encoded.
+- **The bare root is a page, not a redirect.** `/` renders the German home
+  page (it is prerendered and hydrated, so it has to) and `RootEntry` moves
+  the visitor to their own language after mount: `localStorage`
+  (`i18nextLng`) → browser language → **German**. An unprefixed *deep* path
+  (`/prices`) is 301'd by nginx; a locale the site does not have
+  (`/fr/prices`) is redirected in the app, path, query and hash intact.
+- **Every URL the site ever served still works.** `client/src/seo/redirects.ts`
+  generates `dist/_redirects.map` — the old English slugs, the unprefixed
+  paths and `/privacy` — and nginx answers them with a 301.
+- **Links go through `LocalizedLink`**, not `Link`: it takes the *canonical*
+  path (`to="/prices"`) and renders the current language's slug. A bare
+  `<Link to="/prices">` would drop the segment and bounce the visitor through
+  a redirect. Anchor links use `useAnchorHref()`, which returns `#prices` on
+  the home page and `/de#prices` elsewhere.
 - `<html lang>` follows the active language; the choice is still persisted to
   `localStorage`, but only to pick the target for the next unprefixed visit.
 - Missing keys fall back to **English**.
@@ -155,7 +168,9 @@ the fallback), then mirror it in `de`, `uk` and `ru`. A unit test
 the full key set, register it in `resources` in `client/src/i18n/index.ts` and
 in `supportedLanguages` in `client/src/i18n/routing.ts` (that one list gives it
 a URL segment, a route tree, a prerendered shell per route, hreflang alternates
-and sitemap entries), add its `og:locale` to `client/src/seo/meta.ts`, add an
+and sitemap entries), give every route in `client/src/seo/routes.ts` a slug in
+it (the types will not compile until you do), add its `og:locale` to
+`client/src/seo/meta.ts`, add an
 entry (label + icon component) to `LanguageSwitcher`, and extend the
 completeness test. If the language has a server-side auto-reply, add it to
 `SUPPORTED_LANGS` and the `confirmation` map in `server/src/routes/contact.ts`
@@ -269,21 +284,33 @@ on Altegio's hosted pages — card data never touches this codebase.
 
 ## SEO
 
-The site is a client-rendered SPA, so the `<head>` is written twice: once at
-build time for crawlers, and again at runtime for the visitor's language.
+`npm run build -w client` is three steps, and the last two exist for
+crawlers: the client build, an SSR build of `src/entry-server.tsx`, and
+`scripts/prerender.mjs`, which renders every page into its shell. What nginx
+serves is a complete HTML document per URL — head and body — not a mount
+point.
 
-- **Build time** — `client/vite/seoPrerender.ts` injects a marked block into
+- **The head** — `client/vite/seoPrerender.ts` injects a marked block into
   `index.html` (title, description, canonical, hreflang, Open Graph, and the
   `schema.org/BeautySalon` JSON-LD) and writes one shell per language per
-  route into `dist/`: `dist/de/prices/index.html`, `dist/en/prices/index.html`,
-  … 27 in total, each in its own language with `<html lang>` to match. nginx
-  serves them with `try_files $uri $uri/index.html /index.html`. Without
-  this, everything that does not run JavaScript — every social scraper —
-  saw the home page's head whatever URL it asked for. Only the head is
-  prerendered; the body is still React's.
-- The unprefixed `dist/index.html` that nginx falls back to for `/` and for
-  unknown URLs carries the German home head and canonicalises to `/de`; the
-  router then redirects the visitor to their own language.
+  route into `dist/`: `dist/de/preise/index.html`, `dist/uk/ціни/index.html`,
+  … 56 in total, each in its own language with `<html lang>` to match.
+  Without it, everything that does not run JavaScript saw the home page's
+  head whatever URL it asked for.
+- **The body** — `scripts/prerender.mjs` renders each of those 58 documents
+  (56 shells, `index.html` and `404.html`) with `renderToString` and drops
+  the markup into `<div id="root">`. `main.tsx` then *hydrates* rather than
+  re-rendering, which is why `Reveal` always starts unrevealed and
+  `ConsentProvider` reads `localStorage` in an effect: the browser's first
+  render has to match the prerendered markup exactly, or React throws it
+  away. `e2e-docker/hydration.spec.ts` is what proves it still does.
+- **Unknown URLs get a real 404.** Every served URL has a file, so
+  `try_files … =404` plus `error_page 404 /404.html` answers anything else
+  with `dist/404.html`: the same app document, `noindex`, no canonical. It
+  used to fall back to `index.html` with a 200, which made every typo an
+  indexable copy of the home page.
+- The unprefixed `dist/index.html` that nginx serves for `/` carries the
+  German home page and canonicalises to `/de`.
 - **Runtime** — `client/src/seo/usePageMeta.ts` rewrites those same tags for
   the route and language the router landed on. The title, canonical and
   alternate rules are shared with the build step (`client/src/seo/meta.ts`)
@@ -296,8 +323,8 @@ build time for crawlers, and again at runtime for the visitor's language.
 - `client/src/seo/routes.ts` is the route table the router, the prerender,
   the sitemap and the tests all read.
 - `sitemap.xml` is **generated**, not committed: `client/src/seo/sitemap.ts`
-  builds it from the route table × the language list (32 URLs with their
-  alternates), the prerender plugin writes it into `dist/` and serves it from
+  builds it from the route table × the language list (56 URLs with their
+  alternates, each at its own slug), the prerender plugin writes it into `dist/` and serves it from
   the dev server, and `src/test/sitemap.test.ts` asserts the output.
 - `robots.txt`, SVG favicon and apple-touch-icon in `client/public/` — keep
   the origin there in sync with `siteUrl` in `client/src/business.ts`.

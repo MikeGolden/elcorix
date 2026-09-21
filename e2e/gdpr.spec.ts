@@ -82,7 +82,7 @@ test.describe("GDPR consent", () => {
     await expect(form.getByRole("checkbox")).toHaveCount(0);
     await expect(page.getByText("Please do not send health data or treatment photos through this form.")).toBeVisible();
     await form.getByRole("link", { name: "privacy policy" }).click();
-    await expect(page).toHaveURL(/\/en\/datenschutz$/);
+    await expect(page).toHaveURL(/\/en\/privacy$/);
     await expect(
       page.getByRole("heading", { name: "6. Storage and transmission of form requests" }),
     ).toBeVisible();

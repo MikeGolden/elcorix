@@ -4,12 +4,13 @@ import { loadEnv, type Plugin, type ResolvedConfig } from "vite";
 import { altegioBookingUrlFor, sanitizeCompanyId } from "../src/business";
 import {
   defaultLanguage,
-  localizedPath,
   supportedLanguages,
   type SupportedLanguage,
 } from "../src/i18n/routing";
+import { localizedRouteFilePath } from "../src/seo/routePaths";
+import { redirectMap } from "../src/seo/redirects";
 import { featuresFrom, type Features } from "../src/features";
-import { publicRoutes, siteRoutes, type SiteRoute } from "../src/seo/routes";
+import { notFoundRoute, publicRoutes, siteRoutes, type SiteRoute } from "../src/seo/routes";
 import { buildSitemap } from "../src/seo/sitemap";
 import { injectSeoBlock, replaceSeoBlock, seoBlock } from "../src/seo/staticHead";
 
@@ -42,6 +43,15 @@ import { injectSeoBlock, replaceSeoBlock, seoBlock } from "../src/seo/staticHead
  *  3. `dist/sitemap.xml` is generated from the same route list, so the
  *     URLs and their hreflang alternates cannot drift from the router —
  *     including when a feature flag hides one of the routes.
+ *  4. `dist/404.html` — the body of nginx's 404 response, marked
+ *     `noindex` and carrying neither a canonical nor an hreflang set.
+ *     Before it existed, every unknown URL was answered with index.html
+ *     and a 200, so a typo, an old link or a scanner's guess was a
+ *     perfectly indexable duplicate of the home page.
+ *  5. `dist/_redirects.map` — an nginx `map` of every URL the site used to
+ *     serve to the one it serves now, so the slug localization costs no
+ *     inbound link. Generated from the same table for the same reason as
+ *     the sitemap: a hand-kept list would be wrong within a month.
  *
  * The shells carry no rendered body: React still owns everything below
  * <head>, so no hydration, LCP or consent behaviour changes. Full SSG was
@@ -49,9 +59,14 @@ import { injectSeoBlock, replaceSeoBlock, seoBlock } from "../src/seo/staticHead
  * only applies to crawlers which already execute JavaScript.
  */
 
-/** `dist/de/index.html`, `dist/en/prices/index.html`. */
+/**
+ * `dist/de/index.html`, `dist/de/preise/index.html`, `dist/uk/ціни/index.html`.
+ *
+ * Decoded, not percent-encoded: nginx decodes the request URI before
+ * `try_files`, so the directory on disk has to be the real UTF-8 slug.
+ */
 function shellPath(outDir: string, language: SupportedLanguage, routePath: string): string {
-  return join(outDir, localizedPath(language, routePath).replace(/^\//, ""), "index.html");
+  return join(outDir, localizedRouteFilePath(language, routePath).replace(/^\//, ""), "index.html");
 }
 
 function setHtmlLang(html: string, language: SupportedLanguage): string {
@@ -106,6 +121,10 @@ export function seoPrerender(): Plugin {
 
     async closeBundle() {
       if (config.command !== "build") return;
+      // `npm run build` runs a second, SSR build for scripts/prerender.mjs
+      // (src/entry-server.tsx). It has no index.html and no shells of its
+      // own — everything below belongs to the client build only.
+      if (config.build.ssr) return;
 
       // resolve, not join: an --outDir outside the project is absolute,
       // and join would nest it under the project root.
@@ -133,10 +152,24 @@ export function seoPrerender(): Plugin {
         }
       }
 
+      // The 404 body: default language, no canonical, no alternates.
+      await writeFile(
+        join(outDir, "404.html"),
+        setHtmlLang(
+          replaceSeoBlock(
+            html,
+            seoBlock(notFoundRoute, defaultLanguage, bookingUrl, { noindex: true }),
+          ),
+          defaultLanguage,
+        ),
+        "utf8",
+      );
+
       await writeFile(join(outDir, "sitemap.xml"), sitemap(), "utf8");
+      await writeFile(join(outDir, "_redirects.map"), redirectMap(routes), "utf8");
 
       config.logger.info(
-        `seo-prerender: wrote ${written} route shells (${supportedLanguages.length} languages × ${routes.length} routes) and sitemap.xml`,
+        `seo-prerender: wrote ${written} route shells (${supportedLanguages.length} languages × ${routes.length} routes), 404.html, sitemap.xml and _redirects.map`,
       );
     },
   };

@@ -1,7 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { defaultLanguage, localizedPath } from "../i18n/routing";
+import { defaultLanguage } from "../i18n/routing";
+import { localizedRoutePath } from "../seo/routePaths";
 import {
   cachedLegalDocuments,
   loadLegalDocuments,
@@ -176,7 +177,7 @@ export default function LegalDocument({
         >
           {t("legalDocs.translationNote")}{" "}
           <Link
-            to={localizedPath(defaultLanguage, legalDocumentPaths[document])}
+            to={localizedRoutePath(defaultLanguage, legalDocumentPaths[document])}
             lang={defaultLanguage}
             className={linkClass}
           >

@@ -5,10 +5,10 @@ import { anchorHref } from "../anchors";
 import {
   defaultLanguage,
   isSupportedLanguage,
-  localizedPath,
   splitLanguagePath,
   type SupportedLanguage,
 } from "./routing";
+import { canonicalPathFor, decodePath, localizedRoutePath } from "../seo/routePaths";
 
 /**
  * The language the current URL is under.
@@ -26,22 +26,32 @@ export function useCurrentLanguage(): SupportedLanguage {
   return isSupportedLanguage(i18n.resolvedLanguage) ? i18n.resolvedLanguage : defaultLanguage;
 }
 
-/** The route path without its language segment: "/prices", "/" on home. */
+/**
+ * The *canonical* route path of the current URL — "/prices" on
+ * `/de/preise` as much as on `/uk/ціни`, "/" on home. This is what the
+ * meta tags are keyed by, so every translation of a page agrees on which
+ * page it is.
+ *
+ * A URL that matches no route (the 404) keeps its own path, decoded.
+ */
 export function useUnlocalizedPath(): string {
   const { pathname } = useLocation();
-  return splitLanguagePath(pathname)?.path ?? pathname;
+  const here = splitLanguagePath(pathname);
+  if (!here) return decodePath(pathname);
+  return canonicalPathFor(here.language, here.path) ?? decodePath(here.path);
 }
 
 /**
- * Prefixes an app path with the current language: `"/prices"` →
- * `"/de/prices"`. Anything that is not an app path — an anchor, a mailto:,
- * an absolute URL, a static file — is passed through untouched, so this is
+ * Turns a canonical app path into the current language's URL: `"/prices"`
+ * → `"/de/preise"`, `"/uk/%D1%86%D1%96%D0%BD%D0%B8"` for a Ukrainian
+ * visitor. Anything that is not an app path — an anchor, a mailto:, an
+ * absolute URL, a static file — is passed through untouched, so this is
  * safe to apply to any `to` value.
  */
 export function useLocalizedPath(): (path: string) => string {
   const language = useCurrentLanguage();
   return useCallback(
-    (path: string) => (path.startsWith("/") ? localizedPath(language, path) : path),
+    (path: string) => (path.startsWith("/") ? localizedRoutePath(language, path) : path),
     [language],
   );
 }
