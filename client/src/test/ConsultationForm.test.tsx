@@ -34,7 +34,7 @@ describe("ConsultationForm", () => {
     expect(optIn).not.toBeChecked();
     expect(screen.getByRole("link", { name: /privacy policy/i })).toHaveAttribute(
       "href",
-      "/en/datenschutz",
+      "/en/privacy",
     );
   });
 

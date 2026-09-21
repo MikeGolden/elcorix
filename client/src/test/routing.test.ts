@@ -122,7 +122,10 @@ describe("language detection", () => {
   it("lets the URL override everything when it names a language", () => {
     window.localStorage.setItem("i18nextLng", "uk");
     expect(languageFromLocation("/en/prices")).toBe("en");
-    // …and falls back to detection when it does not.
-    expect(languageFromLocation("/prices")).toBe("uk");
+    // …and falls back to the default — NOT to the stored choice — when it
+    // does not. An unprefixed URL is prerendered in German and hydrated,
+    // so the first render has to be German whatever this visitor prefers;
+    // RootEntry applies their language a tick later. See App.tsx.
+    expect(languageFromLocation("/prices")).toBe("de");
   });
 });

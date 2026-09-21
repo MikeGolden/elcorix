@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -49,8 +50,23 @@ type ConsentContextValue = {
 const ConsentContext = createContext<ConsentContextValue | null>(null);
 
 export function ConsentProvider({ children }: { children: ReactNode }) {
-  const [consent, setConsent] = useState<ConsentState | null>(readStoredConsent);
+  const [consent, setConsent] = useState<ConsentState | null>(null);
   const [reopened, setReopened] = useState(false);
+  /**
+   * Whether the stored decision has been read yet. The first render must
+   * not read it: the page is prerendered in Node, where there is no
+   * localStorage, and React only hydrates markup its first client render
+   * agrees with — a returning visitor would otherwise render "no banner"
+   * over a server document that has one. So the banner stays closed until
+   * the effect below has run, which is also the honest state: we do not
+   * know what was decided until we have looked.
+   */
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setConsent(readStoredConsent());
+    setLoaded(true);
+  }, []);
 
   const decide = useCallback((booking: boolean) => {
     const next: ConsentState = {
@@ -72,11 +88,11 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
   const value = useMemo<ConsentContextValue>(
     () => ({
       consent,
-      bannerOpen: consent === null || reopened,
+      bannerOpen: (loaded && consent === null) || reopened,
       decide,
       openSettings,
     }),
-    [consent, reopened, decide, openSettings],
+    [consent, loaded, reopened, decide, openSettings],
   );
 
   return <ConsentContext.Provider value={value}>{children}</ConsentContext.Provider>;

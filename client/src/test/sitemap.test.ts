@@ -52,7 +52,7 @@ describe("generated sitemap", () => {
   it("carries the route table's changefreq and priority", () => {
     const prices = sitemap
       .split("<url>")
-      .find((block) => block.includes("<loc>https://elcorix.de/de/prices</loc>"))!;
+      .find((block) => block.includes("<loc>https://elcorix.de/de/preise</loc>"))!;
     const route = siteRoutes.find((entry) => entry.path === "/prices")!;
     expect(prices).toContain(`<changefreq>${route.changefreq}</changefreq>`);
     expect(prices).toContain(`<priority>${route.priority}</priority>`);

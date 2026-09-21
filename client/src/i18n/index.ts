@@ -9,6 +9,7 @@ import {
   isSupportedLanguage,
   languageFromLocation,
   rememberLanguage,
+  splitLanguagePath,
   supportedLanguages,
   type SupportedLanguage,
 } from "./routing";
@@ -59,18 +60,34 @@ export function createI18nInstance(
 }
 
 /**
- * Seeded from the URL so the very first paint is already in the right
- * language — the alternative is a frame of German on `/en/prices`.
+ * The browser's instance, seeded from the URL so the very first paint is
+ * already in the right language — the alternative is a frame of German on
+ * `/en/prices`.
+ *
+ * The DOM is touched behind `typeof window` guards so that this module can
+ * be imported in Node: `src/entry-server.tsx` renders the same tree at
+ * build time and needs `createI18nInstance`, one instance per language,
+ * with no document to seed from.
  */
-const i18n = createI18nInstance(true, languageFromLocation(window.location.pathname));
+const pathname = typeof window === "undefined" ? "/" : window.location.pathname;
 
-function syncDocumentLanguage() {
+/** Whether the URL itself names a language, or we are falling back. */
+const urlNamesLanguage = splitLanguagePath(pathname)?.language !== undefined;
+
+const i18n = createI18nInstance(true, languageFromLocation(pathname));
+
+function syncDocumentLanguage(remember: boolean) {
+  if (typeof document === "undefined") return;
   const language = i18n.resolvedLanguage ?? defaultLanguage;
   document.documentElement.lang = language;
-  if (isSupportedLanguage(language)) rememberLanguage(language);
+  if (remember && isSupportedLanguage(language)) rememberLanguage(language);
 }
 
-syncDocumentLanguage();
-i18n.on("languageChanged", syncDocumentLanguage);
+// The seed is only worth storing when the URL named it. On an unprefixed
+// URL the seed is the *default* language, not a choice the visitor made —
+// storing it would quietly make every first visit German for good, and the
+// redirect that follows would then read it back as a preference.
+syncDocumentLanguage(urlNamesLanguage);
+i18n.on("languageChanged", () => syncDocumentLanguage(true));
 
 export default i18n;

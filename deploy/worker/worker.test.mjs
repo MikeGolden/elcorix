@@ -7,7 +7,9 @@ const ROOT = new URL("../cloudflare", import.meta.url).pathname;
 
 const ASSETS = {
   async fetch(req) {
-    const p = new URL(req.url).pathname;
+    // Cloudflare hands the worker a decoded path; the Cyrillic slugs
+    // (/uk/ціни) arrive percent-encoded from the client.
+    const p = decodeURIComponent(new URL(req.url).pathname);
     for (const cand of [p, join(p, "index.html")]) {
       const f = join(ROOT, cand);
       if (existsSync(f) && !f.endsWith("/")) {
@@ -50,23 +52,31 @@ await check("GET / serves the root shell", async () => {
   eq(r.headers.get("x-content-type-options"), "nosniff", "nosniff");
   if (!(await r.text()).includes("elcorix")) throw new Error("no body");
 });
-await check("GET /de/prices/ serves the prerendered shell", async () => {
-  const r = await get("/de/prices/");
+await check("GET /de/preise/ serves the prerendered shell", async () => {
+  const r = await get("/de/preise/");
   eq(r.status, 200, "status");
   const html = await r.text();
-  if (!html.includes('canonical" href="https://elcorix.de/de/prices"')) throw new Error("wrong shell");
+  if (!html.includes('canonical" href="https://elcorix.de/de/preise"')) throw new Error("wrong shell");
 });
-await check("GET /uk/contact serves the Ukrainian shell", async () => {
-  const html = await (await get("/uk/contact")).text();
+await check("GET /uk/контакти serves the Ukrainian shell", async () => {
+  const html = await (await get("/uk/" + encodeURIComponent("контакти"))).text();
   if (!html.includes('<html lang="uk"')) throw new Error("wrong lang");
 });
-await check("unknown URL falls back to the SPA with 200", async () => {
+await check("unknown URL answers 404 with the noindex document", async () => {
   const r = await get("/de/does-not-exist");
-  eq(r.status, 200, "status");
-  if (!(await r.text()).includes("/assets/")) throw new Error("not the app shell");
+  eq(r.status, 404, "status");
+  const html = await r.text();
+  if (!html.includes("/assets/")) throw new Error("not the app document");
+  if (!html.includes('name="robots"')) throw new Error("not marked noindex");
 });
+await check("the redirect map is not served", async () =>
+  eq((await get("/_redirects.map")).status, 404, "status"));
 await check("hashed assets are immutable", async () => {
-  const r = await get("/assets/index-d0eEefE2.js");
+  // Read the name out of the build rather than pinning a hash that
+  // changes with every bundle.
+  const shell = await readFile(join(ROOT, "index.html"), "utf8");
+  const asset = shell.match(/\/assets\/[^"]+\.js/)[0];
+  const r = await get(asset);
   eq(r.status, 200, "status");
   eq(r.headers.get("cache-control"), "public, max-age=31536000, immutable", "cache");
 });
