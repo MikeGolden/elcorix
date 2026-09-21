@@ -34,7 +34,9 @@ test.describe("Docker stack smoke", () => {
     await page.getByRole("button", { name: /only necessary|nur notwendige/i }).click();
     await page.getByLabel(/^name$/i).fill("Smoke Test");
     await page.getByLabel(/e-mail/i).fill("smoke@example.com");
-    await page.getByLabel(/message|nachricht/i).fill("Automated smoke test message.");
+    await page
+      .getByRole("textbox", { name: /^(message|nachricht)$/i })
+      .fill("Automated smoke test message.");
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: /send message|nachricht senden/i }).click();
     await expect(page.getByRole("status")).toBeVisible();
