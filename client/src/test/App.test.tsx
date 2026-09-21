@@ -7,6 +7,13 @@ import { ConsentProvider } from "../consent/ConsentContext";
 import { navAnchors } from "../content";
 import en from "../i18n/locales/en/common.json";
 
+/**
+ * The URL a browser produces for a localized slug: the Ukrainian and
+ * Russian ones are Cyrillic, and `window.location.pathname` — which is
+ * what the router matches against — is always percent-encoded.
+ */
+const url = (path: string) => path.split("/").map(encodeURIComponent).join("/");
+
 /** Resolve a dotted translation key against the English resource. */
 function label(key: string): string {
   return key
@@ -176,7 +183,7 @@ describe("App", () => {
     );
     expect(within(footer).getByRole("link", { name: "Privacy policy" })).toHaveAttribute(
       "href",
-      "/en/datenschutz",
+      "/en/privacy",
     );
     expect(within(footer).getByRole("link", { name: "Terms" })).toHaveAttribute(
       "href",
@@ -216,8 +223,8 @@ describe("App", () => {
 });
 
 describe("contract documents (AGB, Terminbedingungen, Paketbedingungen)", () => {
-  it("shows the binding German AGB on /de/terms, with no translation note", async () => {
-    renderAt("/de/terms");
+  it("shows the binding German AGB on /de/agb, with no translation note", async () => {
+    renderAt("/de/agb");
     expect(
       screen.getByRole("heading", { level: 1, name: "Allgemeine Geschäftsbedingungen (AGB)" }),
     ).toBeInTheDocument();
@@ -227,11 +234,11 @@ describe("contract documents (AGB, Terminbedingungen, Paketbedingungen)", () => 
     const related = screen.getByRole("navigation", { name: "Weitere Bedingungen" });
     expect(within(related).getByRole("link", { name: "Terminbedingungen" })).toHaveAttribute(
       "href",
-      "/de/appointment-terms",
+      "/de/terminbedingungen",
     );
     expect(within(related).getByRole("link", { name: "Paketbedingungen" })).toHaveAttribute(
       "href",
-      "/de/package-terms",
+      "/de/paketbedingungen",
     );
   });
 
@@ -247,12 +254,12 @@ describe("contract documents (AGB, Terminbedingungen, Paketbedingungen)", () => 
     expect(note).toHaveTextContent(/only the german version is legally binding/i);
     expect(within(note).getByRole("link", { name: "Read the German version" })).toHaveAttribute(
       "href",
-      "/de/package-terms",
+      "/de/paketbedingungen",
     );
   });
 
   it("serves the appointment terms in Ukrainian", async () => {
-    renderAt("/uk/appointment-terms");
+    renderAt(url("/uk/умови-запису"));
     expect(screen.getByRole("heading", { level: 1, name: "Умови запису" })).toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: "3. Пізнє скасування" })).toBeInTheDocument();
   });
@@ -273,7 +280,7 @@ describe("language routing", () => {
   it("honours the language stored from an earlier visit", () => {
     window.localStorage.setItem("i18nextLng", "uk");
     renderAt("/contact");
-    expect(currentPath()).toBe("/uk/contact");
+    expect(currentPath()).toBe(url("/uk/контакти"));
   });
 
   it("drops a language the site does not have instead of 404ing", () => {
@@ -285,8 +292,8 @@ describe("language routing", () => {
 
   it("renders the page in the language its URL names, whatever is stored", () => {
     window.localStorage.setItem("i18nextLng", "en");
-    renderAt("/de/prices");
-    expect(currentPath()).toBe("/de/prices");
+    renderAt("/de/preise");
+    expect(currentPath()).toBe("/de/preise");
     expect(
       screen.getByRole("heading", { level: 1, name: "Preisliste" }),
     ).toBeInTheDocument();
@@ -314,21 +321,39 @@ describe("language routing", () => {
     ).toBeInTheDocument();
   });
 
-  it("switching language moves to the same page under the new segment", async () => {
+  it("serves a Cyrillic slug whether the URL arrives encoded or not", () => {
+    // A browser percent-encodes the path, a pasted link or a curl may not.
+    renderAt(url("/uk/ціни"));
+    expect(screen.getByRole("heading", { level: 1, name: "Прайс-лист" })).toBeInTheDocument();
+    renderAt("/uk/ціни");
+    expect(screen.getAllByRole("heading", { level: 1, name: "Прайс-лист" })).toHaveLength(2);
+  });
+
+  it("keeps the old English slug working under every language", async () => {
+    // nginx 301s these; in the app they are a client-side replace, so an
+    // old link never lands on the 404 page.
+    const lastPath = () => screen.getAllByTestId("location").at(-1)?.textContent;
+    renderAt("/de/prices");
+    await waitFor(() => expect(lastPath()).toBe("/de/preise"));
+    renderAt("/ru/prices");
+    await waitFor(() => expect(lastPath()).toBe(url("/ru/цены")));
+  });
+
+  it("translates the slug when the language segment changes", async () => {
     renderAt("/prices");
     const user = userEvent.setup();
     await user.click(screen.getByTestId("language-switcher"));
     await user.click(screen.getByRole("option", { name: "Українська" }));
-    expect(currentPath()).toBe("/uk/prices");
+    expect(currentPath()).toBe(url("/uk/ціни"));
     expect(document.documentElement.lang).toBe("uk");
   });
 
   it("switches on to Russian without going through the redirect", async () => {
-    renderAt("/uk/prices");
+    renderAt(url("/uk/ціни"));
     const user = userEvent.setup();
     await user.click(screen.getByTestId("language-switcher"));
     await user.click(screen.getByRole("option", { name: "Русский" }));
-    expect(currentPath()).toBe("/ru/prices");
+    expect(currentPath()).toBe(url("/ru/цены"));
     expect(document.documentElement.lang).toBe("ru");
     expect(
       screen.getByRole("heading", { level: 1, name: "Прайс-лист" }),

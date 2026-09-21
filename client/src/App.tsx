@@ -1,5 +1,5 @@
 import { useEffect, type ReactElement } from "react";
-import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -8,12 +8,12 @@ import ScrollToTop from "./components/ScrollToTop";
 import { ConsentProvider } from "./consent/ConsentContext";
 import {
   detectPreferredLanguage,
-  localizedPath,
   stripForeignLanguagePrefix,
   supportedLanguages,
   type SupportedLanguage,
 } from "./i18n/routing";
 import { publicRoutes, type MetaKey } from "./seo/routes";
+import { legacyRedirects, localizedRoutePath } from "./seo/routePaths";
 import { features } from "./config";
 import HomePage from "./pages/HomePage";
 import PricesPage from "./pages/PricesPage";
@@ -71,7 +71,33 @@ function LanguageLayout({ language }: { language: SupportedLanguage }) {
 }
 
 /**
- * Everything that is not under a language segment: `/`, old unprefixed
+ * The bare root.
+ *
+ * It renders the default language's home page rather than redirecting
+ * straight away, and moves the visitor to their own language from an
+ * effect. Two reasons, and they are the same reason: `/` is the URL every
+ * inbound link and every crawler starts from, so it has to be a complete
+ * page in the served HTML — a `<Navigate>` renders nothing, and nothing is
+ * what a crawler that does not run JavaScript would have got. Doing the
+ * redirect after mount also keeps the first client render identical to the
+ * prerendered one, which is what lets React adopt the markup instead of
+ * throwing it away.
+ */
+function RootEntry() {
+  const navigate = useNavigate();
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const language = detectPreferredLanguage();
+    void i18n.changeLanguage(language);
+    navigate(localizedRoutePath(language, "/"), { replace: true });
+  }, [i18n, navigate]);
+
+  return pages.home;
+}
+
+/**
+ * Everything else that is not under a language segment: old unprefixed
  * links like `/prices`, and locales the site does not have (`/fr/prices`).
  * They redirect to the visitor's language — stored choice, then browser
  * language, then German — keeping the rest of the path, the query and the
@@ -79,7 +105,11 @@ function LanguageLayout({ language }: { language: SupportedLanguage }) {
  */
 function LanguageRedirect() {
   const { pathname, search, hash } = useLocation();
-  const target = localizedPath(
+  // The path that survives here is a canonical one (`/prices`), so it is
+  // translated into the target language's slug in the same hop — an old
+  // `/prices` link lands on `/uk/ціни`, not on `/uk/prices` and then a
+  // second redirect.
+  const target = localizedRoutePath(
     detectPreferredLanguage(),
     stripForeignLanguagePrefix(pathname),
   );
@@ -109,24 +139,28 @@ export default function App() {
                 element={<LanguageLayout language={language} />}
               >
                 {routes.map((route) =>
-                  route.path === "/" ? (
+                  route.slugs[language] === "/" ? (
                     <Route key={route.metaKey} index element={pages[route.metaKey]} />
                   ) : (
                     <Route
                       key={route.metaKey}
-                      path={route.path.slice(1)}
+                      path={route.slugs[language].slice(1)}
                       element={pages[route.metaKey]}
                     />
                   ),
                 )}
-                {/* The privacy policy used to live at /privacy; keep old links working. */}
-                <Route
-                  path="privacy"
-                  element={<Navigate to={`/${language}/datenschutz`} replace />}
-                />
+                {/*
+                  The English slugs every language used to share, and the
+                  pre-rename /privacy. nginx 301s these; this is the
+                  in-app safety net for a client-side navigation.
+                */}
+                {legacyRedirects(language, routes).map(({ from, to }) => (
+                  <Route key={`legacy:${from}`} path={from} element={<Navigate to={to} replace />} />
+                ))}
                 <Route path="*" element={pages.notFound} />
               </Route>
             ))}
+            <Route path="/" element={<RootEntry />} />
             <Route path="*" element={<LanguageRedirect />} />
           </Routes>
         </main>

@@ -28,7 +28,7 @@ test.describe("Deep-link routes", () => {
     ).toBeVisible();
     await expect(page.getByRole("heading", { name: "9. Liability" })).toBeVisible();
     await page.getByRole("link", { name: "Read the German version" }).click();
-    await expect(page).toHaveURL(/\/de\/terms$/);
+    await expect(page).toHaveURL(/\/de\/agb$/);
     await expect(page.getByRole("heading", { name: "9. Haftung" })).toBeVisible();
     await page.goto("/en/package-terms");
     await expect(
@@ -49,7 +49,8 @@ test.describe("Deep-link routes", () => {
     await expect(cards).toHaveCount(4);
 
     await cards.nth(3).click();
-    await expect(page).toHaveURL(/\/ru\/for-whom\/beard-contour$/);
+    // Decoded for readability: page.url() is percent-encoded Cyrillic.
+    expect(decodeURIComponent(page.url())).toMatch(/\/ru\/для-кого\/контур-бороды$/);
     await expect(
       page.getByRole("heading", {
         level: 1,
@@ -60,7 +61,7 @@ test.describe("Deep-link routes", () => {
 
     // The overview article carries all six situations.
     await page.getByRole("link", { name: /Когда лазерная эпиляция/ }).click();
-    await expect(page).toHaveURL(/\/ru\/for-whom\/laser-makes-life-easier$/);
+    expect(decodeURIComponent(page.url())).toMatch(/\/ru\/для-кого\/лазер-облегчает-жизнь$/);
     await expect(page.locator("main").getByRole("heading", { level: 2 })).toHaveCount(7); // 6 situations + "others"
 
     // Back to the section on the landing page.

@@ -77,24 +77,38 @@ export default {
  * ------------------------------------------------------------------ */
 
 /**
- * Serve the built site. Pages already resolves `/de/prices/` to the
- * prerendered `de/prices/index.html`; the only thing missing is the SPA
- * fallback for URLs that have no shell (deep links the router knows but the
- * prerenderer does not), which the nginx config handles with a final
- * `/index.html`. Unknown URLs therefore render the app, exactly as they do
- * on the Docker deployment.
+ * Serve the built site. Pages resolves `/de/preise/` to the prerendered
+ * `de/preise/index.html` on its own; what is added here is the answer for
+ * a URL that has no shell — `dist/404.html`, with a real 404 status.
+ *
+ * It used to be `/index.html` with a 200, which made every typo and every
+ * scanner's guess an indexable copy of the home page. 404.html is the same
+ * app document, so a visitor still lands on the site's own 404 page, but
+ * the status and the `noindex` in its head tell a crawler the truth.
+ *
+ * NOT mirrored here: the legacy-URL 301s that docker/nginx.conf builds
+ * from `_redirects.map` (client/src/seo/redirects.ts). On this deployment
+ * an old URL reaches 404.html and the router redirects it in the browser —
+ * right for a visitor, a dead end for a crawler. Worth closing if Pages
+ * ever becomes the live deployment again; see the map file for the list.
  */
 async function serveAsset(request, env, ctx) {
+  // Build output, not content — and the one asset whose 404 must not be
+  // dressed up as a page.
+  if (new URL(request.url).pathname === "/_redirects.map") {
+    return withSiteHeaders(new Response("Not found", { status: 404 }), "/_redirects.map");
+  }
+
   let response = await env.ASSETS.fetch(request);
 
   if (response.status === 404 && request.method === "GET") {
     const url = new URL(request.url);
-    url.pathname = "/index.html";
+    url.pathname = "/404.html";
     url.search = "";
     const fallback = await env.ASSETS.fetch(new Request(url.toString(), request));
     if (fallback.ok) {
       response = new Response(fallback.body, {
-        status: 200,
+        status: 404,
         headers: fallback.headers,
       });
     }

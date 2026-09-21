@@ -3,6 +3,9 @@ node_modules/
 
 # Build output
 dist/
+# The SSR bundle scripts/prerender.mjs loads — build output like dist/,
+# never shipped to a browser.
+dist-ssr/
 *.tsbuildinfo
 
 # Test artifacts

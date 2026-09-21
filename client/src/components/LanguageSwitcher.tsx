@@ -7,6 +7,7 @@ import {
   stripForeignLanguagePrefix,
   type SupportedLanguage,
 } from "../i18n/routing";
+import { canonicalPathFor, localizedRoutePath } from "../seo/routePaths";
 import { useCurrentLanguage } from "../i18n/useLanguage";
 
 type LanguageOption = {
@@ -64,9 +65,16 @@ export default function LanguageSwitcher() {
    * "back" should undo a language switch like any other navigation.
    */
   function select(code: SupportedLanguage) {
-    const path = splitLanguagePath(pathname)?.path ?? stripForeignLanguagePrefix(pathname);
+    const here = splitLanguagePath(pathname);
+    const canonical = here && canonicalPathFor(here.language, here.path);
+    // A known page moves to that page's slug in the new language; anything
+    // else (the 404, a hand-typed path) keeps its path under the new
+    // segment rather than silently sending the visitor home.
+    const target = canonical
+      ? localizedRoutePath(code, canonical)
+      : localizedPath(code, here?.path ?? stripForeignLanguagePrefix(pathname));
     void i18n.changeLanguage(code);
-    navigate(`${localizedPath(code, path)}${search}${hash}`);
+    navigate(`${target}${search}${hash}`);
     close();
   }
 
