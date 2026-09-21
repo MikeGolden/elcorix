@@ -38,6 +38,20 @@
         background-color: #ffffff;
       }
     </style>
+    <noscript>
+      <!-- The page is prerendered, so it reads fine without JavaScript —
+           except that the scroll reveals (components/Reveal.tsx) start at
+           opacity 0 and are flipped by script. With no script to flip
+           them, show everything at once. -->
+      <style>
+        .reveal,
+        .reveal-fade {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

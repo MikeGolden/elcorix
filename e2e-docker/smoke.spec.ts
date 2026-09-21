@@ -13,8 +13,13 @@ test.describe("Docker stack smoke", () => {
     const headers = response?.headers() ?? {};
     expect(headers["x-content-type-options"]).toBe("nosniff");
     expect(headers["content-security-policy"]).toContain("frame-ancestors 'none'");
+    // "/" is prerendered in German and the router then moves the visitor
+    // to their own language, so either headline is a pass here.
     await expect(
-      page.getByRole("heading", { level: 1, name: "Kosmetic Füssen" }),
+      page.getByRole("heading", {
+        level: 1,
+        name: /(Dauerhafte )?Laser-Haarentfernung in Kempten|laser hair removal in Kempten/i,
+      }),
     ).toBeVisible();
   });
 
@@ -38,7 +43,8 @@ test.describe("Docker stack smoke", () => {
   test("SPA fallback serves client-side routes and 404 page", async ({ page }) => {
     await page.goto("/en/prices");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    await page.goto("/definitely-not-a-page");
+    const missing = await page.goto("/definitely-not-a-page");
+    expect(missing?.status()).toBe(404);
     await expect(page.getByText("404")).toBeVisible();
   });
 });

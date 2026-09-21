@@ -63,7 +63,7 @@ describe("cookie consent banner", () => {
     ).toBeInTheDocument();
     expect(
       within(banner).getByRole("link", { name: /privacy policy/i }),
-    ).toHaveAttribute("href", "/en/datenschutz");
+    ).toHaveAttribute("href", "/en/privacy");
   });
 
   it("does not appear when a decision is already stored", () => {
@@ -138,7 +138,7 @@ describe("Altegio embed consent gate", () => {
 describe("legal pages", () => {
   it("renders the privacy policy with the controller's details", async () => {
     storeConsent(true);
-    renderAt("/en/datenschutz");
+    renderAt("/en/privacy");
     expect(
       screen.getByRole("heading", { level: 1, name: "Privacy policy" }),
     ).toBeInTheDocument();
@@ -177,7 +177,7 @@ describe("legal pages", () => {
     // The policy of 17.09.2026 has no Altegio section: switching the widget
     // on (VITE_ENABLE_ALTEGIO) needs a new policy text first.
     storeConsent(true);
-    renderAt("/en/datenschutz");
+    renderAt("/en/privacy");
     expect(
       await screen.findByText(/The Altegio booking system is currently not loaded either\./),
     ).toBeInTheDocument();
@@ -212,7 +212,7 @@ describe("legal pages", () => {
     const footer = screen.getByRole("contentinfo");
     expect(
       within(footer).getByRole("link", { name: "Privacy policy" }),
-    ).toHaveAttribute("href", "/en/datenschutz");
+    ).toHaveAttribute("href", "/en/privacy");
     expect(
       within(footer).getByRole("link", { name: "Imprint" }),
     ).toHaveAttribute("href", "/en/imprint");

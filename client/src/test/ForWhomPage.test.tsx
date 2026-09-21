@@ -4,6 +4,7 @@ import { MemoryRouter, useLocation } from "react-router-dom";
 import App from "../App";
 import { reasons, situations } from "../content";
 import { forWhomRoutes, siteRoutes } from "../seo/routes";
+import { localizedRoutePath } from "../seo/routePaths";
 import { supportedLanguages } from "../i18n/routing";
 import en from "../i18n/locales/en/common.json";
 import de from "../i18n/locales/de/common.json";
@@ -92,7 +93,7 @@ describe("For-whom pages", () => {
     expect(others.map((link) => link.getAttribute("href"))).toEqual(
       reasons
         .filter((reason) => reason.key !== "beard")
-        .map((reason) => `/ru${forWhomRoutes[reason.key].path}`),
+        .map((reason) => localizedRoutePath("ru", forWhomRoutes[reason.key].path)),
     );
   });
 

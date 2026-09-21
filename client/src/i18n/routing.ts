@@ -145,7 +145,15 @@ export function rememberLanguage(language: SupportedLanguage): void {
   }
 }
 
-/** The language of the current document, for the initial i18next `lng`. */
+/**
+ * The language of the current document, for the initial i18next `lng`.
+ *
+ * A URL with no language segment gets the *default* language, not the
+ * visitor's: `/` is prerendered in German and then hydrated, and React
+ * only adopts the server's markup when the first client render matches it
+ * word for word. The visitor's own language is applied a tick later, by
+ * the redirect in `RootEntry` — see App.tsx.
+ */
 export function languageFromLocation(pathname: string): SupportedLanguage {
-  return splitLanguagePath(pathname)?.language ?? detectPreferredLanguage();
+  return splitLanguagePath(pathname)?.language ?? defaultLanguage;
 }

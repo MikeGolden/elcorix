@@ -119,19 +119,27 @@ export function seoBlock(
   route: SiteRoute,
   language: SupportedLanguage,
   altegioBookingUrl: string,
+  { noindex = false }: { noindex?: boolean } = {},
 ): string {
   const head = routeHead(route, language);
   const lines = [
     `<title>${escapeAttribute(head.title)}</title>`,
     `<meta name="description" content="${escapeAttribute(head.description)}" />`,
-    `<link rel="canonical" href="${head.canonical}" />`,
-    ...alternateLinks(route.path).map(
-      (alternate) =>
-        `<link rel="alternate" hreflang="${alternate.hreflang}" href="${alternate.href}" />`,
-    ),
+    // The 404 document is served under every unknown URL there is. A
+    // canonical or an hreflang set would invite Google to index one of
+    // them; `noindex` is the whole point of giving it its own shell.
+    ...(noindex
+      ? ['<meta name="robots" content="noindex, follow" />']
+      : [
+          `<link rel="canonical" href="${head.canonical}" />`,
+          ...alternateLinks(route.path).map(
+            (alternate) =>
+              `<link rel="alternate" hreflang="${alternate.hreflang}" href="${alternate.href}" />`,
+          ),
+        ]),
     `<meta property="og:title" content="${escapeAttribute(head.title)}" />`,
     `<meta property="og:description" content="${escapeAttribute(head.description)}" />`,
-    `<meta property="og:url" content="${head.canonical}" />`,
+    ...(noindex ? [] : [`<meta property="og:url" content="${head.canonical}" />`]),
     `<meta property="og:locale" content="${ogLocaleFor(language)}" />`,
     ...ogAlternateLocales(language).map(
       (locale) => `<meta property="og:locale:alternate" content="${locale}" />`,

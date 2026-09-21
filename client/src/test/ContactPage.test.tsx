@@ -41,7 +41,7 @@ describe("ContactPage", () => {
     );
     expect(
       screen.getByRole("link", { name: /privacy policy/i }),
-    ).toHaveAttribute("href", "/en/datenschutz");
+    ).toHaveAttribute("href", "/en/privacy");
   });
 
   it("submits the contact form and shows a success message", async () => {
