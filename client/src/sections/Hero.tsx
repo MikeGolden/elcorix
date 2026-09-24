@@ -73,7 +73,7 @@ export default function Hero() {
             />
             <span className="text-[0.95rem]">
               <span className="font-bold text-brand-700">{t("hero.serviceName")}</span>{" "}
-              <span className="text-ink-300">{t("hero.serviceCount")}</span>
+              <span className="text-ink-500">{t("hero.serviceCount")}</span>
             </span>
           </LocalizedLink>
         </Reveal>

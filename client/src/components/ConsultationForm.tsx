@@ -149,7 +149,7 @@ export default function ConsultationForm() {
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="consult-name" className="sr-only">
+          <label htmlFor="consult-name" className="field-label">
             {t("consultation.name")}
           </label>
           <input
@@ -158,11 +158,15 @@ export default function ConsultationForm() {
             required
             maxLength={200}
             autoComplete="name"
-            placeholder={t("consultation.name")}
             className="field"
           />
         </div>
         <div>
+          {/* One visible label for the pair; the country picker keeps its
+              own for screen readers. */}
+          <label htmlFor="consult-phone" className="field-label">
+            {t("consultation.phone")}
+          </label>
           <div className="flex items-start gap-2">
             <label htmlFor="consult-country" className="sr-only">
               {t("consultation.countryCode")}
@@ -183,9 +187,6 @@ export default function ConsultationForm() {
                 </option>
               ))}
             </select>
-            <label htmlFor="consult-phone" className="sr-only">
-              {t("consultation.phone")}
-            </label>
             <input
               id="consult-phone"
               name="customerPhone"
@@ -202,7 +203,6 @@ export default function ConsultationForm() {
                 const value = event.currentTarget.value.trim();
                 setPhoneError(value !== "" && !isValidPhone(composePhone(country, value)));
               }}
-              placeholder={t("consultation.phone")}
               className="field"
             />
           </div>
@@ -213,10 +213,7 @@ export default function ConsultationForm() {
           )}
         </div>
         <div className="min-w-0">
-          <label
-            htmlFor="consult-date"
-            className="mb-2 block text-xs font-semibold text-ink-300"
-          >
+          <label htmlFor="consult-date" className="field-label">
             {t("consultation.date")}
           </label>
           <input
@@ -240,10 +237,7 @@ export default function ConsultationForm() {
           )}
         </div>
         <div className="min-w-0">
-          <label
-            htmlFor="consult-time"
-            className="mb-2 block text-xs font-semibold text-ink-300"
-          >
+          <label htmlFor="consult-time" className="field-label">
             {t("consultation.time")}
           </label>
           <select

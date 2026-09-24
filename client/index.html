@@ -11,7 +11,13 @@
          run JavaScript get the right head for the URL they asked for.
          Adding a title or description back here would duplicate them. -->
     <meta name="theme-color" content="#26397f" />
+    <!-- favicon.ico first for browsers and crawlers that ask for it by
+         name; Google's search results want a square of at least 48 px.
+         The SVG wins where it is supported. Regenerate the raster files
+         from favicon.svg if it changes. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
     <!-- The hero photo is the LCP element, but it is rendered by React, so
          the preload scanner never sees it in the markup and the download
          cannot start until the bundle has parsed and mounted. Preloading it
@@ -26,11 +32,11 @@
     />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!-- Open Graph constants (shared links in WhatsApp/Instagram/Facebook).
-         Title/description/url/locale are per route and per language, so
-         they live in the injected block instead. -->
+         Title/description/url/locale and the share image (its alt text is
+         translated) are per route and per language, so they live in the
+         injected block instead. -->
     <meta property="og:site_name" content="elcorix" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://elcorix.de/images/hero.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <style>
       /* Match the app background before CSS loads (no flash). */

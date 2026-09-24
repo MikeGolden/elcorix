@@ -40,7 +40,6 @@ test.describe("Internationalization", () => {
   test("a shared link opens in the language it names", async ({ page }) => {
     // No switching, no stored preference: the URL alone decides.
     await page.goto("/uk/ціни");
-    await page.getByRole("button", { name: /лише необхідні|only necessary/i }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Прайс-лист" })).toBeVisible();
     await expect(page.locator("html")).toHaveAttribute("lang", "uk");
   });
@@ -49,7 +48,6 @@ test.describe("Internationalization", () => {
     // "Прайс-лист" is spelled the same in both, so the assertion has to be a
     // string the two languages disagree about.
     await page.goto("/ru/цены");
-    await page.getByRole("button", { name: /только необходимые|only necessary/i }).click();
     await expect(page.locator("html")).toHaveAttribute("lang", "ru");
     await expect(page.getByRole("heading", { name: "Услуги для женщин" })).toBeVisible();
     await expect(page.getByText("Зона бикини классическая").first()).toBeVisible();
@@ -57,7 +55,6 @@ test.describe("Internationalization", () => {
 
   test("switches from Ukrainian to Russian in place", async ({ page }) => {
     await page.goto("/uk");
-    await page.getByRole("button", { name: /лише необхідні|only necessary/i }).click();
     await page.getByTestId("language-switcher").click();
     await page.getByRole("option", { name: "Русский" }).click();
     await expect(page).toHaveURL(/\/ru$/);
@@ -69,7 +66,6 @@ test.describe("Internationalization", () => {
 
   test("switching language stays on the same page", async ({ page }) => {
     await page.goto("/en/prices");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByTestId("language-switcher").click();
     await page.getByRole("option", { name: "Deutsch" }).click();
     await expect(page).toHaveURL(/\/de\/preise$/);
@@ -80,13 +76,11 @@ test.describe("Internationalization", () => {
   test("an unprefixed URL redirects into a language, keeping the path", async ({ page }) => {
     await page.goto("/prices");
     await expect(page).toHaveURL(/\/en\/prices$/);
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Price list" })).toBeVisible();
   });
 
   test("the language picked last time is what an unprefixed URL uses", async ({ page }) => {
     await page.goto("/en");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByTestId("language-switcher").click();
     await page.getByRole("option", { name: "Deutsch" }).click();
     await expect(page).toHaveURL(/\/de$/);
@@ -98,7 +92,6 @@ test.describe("Internationalization", () => {
   test("a language the site does not have falls back instead of 404ing", async ({ page }) => {
     await page.goto("/fr/prices");
     await expect(page).toHaveURL(/\/en\/prices$/);
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Price list" })).toBeVisible();
   });
 });

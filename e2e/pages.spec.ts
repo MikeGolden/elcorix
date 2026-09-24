@@ -3,26 +3,26 @@ import { test, expect } from "@playwright/test";
 test.describe("Deep-link routes", () => {
   test("prices page lists both zone tables and the package table", async ({ page }) => {
     await page.goto("/en/prices");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Price list" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Services for women" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Services for men" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Combined packages for women" })).toBeVisible();
-    await expect(page.getByRole("table")).toHaveCount(2); // one package table per gender
+    // One package table per gender on desktop; phones get the same figures
+    // as stacked cards (PriceTables.tsx), so there is no <table> to count.
+    const isMobile = test.info().project.name === "mobile";
+    await expect(page.getByRole("table")).toHaveCount(isMobile ? 0 : 2);
     await expect(page.getByText("Beard contour")).toBeVisible();
-    await expect(page).toHaveTitle(/Price list — elcorix/);
+    await expect(page).toHaveTitle("Laser hair removal prices in Kempten — elcorix");
   });
 
   test("gallery page shows images with alt text", async ({ page }) => {
     await page.goto("/en/gallery");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Our work" })).toBeVisible();
     await expect(page.getByAltText("Diode laser device in the treatment room")).toBeVisible();
   });
 
   test("terms and mission pages are reachable", async ({ page }) => {
     await page.goto("/en/terms");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(
       page.getByRole("heading", { level: 1, name: "General Terms and Conditions (GTC)" }),
     ).toBeVisible();
@@ -44,7 +44,6 @@ test.describe("Deep-link routes", () => {
 
   test("every for-whom card opens its own page", async ({ page }) => {
     await page.goto("/ru");
-    await page.getByRole("button", { name: "Только необходимые" }).click();
     const cards = page.locator("#for-whom").getByRole("link", { name: "Узнать больше" });
     await expect(cards).toHaveCount(4);
 
@@ -74,7 +73,6 @@ test.describe("Deep-link routes", () => {
     // Unprefixed: the router redirects it into the visitor's language
     // first, and only then finds nothing to render.
     await page.goto("/no-such-page");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(
       page.getByRole("heading", { level: 1, name: "Page not found" }),
     ).toBeVisible();
@@ -87,7 +85,6 @@ test.describe("Deep-link routes", () => {
     // The flag is off (client/src/features.ts): no landing section, no
     // embed, no route, and nothing linking to either.
     await page.goto("/en");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await expect(page.locator("#booking")).toHaveCount(0);
     await expect(page.getByTestId("altegio-consent-placeholder")).toHaveCount(0);
     await expect(page.locator('a[href$="#booking"], a[href$="/booking"]')).toHaveCount(0);
@@ -103,7 +100,6 @@ test.describe("Deep-link routes", () => {
   // lives — the consultation section of the landing page.
   test("landing page offers the cookie-free consultation request", async ({ page }) => {
     await page.goto("/en#consultation");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await page.route("**/api/bookings", (route) =>
       route.fulfill({
         status: 201,
@@ -124,7 +120,6 @@ test.describe("Deep-link routes", () => {
 
   test("scroll position resets when navigating between pages", async ({ page }) => {
     await page.goto("/en");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await expect
       .poll(async () => page.evaluate(() => window.scrollY))

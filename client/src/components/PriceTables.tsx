@@ -175,7 +175,7 @@ function ZoneCell({ group, packageKey }: { group: PackageGroup; packageKey: stri
     <>
       <span className="block">{t(packageLabel(group, packageKey, "zones"))}</span>
       {excluded === null ? null : (
-        <span className="mt-1 block text-ink-300">{excluded}</span>
+        <span className="mt-1 block text-ink-500">{excluded}</span>
       )}
     </>
   );
@@ -328,7 +328,7 @@ function PackageTable({
               <dl className="mt-4 grid gap-4 sm:grid-cols-3">
                 {PRICE_COLUMNS.map((column) => (
                   <div key={column}>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-ink-300">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
                       <ColumnLabel column={column} badgeClassName="text-brand-700" />
                     </dt>
                     <dd className="mt-1">{cells[column]}</dd>

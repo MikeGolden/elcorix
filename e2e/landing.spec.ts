@@ -25,7 +25,6 @@ test.describe("Landing page", () => {
 
   test("the anchor menu jumps to a section on the same page", async ({ page }) => {
     await page.goto("/en");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     await page.getByTestId("menu-toggle").click();
     await page
       .getByRole("navigation", { name: "Menu" })
@@ -42,10 +41,11 @@ test.describe("Landing page", () => {
   // "Book an appointment" → /booking → widget path together with the flag.
   test("leads from the price list to the consultation request", async ({ page }) => {
     await page.goto("/en");
-    await page.getByRole("button", { name: "Accept all" }).click();
     await page.getByTestId("packages-teaser").click();
     await expect(page).toHaveURL(/\/prices#prices-packages-women$/);
-    await page.getByRole("link", { name: "Get a consultation" }).first().click();
+    // On a phone the header CTA lives in the menu drawer.
+    if (test.info().project.name === "mobile") await page.getByTestId("menu-toggle").click();
+    await page.getByRole("link", { name: "Get a consultation" }).locator("visible=true").first().click();
     await expect(page).toHaveURL(/\/en#consultation$/);
     await expect(page.getByRole("heading", { name: "Request a free consultation" })).toBeVisible();
     await expect(page.getByTestId("altegio-widget")).toHaveCount(0);
@@ -53,7 +53,6 @@ test.describe("Landing page", () => {
 
   test("the packages teaser opens the package tables on the price page", async ({ page }) => {
     await page.goto("/en");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     const prices = page.locator("#prices");
     await expect(prices.getByRole("table")).toHaveCount(0);
     await prices.getByTestId("packages-teaser").click();

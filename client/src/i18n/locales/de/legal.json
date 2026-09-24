@@ -359,7 +359,10 @@
           {
             "list": [
               "i18nextLng, um die von Ihnen gewählte Sprache zu speichern;",
-              "cookie-consent, um Ihre Auswahl zu den Datenschutzeinstellungen zu speichern."
+              {
+                "feature": "altegio",
+                "text": "cookie-consent, um Ihre Auswahl zu den Datenschutzeinstellungen zu speichern."
+              }
             ]
           },
           "Diese Informationen sind erforderlich, um die von Ihnen gewünschte Website-Funktion beziehungsweise Ihre Datenschutzauswahl bereitzustellen. Das Speichern oder Auslesen erfolgt auf Grundlage von § 25 Abs. 2 Nr. 2 TDDDG. Soweit dabei personenbezogene Daten verarbeitet werden, ist die Rechtsgrundlage Art. 6 Abs. 1 Buchst. f DSGVO; hinsichtlich der Dokumentation einer Einwilligung außerdem Art. 6 Abs. 1 Buchst. c DSGVO.",

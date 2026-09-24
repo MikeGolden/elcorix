@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#26397f"/>
-  <text x="32" y="46" font-family="Manrope, Arial, Helvetica, sans-serif" font-size="40" font-style="italic" font-weight="800" fill="#ffffff" text-anchor="middle">e</text>
+  <!-- Manrope ExtraBold "e", slanted 14° like the browser's synthetic italic, as a path: a favicon cannot load web fonts. -->
+  <path fill="#ffffff" transform="translate(0 -3.2)" d="M29.81 46.6Q26.49 46.6 24.32 45.17Q22.15 43.74 21.34 41.23Q20.54 38.72 21.35 35.48Q22.23 31.94 24.28 29.32Q26.34 26.7 29.16 25.25Q31.98 23.8 35.18 23.8Q38.58 23.8 40.56 25.4Q42.54 27 42.96 29.9Q43.37 32.8 42.06 36.72H36.68L37.18 34.72Q38 31.42 37.31 29.97Q36.62 28.52 34.24 28.52Q31.46 28.52 29.73 30.21Q28 31.9 27.18 35.2Q26.42 38.22 27.32 39.87Q28.22 41.52 30.76 41.52Q32.36 41.52 33.68 40.82Q34.99 40.12 35.92 38.8L40.97 40.36Q39.01 43.32 35.97 44.96Q32.93 46.6 29.81 46.6ZM25.12 36.72 26.12 32.68H40.44L39.44 36.72Z"/>
 </svg>

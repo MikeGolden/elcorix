@@ -31,7 +31,6 @@ test.describe("Docker stack smoke", () => {
 
   test("stores a real contact message end-to-end", async ({ page }) => {
     await page.goto("/en/contact");
-    await page.getByRole("button", { name: /only necessary|nur notwendige/i }).click();
     await page.getByLabel(/^name$/i).fill("Smoke Test");
     await page.getByLabel(/e-mail/i).fill("smoke@example.com");
     await page

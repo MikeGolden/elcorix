@@ -117,10 +117,18 @@
     @apply border border-brand-200 bg-white text-brand-700 hover:border-brand-400 hover:bg-brand-50;
   }
 
-  /* "Mehr erfahren →" link used across the cards. */
+  /* "Mehr erfahren →" link used across the cards. brand-500, not the
+     Figma's brand-400: that one is 3.4:1 on the tinted cards, under the
+     WCAG AA minimum of 4.5:1 for 14px text (e2e/a11y.spec.ts). */
   .link-more {
-    @apply inline-flex items-center gap-1.5 text-sm font-medium text-brand-400
-           transition-colors hover:text-brand-600;
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-brand-500
+           transition-colors hover:text-brand-700;
+  }
+
+  /* Visible labels above the form fields. A placeholder alone vanishes
+     while the visitor types, and ink-300 on white fails WCAG contrast. */
+  .field-label {
+    @apply mb-2 block text-xs font-semibold text-ink-700;
   }
 
   .field {

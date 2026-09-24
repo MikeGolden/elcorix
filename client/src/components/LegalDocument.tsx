@@ -51,8 +51,17 @@ const linkClass =
  * One block of a section: a paragraph (a "\n" inside is a line break, as in
  * the addresses), a bulleted list, or a sub-heading such as
  * "Widerspruchsrecht" inside "Ihre Rechte".
+ *
+ * A list item can carry a feature flag, like a section can: the
+ * `cookie-consent` entry under local storage only exists while the
+ * Altegio flag is on, because that is the only thing the banner asks about.
  */
-export type LegalBlock = string | { list: string[] } | { heading: string };
+export type LegalListItem = string | { text: string; feature: string };
+export type LegalBlock = string | { list: LegalListItem[] } | { heading: string };
+
+export function listItemText(item: LegalListItem): string {
+  return typeof item === "string" ? item : item.text;
+}
 
 type Section = { title: string; paragraphs: LegalBlock[]; feature?: string };
 
@@ -79,15 +88,15 @@ function linkify(text: string): ReactNode[] {
   });
 }
 
-function LegalBlockView({ block }: { block: LegalBlock }) {
+function LegalBlockView({ block, features }: { block: LegalBlock; features: Features }) {
   if (typeof block === "string") {
     return <p className="whitespace-pre-line">{linkify(block)}</p>;
   }
   if ("list" in block) {
     return (
       <ul className="list-disc space-y-1 pl-5">
-        {block.list.map((item) => (
-          <li key={item}>{linkify(item)}</li>
+        {block.list.filter((item) => isShown(item, features)).map((item) => (
+          <li key={listItemText(item)}>{linkify(listItemText(item))}</li>
         ))}
       </ul>
     );
@@ -105,11 +114,9 @@ function blockKey(block: LegalBlock, index: number): string {
  * that is behind a build-time flag; it is shown only when that flag is on,
  * so the policy never describes a service the site does not load.
  */
-function isShown(section: Section, features: Features): boolean {
-  return (
-    section.feature === undefined ||
-    features[section.feature as keyof Features] === true
-  );
+function isShown(part: Section | LegalListItem, features: Features): boolean {
+  if (typeof part === "string" || part.feature === undefined) return true;
+  return features[part.feature as keyof Features] === true;
 }
 
 const CLAUSE_TITLE = /^\d+\.\s+/;
@@ -214,7 +221,7 @@ export default function LegalDocument({
         <LegalSection key={section.title} title={section.title}>
           <div className="space-y-3">
             {section.paragraphs.map((block, index) => (
-              <LegalBlockView key={blockKey(block, index)} block={block} />
+              <LegalBlockView key={blockKey(block, index)} block={block} features={features} />
             ))}
           </div>
         </LegalSection>
