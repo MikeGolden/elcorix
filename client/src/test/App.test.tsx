@@ -68,7 +68,7 @@ describe("App", () => {
     ).toBeInTheDocument();
     for (const name of [
       /who is it for\?/i,
-      /modern diode laser technology/i,
+      /diode laser and IPL for smooth skin/i,
       /who treats you/i,
       /take a look at our work/i,
       /popular services and prices/i,
