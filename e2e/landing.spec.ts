@@ -12,7 +12,7 @@ test.describe("Landing page", () => {
 
     for (const name of [
       "Who is it for?",
-      "Modern diode laser technology — matched to your skin",
+      "Diode laser and IPL for smooth skin",
       "Who treats you",
       "Take a look at our work",
       "Popular services and prices",
@@ -21,6 +21,24 @@ test.describe("Landing page", () => {
     ]) {
       await expect(page.getByRole("heading", { name })).toBeVisible();
     }
+  });
+
+  test("the technology write-up opens and closes below the section", async ({ page }) => {
+    await page.goto("/ru");
+    const toggle = page.getByTestId("technology-toggle");
+    const panel = page.locator("#technology-more");
+    await expect(toggle).toHaveText("Узнать больше о технологии");
+    await expect(panel).toBeHidden();
+
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await expect(
+      panel.getByRole("heading", { name: "Современная лазерная и IPL-технология для вашей кожи" }),
+    ).toBeVisible();
+    await expect(panel.getByRole("heading", { name: "IPL — световая технология для отдельных задач" })).toBeVisible();
+
+    await toggle.click();
+    await expect(panel).toBeHidden();
   });
 
   test("the anchor menu jumps to a section on the same page", async ({ page }) => {

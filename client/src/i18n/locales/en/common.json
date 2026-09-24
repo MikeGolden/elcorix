@@ -18,7 +18,6 @@
     "consultation": "Get a consultation",
     "whatsapp": "Message us on WhatsApp",
     "learnMore": "Learn more",
-    "moreDevices": "Learn more about our devices",
     "consultationTest": "Book a free consultation with a test pulse"
   },
   "meta": {
@@ -146,11 +145,64 @@
     }
   },
   "technology": {
-    "title": "Modern diode laser technology — matched to your skin",
+    "title": "Diode laser and IPL for smooth skin",
     "imageAlt": "Diode laser device in the treatment room",
-    "p1": "Our studio works with the modern <b>ALIX TWIN AI Smart 5000 8W — an intelligent system for professional</b> and especially comfortable hair removal. Four coordinated wavelengths — 755, 808, 940 and 1064 nm with Boost — make it possible to treat different skin and hair types.",
-    "p2": "<b>An AI scanner analyses skin type,</b> hair colour and hair density and helps us adjust the settings individually. The powerful cooling system chills the handpiece to <b>as low as −26 °C, which makes the treatment far more comfortable.</b>",
-    "p3": "<b>Interchangeable tips allow precise work</b> on small as well as large body zones — for a fast, gentle and individually tuned treatment."
+    "lead": "At elcorix we choose the technology and settings to suit your skin and hair. We work with the modern ALIX TWIN diode laser and with IPL — with a cooling system and professional settings for different body zones.",
+    "consultationFirst": "First a consultation and skin assessment — then the right treatment.",
+    "more": {
+      "show": "Learn more about the technology",
+      "hide": "Show less",
+      "title": "Modern laser and IPL technology for your skin",
+      "intro": "At elcorix we use modern technology for the professional removal of unwanted hair — the ALIX TWIN AI Smart 5000 8W diode laser and IPL.",
+      "laser": {
+        "title": "The ALIX TWIN diode laser",
+        "p1": "ALIX TWIN works with four wavelengths — 755, 808, 940 and 1064 nm. This lets the parameters be adapted to different skin types and to the colour and structure of the hair.",
+        "checksIntro": "Before the treatment, the specialist takes into account:",
+        "checks": [
+          "your skin type and tone",
+          "the colour, thickness and density of your hair",
+          "the zone being treated",
+          "how sensitive your skin is",
+          "how your skin reacts during the treatment"
+        ],
+        "p2": "An intelligent analysis system helps assess the characteristics of your skin and hair, and the specialist uses that data to choose the right treatment parameters.",
+        "p3": "The powerful Alix Freezing cooling system reduces heating of the skin and makes the treatment considerably more comfortable. Depending on the zone and the chosen settings, the handpiece can be cooled to as low as −26 °C.",
+        "p4": "Interchangeable tips make it possible to treat small zones, such as the face and underarms, as well as large areas of the body."
+      },
+      "ipl": {
+        "title": "IPL — light technology for specific concerns",
+        "p1": "IPL is not a laser but intense pulsed light across a broad spectrum. It can be used for certain cosmetic treatments related to unwanted hair and the condition of the skin.",
+        "checksIntro": "IPL is not suitable for every client or every zone. Before the treatment, the specialist assesses:",
+        "checks": [
+          "your skin type and tone",
+          "your hair colour",
+          "whether your skin is tanned",
+          "how sensitive your skin is",
+          "possible contraindications"
+        ],
+        "p2": "After the consultation we choose the most suitable technology — diode laser or IPL. In some cases the laser works more precisely; in others IPL may be the right option."
+      },
+      "facts": {
+        "title": "What you should know",
+        "p1": "Neither laser nor IPL guarantees that all hair will be gone after a single treatment. Hairs are in different growth phases, so a course of treatments is usually needed.",
+        "sessionsIntro": "The number of sessions depends on:",
+        "sessions": [
+          "the treatment zone",
+          "your hair type and density",
+          "the characteristics of your skin",
+          "how your body responds"
+        ],
+        "explainIntro": "Before your first treatment we explain:",
+        "explain": [
+          "which technology suits you",
+          "how many treatments you are likely to need",
+          "how to prepare your skin",
+          "what to avoid before and after the treatment",
+          "what results you can realistically expect"
+        ]
+      },
+      "disclaimer": "Treatments are carried out for cosmetic purposes. Before using IPL, the specialist checks whether the technology is suitable for you individually and whether there are any contraindications."
+    }
   },
   "specialist": {
     "title": "Who treats you",

@@ -18,7 +18,6 @@
     "consultation": "Beratung erhalten",
     "whatsapp": "Über WhatsApp schreiben",
     "learnMore": "Mehr erfahren",
-    "moreDevices": "Mehr über unsere Geräte erfahren",
     "consultationTest": "Kostenlose Beratung mit Testimpuls buchen"
   },
   "meta": {
@@ -146,11 +145,64 @@
     }
   },
   "technology": {
-    "title": "Moderne Diodenlaser-Technologie – individuell auf Ihre Haut abgestimmt",
+    "title": "Diodenlaser und IPL für glatte Haut",
     "imageAlt": "Diodenlaser-Gerät im Behandlungsraum",
-    "p1": "In unserem Studio arbeiten wir mit dem modernen <b>ALIX TWIN KI Smart 5000 8W – einem intelligenten System für professionelle</b> und besonders komfortable Haarentfernung. Vier aufeinander abgestimmte Wellenlängen – 755, 808, 940 und 1064 nm mit Boost – ermöglichen die Behandlung unterschiedlicher Haut- und Haartypen.",
-    "p2": "<b>Ein KI-Scanner analysiert Hauttyp,</b> Haarfarbe und Haardichte und unterstützt uns dabei, die Einstellungen individuell anzupassen. Das leistungsstarke Kühlsystem kühlt das Handstück auf <b>bis zu −26 °C und macht die Behandlung deutlich angenehmer.</b>",
-    "p3": "<b>Verschiedene Aufsätze erlauben präzises Arbeiten</b> an kleinen sowie großen Körperzonen – für eine schnelle, schonende und individuell abgestimmte Behandlung."
+    "lead": "Bei elcorix wählen wir Technologie und Einstellungen individuell passend zu Ihrer Haut und Ihren Haaren. Wir arbeiten mit dem modernen Diodenlaser ALIX TWIN und mit IPL – mit Kühlsystem und professionellen Einstellungen für unterschiedliche Körperzonen.",
+    "consultationFirst": "Zuerst Beratung und Einschätzung Ihrer Haut – danach die passende Behandlung.",
+    "more": {
+      "show": "Mehr über die Technologie erfahren",
+      "hide": "Weniger anzeigen",
+      "title": "Moderne Laser- und IPL-Technologie für Ihre Haut",
+      "intro": "Bei elcorix setzen wir für die professionelle Entfernung unerwünschter Haare moderne Technologien ein – den Diodenlaser ALIX TWIN AI Smart 5000 8W und IPL.",
+      "laser": {
+        "title": "Diodenlaser ALIX TWIN",
+        "p1": "ALIX TWIN arbeitet mit vier Wellenlängen – 755, 808, 940 und 1064 nm. Dadurch lassen sich die Parameter an unterschiedliche Hauttypen sowie an Farbe und Struktur der Haare anpassen.",
+        "checksIntro": "Vor der Behandlung berücksichtigt die Fachkraft:",
+        "checks": [
+          "Hauttyp und Hautton",
+          "Farbe, Stärke und Dichte der Haare",
+          "die zu behandelnde Zone",
+          "die Empfindlichkeit der Haut",
+          "die Reaktion der Haut während der Behandlung"
+        ],
+        "p2": "Ein intelligentes Analysesystem hilft, die Besonderheiten von Haut und Haaren einzuschätzen. Auf dieser Grundlage wählt die Fachkraft die passenden Behandlungsparameter.",
+        "p3": "Das leistungsstarke Kühlsystem Alix Freezing verringert die Erwärmung der Haut und macht die Behandlung deutlich angenehmer. Je nach Zone und gewählten Einstellungen kann das Handstück auf bis zu −26 °C gekühlt werden.",
+        "p4": "Wechselbare Aufsätze ermöglichen die Behandlung kleiner Zonen – etwa Gesicht und Achseln – ebenso wie großer Körperpartien."
+      },
+      "ipl": {
+        "title": "IPL – Lichttechnologie für ausgewählte Anwendungen",
+        "p1": "IPL ist kein Laser, sondern intensives gepulstes Breitbandlicht. Es kann für bestimmte kosmetische Behandlungen rund um unerwünschte Haare und den Zustand der Haut eingesetzt werden.",
+        "checksIntro": "IPL eignet sich nicht für jeden und nicht für jede Zone. Vor der Behandlung beurteilt die Fachkraft:",
+        "checks": [
+          "Hauttyp und Hautton",
+          "Haarfarbe",
+          "ob die Haut gebräunt ist",
+          "die Empfindlichkeit der Haut",
+          "mögliche Gegenanzeigen"
+        ],
+        "p2": "Nach der Beratung wählen wir die passende Technologie – Diodenlaser oder IPL. In manchen Fällen wirkt der Laser gezielter, in anderen kann IPL die passende Wahl sein."
+      },
+      "facts": {
+        "title": "Was Sie wissen sollten",
+        "p1": "Weder Laser noch IPL garantieren, dass nach einer einzigen Behandlung alle Haare verschwunden sind. Haare befinden sich in unterschiedlichen Wachstumsphasen, deshalb ist in der Regel eine Behandlungsserie nötig.",
+        "sessionsIntro": "Die Anzahl der Sitzungen hängt ab von:",
+        "sessions": [
+          "der Behandlungszone",
+          "Haartyp und Haardichte",
+          "den Besonderheiten Ihrer Haut",
+          "der individuellen Reaktion Ihres Körpers"
+        ],
+        "explainIntro": "Vor der ersten Behandlung erklären wir Ihnen:",
+        "explain": [
+          "welche Technologie für Sie geeignet ist",
+          "wie viele Behandlungen voraussichtlich nötig sind",
+          "wie Sie Ihre Haut vorbereiten",
+          "was Sie vor und nach der Behandlung vermeiden sollten",
+          "welche Ergebnisse Sie realistisch erwarten können"
+        ]
+      },
+      "disclaimer": "Die Behandlungen erfolgen zu kosmetischen Zwecken. Vor einer IPL-Anwendung prüft die Fachkraft, ob die Technologie für Sie individuell geeignet ist und ob Gegenanzeigen vorliegen."
+    }
   },
   "specialist": {
     "title": "Wer Sie behandelt",

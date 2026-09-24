@@ -56,6 +56,16 @@
           transform: none !important;
           transition: none !important;
         }
+        /* The technology write-up opens with a button (sections/Technology.tsx):
+           without script, show it expanded and drop the dead toggle. This
+           works because it is unlayered: an [hidden] attribute would lose to
+           Tailwind's layered `display: none !important` in preflight. */
+        #technology-more {
+          display: block !important;
+        }
+        [data-js-only] {
+          display: none !important;
+        }
       </style>
     </noscript>
   </head>
