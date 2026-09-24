@@ -1,5 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// CI images (and sandboxes) that ship their own Chromium can point
+// Playwright at it instead of downloading one.
+const chromiumPath = process.env.PW_CHROMIUM_PATH
+  ? { launchOptions: { executablePath: process.env.PW_CHROMIUM_PATH } }
+  : {};
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -14,11 +20,20 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        // CI images (and sandboxes) that ship their own Chromium can point
-        // Playwright at it instead of downloading one.
-        ...(process.env.PW_CHROMIUM_PATH
-          ? { launchOptions: { executablePath: process.env.PW_CHROMIUM_PATH } }
-          : {}),
+        ...chromiumPath,
+      },
+    },
+    // Most visitors arrive from Instagram on a phone. The phone layout (menu
+    // drawer, stacked forms, swipe gallery) gets the specs that walk
+    // through the page, plus the accessibility sweep. Pixel 7 rather than
+    // an iPhone profile because only Chromium is installed in CI and the
+    // sandboxes; the viewport and touch emulation are what matter here.
+    {
+      name: "mobile",
+      testMatch: /(landing|contact|pages|gallery|a11y)\.spec\.ts/,
+      use: {
+        ...devices["Pixel 7"],
+        ...chromiumPath,
       },
     },
   ],

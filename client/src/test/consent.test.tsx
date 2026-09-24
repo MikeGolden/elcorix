@@ -9,6 +9,17 @@ import {
   type ConsentState,
 } from "../consent/ConsentContext";
 
+/**
+ * The banner only exists while the Altegio flag is on (CookieBanner.tsx) —
+ * it is the one thing it asks about. This file tests the banner and the
+ * embed's gate, so it builds with the flag on; App.test.tsx covers the
+ * shipped default, where neither the banner nor its footer link renders.
+ */
+vi.mock("../config", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../config")>();
+  return { ...actual, features: { ...actual.features, altegio: true } };
+});
+
 function renderAt(path: string) {
   return render(
     <MemoryRouter initialEntries={[path]}>
@@ -185,6 +196,12 @@ describe("legal pages", () => {
     expect(
       screen.queryByRole("navigation", { name: "Related terms" }),
     ).toBeNull();
+  });
+
+  it("lists the cookie-consent storage while the banner exists", async () => {
+    storeConsent(true);
+    renderAt("/en/privacy");
+    expect(await screen.findByText(/^cookie-consent, to store your choice/)).toBeInTheDocument();
   });
 
   it("renders the imprint as in the studio's text of 16.09.2026", () => {

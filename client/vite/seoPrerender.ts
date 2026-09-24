@@ -75,7 +75,8 @@ function setHtmlLang(html: string, language: SupportedLanguage): string {
 
 export function seoPrerender(): Plugin {
   let config: ResolvedConfig;
-  let bookingUrl = altegioBookingUrlFor(sanitizeCompanyId(undefined));
+  // Null while the Altegio flag is off — see localBusinessJsonLd.
+  let bookingUrl: string | null = null;
   // Replaced in configResolved, once loadEnv has run. The flags decide
   // which routes get a shell and a sitemap entry — a route hidden in the
   // app must not be handed to crawlers here.
@@ -93,12 +94,14 @@ export function seoPrerender(): Plugin {
       // Vite has already loaded .env* by now, but only VITE_* variables it
       // decided to expose; loadEnv re-reads them for the config context.
       const env = loadEnv(resolved.mode, resolved.envDir ?? resolved.root, "VITE_");
-      bookingUrl = altegioBookingUrlFor(
-        sanitizeCompanyId(env.VITE_ALTEGIO_COMPANY_ID ?? process.env.VITE_ALTEGIO_COMPANY_ID),
-      );
       const features: Features = featuresFrom({
         VITE_ENABLE_ALTEGIO: env.VITE_ENABLE_ALTEGIO ?? process.env.VITE_ENABLE_ALTEGIO,
       });
+      bookingUrl = features.altegio
+        ? altegioBookingUrlFor(
+            sanitizeCompanyId(env.VITE_ALTEGIO_COMPANY_ID ?? process.env.VITE_ALTEGIO_COMPANY_ID),
+          )
+        : null;
       routes = publicRoutes(features);
     },
 

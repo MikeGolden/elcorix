@@ -359,7 +359,10 @@
           {
             "list": [
               "i18nextLng, to store the language you have chosen;",
-              "cookie-consent, to store your choice regarding the privacy settings."
+              {
+                "feature": "altegio",
+                "text": "cookie-consent, to store your choice regarding the privacy settings."
+              }
             ]
           },
           "This information is necessary to provide the website function you have requested or your privacy choice. Storing or reading takes place on the basis of § 25 (2) no. 2 TDDDG. Insofar as personal data is processed in the process, the legal basis is Art. 6 (1) (f) GDPR; with regard to documenting consent, also Art. 6 (1) (c) GDPR.",

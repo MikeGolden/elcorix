@@ -13,11 +13,14 @@ import {
 } from "../seo/meta";
 import { siteRoutes } from "../seo/routes";
 import {
+  faqJsonLd,
   injectSeoBlock,
   replaceSeoBlock,
   routeHead,
   seoBlock,
 } from "../seo/staticHead";
+import { notFoundRoute } from "../seo/routes";
+import { faqSets } from "../faq";
 
 const BOOKING_URL = "https://n123456.alteg.io";
 
@@ -154,6 +157,46 @@ describe("static head blocks", () => {
     expect((data.openingHoursSpecification as unknown[]).length).toBe(
       staticBusiness.openingHours.length,
     );
+  });
+
+  it("points shares at the 1200×630 card, with alt text in the page's language", () => {
+    const block = seoBlock(home, "ru", null);
+    expect(block).toContain('<meta property="og:image" content="https://elcorix.de/images/og-elcorix.jpg" />');
+    expect(block).toContain('<meta property="og:image:width" content="1200" />');
+    expect(block).toContain('<meta property="og:image:height" content="630" />');
+    expect(block).toContain(`<meta property="og:image:alt" content="${ru.share.imageAlt}" />`);
+  });
+
+  it("leaves the ReserveAction out while there is no booking page", () => {
+    const data = jsonLdFrom(seoBlock(home, "de", null));
+    expect(data).not.toHaveProperty("potentialAction");
+  });
+
+  it("marks up the page's FAQ in its own language, and only on FAQ pages", () => {
+    const prices = siteRoutes.find((route) => route.path === "/prices")!;
+    const scripts = (html: string) =>
+      [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(
+        (match) => JSON.parse(match[1]) as Record<string, unknown>,
+      );
+
+    const homeFaq = scripts(seoBlock(home, "uk", null)).find((d) => d["@type"] === "FAQPage");
+    expect(homeFaq).toBeDefined();
+    const questions = homeFaq!.mainEntity as { name: string; acceptedAnswer: { text: string } }[];
+    expect(questions.map((q) => q.name)).toEqual(
+      faqSets.home.map((key) => uk.faq.items[key].question),
+    );
+    expect(questions[0]!.acceptedAnswer.text).toBe(uk.faq.items.pain.answer);
+
+    const pricesFaq = faqJsonLd(prices, "de")!;
+    expect((pricesFaq.mainEntity as unknown[]).length).toBe(faqSets.prices.length);
+
+    // No question is marked up on two URLs.
+    const all = [...faqSets.home, ...faqSets.prices];
+    expect(new Set(all).size).toBe(all.length);
+
+    const contact = siteRoutes.find((route) => route.path === "/contact")!;
+    expect(faqJsonLd(contact, "de")).toBeNull();
+    expect(seoBlock(notFoundRoute, "de", null, { noindex: true })).not.toContain("FAQPage");
   });
 
   it("never emits a raw < inside the JSON-LD", () => {

@@ -146,6 +146,22 @@ describe("App", () => {
     ).toHaveAttribute("href", "/en#consultation");
   });
 
+  it("asks for no cookie consent while the flag is off — nothing needs it", async () => {
+    renderAt("/");
+    // The banner opens only after the stored decision has been read (an
+    // effect), so give it that tick before asserting it stays away.
+    await waitFor(() => expect(screen.getByRole("contentinfo")).toBeInTheDocument());
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Cookie settings" })).not.toBeInTheDocument();
+  });
+
+  it("leaves the cookie-consent storage line out of the privacy policy while the flag is off", async () => {
+    renderAt("/en/privacy");
+    expect(await screen.findByText(/^i18nextLng, to store the language/)).toBeInTheDocument();
+    expect(screen.queryByText(/^cookie-consent, to store your choice/)).not.toBeInTheDocument();
+  });
+
   it("does not serve /booking while the flag is off", () => {
     renderAt("/booking");
     expect(

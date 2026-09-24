@@ -34,30 +34,23 @@ test.describe("GDPR consent", () => {
     await expect(page.getByTestId("altegio-widget")).toBeVisible();
   });
 
-  test("footer cookie settings reopen the banner to change the decision", async ({
-    page,
-  }) => {
+  // The banner only asks about the Altegio calendar, which is behind the
+  // off flag — so it is not rendered at all (CookieBanner.tsx). The banner
+  // and its footer "Cookie settings" flow are unit-tested with the flag on
+  // in client/src/test/consent.test.tsx.
+  test("asks for no consent while nothing on the site needs it", async ({ page }) => {
     await page.goto("/en");
-    await page.getByRole("button", { name: "Accept all" }).click();
-    await expect(page.getByRole("dialog")).toBeHidden();
-
-    await page.getByRole("button", { name: "Cookie settings" }).click();
-    await expect(
-      page.getByRole("dialog", { name: "Cookies & external services" }),
-    ).toBeVisible();
-    await page.getByRole("button", { name: "Only necessary" }).click();
-
-    // The decision persists across a navigation and a reload: the banner
-    // stays closed rather than asking again.
-    await page.goto("/en/prices");
-    await expect(page.getByRole("dialog")).toBeHidden();
+    await page.waitForLoadState("networkidle");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(page.locator("footer").getByRole("button", { name: "Cookie settings" })).toHaveCount(0);
+    // Nothing was written that would need a consent record either.
+    expect(await page.evaluate(() => localStorage.getItem("cookie-consent"))).toBeNull();
   });
 
   test("privacy policy and imprint are reachable from the footer", async ({
     page,
   }) => {
     await page.goto("/en");
-    await page.getByRole("button", { name: "Only necessary" }).click();
 
     const footer = page.locator("footer");
     await footer.getByRole("link", { name: "Privacy policy" }).click();
@@ -77,7 +70,6 @@ test.describe("GDPR consent", () => {
 
   test("forms link the privacy policy instead of asking for consent", async ({ page }) => {
     await page.goto("/en/contact");
-    await page.getByRole("button", { name: "Only necessary" }).click();
     const form = page.getByRole("form", { name: "Contact form" });
     await expect(form.getByRole("checkbox")).toHaveCount(0);
     await expect(page.getByText("Please do not send health data or treatment photos through this form.")).toBeVisible();

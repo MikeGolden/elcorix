@@ -9,6 +9,7 @@ import PriceHighlights from "../sections/PriceHighlights";
 import BookingSection from "../sections/BookingSection";
 import ConsultationSection from "../sections/ConsultationSection";
 import ContactSection from "../sections/ContactSection";
+import Faq from "../sections/Faq";
 
 /**
  * The one-page landing layout from the Figma. The same sections are also
@@ -28,6 +29,7 @@ export default function HomePage() {
       <Specialist />
       <Works />
       <PriceHighlights />
+      <Faq page="home" />
       {features.altegio && <BookingSection />}
       <ConsultationSection />
       <ContactSection />

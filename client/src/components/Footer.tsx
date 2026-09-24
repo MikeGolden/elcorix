@@ -1,13 +1,14 @@
 import LocalizedLink from "./LocalizedLink";
 import { useTranslation } from "react-i18next";
-import { business } from "../config";
+import { business, features } from "../config";
 import { useConsent } from "../consent/ConsentContext";
 import Logo from "./Logo";
 
 /**
  * The Figma footer is a single indigo band: the wordmark on the left and
  * the legal links on the right. "Cookie-Einstellungen" is added to that
- * row — the consent decision has to stay changeable from every page.
+ * row — the consent decision has to stay changeable from every page —
+ * but only while there is a decision to make (see CookieBanner).
  */
 const legalLinks = [
   { to: "/imprint", key: "footer.imprint" },
@@ -51,11 +52,13 @@ export default function Footer() {
                   {t("footer.sitemap")}
                 </a>
               </li>
-              <li>
-                <button type="button" onClick={openSettings} className={linkClass}>
-                  {t("footer.cookieSettings")}
-                </button>
-              </li>
+              {features.altegio && (
+                <li>
+                  <button type="button" onClick={openSettings} className={linkClass}>
+                    {t("footer.cookieSettings")}
+                  </button>
+                </li>
+              )}
             </ul>
           </nav>
         </div>

@@ -44,6 +44,14 @@ test.describe("Static SEO head (dev server)", () => {
     expect(data["@type"]).toBe("BeautySalon");
     expect(data.address.addressLocality).toBe("Kempten (Allgäu)");
     expect(data.openingHoursSpecification).toHaveLength(1);
+    // No ReserveAction while there is no booking page to reserve on.
+    expect(data).not.toHaveProperty("potentialAction");
+
+    const faq = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      .map((m) => JSON.parse(m[1]))
+      .find((d) => d["@type"] === "FAQPage");
+    expect(faq, "no FAQPage JSON-LD on the home page").toBeDefined();
+    expect(faq.mainEntity.length).toBeGreaterThan(0);
   });
 
   test("the app reuses those tags instead of appending its own", async ({ page }) => {
@@ -73,7 +81,8 @@ test.describe("Static SEO head (dev server)", () => {
     await expect(page.locator("title")).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
     await expect(page.locator('meta[name="description"]')).toHaveCount(1);
-    await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(1);
+    // Two JSON-LD blocks on the home page: LocalBusiness and its FAQPage.
+    await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(2);
     // …and the alternates are one set of five (four languages plus
     // x-default), replaced not appended.
     await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(5);

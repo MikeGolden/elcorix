@@ -60,7 +60,7 @@ export default function ContactPage() {
           >
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label htmlFor="contact-name" className="sr-only">
+                <label htmlFor="contact-name" className="field-label">
                   {t("contact.name")}
                 </label>
                 <input
@@ -68,12 +68,11 @@ export default function ContactPage() {
                   name="name"
                   required
                   autoComplete="name"
-                  placeholder={t("contact.name")}
                   className="field"
                 />
               </div>
               <div>
-                <label htmlFor="contact-email" className="sr-only">
+                <label htmlFor="contact-email" className="field-label">
                   {t("contact.email")}
                 </label>
                 <input
@@ -82,12 +81,11 @@ export default function ContactPage() {
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder={t("contact.email")}
                   className="field"
                 />
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="contact-message" className="sr-only">
+                <label htmlFor="contact-message" className="field-label">
                   {t("contact.message")}
                 </label>
                 <textarea

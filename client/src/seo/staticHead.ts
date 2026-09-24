@@ -12,6 +12,7 @@ import {
   ogLocaleFor,
 } from "./meta";
 import type { SiteRoute } from "./routes";
+import { faqKeysFor } from "../faq";
 
 /**
  * Build-time <head> generation for `vite/seoPrerender.ts`.
@@ -54,8 +55,14 @@ function embedJson(value: unknown): string {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-/** schema.org LocalBusiness data for Google's local results. */
-export function localBusinessJsonLd(altegioBookingUrl: string): Record<string, unknown> {
+/**
+ * schema.org LocalBusiness data for Google's local results.
+ *
+ * `altegioBookingUrl` is null while the Altegio flag is off: a ReserveAction
+ * pointing at a booking page the site does not offer (or at the
+ * placeholder company "000000") would be a dead link handed to Google.
+ */
+export function localBusinessJsonLd(altegioBookingUrl: string | null): Record<string, unknown> {
   const [street, cityLine] = staticBusiness.address.split(", ");
   const [postalCode, ...cityParts] = (cityLine ?? "").split(" ");
   return {
@@ -85,12 +92,47 @@ export function localBusinessJsonLd(altegioBookingUrl: string): Record<string, u
       closes: slot.closes,
     })),
     sameAs: [staticBusiness.instagram],
-    potentialAction: {
-      "@type": "ReserveAction",
-      target: altegioBookingUrl,
-    },
+    ...(altegioBookingUrl === null
+      ? {}
+      : { potentialAction: { "@type": "ReserveAction", target: altegioBookingUrl } }),
   };
 }
+
+/**
+ * schema.org FAQPage for the questions a page shows (src/faq.ts), in the
+ * page's language. Null for pages without an FAQ block. The text is the
+ * same translation the <Faq> section renders, so markup and page agree.
+ */
+export function faqJsonLd(
+  route: SiteRoute,
+  language: SupportedLanguage,
+): Record<string, unknown> | null {
+  const keys = faqKeysFor(route.metaKey);
+  if (keys.length === 0) return null;
+  const items = translations[language].faq.items;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: language,
+    mainEntity: keys.map((key) => ({
+      "@type": "Question",
+      name: items[key].question,
+      acceptedAnswer: { "@type": "Answer", text: items[key].answer },
+    })),
+  };
+}
+
+/**
+ * The share card (public/images/og-elcorix.jpg, rendered by
+ * scripts/og-card). Width and height let WhatsApp and Facebook lay the
+ * preview out before they have fetched the image.
+ */
+export const shareImage = {
+  url: `${staticBusiness.siteUrl}/images/og-elcorix.jpg`,
+  width: 1200,
+  height: 630,
+  type: "image/jpeg",
+} as const;
 
 export type RouteHead = {
   title: string;
@@ -118,10 +160,11 @@ export function routeHead(
 export function seoBlock(
   route: SiteRoute,
   language: SupportedLanguage,
-  altegioBookingUrl: string,
+  altegioBookingUrl: string | null,
   { noindex = false }: { noindex?: boolean } = {},
 ): string {
   const head = routeHead(route, language);
+  const faq = noindex ? null : faqJsonLd(route, language);
   const lines = [
     `<title>${escapeAttribute(head.title)}</title>`,
     `<meta name="description" content="${escapeAttribute(head.description)}" />`,
@@ -140,6 +183,12 @@ export function seoBlock(
     `<meta property="og:title" content="${escapeAttribute(head.title)}" />`,
     `<meta property="og:description" content="${escapeAttribute(head.description)}" />`,
     ...(noindex ? [] : [`<meta property="og:url" content="${head.canonical}" />`]),
+    `<meta property="og:image" content="${shareImage.url}" />`,
+    `<meta property="og:image:width" content="${shareImage.width}" />`,
+    `<meta property="og:image:height" content="${shareImage.height}" />`,
+    `<meta property="og:image:type" content="${shareImage.type}" />`,
+    `<meta property="og:image:alt" content="${escapeAttribute(translations[language].share.imageAlt)}" />`,
+    `<meta name="twitter:image:alt" content="${escapeAttribute(translations[language].share.imageAlt)}" />`,
     `<meta property="og:locale" content="${ogLocaleFor(language)}" />`,
     ...ogAlternateLocales(language).map(
       (locale) => `<meta property="og:locale:alternate" content="${locale}" />`,
@@ -147,6 +196,7 @@ export function seoBlock(
     `<script type="application/ld+json">${embedJson(
       localBusinessJsonLd(altegioBookingUrl),
     )}</script>`,
+    ...(faq === null ? [] : [`<script type="application/ld+json">${embedJson(faq)}</script>`]),
   ];
   return [SEO_BLOCK_START, ...lines, SEO_BLOCK_END].join("\n    ");
 }

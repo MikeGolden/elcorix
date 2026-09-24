@@ -24,22 +24,22 @@
   "meta": {
     "home": {
       "title": "Dauerhafte Laser-Haarentfernung in Kempten",
-      "description": "Dauerhafte Laser-Haarentfernung in Kempten mit moderner Diodenlaser-Technologie – individuell auf Haut- und Haartyp abgestimmt. Termin online buchen."
+      "description": "Dauerhafte Laser-Haarentfernung in Kempten mit moderner Diodenlaser-Technologie – individuell auf Haut- und Haartyp abgestimmt. Kostenlose Beratung vor Ort."
     },
     "prices": {
-      "title": "Preisliste",
+      "title": "Preise Laser-Haarentfernung Kempten",
       "description": "Preise für Laser-Haarentfernung in Kempten: alle Zonen für Frauen und Männer sowie Paketlösungen mit 6er- und 8er-Preisen."
     },
     "gallery": {
-      "title": "Unsere Arbeiten",
+      "title": "Unsere Arbeiten – Laser-Haarentfernung Kempten",
       "description": "Einblicke in unser Studio in Kempten und in die Behandlungen, die wir jeden Tag durchführen."
     },
     "booking": {
-      "title": "Termin vereinbaren",
+      "title": "Termin für Laser-Haarentfernung in Kempten",
       "description": "Buchen Sie Ihre Laser-Haarentfernung in Kempten online – Zone, Termin und Uhrzeit in wenigen Minuten."
     },
     "contact": {
-      "title": "Kontakt",
+      "title": "Kontakt und Anfahrt – Laserstudio Kempten",
       "description": "Kontakt zu elcorix in Kempten: Adresse, Telefon, WhatsApp, E-Mail, Öffnungszeiten und Anfahrt."
     },
     "privacy": {
@@ -63,7 +63,7 @@
       "description": "Laufzeit, Verlängerung, Zonenwechsel, Übertragung und Schlussabrechnung von Behandlungspaketen bei elcorix in Kempten."
     },
     "mission": {
-      "title": "Leitbild",
+      "title": "Unser Leitbild – Laserstudio Kempten",
       "description": "Wofür elcorix steht: Sicherheit, ehrliche Beratung und eine Behandlung, bei der Sie sich wohlfühlen."
     },
     "notFound": {
@@ -86,6 +86,9 @@
       "title": "Eine klare Bartkontur",
       "description": "Der Laser entfernt Haare oberhalb der Bartlinie und am Hals – so bleibt die Bartkontur länger klar, ohne ständiges Nachrasieren."
     }
+  },
+  "share": {
+    "imageAlt": "elcorix – Laser-Haarentfernung in Kempten, kostenlose Beratung mit Testimpuls"
   },
   "hero": {
     "title": "Dauerhafte Laser-Haarentfernung in Kempten",
@@ -327,6 +330,47 @@
     "success": "Vielen Dank! Wir melden uns während der Öffnungszeiten bei Ihnen.",
     "error": "Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder rufen Sie uns direkt an."
   },
+  "faq": {
+    "title": "Häufige Fragen",
+    "items": {
+      "pain": {
+        "question": "Ist die Laser-Haarentfernung schmerzhaft?",
+        "answer": "Das Handstück wird auf bis zu −26 °C gekühlt, das macht die Behandlung deutlich angenehmer. Vor der ersten Behandlung zeigt ein Testimpuls an einer kleinen Stelle, wie Ihre Haut reagiert – so wissen Sie vorher, wie es sich anfühlt."
+      },
+      "sessions": {
+        "question": "Wie viele Sitzungen brauche ich?",
+        "answer": "Das hängt von Hauttyp, Haarstärke und Zone ab. Eine realistische Zahl nennen wir Ihnen in der kostenlosen Beratung – zusammen mit den Gesamtkosten. Für eine Behandlungsserie gibt es Pakete mit 6 oder 8 Behandlungen."
+      },
+      "interval": {
+        "question": "Wie viel Zeit liegt zwischen zwei Sitzungen?",
+        "answer": "Den Abstand legen wir individuell fest – nach Zone, Haarwachstum, Hautreaktion, Jahreszeit und dem Ergebnis der letzten Sitzung."
+      },
+      "skinTypes": {
+        "question": "Funktioniert der Laser bei meinem Haut- und Haartyp?",
+        "answer": "Das Gerät arbeitet mit vier Wellenlängen (755, 808, 940 und 1064 nm), und ein KI-Scanner misst Hauttyp, Haarfarbe und Haardichte. So lassen sich unterschiedliche Haut- und Haartypen behandeln. Ob der Laser bei Ihnen wirkt, klären wir in der Beratung – passt er nicht, sagen wir es Ihnen offen."
+      },
+      "preparation": {
+        "question": "Worauf muss ich vor dem Termin achten?",
+        "answer": "Vor dem Termin bekommen Sie von uns Vorbereitungshinweise. Sagen Sie uns bitte vorab, wenn Sie Medikamente nehmen, viel in der Sonne waren, schwanger sind oder Hautveränderungen haben – das prüfen wir vor jeder Behandlung."
+      },
+      "consultation": {
+        "question": "Ist die Beratung wirklich kostenlos?",
+        "answer": "Ja. Die Erstberatung mit Testimpuls ist kostenlos und unverbindlich. Wir sehen uns Haut und Haar an, klären, ob der Laser zu Ihnen passt, und sagen Ihnen, wie viele Sitzungen realistisch sind."
+      },
+      "pricing": {
+        "question": "Gilt der Preis pro Sitzung?",
+        "answer": "Ja, alle Preise gelten pro Sitzung und Zone und sind Endpreise – nach § 19 UStG wird keine Umsatzsteuer ausgewiesen. Mehrere Zonen lassen sich kombinieren; ein passendes Paket stellen wir Ihnen gern zusammen."
+      },
+      "packages": {
+        "question": "Wie funktionieren die Pakete?",
+        "answer": "Ein Paket umfasst 6 oder 8 Behandlungen der gewählten Zonen zu einem günstigeren Preis pro Behandlung – Sie sparen bis zu 30 %. Es wird im Voraus bezahlt und gilt zwölf Monate ab Zahlung. Die Einzelheiten stehen in den Paketbedingungen."
+      },
+      "cancellation": {
+        "question": "Kann ich einen Termin absagen oder verschieben?",
+        "answer": "Ja – bitte mindestens 24 Stunden vorher. Was bei kurzfristigen Absagen gilt, steht in den Terminbedingungen."
+      }
+    }
+  },
   "contact": {
     "title": "Kontakt & Terminvereinbarung",
     "pageTitle": "Kontakt",
@@ -427,7 +471,7 @@
   },
   "notFound": {
     "title": "Seite nicht gefunden",
-    "text": "Diese Seite existiert nicht oder wurde verschoben. Vielleicht suchen Sie unsere Preisliste, unsere Arbeiten oder die Online-Terminbuchung?",
+    "text": "Diese Seite existiert nicht oder wurde verschoben. Vielleicht suchen Sie unsere Preisliste, unsere Arbeiten oder die kostenlose Beratung?",
     "cta": "Zurück zur Startseite"
   },
   "footer": {

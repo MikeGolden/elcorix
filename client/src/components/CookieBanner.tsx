@@ -1,18 +1,27 @@
 import LocalizedLink from "./LocalizedLink";
 import { useTranslation } from "react-i18next";
 import { useConsent } from "../consent/ConsentContext";
+import { features } from "../config";
 
 /**
  * GDPR consent banner. Non-modal on purpose: visitors must be able to read
  * the privacy policy (and the rest of the site) before deciding. “Accept
  * all” and “Only necessary” are styled identically — rejecting must be as
  * easy as accepting.
+ *
+ * The only thing it asks about is the Altegio calendar — the map loads
+ * without consent (a documented decision) and Umami sets no cookies. So
+ * with the Altegio flag off there is nothing to consent to, and the banner
+ * (with the footer's "Cookie settings") is not rendered at all: asking
+ * permission for something that never loads is noise, not compliance.
+ * Turning the flag on brings both back, with the privacy policy's
+ * `cookie-consent` storage line (gated on the same flag in legal.json).
  */
 export default function CookieBanner() {
   const { t } = useTranslation();
   const { bannerOpen, decide } = useConsent();
 
-  if (!bannerOpen) return null;
+  if (!features.altegio || !bannerOpen) return null;
 
   return (
     <div

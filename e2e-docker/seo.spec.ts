@@ -13,14 +13,14 @@ import { test, expect } from "@playwright/test";
  * not render, and a soft 200 for every unknown URL.
  */
 const routes = [
-  { path: "/de/preise", title: "Preisliste — elcorix", text: "Leistungen für Frauen" },
-  { path: "/de/kontakt", title: "Kontakt — elcorix", text: "Bodmanstraße" },
-  { path: "/en/prices", title: "Price list — elcorix", text: "Services for women" },
+  { path: "/de/preise", title: "Preise Laser-Haarentfernung Kempten — elcorix", text: "Leistungen für Frauen" },
+  { path: "/de/kontakt", title: "Kontakt und Anfahrt – Laserstudio Kempten — elcorix", text: "Bodmanstraße" },
+  { path: "/en/prices", title: "Laser hair removal prices in Kempten — elcorix", text: "Services for women" },
   // /uk/booking used to be here. The Altegio booking route is behind an off
   // feature flag (client/src/features.ts), so no shell is written for it —
   // put it back alongside the flag.
-  { path: "/uk/галерея", title: "Наші роботи — elcorix", text: "Наші роботи" },
-  { path: "/ru/галерея", title: "Наши работы — elcorix", text: "Наши работы" },
+  { path: "/uk/галерея", title: "Наші роботи – лазерна епіляція в Кемптені — elcorix", text: "Наші роботи" },
+  { path: "/ru/галерея", title: "Наши работы – лазерная эпиляция в Кемптене — elcorix", text: "Наши работы" },
   { path: "/de/impressum", title: "Impressum — elcorix", text: "Impressum" },
 ];
 

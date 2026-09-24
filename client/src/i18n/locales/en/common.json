@@ -24,22 +24,22 @@
   "meta": {
     "home": {
       "title": "Permanent laser hair removal in Kempten",
-      "description": "Permanent laser hair removal in Kempten with modern diode laser technology, matched to your skin and hair type. Book online."
+      "description": "Permanent laser hair removal in Kempten with modern diode laser technology, matched to your skin and hair type. Free consultation in the studio."
     },
     "prices": {
-      "title": "Price list",
+      "title": "Laser hair removal prices in Kempten",
       "description": "Laser hair removal prices in Kempten: every zone for women and men, plus package deals with 6- and 8-session rates."
     },
     "gallery": {
-      "title": "Our work",
+      "title": "Our work – laser hair removal in Kempten",
       "description": "A look inside our studio in Kempten and at the treatments we carry out every day."
     },
     "booking": {
-      "title": "Book an appointment",
+      "title": "Book laser hair removal in Kempten",
       "description": "Book your laser hair removal in Kempten online — pick a zone, a date and a time in a couple of minutes."
     },
     "contact": {
-      "title": "Contact",
+      "title": "Contact and directions – laser studio Kempten",
       "description": "Contact elcorix in Kempten: address, phone, WhatsApp, e-mail, opening hours and directions."
     },
     "privacy": {
@@ -63,7 +63,7 @@
       "description": "Term, extension, change of zones, transfer and final settlement of treatment packages at elcorix in Kempten."
     },
     "mission": {
-      "title": "Our mission",
+      "title": "Our mission – laser studio in Kempten",
       "description": "What elcorix stands for: safety, honest advice and treatments you feel comfortable with."
     },
     "notFound": {
@@ -86,6 +86,9 @@
       "title": "A sharp beard outline",
       "description": "The laser removes hair above the beard line and on the neck, so a sharp beard outline lasts longer without constant touch-ups."
     }
+  },
+  "share": {
+    "imageAlt": "elcorix – laser hair removal in Kempten, free consultation with a test pulse"
   },
   "hero": {
     "title": "Permanent laser hair removal in Kempten",
@@ -327,6 +330,47 @@
     "success": "Thank you! We will get back to you during opening hours.",
     "error": "Something went wrong. Please try again or call us directly."
   },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": {
+      "pain": {
+        "question": "Does laser hair removal hurt?",
+        "answer": "The handpiece is cooled to as low as −26 °C, which makes the treatment much more comfortable. Before the first treatment, a test pulse on a small spot shows how your skin reacts — so you know what it feels like before we start."
+      },
+      "sessions": {
+        "question": "How many sessions will I need?",
+        "answer": "That depends on your skin type, hair thickness and the zone. We give you a realistic number in the free consultation, together with the total cost. For a course of treatment there are packages of 6 or 8 sessions."
+      },
+      "interval": {
+        "question": "How long is the gap between two sessions?",
+        "answer": "We set the interval individually — by zone, hair growth, skin reaction, season and the result of the previous session."
+      },
+      "skinTypes": {
+        "question": "Will the laser work on my skin and hair type?",
+        "answer": "The device works with four wavelengths (755, 808, 940 and 1064 nm), and an AI scanner measures skin type, hair colour and hair density. That lets us treat a range of skin and hair types. Whether it will work for you is something we check in the consultation — and if it will not, we tell you plainly."
+      },
+      "preparation": {
+        "question": "What should I do before my appointment?",
+        "answer": "You will get preparation instructions from us before the appointment. Please tell us in advance if you take medication, have had a lot of sun, are pregnant or have any skin changes — we check these before every treatment."
+      },
+      "consultation": {
+        "question": "Is the consultation really free?",
+        "answer": "Yes. The first consultation with a test pulse is free and without obligation. We look at your skin and hair, check whether the laser suits you and tell you how many sessions are realistic."
+      },
+      "pricing": {
+        "question": "Is the price per session?",
+        "answer": "Yes, all prices are per session and per zone, and they are final prices — no VAT is shown under § 19 UStG (small-business scheme). Zones can be combined; we are happy to put a package together for you."
+      },
+      "packages": {
+        "question": "How do the packages work?",
+        "answer": "A package covers 6 or 8 treatments of the zones you choose at a lower price per treatment — you save up to 30 %. It is paid in advance and is valid for twelve months from payment. The details are in the package terms."
+      },
+      "cancellation": {
+        "question": "Can I cancel or move an appointment?",
+        "answer": "Yes — please at least 24 hours in advance. What applies to short-notice cancellations is set out in the appointment terms."
+      }
+    }
+  },
   "contact": {
     "title": "Contact & appointments",
     "pageTitle": "Contact",
@@ -427,7 +471,7 @@
   },
   "notFound": {
     "title": "Page not found",
-    "text": "This page does not exist or has been moved. Maybe you were looking for our price list, our work or the online booking?",
+    "text": "This page does not exist or has been moved. Maybe you were looking for our price list, our work or the free consultation?",
     "cta": "Back to the home page"
   },
   "footer": {

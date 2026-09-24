@@ -32,9 +32,9 @@ for (const path of ["/", "/de/preise", "/uk/%D1%86%D1%96%D0%BD%D0%B8", "/en/cont
 
     await page.goto(path);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-    // The banner is rendered from localStorage, which only exists in the
-    // browser — the one piece the server deliberately cannot render.
-    await expect(page.getByRole("button", { name: /nur notwendige|only necessary|лише необхідні/i })).toBeVisible();
+    // Let hydration and the mount effects (stored language, consent) run
+    // before reading the console — a mismatch is reported during them.
+    await page.waitForLoadState("networkidle");
 
     expect(messages.filter((text) => HYDRATION_ERROR.test(text))).toEqual([]);
   });
@@ -42,7 +42,6 @@ for (const path of ["/", "/de/preise", "/uk/%D1%86%D1%96%D0%BD%D0%B8", "/en/cont
 
 test("the prerendered page is interactive, not a screenshot", async ({ page }) => {
   await page.goto("/de/preise");
-  await page.getByRole("button", { name: "Nur notwendige" }).click();
   await page.getByTestId("language-switcher").click();
   await page.getByRole("option", { name: "Українська" }).click();
   expect(decodeURIComponent(page.url())).toMatch(/\/uk\/ціни$/);

@@ -3,7 +3,7 @@ import en from "../i18n/locales/en/legal.json";
 import uk from "../i18n/locales/uk/legal.json";
 import ru from "../i18n/locales/ru/legal.json";
 import { staticBusiness } from "../business";
-import type { LegalBlock } from "../components/LegalDocument";
+import { listItemText, type LegalBlock } from "../components/LegalDocument";
 
 type Documents = typeof de;
 const documentKeys = Object.keys(de) as (keyof Documents)[];
@@ -11,13 +11,17 @@ const documentKeys = Object.keys(de) as (keyof Documents)[];
 /** Every text inside a block, in order. */
 function blockTexts(block: LegalBlock): string[] {
   if (typeof block === "string") return [block];
-  return "list" in block ? block.list : [block.heading];
+  return "list" in block ? block.list.map(listItemText) : [block.heading];
 }
 
 /** Paragraph, list (with its length) or sub-heading — the shape translations must keep. */
 function blockShape(block: LegalBlock): string {
   if (typeof block === "string") return `p${block.split("\n").length}`;
-  return "list" in block ? `list${block.list.length}` : "heading";
+  if (!("list" in block)) return "heading";
+  // Gated items must be gated in every language, or a translation would
+  // show a line the German text hides.
+  const gates = block.list.map((item) => (typeof item === "string" ? "" : item.feature));
+  return `list${block.list.length}${gates.join(",")}`;
 }
 
 /** "3.1 Die reguläre …" → "3.1", "Ein Termin …" → null. */
