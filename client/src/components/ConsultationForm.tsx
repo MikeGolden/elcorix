@@ -1,5 +1,6 @@
 import { FormEvent, useCallback, useState } from "react";
 import LocalizedLink from "./LocalizedLink";
+import DateField from "./DatePicker";
 import { Trans, useTranslation } from "react-i18next";
 import { isValidPhone } from "../phone";
 import { track } from "../analytics";
@@ -213,18 +214,17 @@ export default function ConsultationForm() {
           )}
         </div>
         <div className="min-w-0">
-          <label htmlFor="consult-date" className="field-label">
+          <label id="consult-date-label" htmlFor="consult-date" className="field-label">
             {t("consultation.date")}
           </label>
-          <input
+          <DateField
             id="consult-date"
             name="date"
-            type="date"
+            labelId="consult-date-label"
             min={minDate}
-            aria-invalid={dateError !== null || undefined}
-            aria-describedby={dateError !== null ? "consult-date-error" : undefined}
+            invalid={dateError !== null}
+            describedBy={dateError !== null ? "consult-date-error" : undefined}
             onChange={() => dateError !== null && setDateError(null)}
-            className="field"
           />
           {dateError !== null && (
             <p id="consult-date-error" className="mt-2 text-xs font-medium text-red-600">

@@ -98,7 +98,7 @@ test.describe("Deep-link routes", () => {
   // Was the /booking page; that route is behind an off feature flag
   // (client/src/features.ts), so the same form is exercised where it also
   // lives — the consultation section of the landing page.
-  test("landing page offers the cookie-free consultation request", async ({ page }) => {
+  test("landing page offers the cookie-free consultation request", async ({ page, isMobile }) => {
     await page.goto("/en#consultation");
     await page.route("**/api/bookings", (route) =>
       route.fulfill({
@@ -109,9 +109,31 @@ test.describe("Deep-link routes", () => {
     );
     await page.getByLabel("Name").fill("Anna");
     await page.getByLabel("Phone number").fill("+49 155 1234567");
-    // A fixed date goes stale — the form rejects past dates.
-    const nextWeek = new Date(Date.now() + 7 * 86_400_000).toISOString().slice(0, 10);
-    await page.getByLabel("Preferred date").fill(nextWeek);
+    // A fixed date goes stale — the form rejects past dates. A week ahead,
+    // moved on to a day the studio is open (Tue–Sat).
+    const day = new Date(Date.now() + 7 * 86_400_000);
+    while (day.getDay() === 0 || day.getDay() === 1) day.setDate(day.getDate() + 1);
+    const iso = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
+    if (isMobile) {
+      // Touch devices keep the native input and the OS's own picker.
+      await page.getByLabel("Preferred date").fill(iso);
+    } else {
+      // A mouse gets the site's own calendar (components/DatePicker.tsx).
+      await page.getByRole("button", { name: /Preferred date/ }).click();
+      const calendar = page.getByRole("dialog", { name: "Preferred date" });
+      if (day.getMonth() !== new Date().getMonth()) {
+        await calendar.getByRole("button", { name: "Next month" }).click();
+      }
+      const label = new Intl.DateTimeFormat("en", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(day);
+      await calendar.getByRole("button", { name: label, exact: true }).click();
+      await expect(calendar).toBeHidden();
+    }
+    await expect(page.locator('input[name="date"]')).toHaveValue(iso);
     // The time field is a select of half-hour slots, not a free-text input.
     await page.getByLabel("Preferred time").selectOption("10:30");
     await page.getByRole("button", { name: "Get a consultation" }).click();

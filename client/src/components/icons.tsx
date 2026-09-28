@@ -109,3 +109,14 @@ export function ChevronRightIcon({ className = "h-5 w-5" }: IconProps) {
     </svg>
   );
 }
+
+export function CalendarIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...base}>
+      <g fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+        <rect x="3" y="4.5" width="14" height="12.5" rx="2.5" />
+        <path d="M3 8.5h14M7 2.75v3.5M13 2.75v3.5" />
+      </g>
+    </svg>
+  );
+}
