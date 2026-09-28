@@ -158,6 +158,61 @@
   }
 
   /*
+   * The desktop calendar (components/DatePicker.tsx). The trigger wears
+   * `.field` too, so it keeps the text fields' exact box.
+   */
+  .field-date {
+    @apply flex h-[calc(3.5rem+2px)] cursor-pointer items-center justify-between gap-3 text-left;
+  }
+
+  .date-nav {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-full text-ink-700
+           transition-colors hover:bg-brand-50 hover:text-brand-700
+           disabled:cursor-default disabled:text-ink-300 disabled:hover:bg-transparent;
+  }
+
+  .date-day {
+    @apply relative mx-auto flex h-10 w-10 items-center justify-center rounded-full text-sm
+           text-ink-900 tabular-nums transition-colors hover:bg-brand-50;
+  }
+
+  .date-day[data-today] {
+    @apply font-bold text-brand-700;
+  }
+
+  /* A small dot under today's number, so it reads without colour too. */
+  .date-day[data-today]::after {
+    content: "";
+    @apply absolute bottom-1.5 h-1 w-1 rounded-full bg-current;
+  }
+
+  .date-day[aria-disabled="true"] {
+    @apply cursor-default font-normal text-ink-300 hover:bg-transparent;
+  }
+
+  .date-day[data-selected] {
+    @apply bg-brand-700 font-semibold text-white hover:bg-brand-800;
+  }
+
+  .date-popover {
+    animation: date-popover-in 140ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform-origin: top left;
+  }
+
+  @keyframes date-popover-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.98);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .date-popover {
+      animation: none;
+    }
+  }
+
+  /*
    * Scroll reveal (components/Reveal.tsx). Everything wearing `.reveal`
    * starts transparent and 1.75rem low; <Reveal> flips data-revealed the
    * first time the element enters the viewport and it eases into place.
