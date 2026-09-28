@@ -2,12 +2,18 @@ import { test, expect } from "@playwright/test";
 
 /** The section reveals are one-shot, so each check runs on a fresh load. */
 test.describe("Scroll animations", () => {
-  test("the hero settles in on load while the sections below wait", async ({ page }) => {
+  test("the hero is never revealed, while the sections below wait", async ({ page }) => {
     await page.goto("/en");
 
+    // Above the fold, so a reveal would only hold it at opacity 0 until
+    // the bundle has run — it is painted with the prerendered HTML.
     const headline = page.getByRole("heading", { level: 1 });
-    await expect(headline).toHaveAttribute("data-revealed", "true");
     await expect(headline).toHaveCSS("opacity", "1");
+    expect(
+      await headline.evaluate(
+        (el) => el.closest("section")!.querySelectorAll(".reveal, .reveal-fade").length,
+      ),
+    ).toBe(0);
 
     // Two screens further down, nothing has been revealed yet.
     // #booking used to be the probe here; it is behind an off feature flag
