@@ -4,7 +4,7 @@ import LocalizedLink from "../components/LocalizedLink";
 import Photo from "../components/Photo";
 import { ArrowRightIcon, ChevronLeftIcon, WhatsAppIcon } from "../components/icons";
 import { business } from "../config";
-import { reasons, situations, type Situation } from "../content";
+import { forWhomPageTitleKey, reasons, situations, type Situation } from "../content";
 import { webpSrcSet, type ReasonKey } from "../images";
 import { useAnchorHref } from "../i18n/useLanguage";
 import { forWhomRoutes } from "../seo/routes";
@@ -30,9 +30,7 @@ export default function ForWhomPage({ reason }: { reason: ReasonKey }) {
   usePageMeta(forWhomRoutes[reason].metaKey);
 
   const isOverview = reason === "convenience";
-  const title = isOverview
-    ? t("forWhom.items.convenience.title")
-    : t(`forWhom.situations.${reason}.title`);
+  const title = t(forWhomPageTitleKey(reason));
   const lead = isOverview ? t("forWhom.article.intro") : t(`forWhom.situations.${reason}.body`);
   const image = reasons.find((entry) => entry.key === reason)!.image;
   const others = reasons.filter((entry) => entry.key !== reason);

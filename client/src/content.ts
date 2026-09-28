@@ -42,3 +42,13 @@ export const situations = [
 ] as const;
 
 export type Situation = (typeof situations)[number];
+
+/**
+ * The headline of the page behind a "Für wen" card: the overview article
+ * for `convenience`, the situation the card names for the other three.
+ */
+export function forWhomPageTitleKey(reason: ReasonKey) {
+  return reason === "convenience"
+    ? ("forWhom.items.convenience.title" as const)
+    : (`forWhom.situations.${reason}.title` as const);
+}

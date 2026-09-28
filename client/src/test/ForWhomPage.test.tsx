@@ -63,6 +63,26 @@ describe("For-whom pages", () => {
     );
   });
 
+  it("names the page behind each home-page card in its link, in every language", () => {
+    const locales = { en, de, uk, ru };
+    for (const [language, locale] of Object.entries(locales)) {
+      const { unmount } = renderAt(`/${language}`);
+      const section = document.getElementById("for-whom")!;
+      const names = within(section)
+        .getAllByRole("link")
+        .map((link) => link.textContent);
+      // The overview article's headline for the first card, the situation's
+      // own for the other three — what the destination's <h1> says.
+      expect(names).toEqual([
+        `${locale.cta.learnMore}: ${locale.forWhom.items.convenience.title}`,
+        `${locale.cta.learnMore}: ${locale.forWhom.situations.irritation.title}`,
+        `${locale.cta.learnMore}: ${locale.forWhom.situations.shaving.title}`,
+        `${locale.cta.learnMore}: ${locale.forWhom.situations.beard.title}`,
+      ]);
+      unmount();
+    }
+  });
+
   it("renders the overview article with all six situations", () => {
     renderAt(`/en${forWhomRoutes.convenience.path}`);
     expect(
