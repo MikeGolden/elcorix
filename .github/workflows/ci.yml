@@ -21,6 +21,30 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
 
+  # Lighthouse mobile (the PageSpeed Insights profile) against the
+  # production build — lighthouse/lighthouse.spec.ts. Median of 3 runs so
+  # one noisy run on a shared runner cannot fail the build.
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build -w client
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:lighthouse
+        env:
+          LH_RUNS: 3
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: lighthouse-reports/
+          retention-days: 14
+
   docker-smoke:
     runs-on: ubuntu-latest
     steps:
