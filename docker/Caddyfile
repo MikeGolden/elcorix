@@ -11,8 +11,10 @@
 # than duplicate content.
 elcorix.de, elcorix.com, elcorix.eu {
 	# HSTS only over HTTPS — nginx must not set it (it serves plain HTTP
-	# inside the network). 6 months, extend once the setup is proven.
-	header Strict-Transport-Security "max-age=15552000"
+	# inside the network). One year, subdomains included: every name under
+	# these domains (www, stats) is served here over HTTPS. No `preload` —
+	# getting off the browsers' preload list takes months.
+	header Strict-Transport-Security "max-age=31536000; includeSubDomains"
 	reverse_proxy client:80
 }
 
@@ -32,7 +34,7 @@ www.elcorix.de, www.elcorix.com, www.elcorix.eu {
 # host: the tracker is served first-party under /u/ on the site domains.
 # Change the default admin/umami login immediately after the first start.
 stats.elcorix.de, stats.elcorix.com, stats.elcorix.eu {
-	header Strict-Transport-Security "max-age=15552000"
+	header Strict-Transport-Security "max-age=31536000; includeSubDomains"
 	# Keep the dashboard out of search results.
 	header X-Robots-Tag "noindex, nofollow"
 	reverse_proxy umami:3000
