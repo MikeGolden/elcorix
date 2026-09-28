@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import i18n from "../i18n";
-import { PriceGroup } from "../components/PriceTables";
+import { PriceGroup, ZoneGroup } from "../components/PriceTables";
 import {
   formatPercent,
   formatPrice,
@@ -167,6 +167,17 @@ describe("PriceGroup", () => {
     render(<PriceGroup group="men" />);
     const headings = screen.getAllByRole("heading").map((node) => node.textContent);
     expect(headings).toEqual(["Services for men", "Combined packages for men"]);
+  });
+
+  it("heads both tables at h2, directly under the /prices <h1>", () => {
+    render(<PriceGroup group="women" />);
+    expect(screen.getAllByRole("heading", { level: 2 })).toHaveLength(2);
+    expect(screen.queryAllByRole("heading", { level: 3 })).toEqual([]);
+  });
+
+  it("keeps the home page's zone list at h3, under its own h2", () => {
+    render(<ZoneGroup group="women" />);
+    expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("Services for women");
   });
 
   it("gives both tables the sheet's five columns, with its two badges", () => {
