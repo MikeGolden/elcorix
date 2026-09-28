@@ -18,18 +18,11 @@
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
-    <!-- The hero photo is the LCP element, but it is rendered by React, so
-         the preload scanner never sees it in the markup and the download
-         cannot start until the bundle has parsed and mounted. Preloading it
-         here starts the fetch with the very first bytes of HTML instead.
-         Keep the type/srcset in step with <Hero>. -->
-    <link
-      rel="preload"
-      as="image"
-      href="/images/hero.webp"
-      type="image/webp"
-      fetchpriority="high"
-    />
+    <!-- The hero photo's preload (src/heroImage.ts) goes here on the home
+         page only — vite/seoPrerender.ts replaces this marker, and removes
+         it everywhere else: every other page would download a hero it
+         never shows. -->
+    <!--hero-preload-->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!-- Open Graph constants (shared links in WhatsApp/Instagram/Facebook).
          Title/description/url/locale and the share image (its alt text is

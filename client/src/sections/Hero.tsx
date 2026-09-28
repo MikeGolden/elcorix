@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
-import Photo, { webpFor } from "../components/Photo";
+import Photo from "../components/Photo";
 import { images } from "../images";
+import { heroSizes, heroWebpSrcSet } from "../heroImage";
 import LocalizedLink from "../components/LocalizedLink";
 import { useAnchorHref } from "../i18n/useLanguage";
 import { features } from "../config";
@@ -19,8 +20,8 @@ import { features } from "../config";
  * The photo is deliberately NOT revealed. It is the LCP element, and an
  * element at `opacity: 0` does not count as painted — wrapping it in
  * <Reveal> pushed the largest paint behind React mounting, the observer
- * firing, a 180ms stagger and a 650ms fade. It is preloaded in index.html
- * and painted as soon as it decodes.
+ * firing, a 180ms stagger and a 650ms fade. It is preloaded in the home
+ * page's documents (heroImage.ts) and painted as soon as it decodes.
  */
 export default function Hero() {
   const { t } = useTranslation();
@@ -81,10 +82,9 @@ export default function Hero() {
         <Photo
           data-testid="hero-photo"
           src={images.hero}
-          // Full-bleed below lg, half the viewport above it: a phone gets
-          // the 900px crop (26kB) instead of the 1600px one.
-          webpSrcSet={`${images.heroSmall} 900w, ${webpFor(images.hero)} 1600w`}
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          // A phone gets the 900px crop (26kB) instead of the 1600px one.
+          webpSrcSet={heroWebpSrcSet}
+          sizes={heroSizes}
           alt={t("hero.imageAlt")}
           width="1600"
           height="1000"

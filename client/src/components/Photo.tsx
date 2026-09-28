@@ -1,4 +1,13 @@
 import type { ComponentPropsWithoutRef } from "react";
+import { webpFor } from "../images";
+
+type PhotoProps = ComponentPropsWithoutRef<"img"> & {
+  src: string;
+  alt: string;
+  /** Overrides the derived single-file WebP source, for responsive sets. */
+  webpSrcSet?: string;
+  sizes?: string;
+};
 
 /**
  * An <img> that prefers WebP and falls back to the committed JPEG/PNG.
@@ -12,18 +21,6 @@ import type { ComponentPropsWithoutRef } from "react";
  * its own: the <img> keeps whatever position, aspect ratio and grid
  * placement its className gives it, exactly as a bare <img> would.
  */
-export function webpFor(src: string): string {
-  return src.replace(/\.(jpe?g|png)$/i, ".webp");
-}
-
-type PhotoProps = ComponentPropsWithoutRef<"img"> & {
-  src: string;
-  alt: string;
-  /** Overrides the derived single-file WebP source, for responsive sets. */
-  webpSrcSet?: string;
-  sizes?: string;
-};
-
 export default function Photo({ src, alt, webpSrcSet, sizes, ...rest }: PhotoProps) {
   return (
     <picture className="contents">
