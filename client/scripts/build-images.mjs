@@ -1,6 +1,7 @@
 /**
  * Regenerates the WebP twin of every photo in public/images/, plus the
- * 900px hero crop used by the phone layout.
+ * 900px hero crop used by the phone layout and the smaller copies of the
+ * photos that are shown far below their size (SMALL_WEBP below).
  *
  * The JPEG/PNG originals stay committed as the <picture> fallback; this
  * script only ever writes .webp files, so it is safe to re-run. Requires
@@ -39,6 +40,28 @@ with Image.open(images / "hero.jpg") as im:
         images / "hero-900.webp", "WEBP", quality=QUALITY, method=6
     )
 print("  hero.jpg -> hero-900.webp (900w)")
+
+# Photos displayed well below their size get a copy at twice the size they
+# are shown at on a phone, next to the full-size twin: <Photo> offers both
+# (webpSrcSet in src/images.ts) and the browser picks by sizes and density.
+# Keep the widths in step with the webpSrcSet() calls.
+SMALL_WEBP = {
+    "reason-convenience.jpg": 192,  # shown at 96px (ForWhom cards)
+    "reason-irritation.jpg": 192,
+    "reason-shaving.jpg": 192,
+    "reason-beard.jpg": 192,
+    "service-thumb.jpg": 112,       # shown at 56px (hero teaser)
+    "technology.jpg": 760,          # ~380px on a phone
+    "specialist.jpg": 680,          # ~330px on a phone
+}
+for name, width in SMALL_WEBP.items():
+    source = images / name
+    target = images / f"{source.stem}-{width}.webp"
+    with Image.open(source) as im:
+        im.resize((width, round(width * im.height / im.width)), Image.LANCZOS).save(
+            target, "WEBP", quality=QUALITY, method=6
+        )
+    print(f"  {name} -> {target.name} ({width}w)")
 `;
 
 console.log(`Rebuilding WebP variants in ${imagesDir}`);

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
 import { reasons } from "../content";
+import { webpSrcSet } from "../images";
 import LocalizedLink from "../components/LocalizedLink";
 import { forWhomRoutes } from "../seo/routes";
 import { ArrowRightIcon } from "../components/icons";
@@ -29,6 +30,8 @@ export default function ForWhom() {
           >
             <Photo
               src={reason.image}
+              webpSrcSet={webpSrcSet(reason.image, 192, 480)}
+              sizes="(min-width: 640px) 112px, 96px"
               alt=""
               width="480"
               height="480"
