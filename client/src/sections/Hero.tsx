@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
-import { images } from "../images";
+import { images, webpSrcSet } from "../images";
 import { heroSizes, heroWebpSrcSet } from "../heroImage";
 import LocalizedLink from "../components/LocalizedLink";
 import { useAnchorHref } from "../i18n/useLanguage";
@@ -65,6 +65,8 @@ export default function Hero() {
           >
             <Photo
               src={images.serviceThumb}
+              webpSrcSet={webpSrcSet(images.serviceThumb, 112, 320)}
+              sizes="56px"
               alt=""
               width="320"
               height="320"

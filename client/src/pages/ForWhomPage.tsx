@@ -5,7 +5,7 @@ import Photo from "../components/Photo";
 import { ArrowRightIcon, ChevronLeftIcon, WhatsAppIcon } from "../components/icons";
 import { business } from "../config";
 import { reasons, situations, type Situation } from "../content";
-import type { ReasonKey } from "../images";
+import { webpSrcSet, type ReasonKey } from "../images";
 import { useAnchorHref } from "../i18n/useLanguage";
 import { forWhomRoutes } from "../seo/routes";
 import { usePageMeta } from "../seo/usePageMeta";
@@ -120,6 +120,8 @@ export default function ForWhomPage({ reason }: { reason: ReasonKey }) {
               >
                 <Photo
                   src={other.image}
+                  webpSrcSet={webpSrcSet(other.image, 192, 480)}
+                  sizes="80px"
                   alt=""
                   width="480"
                   height="480"

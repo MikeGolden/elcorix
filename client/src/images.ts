@@ -50,3 +50,14 @@ export type ReasonKey = keyof typeof images.reasons;
 export function webpFor(src: string): string {
   return src.replace(/\.(jpe?g|png)$/i, ".webp");
 }
+
+/**
+ * A srcset of the smaller WebP copy that `scripts/build-images.mjs` makes
+ * of a photo shown far below its size (`reason-beard-192.webp`), plus the
+ * full-size twin: `webpSrcSet(images.reasons.beard, 192, 480)`. Derived
+ * like the twin, so the registry above still lists one path per photo.
+ */
+export function webpSrcSet(src: string, smallWidth: number, fullWidth: number): string {
+  const small = src.replace(/\.(jpe?g|png)$/i, `-${smallWidth}.webp`);
+  return `${small} ${smallWidth}w, ${webpFor(src)} ${fullWidth}w`;
+}
