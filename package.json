@@ -13,13 +13,16 @@
     "test": "npm run test -w client && npm run test -w server",
     "test:e2e": "playwright test",
     "test:e2e:docker": "playwright test --config playwright.docker.config.ts",
+    "test:lighthouse": "playwright test --config playwright.lighthouse.config.ts",
     "typecheck": "npm run typecheck -w client && npm run typecheck -w server",
     "db:migrate": "npm run db:migrate -w server"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
-    "concurrently": "^10.0.5"
+    "chrome-launcher": "^1.2.1",
+    "concurrently": "^10.0.5",
+    "lighthouse": "^13.5.0"
   },
   "engines": {
     "node": ">=20"

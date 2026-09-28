@@ -13,6 +13,7 @@ coverage/
 playwright-report/
 test-results/
 blob-report/
+lighthouse-reports/
 .playwright/
 
 # Environment (keep .env.example)
