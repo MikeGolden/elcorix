@@ -1,7 +1,7 @@
 import { Trans, useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
-import { images } from "../images";
+import { images, webpSrcSet } from "../images";
 
 const strong = { b: <strong className="font-semibold text-ink-900" /> };
 
@@ -68,6 +68,10 @@ export default function Specialist() {
           </div>
           <Photo
             src={images.specialist}
+            // Full card width on a phone, half of it from sm, and a quarter
+            // of the 1200px container once the card splits at xl.
+            webpSrcSet={webpSrcSet(images.specialist, 680, 896)}
+            sizes="(min-width: 1280px) 244px, (min-width: 1200px) 526px, (min-width: 640px) calc(50vw - 74px), calc(100vw - 80px)"
             alt={t("specialist.imageAlt")}
             width="896"
             height="1195"

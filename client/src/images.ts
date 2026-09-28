@@ -18,8 +18,8 @@ export const images = {
   hero: "/images/hero.jpg",
   /**
    * 900px WebP crop of the hero for the full-bleed phone layout. Named
-   * explicitly because it is a second size, not a second format; keep the
-   * preload in index.html pointing at the same set.
+   * explicitly because it is a second size, not a second format; the set
+   * it belongs to is in heroImage.ts.
    */
   heroSmall: "/images/hero-900.webp",
   /** Rounded thumbnail next to "Unsere Leistungen" in the hero. */
@@ -45,3 +45,19 @@ export const images = {
 } as const;
 
 export type ReasonKey = keyof typeof images.reasons;
+
+/** The WebP twin of a JPEG/PNG in `public/images/` (see above). */
+export function webpFor(src: string): string {
+  return src.replace(/\.(jpe?g|png)$/i, ".webp");
+}
+
+/**
+ * A srcset of the smaller WebP copy that `scripts/build-images.mjs` makes
+ * of a photo shown far below its size (`reason-beard-192.webp`), plus the
+ * full-size twin: `webpSrcSet(images.reasons.beard, 192, 480)`. Derived
+ * like the twin, so the registry above still lists one path per photo.
+ */
+export function webpSrcSet(src: string, smallWidth: number, fullWidth: number): string {
+  const small = src.replace(/\.(jpe?g|png)$/i, `-${smallWidth}.webp`);
+  return `${small} ${smallWidth}w, ${webpFor(src)} ${fullWidth}w`;
+}

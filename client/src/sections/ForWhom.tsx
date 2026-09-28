@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
-import { reasons } from "../content";
+import { forWhomPageTitleKey, reasons } from "../content";
+import { webpSrcSet } from "../images";
 import LocalizedLink from "../components/LocalizedLink";
 import { forWhomRoutes } from "../seo/routes";
 import { ArrowRightIcon } from "../components/icons";
@@ -29,6 +30,8 @@ export default function ForWhom() {
           >
             <Photo
               src={reason.image}
+              webpSrcSet={webpSrcSet(reason.image, 192, 480)}
+              sizes="(min-width: 640px) 112px, 96px"
               alt=""
               width="480"
               height="480"
@@ -42,6 +45,10 @@ export default function ForWhom() {
               </h3>
               <LocalizedLink to={forWhomRoutes[reason.key].path} className="link-more mt-3">
                 {t("cta.learnMore")}
+                {/* Four identical "Learn more" links read as one to a screen
+                    reader's link list, and to search engines: name the page
+                    each one opens. */}
+                <span className="sr-only">: {t(forWhomPageTitleKey(reason.key))}</span>
                 <ArrowRightIcon />
               </LocalizedLink>
             </div>

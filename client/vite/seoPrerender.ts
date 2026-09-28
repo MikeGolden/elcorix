@@ -4,9 +4,11 @@ import { loadEnv, type Plugin, type ResolvedConfig } from "vite";
 import { altegioBookingUrlFor, sanitizeCompanyId } from "../src/business";
 import {
   defaultLanguage,
+  splitLanguagePath,
   supportedLanguages,
   type SupportedLanguage,
 } from "../src/i18n/routing";
+import { heroPreloadTag } from "../src/heroImage";
 import { localizedRouteFilePath } from "../src/seo/routePaths";
 import { redirectMap } from "../src/seo/redirects";
 import { featuresFrom, type Features } from "../src/features";
@@ -39,7 +41,8 @@ import { injectSeoBlock, replaceSeoBlock, seoBlock } from "../src/seo/staticHead
  *     `publicRoutes` gets its own `dist/<lang>/<path>/index.html`: the same
  *     built document with that block swapped for the route's own, in that
  *     language, and `<html lang>` set to match. nginx serves them via
- *     `try_files $uri $uri/index.html /index.html`.
+ *     `try_files $uri $uri/index.html /index.html`. Only the home page's
+ *     documents (and index.html, which is `/`) keep the hero preload.
  *  3. `dist/sitemap.xml` is generated from the same route list, so the
  *     URLs and their hreflang alternates cannot drift from the router —
  *     including when a feature flag hides one of the routes.
@@ -71,6 +74,26 @@ function shellPath(outDir: string, language: SupportedLanguage, routePath: strin
 
 function setHtmlLang(html: string, language: SupportedLanguage): string {
   return html.replace(/<html([^>]*)\slang="[^"]*"/i, `<html$1 lang="${language}"`);
+}
+
+/** The marker in index.html where the home page's hero preload goes. */
+const HERO_PRELOAD_MARKER = "<!--hero-preload-->";
+
+/**
+ * The hero preload on the home page, nothing anywhere else: every other
+ * page would download a 1600px photo it never shows.
+ */
+function withHeroPreload(html: string, isHome: boolean): string {
+  if (!html.includes(HERO_PRELOAD_MARKER)) {
+    throw new Error(`index.html has no ${HERO_PRELOAD_MARKER} marker`);
+  }
+  return html.replace(HERO_PRELOAD_MARKER, isHome ? heroPreloadTag : "");
+}
+
+/** `/`, `/de`, `/en/` — the dev server's request URL for the home page. */
+function isHomeUrl(url: string): boolean {
+  const pathname = url.split(/[?#]/)[0] ?? "/";
+  return pathname === "/" || splitLanguagePath(pathname)?.path === "/";
 }
 
 export function seoPrerender(): Plugin {
@@ -117,8 +140,13 @@ export function seoPrerender(): Plugin {
 
     transformIndexHtml: {
       order: "pre",
-      handler(html) {
-        return injectSeoBlock(html, seoBlock(home, defaultLanguage, bookingUrl));
+      handler(html, ctx) {
+        const withSeo = injectSeoBlock(html, seoBlock(home, defaultLanguage, bookingUrl));
+        // Dev serves this one document for every URL, so it decides per
+        // request. The build leaves the marker for closeBundle, which knows
+        // which shell it is writing.
+        if (!ctx.server) return withSeo;
+        return withHeroPreload(withSeo, isHomeUrl(ctx.originalUrl ?? ctx.path));
       },
     },
 
@@ -148,7 +176,10 @@ export function seoPrerender(): Plugin {
           await mkdir(dirname(target), { recursive: true });
           await writeFile(
             target,
-            setHtmlLang(replaceSeoBlock(html, seoBlock(route, language, bookingUrl)), language),
+            withHeroPreload(
+              setHtmlLang(replaceSeoBlock(html, seoBlock(route, language, bookingUrl)), language),
+              route.path === home.path,
+            ),
             "utf8",
           );
           written += 1;
@@ -158,15 +189,23 @@ export function seoPrerender(): Plugin {
       // The 404 body: default language, no canonical, no alternates.
       await writeFile(
         join(outDir, "404.html"),
-        setHtmlLang(
-          replaceSeoBlock(
-            html,
-            seoBlock(notFoundRoute, defaultLanguage, bookingUrl, { noindex: true }),
+        withHeroPreload(
+          setHtmlLang(
+            replaceSeoBlock(
+              html,
+              seoBlock(notFoundRoute, defaultLanguage, bookingUrl, { noindex: true }),
+            ),
+            defaultLanguage,
           ),
-          defaultLanguage,
+          false,
         ),
         "utf8",
       );
+
+      // index.html itself is the document for `/`, which renders the home
+      // page (RootEntry) — written last, since every shell above is cut
+      // from the copy with the marker still in it.
+      await writeFile(source, withHeroPreload(html, true), "utf8");
 
       await writeFile(join(outDir, "sitemap.xml"), sitemap(), "utf8");
       await writeFile(join(outDir, "_redirects.map"), redirectMap(routes), "utf8");

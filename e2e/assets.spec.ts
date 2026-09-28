@@ -26,7 +26,26 @@ test.describe("Hero and image delivery", () => {
     await page.goto("/en");
     const preload = page.locator('link[rel="preload"][as="image"]');
     await expect(preload).toHaveCount(1);
-    await expect(preload).toHaveAttribute("href", /hero.*\.webp$/);
+    // The same set and sizes as the <img>, or a phone downloads both files.
+    const source = page.getByTestId("hero-photo").locator("xpath=preceding-sibling::source");
+    await expect(preload).toHaveAttribute("imagesrcset", (await source.getAttribute("srcset"))!);
+    await expect(preload).toHaveAttribute("imagesizes", (await source.getAttribute("sizes"))!);
+  });
+
+  test("the hero is fetched once, at the size the layout picks", async ({ page }) => {
+    const heroes: string[] = [];
+    page.on("request", (request) => {
+      if (/\/images\/hero[^/]*$/.test(request.url())) heroes.push(request.url());
+    });
+    await page.goto("/en");
+    await page.waitForLoadState("networkidle");
+    expect(heroes).toHaveLength(1);
+  });
+
+  test("a subpage preloads no image", async ({ page }) => {
+    await page.goto("/en/prices");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.locator('link[rel="preload"][as="image"]')).toHaveCount(0);
   });
 
   test("the hero really loads the WebP, not the fallback in its src", async ({ page }) => {

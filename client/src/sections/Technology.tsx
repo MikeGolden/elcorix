@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
 import { ChevronDownIcon } from "../components/icons";
-import { images } from "../images";
+import { images, webpSrcSet } from "../images";
 
 const PANEL_ID = "technology-more";
 
@@ -56,6 +56,9 @@ export default function Technology() {
         <Reveal>
           <Photo
             src={images.technology}
+            // One column below md, half of the 1200px container above it.
+            webpSrcSet={webpSrcSet(images.technology, 760, 1200)}
+            sizes="(min-width: 1200px) 548px, (min-width: 768px) calc(50vw - 52px), (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
             alt={t("technology.imageAlt")}
             width="1200"
             height="900"
