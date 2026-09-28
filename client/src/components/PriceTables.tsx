@@ -43,21 +43,30 @@ function packageLabel(
   return `prices.packages.${group}.${key}.${field}` as "prices.packages.women.smoothDuo.name";
 }
 
+/**
+ * The level of a group's headings: h2 directly under the /prices <h1>, h3
+ * inside the home page's "Preise" section, which has its own h2. A skipped
+ * level breaks the outline screen readers navigate by.
+ */
+type HeadingLevel = "h2" | "h3";
+
 /** The single-zone price list of one group. */
 function ZoneTable({
   group,
   rows,
+  headingLevel: Heading,
 }: {
   group: PackageGroup;
   rows: ZonePrice<"women">[] | ZonePrice<"men">[];
+  headingLevel: HeadingLevel;
 }) {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage ?? "de";
   return (
     <section aria-labelledby={`prices-${group}`}>
-      <h3 id={`prices-${group}`} className="px-4 text-lg font-bold text-brand-700">
+      <Heading id={`prices-${group}`} className="px-4 text-lg font-bold text-brand-700">
         {t(`prices.groups.${group}` as "prices.groups.women")}
-      </h3>
+      </Heading>
       {/* Full page width, but in two columns from `sm` up: a zone name and
           its price 1200px apart read as two unrelated columns, so the list
           fills the width by splitting instead of by stretching a row.
@@ -245,9 +254,11 @@ function priceCells(
 function PackageTable({
   group,
   rows,
+  headingLevel: Heading,
 }: {
   group: PackageGroup;
   rows: PricePackage<"women">[] | PricePackage<"men">[];
+  headingLevel: HeadingLevel;
 }) {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage ?? "de";
@@ -259,9 +270,9 @@ function PackageTable({
 
   return (
     <section aria-labelledby={id}>
-      <h3 id={id} className="px-4 text-lg font-bold text-brand-700">
+      <Heading id={id} className="px-4 text-lg font-bold text-brand-700">
         {t(heading)}
-      </h3>
+      </Heading>
 
       {/* Desktop: the five-column table. It needs ~860px of its own before
           the zone column starts wrapping to four lines, so it only appears
@@ -364,20 +375,21 @@ const GROUPS = {
  * package tables to /prices, pointing there with `PackagesTeaser`.
  */
 export function ZoneGroup({ group }: { group: PackageGroup }) {
-  return <ZoneTable group={group} rows={GROUPS[group].zones} />;
+  return <ZoneTable group={group} rows={GROUPS[group].zones} headingLevel="h3" />;
 }
 
 /**
  * One gendered price block: the single-zone list first, the combined
  * packages under it — the order Mykhailo chose, so the visitor reads what
- * one zone costs before the package that bundles several.
+ * one zone costs before the package that bundles several. Only /prices
+ * shows these, so their headings sit directly under its <h1>.
  */
 export function PriceGroup({ group }: { group: PackageGroup }) {
   const { zones, packages } = GROUPS[group];
   return (
     <div className="grid gap-10">
-      <ZoneTable group={group} rows={zones} />
-      <PackageTable group={group} rows={packages} />
+      <ZoneTable group={group} rows={zones} headingLevel="h2" />
+      <PackageTable group={group} rows={packages} headingLevel="h2" />
     </div>
   );
 }

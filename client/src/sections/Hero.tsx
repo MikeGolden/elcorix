@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Reveal from "../components/Reveal";
-import Photo, { webpFor } from "../components/Photo";
-import { images } from "../images";
+import Photo from "../components/Photo";
+import { images, webpSrcSet } from "../images";
+import { heroSizes, heroWebpSrcSet } from "../heroImage";
 import LocalizedLink from "../components/LocalizedLink";
 import { useAnchorHref } from "../i18n/useLanguage";
 import { features } from "../config";
@@ -13,14 +13,14 @@ import { features } from "../config";
  * height of the block, up behind the (transparent) header — so the
  * header buttons sit on the photo and there is no divider between them.
  *
- * Everything here is above the fold, so the reveals fire on load: headline
- * first, then the button and the service teaser, ~90ms apart.
- *
- * The photo is deliberately NOT revealed. It is the LCP element, and an
- * element at `opacity: 0` does not count as painted — wrapping it in
- * <Reveal> pushed the largest paint behind React mounting, the observer
- * firing, a 180ms stagger and a 650ms fade. It is preloaded in index.html
- * and painted as soon as it decodes.
+ * Nothing here is revealed. Everything is above the fold, and a <Reveal>
+ * starts at `opacity: 0` in the prerendered HTML and only fades in once
+ * React has hydrated and the observer has fired — so the headline, the
+ * button and the service teaser used to stay invisible until the bundle
+ * had run (Speed Index 4.5s on a phone). The photo is the LCP element,
+ * and an element at opacity 0 does not count as painted at all. It is
+ * preloaded in the home page's documents (heroImage.ts) and painted as
+ * soon as it decodes.
  */
 export default function Hero() {
   const { t } = useTranslation();
@@ -41,22 +41,14 @@ export default function Hero() {
     // squeezed the headline to one word per line.
     <section className="relative -mt-19 pt-19">
       <div className="mx-auto max-w-[1200px] px-4 pb-14 pt-8 sm:px-6 sm:pb-20 sm:pt-12 lg:pr-[min(calc(50vw+2.5rem),640px)]">
-        <Reveal
-          as="h1"
-          className="text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-[3.35rem]"
-        >
+        <h1 className="text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-[3.35rem]">
           {t("hero.title")}
-        </Reveal>
-        <Reveal
-          as={Link}
-          delay={90}
-          to={cta.to}
-          className="btn-primary mt-8"
-        >
+        </h1>
+        <Link to={cta.to} className="btn-primary mt-8">
           {cta.label}
-        </Reveal>
+        </Link>
 
-        <Reveal className="mt-12" delay={270}>
+        <div className="mt-12">
           <p className="text-sm font-bold text-brand-700">{t("hero.servicesLabel")}</p>
           <LocalizedLink
             to="/prices"
@@ -64,6 +56,8 @@ export default function Hero() {
           >
             <Photo
               src={images.serviceThumb}
+              webpSrcSet={webpSrcSet(images.serviceThumb, 112, 320)}
+              sizes="56px"
               alt=""
               width="320"
               height="320"
@@ -76,15 +70,14 @@ export default function Hero() {
               <span className="text-ink-500">{t("hero.serviceCount")}</span>
             </span>
           </LocalizedLink>
-        </Reveal>
+        </div>
 
         <Photo
           data-testid="hero-photo"
           src={images.hero}
-          // Full-bleed below lg, half the viewport above it: a phone gets
-          // the 900px crop (26kB) instead of the 1600px one.
-          webpSrcSet={`${images.heroSmall} 900w, ${webpFor(images.hero)} 1600w`}
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          // A phone gets the 900px crop (26kB) instead of the 1600px one.
+          webpSrcSet={heroWebpSrcSet}
+          sizes={heroSizes}
           alt={t("hero.imageAlt")}
           width="1600"
           height="1000"

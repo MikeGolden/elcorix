@@ -1,13 +1,13 @@
 /*
  * Self-hosted fonts (GDPR-safe: no Google Fonts CDN request).
  *
- * One import per weight the site actually renders — every extra weight is
+ * Manrope: one import per weight the site renders — every extra weight is
  * an extra font request for every visitor:
  *   Manrope  700/800  headings only (font-display, h1-h3 and the 404 mark)
- *   Inter    400      body copy, the default weight
- *   Inter    500/600  links, labels, buttons, <strong> lead-ins
- *   Inter    700      bold body text (Hero's service label and friends);
- *                     without it the browser fakes bold by smearing 600.
+ * Inter is the variable font: body copy (400), links, labels and buttons
+ * (500/600) and bold body text (700) all come from one file per subset —
+ * 48 kB for latin, where the four static weights were ~95 kB and four
+ * requests. Its family name is "Inter Variable".
  *
  * These files declare every unicode subset with a `unicode-range`, so the
  * browser fetches only what the page needs: latin for German and English,
@@ -17,10 +17,7 @@
  */
 @import "@fontsource/manrope/700.css";
 @import "@fontsource/manrope/800.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
+@import "@fontsource-variable/inter/wght.css";
 
 @import "tailwindcss";
 
@@ -38,7 +35,7 @@
  *   surface-soft   the pale band that alternates with white sections
  */
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
 
   --color-brand-50: #f2f5fc;
