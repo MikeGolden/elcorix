@@ -379,6 +379,7 @@
     "dateClosedDays": "So. und Mo. geschlossen",
     "time": "Uhrzeit des Besuchs",
     "timeAny": "Keine Präferenz",
+    "timeHours": "Geöffnet {{opens}}–{{closes}} Uhr",
     "dateRequired": "Bitte wählen Sie zu der Uhrzeit auch ein Datum aus.",
     "datePast": "Bitte wählen Sie ein Datum, das nicht in der Vergangenheit liegt.",
     "consentMarketing": "Ich willige ein, dass ELCORIX mich telefonisch über Angebote und Neuigkeiten informiert. Die Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerrufbar.",

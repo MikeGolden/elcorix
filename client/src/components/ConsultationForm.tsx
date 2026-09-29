@@ -1,6 +1,7 @@
 import { FormEvent, useCallback, useState } from "react";
 import LocalizedLink from "./LocalizedLink";
 import DateField from "./DatePicker";
+import TimeField from "./TimePicker";
 import { Trans, useTranslation } from "react-i18next";
 import { isValidPhone } from "../phone";
 import { track } from "../analytics";
@@ -237,22 +238,10 @@ export default function ConsultationForm() {
           )}
         </div>
         <div className="min-w-0">
-          <label htmlFor="consult-time" className="field-label">
+          <label id="consult-time-label" htmlFor="consult-time" className="field-label">
             {t("consultation.time")}
           </label>
-          <select
-            id="consult-time"
-            name="time"
-            defaultValue=""
-            className="field field-select"
-          >
-            <option value="">{t("consultation.timeAny")}</option>
-            {TIME_SLOTS.map((slot) => (
-              <option key={slot} value={slot}>
-                {slot}
-              </option>
-            ))}
-          </select>
+          <TimeField id="consult-time" name="time" labelId="consult-time-label" slots={TIME_SLOTS} />
         </div>
       </div>
 

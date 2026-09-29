@@ -1,7 +1,6 @@
 import {
   KeyboardEvent,
   useCallback,
-  useEffect,
   useId,
   useLayoutEffect,
   useMemo,
@@ -19,6 +18,7 @@ import {
   startOfMonth,
 } from "../calendar";
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from "./icons";
+import { POPOVER_CLASS, useFinePointer, useFormReset, usePopoverDismiss } from "./pickerPopover";
 
 type Props = {
   id: string;
@@ -61,21 +61,6 @@ export default function DateField(props: Props) {
     );
   }
   return <DatePicker {...props} />;
-}
-
-const FINE_POINTER = "(hover: hover) and (pointer: fine)";
-
-function useFinePointer(): boolean {
-  const [fine, setFine] = useState(false);
-  useEffect(() => {
-    if (typeof window.matchMedia !== "function") return;
-    const query = window.matchMedia(FINE_POINTER);
-    setFine(query.matches);
-    const update = (event: MediaQueryListEvent) => setFine(event.matches);
-    query.addEventListener?.("change", update);
-    return () => query.removeEventListener?.("change", update);
-  }, []);
-  return fine;
 }
 
 function capitalize(text: string, locale: string): string {
@@ -132,27 +117,17 @@ function DatePicker({ id, name, min, labelId, invalid, describedBy, onChange }: 
     [min],
   );
 
-  // form.reset() only resets real form controls; ours is state.
-  useEffect(() => {
-    const form = rootRef.current?.closest("form");
-    if (!form) return;
-    const reset = () => {
-      setValue("");
-      setOpen(false);
-    };
-    form.addEventListener("reset", reset);
-    return () => form.removeEventListener("reset", reset);
+  useFormReset(rootRef, () => {
+    setValue("");
+    setOpen(false);
+  });
+
+  const close = useCallback((returnFocus: boolean) => {
+    setOpen(false);
+    if (returnFocus) triggerRef.current?.focus();
   }, []);
 
-  // Close on a click anywhere else on the page.
-  useEffect(() => {
-    if (!open) return;
-    const onPointerDown = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [open]);
+  const dismiss = usePopoverDismiss(rootRef, open, close);
 
   useLayoutEffect(() => {
     if (!open || !focusDay.current) return;
@@ -166,11 +141,6 @@ function DatePicker({ id, name, min, labelId, invalid, describedBy, onChange }: 
     setMonth(startOfMonth(start));
     focusDay.current = true;
     setOpen(true);
-  }
-
-  function close(returnFocus: boolean) {
-    setOpen(false);
-    if (returnFocus) triggerRef.current?.focus();
   }
 
   function commit(next: IsoDate) {
@@ -209,22 +179,7 @@ function DatePicker({ id, name, min, labelId, invalid, describedBy, onChange }: 
   const today = min;
 
   return (
-    <div
-      ref={rootRef}
-      className="relative"
-      onKeyDown={(event) => {
-        if (event.key === "Escape" && open) {
-          event.preventDefault();
-          close(true);
-        }
-      }}
-      onBlur={(event) => {
-        // Tabbing out of the popover closes it, as a native picker would.
-        if (open && !rootRef.current?.contains(event.relatedTarget as Node | null)) {
-          setOpen(false);
-        }
-      }}
-    >
+    <div ref={rootRef} className="relative" {...dismiss}>
       <input type="hidden" name={name} value={value} />
       <button
         ref={triggerRef}
@@ -243,7 +198,7 @@ function DatePicker({ id, name, min, labelId, invalid, describedBy, onChange }: 
             openPicker();
           }
         }}
-        className="field field-date aria-expanded:border-brand-400"
+        className="field field-picker aria-expanded:border-brand-400"
       >
         <span id={valueId} className={value === "" ? "text-ink-500" : undefined}>
           {value === ""
@@ -258,7 +213,8 @@ function DatePicker({ id, name, min, labelId, invalid, describedBy, onChange }: 
           id={dialogId}
           role="dialog"
           aria-label={t("consultation.date")}
-          className="date-popover absolute left-0 top-full z-30 mt-2 w-[21rem] max-w-[calc(100vw-3rem)] rounded-panel bg-white p-4 shadow-[0_18px_50px_-12px_rgba(20,32,63,0.28)] ring-1 ring-brand-100"
+          tabIndex={-1}
+          className={POPOVER_CLASS}
         >
           <div className="mb-2 flex items-center justify-between">
             <button

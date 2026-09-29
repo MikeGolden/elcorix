@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { vi, type Mock } from "vitest";
@@ -102,7 +102,8 @@ describe("DatePicker (desktop calendar)", () => {
     expect(trigger).toHaveFocus();
     expect(trigger).toHaveTextContent("Sat, October 10, 2026");
 
-    await user.selectOptions(screen.getByLabelText(/preferred time/i), "11:30");
+    await user.click(screen.getByRole("button", { name: /preferred time/i }));
+    await user.click(screen.getByRole("option", { name: "11:30" }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
 
     const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
@@ -132,6 +133,34 @@ describe("DatePicker (desktop calendar)", () => {
     expect(trigger).toHaveFocus();
   });
 
+  it("pages months even when a click leaves focus nowhere (Safari)", async () => {
+    // macOS Safari never focuses a <button> on click: pressing the month
+    // arrow blurs the focused day with no relatedTarget. That used to close
+    // the popover on mousedown and swallow the click.
+    renderForm();
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /preferred date/i }));
+    const day = screen.getByRole("button", { name: "Tuesday, September 29, 2026" });
+    expect(day).toHaveFocus();
+
+    fireEvent.blur(day, { relatedTarget: null });
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /next month/i }));
+    expect(screen.getByText("October 2026")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /previous month/i }));
+    expect(screen.getByText("September 2026")).toBeInTheDocument();
+  });
+
+  it("closes when Tab moves focus out of it", async () => {
+    renderForm();
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /preferred date/i }));
+    const day = screen.getByRole("button", { name: "Tuesday, September 29, 2026" });
+    fireEvent.blur(day, { relatedTarget: screen.getByLabelText("Name") });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
   it("closes on a click outside and can be cleared again", async () => {
     renderForm();
     const user = userEvent.setup();
@@ -154,7 +183,8 @@ describe("DatePicker (desktop calendar)", () => {
     renderForm();
     const user = userEvent.setup();
     await fillContact(user);
-    await user.selectOptions(screen.getByLabelText(/preferred time/i), "10:30");
+    await user.click(screen.getByRole("button", { name: /preferred time/i }));
+    await user.click(screen.getByRole("option", { name: "10:30" }));
     await user.click(screen.getByRole("button", { name: /get a consultation/i }));
 
     expect(fetchMock).not.toHaveBeenCalled();
