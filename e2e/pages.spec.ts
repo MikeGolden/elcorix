@@ -134,8 +134,15 @@ test.describe("Deep-link routes", () => {
       await expect(calendar).toBeHidden();
     }
     await expect(page.locator('input[name="date"]')).toHaveValue(iso);
-    // The time field is a select of half-hour slots, not a free-text input.
-    await page.getByLabel("Preferred time").selectOption("10:30");
+    // Half-hour slots only, never free text: the native select on touch,
+    // the calendar-styled popover (components/TimePicker.tsx) with a mouse.
+    if (isMobile) {
+      await page.getByLabel("Preferred time").selectOption("10:30");
+    } else {
+      await page.getByRole("button", { name: /Preferred time/ }).click();
+      await page.getByRole("option", { name: "10:30" }).click();
+      await expect(page.locator('input[name="time"]')).toHaveValue("10:30");
+    }
     await page.getByRole("button", { name: "Get a consultation" }).click();
     await expect(page.getByRole("status")).toHaveText(/we will get back to you/i);
   });

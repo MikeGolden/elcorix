@@ -379,6 +379,7 @@
     "dateClosedDays": "Closed Sun & Mon",
     "time": "Preferred time",
     "timeAny": "No preference",
+    "timeHours": "Open {{opens}}–{{closes}}",
     "dateRequired": "Please also choose a date for the time you picked.",
     "datePast": "Please choose a date that is not in the past.",
     "consentMarketing": "I agree that ELCORIX may inform me by phone about offers and news. This consent is voluntary and can be withdrawn at any time with effect for the future.",

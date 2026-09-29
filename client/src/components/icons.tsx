@@ -110,6 +110,17 @@ export function ChevronRightIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
+export function ClockIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} {...base}>
+      <g fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="10" cy="10" r="7.25" />
+        <path d="M10 6v4l2.75 1.75" />
+      </g>
+    </svg>
+  );
+}
+
 export function CalendarIcon({ className = "h-5 w-5" }: IconProps) {
   return (
     <svg viewBox="0 0 20 20" className={className} {...base}>
