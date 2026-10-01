@@ -25,16 +25,6 @@ updates:
         patterns: ["*"]
         update-types: ["major"]
     ignore:
-      # React 19 is a deliberate migration (react-router 7 + @types churn),
-      # not a Dependabot merge. Drop these four entries when we do it.
-      - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react-dom"
-        update-types: ["version-update:semver-major"]
       # Express 5 changes routing and error semantics; hold it until the
       # docker-smoke integration job is green again.
       - dependency-name: "express"

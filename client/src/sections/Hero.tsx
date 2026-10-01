@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import Photo from "../components/Photo";
 import { images, webpSrcSet } from "../images";
@@ -82,8 +82,7 @@ export default function Hero() {
           width="1600"
           height="1000"
           decoding="async"
-          // React 18 only forwards the lowercase DOM attribute form.
-          {...{ fetchpriority: "high" }}
+          fetchPriority="high"
           className="mt-10 aspect-[16/10] w-full rounded-panel object-cover
                      lg:absolute lg:inset-y-0 lg:right-0 lg:mt-0 lg:aspect-auto lg:h-full
                      lg:w-1/2 lg:rounded-l-panel lg:rounded-r-none

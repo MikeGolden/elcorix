@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, fireEvent, act } from "@testing-library/react";
-import { MemoryRouter, Link } from "react-router-dom";
+import { MemoryRouter, Link } from "react-router";
 import ScrollToTop from "../components/ScrollToTop";
 
 describe("ScrollToTop", () => {

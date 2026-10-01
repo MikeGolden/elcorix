@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import App from "../App";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import i18n, { createI18nInstance } from "../i18n";
@@ -62,6 +62,45 @@ describe("internationalization", () => {
     expect(document.documentElement.lang).toBe("ru");
     // Cyrillic is not enough: /ru must not fall through to the uk bundle.
     expect(screen.queryByRole("heading", { name: "Кому це підходить?" })).toBeNull();
+  });
+
+  it("switches language once — the page being left does not switch it back", async () => {
+    // react-i18next hands out a new `i18n` object on every language change.
+    // When LanguageLayout's effect depended on it, the /en layout that was
+    // about to unmount re-ran its effect and set English again after the
+    // URL was already /de; the new /de layout then set German a third time.
+    // The visitor saw English on /de for a few frames, and a reload in that
+    // window remembered the wrong language.
+    renderApp("/en");
+    const changes: string[] = [];
+    const record = (language: string) => changes.push(language);
+    i18n.on("languageChanged", record);
+    try {
+      const user = userEvent.setup();
+      await user.click(screen.getByTestId("language-switcher"));
+      await user.click(screen.getByRole("option", { name: "Deutsch" }));
+      expect(document.documentElement.lang).toBe("de");
+    } finally {
+      i18n.off("languageChanged", record);
+    }
+    expect(changes).toEqual(["de"]);
+    expect(window.localStorage.getItem("i18nextLng")).toBe("de");
+  });
+
+  it("the bare root redirects into the stored language exactly once", async () => {
+    window.localStorage.setItem("i18nextLng", "uk");
+    const changes: string[] = [];
+    const record = (language: string) => changes.push(language);
+    i18n.on("languageChanged", record);
+    try {
+      renderApp("/");
+      expect(
+        await screen.findByRole("heading", { name: "Кому це підходить?" }),
+      ).toBeInTheDocument();
+    } finally {
+      i18n.off("languageChanged", record);
+    }
+    expect(changes).toEqual(["uk"]);
   });
 
   it("updates the html lang attribute when the language changes", async () => {

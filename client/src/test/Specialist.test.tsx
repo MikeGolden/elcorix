@@ -1,5 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import App from "../App";
 import { visitSteps } from "../sections/Specialist";
 import en from "../i18n/locales/en/common.json";

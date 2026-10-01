@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { defaultLanguage } from "../i18n/routing";
 import { localizedRoutePath } from "../seo/routePaths";
