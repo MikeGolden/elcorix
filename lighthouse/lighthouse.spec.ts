@@ -133,8 +133,9 @@ for (const pageSpec of PAGES) {
     });
 
     test("JavaScript ≤ 170 KiB over the wire", () => {
-      // 140 KiB gzipped today (437 KiB raw). A budget, not a target: it
-      // trips when a dependency lands in the main chunk by accident.
+      // ~157 KiB gzipped today (527 kB raw) — React 19's react-dom added
+      // ~22 KiB over React 18. A budget, not a target: it trips when a
+      // dependency lands in the main chunk by accident.
       const requests =
         (lhr.audits["network-requests"].details as {
           items?: { url: string; resourceType?: string; transferSize?: number }[];

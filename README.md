@@ -8,14 +8,14 @@ The front end is built to the elcorix Figma file
 
 ## Stack
 
-| Layer     | Technology                                      |
-| --------- | ----------------------------------------------- |
-| Frontend  | React 18, TypeScript, Vite, Tailwind CSS v4     |
-| Backend   | Node.js, Express, TypeScript                    |
-| Database  | PostgreSQL (`pg`)                               |
-| Booking   | Altegio embedded booking widget (calendar)      |
-| Unit tests| Vitest, React Testing Library, Supertest        |
-| E2E tests | Playwright                                      |
+| Layer      | Technology                                                  |
+| ---------- | ----------------------------------------------------------- |
+| Frontend   | React 19, React Router 8, TypeScript, Vite, Tailwind CSS v4 |
+| Backend    | Node.js, Express, TypeScript                                |
+| Database   | PostgreSQL (`pg`)                                           |
+| Booking    | Altegio embedded booking widget (calendar)                  |
+| Unit tests | Vitest, React Testing Library, Supertest                    |
+| E2E tests  | Playwright                                                  |
 
 ## Structure
 
@@ -46,7 +46,7 @@ The front end is built to the elcorix Figma file
 
 ## Getting started
 
-Prerequisites: Node.js ≥ 20, PostgreSQL ≥ 14.
+Prerequisites: Node.js ≥ 22.22.2 (React Router 8 and jsdom need it), PostgreSQL ≥ 14.
 
 ```bash
 npm install

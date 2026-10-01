@@ -1,5 +1,5 @@
 import { useEffect, type ReactElement } from "react";
-import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -61,12 +61,21 @@ const pages: Record<MetaKey, ReactElement> = {
  * source of truth for the active language, so this covers everything the
  * switcher does not: a shared `/uk/prices` link, a bookmark, the back
  * button, and the redirect below.
+ *
+ * Keyed on `language` alone, deliberately not on `i18n`: react-i18next
+ * returns a new `i18n` object every time the language changes, so with it
+ * in the dependencies the layout being left (still mounted while the
+ * router's navigation transition renders the next one) re-ran this effect
+ * and switched the language straight back — English on /de for a few
+ * frames, and the wrong choice remembered. Each language has its own
+ * layout element, so "on mount" is exactly "when the URL's language
+ * changes". Guarded by i18n.test.tsx.
  */
 function LanguageLayout({ language }: { language: SupportedLanguage }) {
   const { i18n } = useTranslation();
   useEffect(() => {
     if (i18n.resolvedLanguage !== language) void i18n.changeLanguage(language);
-  }, [i18n, language]);
+  }, [language]);
   return <Outlet />;
 }
 
@@ -87,11 +96,14 @@ function RootEntry() {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
 
+  // Once, on mount — not on `i18n`, for the reason given at LanguageLayout:
+  // the changeLanguage below hands this component a new `i18n` object
+  // before the redirect unmounts it, which used to run the redirect twice.
   useEffect(() => {
     const language = detectPreferredLanguage();
     void i18n.changeLanguage(language);
     navigate(localizedRoutePath(language, "/"), { replace: true });
-  }, [i18n, navigate]);
+  }, []);
 
   return pages.home;
 }

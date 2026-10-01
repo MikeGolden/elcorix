@@ -27,7 +27,7 @@ export function useFinePointer(): boolean {
 }
 
 /** form.reset() only resets real form controls; a picker's value is state. */
-export function useFormReset(rootRef: RefObject<HTMLElement>, onReset: () => void) {
+export function useFormReset(rootRef: RefObject<HTMLElement | null>, onReset: () => void) {
   useEffect(() => {
     const form = rootRef.current?.closest("form");
     if (!form) return;
@@ -50,7 +50,7 @@ export function useFormReset(rootRef: RefObject<HTMLElement>, onReset: () => voi
  * outside are the pointerdown listener's job, not blur's.
  */
 export function usePopoverDismiss(
-  rootRef: RefObject<HTMLElement>,
+  rootRef: RefObject<HTMLElement | null>,
   open: boolean,
   close: (returnFocus: boolean) => void,
 ) {
