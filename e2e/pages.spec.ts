@@ -69,6 +69,28 @@ test.describe("Deep-link routes", () => {
     await expect(page.locator("#for-whom")).toBeInViewport();
   });
 
+  test("every page in the sitemap is linked from the home page", async ({ page, request }) => {
+    // An URL only the sitemap knows is an orphan: crawlers rank it low and
+    // visitors never find it. Checked for the German pages; the other
+    // languages render the same components.
+    const sitemap = await (await request.get("/sitemap.xml")).text();
+    const wanted = [...sitemap.matchAll(/<loc>https:\/\/[^/]+(\/de(?:\/[^<]*)?)<\/loc>/g)].map(
+      (match) => decodeURI(match[1]!),
+    );
+    expect(wanted.length).toBeGreaterThan(10);
+
+    await page.goto("/de");
+    const linked = new Set(
+      await page
+        .locator("a[href]")
+        .evaluateAll((anchors) =>
+          anchors.map((a) => decodeURI(new URL((a as HTMLAnchorElement).href).pathname)),
+        ),
+    );
+    const orphans = wanted.filter((path) => !linked.has(path));
+    expect(orphans, "sitemap URLs with no link on /de").toEqual([]);
+  });
+
   test("unknown routes render the 404 page", async ({ page }) => {
     // Unprefixed: the router redirects it into the visitor's language
     // first, and only then finds nothing to render.

@@ -1,14 +1,32 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router";
 import Works from "../sections/Works";
 import { images } from "../images";
 import en from "../i18n/locales/en/common.json";
 
 const workAlts = Object.values(en.work.alts);
 
+/** Works links to the gallery page, so it needs a router around it. */
+function renderWorks() {
+  return render(
+    <MemoryRouter initialEntries={["/en"]}>
+      <Works />
+    </MemoryRouter>,
+  );
+}
+
 describe("Works gallery lightbox", () => {
+  it("links to the full gallery page in the visitor's language", () => {
+    renderWorks();
+    expect(screen.getByRole("link", { name: en.work.viewAll })).toHaveAttribute(
+      "href",
+      "/en/gallery",
+    );
+  });
+
   it("renders one clickable tile per work photo and no lightbox at rest", () => {
-    render(<Works />);
+    renderWorks();
     const tiles = screen.getAllByRole("button", { name: /^Open image:/ });
     expect(tiles).toHaveLength(images.work.length);
     expect(screen.queryByTestId("lightbox")).not.toBeInTheDocument();
@@ -16,7 +34,7 @@ describe("Works gallery lightbox", () => {
 
   it("opens the clicked photo full screen", async () => {
     const user = userEvent.setup();
-    render(<Works />);
+    renderWorks();
     await user.click(screen.getByRole("button", { name: `Open image: ${workAlts[1]}` }));
 
     const dialog = screen.getByRole("dialog", { name: "Image viewer" });
@@ -30,7 +48,7 @@ describe("Works gallery lightbox", () => {
 
   it("pages forward with the next arrow and wraps around at the end", async () => {
     const user = userEvent.setup();
-    render(<Works />);
+    renderWorks();
     await user.click(screen.getByRole("button", { name: `Open image: ${workAlts[3]}` }));
 
     await user.click(screen.getByRole("button", { name: "Next image" }));
@@ -42,7 +60,7 @@ describe("Works gallery lightbox", () => {
 
   it("pages with the arrow keys", async () => {
     const user = userEvent.setup();
-    render(<Works />);
+    renderWorks();
     await user.click(screen.getByRole("button", { name: `Open image: ${workAlts[0]}` }));
 
     await user.keyboard("{ArrowRight}");
@@ -53,7 +71,7 @@ describe("Works gallery lightbox", () => {
 
   it("closes on Escape, on the close button and on a backdrop click", async () => {
     const user = userEvent.setup();
-    render(<Works />);
+    renderWorks();
     const openFirst = () =>
       user.click(screen.getByRole("button", { name: `Open image: ${workAlts[0]}` }));
 
@@ -73,7 +91,7 @@ describe("Works gallery lightbox", () => {
 
   it("does not close when the photo itself is clicked", async () => {
     const user = userEvent.setup();
-    render(<Works />);
+    renderWorks();
     await user.click(screen.getByRole("button", { name: `Open image: ${workAlts[0]}` }));
     await user.click(screen.getByTestId("lightbox-image"));
     expect(screen.getByTestId("lightbox")).toBeInTheDocument();
@@ -81,7 +99,7 @@ describe("Works gallery lightbox", () => {
 
   it("returns focus to the tile that opened it", async () => {
     const user = userEvent.setup();
-    render(<Works />);
+    renderWorks();
     const tile = screen.getByRole("button", { name: `Open image: ${workAlts[2]}` });
     await user.click(tile);
     await user.keyboard("{Escape}");

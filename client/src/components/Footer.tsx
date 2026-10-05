@@ -5,8 +5,19 @@ import { useConsent } from "../consent/ConsentContext";
 import Logo from "./Logo";
 
 /**
+ * The site's own pages. Without these the price, gallery and contact
+ * pages were reachable only through the sitemap — the header links to
+ * anchors on the home page, as the Figma has it.
+ */
+const pageLinks = [
+  { to: "/prices", key: "nav.prices" },
+  { to: "/gallery", key: "nav.gallery" },
+  { to: "/contact", key: "nav.contact" },
+] as const;
+
+/**
  * The Figma footer is a single indigo band: the wordmark on the left and
- * the legal links on the right. "Cookie-Einstellungen" is added to that
+ * the page and legal links on the right. "Cookie-Einstellungen" is added to that
  * row — the consent decision has to stay changeable from every page —
  * but only while there is a decision to make (see CookieBanner).
  */
@@ -21,6 +32,8 @@ const legalLinks = [
 
 const linkClass =
   "text-sm font-medium text-white/80 transition-colors hover:text-white";
+
+const pageLinkClass = "text-base font-semibold text-white transition-colors hover:text-white/80";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -37,30 +50,44 @@ export default function Footer() {
               © {new Date().getFullYear()} {business.name}
             </p>
           </div>
-          <nav aria-label={t("footer.label")}>
-            <ul className="flex flex-wrap gap-x-8 gap-y-3">
-              {legalLinks.map((link) => (
-                <li key={link.to}>
-                  <LocalizedLink to={link.to} className={linkClass}>
-                    {t(link.key)}
-                  </LocalizedLink>
-                </li>
-              ))}
-              <li>
-                {/* Static file served by nginx, not a router route — plain <a>. */}
-                <a href="/sitemap.xml" className={linkClass}>
-                  {t("footer.sitemap")}
-                </a>
-              </li>
-              {features.altegio && (
+          <div className="flex flex-col gap-4">
+            {/* Pages first, then the legal row — the order a visitor looks for them. */}
+            <nav aria-label={t("footer.pagesLabel")}>
+              <ul className="flex flex-wrap gap-x-8 gap-y-3">
+                {pageLinks.map((link) => (
+                  <li key={link.to}>
+                    <LocalizedLink to={link.to} className={pageLinkClass}>
+                      {t(link.key)}
+                    </LocalizedLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <nav aria-label={t("footer.label")}>
+              <ul className="flex flex-wrap gap-x-8 gap-y-3">
+                {legalLinks.map((link) => (
+                  <li key={link.to}>
+                    <LocalizedLink to={link.to} className={linkClass}>
+                      {t(link.key)}
+                    </LocalizedLink>
+                  </li>
+                ))}
                 <li>
-                  <button type="button" onClick={openSettings} className={linkClass}>
-                    {t("footer.cookieSettings")}
-                  </button>
+                  {/* Static file served by nginx, not a router route — plain <a>. */}
+                  <a href="/sitemap.xml" className={linkClass}>
+                    {t("footer.sitemap")}
+                  </a>
                 </li>
-              )}
-            </ul>
-          </nav>
+                {features.altegio && (
+                  <li>
+                    <button type="button" onClick={openSettings} className={linkClass}>
+                      {t("footer.cookieSettings")}
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </footer>

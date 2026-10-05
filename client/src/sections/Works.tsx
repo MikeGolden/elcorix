@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
+import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from "../components/icons";
 import Reveal from "../components/Reveal";
+import LocalizedLink from "../components/LocalizedLink";
 import Lightbox from "../components/Lightbox";
 import Photo from "../components/Photo";
 import { images } from "../images";
@@ -146,6 +147,13 @@ export default function Works() {
           <ChevronRightIcon />
         </button>
       </Reveal>
+
+      <div className="mt-6 text-center">
+        <LocalizedLink to="/gallery" className="link-more">
+          {t("work.viewAll")}
+          <ArrowRightIcon />
+        </LocalizedLink>
+      </div>
 
       <Lightbox
         images={slides}
