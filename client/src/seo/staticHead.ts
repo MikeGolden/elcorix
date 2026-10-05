@@ -13,6 +13,7 @@ import {
 } from "./meta";
 import type { SiteRoute } from "./routes";
 import { faqKeysFor } from "../faq";
+import { menPrices, womenPrices } from "../pricing";
 
 /**
  * Build-time <head> generation for `vite/seoPrerender.ts`.
@@ -56,18 +57,65 @@ function embedJson(value: unknown): string {
 }
 
 /**
+ * Cheapest to dearest single-zone treatment, from the same price list the
+ * page renders — so the range can never contradict the tables.
+ */
+function priceRange(): string {
+  const prices = [...womenPrices, ...menPrices].map((zone) => zone.price);
+  return `${Math.min(...prices)}–${Math.max(...prices)} €`;
+}
+
+/**
+ * Every single-zone price as a schema.org Offer, one sub-catalog per
+ * gender, named in the page's language. Built from `pricing.ts` and the
+ * translations the price tables use, so markup and page agree.
+ */
+function offerCatalog(language: SupportedLanguage): Record<string, unknown> {
+  const { prices, meta } = translations[language];
+  const offer = (name: string, price: number) => ({
+    "@type": "Offer",
+    price,
+    priceCurrency: "EUR",
+    itemOffered: { "@type": "Service", name },
+  });
+  return {
+    "@type": "OfferCatalog",
+    name: meta.prices.title,
+    itemListElement: [
+      {
+        "@type": "OfferCatalog",
+        name: prices.groups.women,
+        itemListElement: womenPrices.map((zone) => offer(prices.women[zone.key], zone.price)),
+      },
+      {
+        "@type": "OfferCatalog",
+        name: prices.groups.men,
+        itemListElement: menPrices.map((zone) => offer(prices.men[zone.key], zone.price)),
+      },
+    ],
+  };
+}
+
+/**
  * schema.org LocalBusiness data for Google's local results.
  *
  * `altegioBookingUrl` is null while the Altegio flag is off: a ReserveAction
  * pointing at a booking page the site does not offer (or at the
  * placeholder company "000000") would be a dead link handed to Google.
  */
-export function localBusinessJsonLd(altegioBookingUrl: string | null): Record<string, unknown> {
+export function localBusinessJsonLd(
+  altegioBookingUrl: string | null,
+  language: SupportedLanguage = defaultLanguage,
+): Record<string, unknown> {
   const [street, cityLine] = staticBusiness.address.split(", ");
   const [postalCode, ...cityParts] = (cityLine ?? "").split(" ");
+  const locality = cityParts.join(" ");
   return {
     "@context": "https://schema.org",
     "@type": "BeautySalon",
+    // One identifier for the studio across all 56 shells and three
+    // domains, so Google merges them into one entity instead of many.
+    "@id": `${staticBusiness.siteUrl}/#business`,
     name: staticBusiness.name,
     url: staticBusiness.siteUrl,
     image: `${staticBusiness.siteUrl}/images/hero.jpg`,
@@ -77,9 +125,15 @@ export function localBusinessJsonLd(altegioBookingUrl: string | null): Record<st
       "@type": "PostalAddress",
       streetAddress: street,
       postalCode,
-      addressLocality: cityParts.join(" "),
+      addressLocality: locality,
       addressCountry: "DE",
     },
+    priceRange: priceRange(),
+    areaServed: [
+      { "@type": "City", name: locality },
+      { "@type": "AdministrativeArea", name: "Allgäu" },
+    ],
+    hasOfferCatalog: offerCatalog(language),
     geo: {
       "@type": "GeoCoordinates",
       latitude: staticBusiness.geo.latitude,
@@ -194,7 +248,7 @@ export function seoBlock(
       (locale) => `<meta property="og:locale:alternate" content="${locale}" />`,
     ),
     `<script type="application/ld+json">${embedJson(
-      localBusinessJsonLd(altegioBookingUrl),
+      localBusinessJsonLd(altegioBookingUrl, language),
     )}</script>`,
     ...(faq === null ? [] : [`<script type="application/ld+json">${embedJson(faq)}</script>`]),
   ];
