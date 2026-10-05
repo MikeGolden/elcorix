@@ -239,9 +239,15 @@ and load a dump into a scratch database with `pg_restore`.
 
 ### Monitoring
 
-An external uptime check (e.g. UptimeRobot) on
-`https://elcorix.de/api/health`: it returns 503 when Postgres is down and
-also catches an expired certificate.
+`.github/workflows/monitor.yml` runs hourly on GitHub, off this server,
+so it still alerts when the whole host is down. For each of elcorix.de,
+.com and .eu it checks the German home page and the sitemap, that
+`/api/health` answers `ok` with no notification channel `failing`, and that
+the TLS certificate has more than 14 days left. A failed run is e-mailed by
+GitHub (Settings → Notifications → Actions). `/api/health` returns 503 when
+Postgres is down; Telegram and e-mail are reported as words
+(`notifications.telegram` / `.mail`) and never turn it into a 503, because
+requests are still stored.
 
 ## Reporting a vulnerability
 
