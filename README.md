@@ -83,8 +83,11 @@ docker compose -f docker-compose.yml -f docker-compose.tls.yml up -d --build
 ```
 
 **Backups:** the `db-backup` service writes a nightly `pg_dump` into
-`./backups/` and keeps `BACKUP_KEEP_DAYS` (default 14) days of dumps.
-The opt-in `offsite-backup` service (`--profile offsite`) copies them,
+`./backups/` and keeps `BACKUP_KEEP_DAYS` (default 14) days of dumps
+(`docker/db-backup.sh`). A dump only gets its `.dump` name after
+`pg_restore --list` has read it; a failed night logs `FAILED` and retries
+hourly, and never rotates older dumps away. Check it with
+`docker compose logs db-backup | grep -E 'OK|FAILED'`. The opt-in `offsite-backup` service (`--profile offsite`) copies them,
 encrypted with restic, to a Hetzner Storage Box. Setup, firewall and SSH
 hardening: [SECURITY.md → Server hardening](SECURITY.md#server-hardening-hetzner).
 

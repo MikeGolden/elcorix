@@ -32,32 +32,30 @@ services:
 
   # Nightly logical backups of the database into the ./backups folder
   # (BACKUP_KEEP_DAYS rotates old dumps). A named volume is not a backup —
-  # copy ./backups off the host regularly.
+  # copy ./backups off the host regularly. The loop lives in
+  # docker/db-backup.sh: a dump is checked before it gets its final name,
+  # a failure says FAILED in `docker compose logs db-backup` and retries
+  # hourly, and old dumps rotate only after a good one has landed.
   db-backup:
     logging: *default-logging
     security_opt: ["no-new-privileges:true"]
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
+      PGHOST: db
+      PGUSER: kosmetic
+      PGDATABASE: kosmetic
       PGPASSWORD: ${POSTGRES_PASSWORD:-kosmetic}
       BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
     volumes:
       - ./backups:/backups
+      - ./docker/db-backup.sh:/db-backup.sh:ro
     depends_on:
       db:
         condition: service_healthy
     # The Umami analytics database (profile "analytics") is dumped too
     # when it exists; its dumps rotate on the same BACKUP_KEEP_DAYS.
-    entrypoint: >
-      sh -c 'while true; do
-        pg_dump -h db -U kosmetic -d kosmetic -Fc -f "/backups/kosmetic-$$(date +%Y%m%d-%H%M%S).dump" &&
-        find /backups -name "kosmetic-*.dump" -mtime +$${BACKUP_KEEP_DAYS} -delete;
-        if [ "$$(psql -h db -U kosmetic -d kosmetic -tAc "SELECT 1 FROM pg_database WHERE datname = '"'"'umami'"'"'")" = "1" ]; then
-          pg_dump -h db -U kosmetic -d umami -Fc -f "/backups/umami-$$(date +%Y%m%d-%H%M%S).dump";
-          find /backups -name "umami-*.dump" -mtime +$${BACKUP_KEEP_DAYS} -delete;
-        fi;
-        sleep 86400;
-      done'
+    entrypoint: ["sh", "/db-backup.sh"]
 
   server:
     logging: *default-logging
