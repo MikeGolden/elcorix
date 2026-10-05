@@ -7,9 +7,10 @@ import {
 } from "../mailer.js";
 
 const sendMail = vi.fn();
+const verify = vi.fn();
 
 vi.mock("nodemailer", () => ({
-  default: { createTransport: vi.fn(() => ({ sendMail })) },
+  default: { createTransport: vi.fn(() => ({ sendMail, verify })) },
 }));
 
 const { default: nodemailer } = await import("nodemailer");
@@ -17,6 +18,7 @@ const createTransport = nodemailer.createTransport as unknown as ReturnType<type
 
 beforeEach(() => {
   sendMail.mockReset().mockResolvedValue(undefined);
+  verify.mockReset().mockResolvedValue(true);
   createTransport.mockClear();
   vi.spyOn(console, "warn").mockImplementation(() => {});
   vi.spyOn(console, "error").mockImplementation(() => {});
@@ -94,6 +96,18 @@ describe("createMailerFromEnv", () => {
       text: "Body",
       replyTo: "guest@example.com",
     });
+  });
+});
+
+describe("Mailer.check", () => {
+  it("asks the SMTP server whether it would accept our login", async () => {
+    await createMailerFromEnv(fullEnv).check!();
+    expect(verify).toHaveBeenCalledTimes(1);
+  });
+
+  it("fails when the SMTP server refuses", async () => {
+    verify.mockRejectedValue(new Error("Invalid login: 535 Authentication failed"));
+    await expect(createMailerFromEnv(fullEnv).check!()).rejects.toThrow(/535/);
   });
 });
 

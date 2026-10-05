@@ -10,6 +10,7 @@ import {
   disabledTelegram,
   type TelegramNotifier,
 } from "./telegram.js";
+import { watchChannel } from "./notificationHealth.js";
 import { contactRouter } from "./routes/contact.js";
 import { bookingsRouter } from "./routes/bookings.js";
 
@@ -80,17 +81,6 @@ export function createApp(db: Queryable, options: AppOptions = {}) {
     else next();
   });
 
-  // Liveness + readiness: verify the database actually answers, so
-  // orchestration (compose healthcheck, monitoring) sees DB outages.
-  app.get("/api/health", async (_req, res) => {
-    try {
-      await db.query("SELECT 1");
-      res.json({ status: "ok" });
-    } catch {
-      res.status(503).json({ status: "degraded" });
-    }
-  });
-
   const mailer = options.mailer ?? (process.env.NODE_ENV === "test" ? disabledMailer : createMailerFromEnv());
   if (!mailer.enabled && process.env.NODE_ENV === "production") {
     console.warn(
@@ -102,8 +92,38 @@ export function createApp(db: Queryable, options: AppOptions = {}) {
     options.telegram ??
     (process.env.NODE_ENV === "test" ? disabledTelegram : createTelegramFromEnv());
 
-  app.use("/api/contact", contactRouter(db, mailer));
-  app.use("/api/bookings", bookingsRouter(db, mailer, telegram));
+  // Every send also reports to its channel's watcher, so a notification
+  // that fails for real turns /api/health's word to "failing" at once,
+  // not only at the next six-hourly check.
+  const mailWatch = watchChannel("E-mail", mailer);
+  const telegramWatch = watchChannel("Telegram", telegram);
+  const watchedMailer: Mailer = {
+    ...mailer,
+    send: (message) => mailWatch.track(mailer.send(message)),
+  };
+  const watchedTelegram: TelegramNotifier = {
+    ...telegram,
+    send: (text) => telegramWatch.track(telegram.send(text)),
+  };
+
+  // Liveness + readiness: verify the database actually answers, so
+  // orchestration (compose healthcheck, monitoring) sees DB outages.
+  // The notification channels are reported but never turn the answer into
+  // a 503: requests still land in Postgres, so the server is up — the
+  // external monitor (.github/workflows/monitor.yml) alerts on "failing".
+  // Status words only; the reasons are in the server log.
+  app.get("/api/health", async (_req, res) => {
+    const notifications = { telegram: telegramWatch.status, mail: mailWatch.status };
+    try {
+      await db.query("SELECT 1");
+      res.json({ status: "ok", notifications });
+    } catch {
+      res.status(503).json({ status: "degraded", notifications });
+    }
+  });
+
+  app.use("/api/contact", contactRouter(db, watchedMailer));
+  app.use("/api/bookings", bookingsRouter(db, watchedMailer, watchedTelegram));
 
   // Unmatched API routes: Express's default 404 is an HTML page, which a
   // fetch() calling res.json() cannot parse. Everything under /api must

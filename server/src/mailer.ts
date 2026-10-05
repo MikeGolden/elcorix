@@ -14,6 +14,11 @@ export interface Mailer {
   /** Address that receives staff notifications (MAIL_TO). */
   notifyAddress: string | null;
   send(message: MailMessage): Promise<void>;
+  /**
+   * Proves the SMTP server accepts our connection and login, without
+   * sending anything — for the notification health check.
+   */
+  check?(): Promise<void>;
 }
 
 export const disabledMailer: Mailer = {
@@ -60,6 +65,9 @@ export function createMailerFromEnv(env: NodeJS.ProcessEnv = process.env): Maile
     notifyAddress: to,
     async send(message) {
       await transporter.sendMail({ from, ...message });
+    },
+    async check() {
+      await transporter.verify();
     },
   };
 }

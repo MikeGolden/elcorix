@@ -196,10 +196,21 @@ answered first, the notification is sent afterwards and its failures only
 reach the server log. So when messages don't arrive, the log is where the
 reason is (`docker compose logs -f server`).
 
+You don't have to wait for a missing message to find out. The server asks
+Telegram for the chat (`getChat`, which posts nothing) at startup and every
+six hours, and every real send counts too. The result is one word in
+`https://elcorix.de/api/health` → `notifications.telegram`: `ok`,
+`failing`, `pending` (just started) or `disabled`. When it turns `failing`,
+the log has one line, `Telegram notifications FAILING: <reason>`, and the
+hourly monitor workflow (`.github/workflows/monitor.yml`) goes red, which
+GitHub e-mails you about. E-mail works the same way (`notifications.mail`,
+checked with an SMTP login that sends nothing).
+
 | Symptom | Cause | Fix |
 | --- | --- | --- |
 | Startup warning `…TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are both required` | Only one of the two is set | Set both, restart |
 | Log: `HTTP 400 — …"chat not found"` | Nobody ever wrote to the bot, or wrong id | Post in the group, re-read `getUpdates` |
+| Log: `…the group became a supergroup: set TELEGRAM_CHAT_ID=-100…` | Telegram upgraded the group on its own, and its id changed | Put the id from the log into `.env`, then `docker compose up -d server` |
 | Log: `HTTP 401 — …"Unauthorized"` | Wrong or revoked token | Copy it again from BotFather |
 | Log: `HTTP 403 — …"bot was blocked by the user"` | Direct chat, recipient blocked the bot | Unblock, or switch to a group |
 | Log: `HTTP 403 — …"bot is not a member of the group chat"` | Bot removed from the group | Add it back |

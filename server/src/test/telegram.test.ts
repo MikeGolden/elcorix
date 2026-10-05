@@ -111,6 +111,51 @@ describe("createTelegramFromEnv", () => {
   });
 });
 
+describe("TelegramNotifier.check", () => {
+  it("asks the Bot API for the configured chat", async () => {
+    const fetchImpl = okFetch();
+    await createTelegramFromEnv(fullEnv, fetchImpl).check!();
+    const [url, init] = fetchImpl.mock.calls[0]!;
+    expect(String(url)).toMatch(/\/getChat$/);
+    expect(JSON.parse(init.body as string)).toEqual({ chat_id: fullEnv.TELEGRAM_CHAT_ID });
+  });
+
+  it("fails with Telegram's reason and without the token", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValue(
+        new Response('{"ok":false,"description":"Bad Request: chat not found"}', { status: 400 }),
+      );
+    const err = await createTelegramFromEnv(fullEnv, fetchImpl)
+      .check!()
+      .catch((e: Error) => e);
+    expect((err as Error).message).toMatch(/getChat failed: HTTP 400 .*chat not found/);
+    expect((err as Error).message).not.toContain(fullEnv.TELEGRAM_BOT_TOKEN);
+  });
+
+  it("names the new chat id when the group was upgraded to a supergroup", async () => {
+    // What Telegram answers for the old basic-group id once the group has
+    // been upgraded — every send fails from then on while the site looks fine.
+    const migrated = () =>
+      new Response(
+        JSON.stringify({
+          ok: false,
+          error_code: 400,
+          description: "Bad Request: group chat was upgraded to a supergroup chat",
+          parameters: { migrate_to_chat_id: -1009876543210 },
+        }),
+        { status: 400 },
+      );
+    const fetchImpl = vi.fn().mockImplementation(async () => migrated());
+    const telegram = createTelegramFromEnv(
+      { ...fullEnv, TELEGRAM_CHAT_ID: "-5453380295" },
+      fetchImpl,
+    );
+    await expect(telegram.check!()).rejects.toThrow("set TELEGRAM_CHAT_ID=-1009876543210");
+    await expect(telegram.send("hi")).rejects.toThrow("set TELEGRAM_CHAT_ID=-1009876543210");
+  });
+});
+
 describe("disabledTelegram", () => {
   it("accepts a send and does nothing", async () => {
     await expect(disabledTelegram.send("anything")).resolves.toBeUndefined();
