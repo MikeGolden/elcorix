@@ -21,6 +21,7 @@ import {
 } from "../seo/staticHead";
 import { notFoundRoute } from "../seo/routes";
 import { faqSets } from "../faq";
+import { menPrices, womenPrices } from "../pricing";
 
 const BOOKING_URL = "https://n123456.alteg.io";
 
@@ -156,6 +157,51 @@ describe("static head blocks", () => {
     expect(data.potentialAction).toMatchObject({ target: BOOKING_URL });
     expect((data.openingHoursSpecification as unknown[]).length).toBe(
       staticBusiness.openingHours.length,
+    );
+  });
+
+  it("gives the business a stable @id, a price range and the area it serves", () => {
+    const data = jsonLdFrom(seoBlock(home, "de", null));
+    expect(data["@id"]).toBe("https://elcorix.de/#business");
+    const singles = [...womenPrices, ...menPrices].map((zone) => zone.price);
+    expect(data.priceRange).toBe(`${Math.min(...singles)}–${Math.max(...singles)} €`);
+    expect(data.areaServed).toEqual([
+      { "@type": "City", name: "Kempten (Allgäu)" },
+      { "@type": "AdministrativeArea", name: "Allgäu" },
+    ]);
+  });
+
+  it("keeps the Instagram profile in sameAs", () => {
+    const data = jsonLdFrom(seoBlock(home, "de", null));
+    expect(data.sameAs).toEqual([staticBusiness.instagram]);
+  });
+
+  it.each([
+    ["de", de],
+    ["en", en],
+    ["uk", uk],
+    ["ru", ru],
+  ] as const)("lists every zone price as an Offer, named in %s", (language, resource) => {
+    type Offer = { "@type": string; price: number; priceCurrency: string; itemOffered: { name: string } };
+    type Catalog = { "@type": string; name: string; itemListElement: Offer[] };
+    const data = jsonLdFrom(seoBlock(home, language, null));
+    const catalog = data.hasOfferCatalog as { "@type": string; name: string; itemListElement: Catalog[] };
+    expect(catalog["@type"]).toBe("OfferCatalog");
+    expect(catalog.name).toBe(resource.meta.prices.title);
+
+    const [women, men] = catalog.itemListElement;
+    expect(women!.name).toBe(resource.prices.groups.women);
+    expect(men!.name).toBe(resource.prices.groups.men);
+    expect(women!.itemListElement).toEqual(
+      womenPrices.map((zone) => ({
+        "@type": "Offer",
+        price: zone.price,
+        priceCurrency: "EUR",
+        itemOffered: { "@type": "Service", name: resource.prices.women[zone.key] },
+      })),
+    );
+    expect(men!.itemListElement.map((offer) => [offer.itemOffered.name, offer.price])).toEqual(
+      menPrices.map((zone) => [resource.prices.men[zone.key], zone.price]),
     );
   });
 
