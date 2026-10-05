@@ -1,0 +1,42 @@
+name: Monitor live site
+
+# Hourly check of elcorix.de, .com and .eu from outside the Hetzner host —
+# it still fires when the whole server is down. monitor/check.mjs checks
+# the German home page, the sitemap, /api/health (database, and Telegram
+# and e-mail notifications) and that each TLS certificate has more than 14
+# days left. A failed run is e-mailed by GitHub to whoever last changed the
+# schedule below (Settings → Notifications → Actions → "Only notify for
+# failed workflows").
+#
+# GitHub pauses scheduled workflows in a public repository after 60 days
+# without commits; re-enable it under Actions → Monitor live site.
+on:
+  schedule:
+    # :17 rather than :00 — on-the-hour schedules queue behind everyone
+    # else's and can run late or be dropped.
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monitor
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: monitor
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: node monitor/check.mjs
+        env:
+          MONITOR_DOMAINS: elcorix.de,elcorix.com,elcorix.eu
+          # Channels that must be "ok" (a failing one always alarms).
+          MONITOR_REQUIRED_CHANNELS: telegram,mail

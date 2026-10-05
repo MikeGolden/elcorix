@@ -18,6 +18,7 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: sh docker/db-backup.test.sh
+      - run: node --test monitor/check.test.mjs
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
