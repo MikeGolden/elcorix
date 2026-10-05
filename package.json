@@ -20,7 +20,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
-    "chrome-launcher": "^1.2.1",
+    "chrome-launcher": "^1.2.2",
     "concurrently": "^10.0.5",
     "lighthouse": "^13.5.0"
   },
