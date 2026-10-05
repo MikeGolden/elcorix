@@ -17,6 +17,7 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - run: sh docker/db-backup.test.sh
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
@@ -58,6 +59,17 @@ jobs:
       # Real integration: nginx + API + Postgres, nothing mocked.
       - run: docker compose up -d --build --wait
       - run: npm run test:e2e:docker
+      # db-backup dumps once on start: a restorable dump must be in
+      # ./backups within a minute, or the backup service is broken.
+      - name: db-backup writes a restorable dump
+        run: |
+          for i in $(seq 1 30); do
+            dump=$(ls backups/kosmetic-*.dump 2>/dev/null | head -1)
+            [ -n "$dump" ] && break
+            sleep 2
+          done
+          test -n "$dump" || { docker compose logs db-backup; exit 1; }
+          docker compose exec -T db pg_restore --list < "$dump" | grep -q "TABLE DATA"
       - run: docker compose logs
         if: failure()
       - run: docker compose down -v
