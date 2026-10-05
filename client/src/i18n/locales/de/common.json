@@ -237,6 +237,7 @@
     "title": "Sehen Sie sich unsere Arbeiten an",
     "prev": "Vorherige Bilder",
     "next": "Nächste Bilder",
+    "viewAll": "Alle Arbeiten ansehen",
     "alts": {
       "n1": "Laser-Haarentfernung an den Beinen auf der Behandlungsliege",
       "n2": "Nahaufnahme des Handstücks bei der Achselbehandlung",
@@ -535,6 +536,7 @@
   "footer": {
     "sitemap": "Sitemap",
     "label": "Rechtliches",
+    "pagesLabel": "Seiten",
     "privacy": "Datenschutz",
     "imprint": "Impressum",
     "terms": "AGB",
