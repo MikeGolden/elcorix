@@ -26,7 +26,11 @@ test.describe("Docker stack smoke", () => {
   test("API is healthy through the nginx proxy", async ({ request }) => {
     const res = await request.get("/api/health");
     expect(res.status()).toBe(200);
-    expect(await res.json()).toEqual({ status: "ok" });
+    // The compose stack in CI has neither SMTP nor a bot configured.
+    expect(await res.json()).toEqual({
+      status: "ok",
+      notifications: { telegram: "disabled", mail: "disabled" },
+    });
   });
 
   test("stores a real contact message end-to-end", async ({ page }) => {

@@ -32,6 +32,12 @@ export interface TelegramNotifier {
   chatId: string | null;
   /** Sent as plain text. */
   send(text: string): Promise<void>;
+  /**
+   * Proves the bot can still reach the chat without posting anything
+   * (getChat) — for the notification health check. Rejects with
+   * Telegram's reason.
+   */
+  check?(): Promise<void>;
 }
 
 export const disabledTelegram: TelegramNotifier = {
@@ -95,33 +101,58 @@ export function createTelegramFromEnv(
     return disabledTelegram;
   }
 
-  const url = `${API_BASE}/bot${token}/sendMessage`;
+  async function call(method: "sendMessage" | "getChat", payload: Record<string, unknown>) {
+    const response = await fetchImpl(`${API_BASE}/bot${token}/${method}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+    if (!response.ok) {
+      // The body carries Telegram's own reason ("chat not found",
+      // "bot was blocked by the user"), which is what makes a
+      // misconfiguration diagnosable. The URL must stay out of it.
+      const detail = await response.text().catch(() => "");
+      throw new Error(
+        `Telegram ${method} failed: HTTP ${response.status}${detail ? ` — ${detail.slice(0, 300)}` : ""}${migrationHint(detail)}`,
+      );
+    }
+  }
 
   return {
     enabled: true,
     chatId,
     async send(text) {
-      const response = await fetchImpl(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: text.slice(0, MAX_TEXT),
-          disable_web_page_preview: true,
-        }),
-        signal: AbortSignal.timeout(TIMEOUT_MS),
+      await call("sendMessage", {
+        chat_id: chatId,
+        text: text.slice(0, MAX_TEXT),
+        disable_web_page_preview: true,
       });
-      if (!response.ok) {
-        // The body carries Telegram's own reason ("chat not found",
-        // "bot was blocked by the user"), which is what makes a
-        // misconfiguration diagnosable. The URL must stay out of it.
-        const detail = await response.text().catch(() => "");
-        throw new Error(
-          `Telegram sendMessage failed: HTTP ${response.status}${detail ? ` — ${detail.slice(0, 300)}` : ""}`,
-        );
-      }
+    },
+    async check() {
+      await call("getChat", { chat_id: chatId });
     },
   };
+}
+
+/**
+ * A basic group is upgraded to a supergroup by Telegram on its own (more
+ * members, an admin setting, a linked channel), and its id changes from
+ * "-545…" to "-100…". From then on every send fails while the site looks
+ * fine. Telegram names the new id in `parameters.migrate_to_chat_id`, so
+ * the log can say exactly what to put in .env.
+ */
+function migrationHint(body: string): string {
+  try {
+    const parsed = JSON.parse(body) as { parameters?: { migrate_to_chat_id?: unknown } };
+    const next = parsed.parameters?.migrate_to_chat_id;
+    if (typeof next === "number" || (typeof next === "string" && /^-?\d+$/.test(next))) {
+      return ` — the group became a supergroup: set TELEGRAM_CHAT_ID=${next} and restart the server`;
+    }
+  } catch {
+    // Not JSON — no hint to give.
+  }
+  return "";
 }
 
 /**

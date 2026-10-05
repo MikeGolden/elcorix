@@ -21,14 +21,73 @@ describe("GET /api/health", () => {
     query.mockResolvedValue({ rows: [] });
     const res = await request(app).get("/api/health");
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ status: "ok" });
+    expect(res.body).toEqual({
+      status: "ok",
+      notifications: { telegram: "disabled", mail: "disabled" },
+    });
   });
 
   it("returns 503 degraded when the database is down", async () => {
     query.mockRejectedValue(new Error("db down"));
     const res = await request(app).get("/api/health");
     expect(res.status).toBe(503);
-    expect(res.body).toEqual({ status: "degraded" });
+    expect(res.body).toEqual({
+      status: "degraded",
+      notifications: { telegram: "disabled", mail: "disabled" },
+    });
+  });
+
+  it("reports a channel whose check fails as failing, but stays 200", async () => {
+    // The site still takes requests (they land in Postgres), so Docker
+    // must not treat the server as down — the monitor reads the field.
+    query.mockResolvedValue({ rows: [] });
+    const telegram = {
+      enabled: true,
+      chatId: "-100",
+      send: vi.fn(),
+      check: vi.fn().mockRejectedValue(new Error("chat not found")),
+    };
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const botApp = createApp(db, { telegram });
+    await vi.waitFor(async () => {
+      const res = await request(botApp).get("/api/health");
+      expect(res.status).toBe(200);
+      expect(res.body.notifications).toEqual({ telegram: "failing", mail: "disabled" });
+    });
+    // Status words only: no reason, chat id or address on a public URL.
+    const res = await request(botApp).get("/api/health");
+    expect(JSON.stringify(res.body)).not.toMatch(/chat not found|-100/);
+  });
+
+  it("reports a channel ok once its check passes", async () => {
+    query.mockResolvedValue({ rows: [] });
+    const mailer = {
+      enabled: true,
+      notifyAddress: "owner@example.com",
+      send: vi.fn(),
+      check: vi.fn().mockResolvedValue(undefined),
+    };
+    const mailApp = createApp(db, { mailer });
+    await vi.waitFor(async () => {
+      const res = await request(mailApp).get("/api/health");
+      expect(res.body.notifications).toEqual({ telegram: "disabled", mail: "ok" });
+    });
+  });
+
+  it("marks Telegram failing when a real notification fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    query.mockResolvedValue({ rows: [{ id: 1, status: "pending" }] });
+    const send = vi.fn().mockRejectedValue(new Error("HTTP 400"));
+    const botApp = createApp(db, { telegram: { enabled: true, chatId: "-100", send } });
+    await request(botApp).post("/api/bookings").send({
+      customerName: "Anna",
+      customerPhone: "+49123456789",
+      preferredAt: `${daysFromNow(3)} 10:30`,
+    });
+    await vi.waitFor(async () => {
+      const res = await request(botApp).get("/api/health");
+      expect(res.body.notifications.telegram).toBe("failing");
+    });
   });
 });
 
