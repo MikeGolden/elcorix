@@ -1,17 +1,25 @@
+import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import Reveal from "../components/Reveal";
 import Photo from "../components/Photo";
+import Lightbox from "../components/Lightbox";
 import { images, webpSrcSet } from "../images";
 
 const strong = { b: <strong className="font-semibold text-ink-900" /> };
 
 const paragraphs = ["p1", "p2", "p3", "p4"] as const;
 
-/** The four stages of a visit, in order — keys under `specialist.visit.steps`. */
-export const visitSteps = ["consultation", "testPulse", "treatment", "aftercare"] as const;
+// Both tiles in the right column are the same width: full card width on a
+// phone, half of it from sm, and a quarter of the 1200px container once
+// the card splits at xl.
+const tileSizes =
+  "(min-width: 1280px) 244px, (min-width: 1200px) 526px, (min-width: 640px) calc(50vw - 74px), calc(100vw - 80px)";
 
 export default function Specialist() {
   const { t } = useTranslation();
+  const [certificateOpen, setCertificateOpen] = useState(false);
+  const certificate = { src: images.certificate, alt: t("specialist.certificate.alt") };
+
   return (
     <section
       id="specialist"
@@ -35,52 +43,62 @@ export default function Specialist() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          {/* Replaces the placeholder certificate image: states only what
-              happens at every appointment, so nothing on it needs verifying. */}
-          <div
-            aria-labelledby="visit-title"
-            role="group"
-            className="flex flex-col justify-center rounded-panel bg-white p-6 shadow-[0_1px_3px_rgba(20,32,63,0.06)]"
-          >
-            <h3 id="visit-title" className="font-display text-lg font-bold leading-snug text-brand-700">
-              {t("specialist.visit.title")}
-            </h3>
-            <ol className="mt-5 space-y-5">
-              {visitSteps.map((step, i) => (
-                <li key={step} className="flex gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-semibold text-white"
-                  >
-                    {i + 1}
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-ink-900">
-                      {t(`specialist.visit.steps.${step}.title`)}
-                    </p>
-                    <p className="mt-1 text-sm leading-snug text-ink-500">
-                      {t(`specialist.visit.steps.${step}.text`)}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+          {/* The A4 scan is unreadable at tile size, so the tile opens it
+              full screen; the caption says what it certifies without that. */}
+          <figure className="flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => setCertificateOpen(true)}
+              aria-label={t("lightbox.open", { name: certificate.alt })}
+              data-testid="certificate-tile"
+              className="group block w-full cursor-zoom-in overflow-hidden rounded-panel bg-white
+                         shadow-[0_1px_3px_rgba(20,32,63,0.06)] focus:outline-none
+                         focus-visible:ring-2 focus-visible:ring-brand-700 focus-visible:ring-offset-2"
+            >
+              <Photo
+                src={certificate.src}
+                webpSrcSet={webpSrcSet(images.certificate, 600, 1240)}
+                sizes={tileSizes}
+                alt={certificate.alt}
+                width="1240"
+                height="1754"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[1240/1754] w-full object-cover transition-transform duration-300
+                           group-hover:scale-[1.03]"
+              />
+            </button>
+            <figcaption className="text-sm leading-snug">
+              <span className="block font-semibold text-ink-900">
+                {t("specialist.certificate.title")}
+              </span>
+              <span className="mt-1 block text-ink-500">{t("specialist.certificate.text")}</span>
+            </figcaption>
+          </figure>
+          {/* Below xl the tiles size themselves, so the portrait takes the
+              certificate's A4 ratio and both end level. */}
           <Photo
             src={images.specialist}
-            // Full card width on a phone, half of it from sm, and a quarter
-            // of the 1200px container once the card splits at xl.
             webpSrcSet={webpSrcSet(images.specialist, 680, 896)}
-            sizes="(min-width: 1280px) 244px, (min-width: 1200px) 526px, (min-width: 640px) calc(50vw - 74px), calc(100vw - 80px)"
+            sizes={tileSizes}
             alt={t("specialist.imageAlt")}
             width="896"
             height="1195"
             loading="lazy"
             decoding="async"
-            className="h-full min-h-64 w-full rounded-panel object-cover sm:max-xl:aspect-[3/4] sm:max-xl:h-auto sm:max-xl:object-top"
+            className="h-full min-h-64 w-full rounded-panel object-cover sm:max-xl:aspect-[1240/1754] sm:max-xl:h-auto sm:max-xl:object-top"
           />
         </div>
       </Reveal>
+
+      {/* Outside the <Reveal> on purpose: the lightbox is `fixed` and must
+          not sit inside an element that is briefly transformed. */}
+      <Lightbox
+        images={[certificate]}
+        index={certificateOpen ? 0 : null}
+        onClose={() => setCertificateOpen(false)}
+        onIndexChange={() => {}}
+      />
     </section>
   );
 }

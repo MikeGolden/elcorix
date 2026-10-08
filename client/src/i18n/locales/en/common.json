@@ -211,26 +211,10 @@
     "p2": "Before the first pulse we sit down and talk. I look at your skin and hair and ask about medication, sun and anything that could rule a treatment out. <b>If the laser isn't right for you, I'll tell you straight.</b>",
     "p3": "Then I set the device for you: skin type, hair thickness, zone. <b>A test pulse shows how your skin reacts before we treat the whole area.</b>",
     "p4": "After every session you get clear aftercare instructions. Questions between appointments are always welcome.",
-    "visit": {
-      "title": "How your visit works",
-      "steps": {
-        "consultation": {
-          "title": "Consultation",
-          "text": "Skin, hair, medication, sun: we check whether the laser suits you."
-        },
-        "testPulse": {
-          "title": "Test pulse",
-          "text": "One pulse on a small spot shows how your skin reacts."
-        },
-        "treatment": {
-          "title": "Treatment",
-          "text": "The device is set to your skin type, hair thickness and zone."
-        },
-        "aftercare": {
-          "title": "Aftercare",
-          "text": "You leave with clear instructions for the days that follow."
-        }
-      }
+    "certificate": {
+      "alt": "NiSV certificate from eCertification GmbH, module “Optical radiation”, valid until 21 August 2031",
+      "title": "NiSV certificate: optical radiation",
+      "text": "Required by German law for laser hair removal. Valid until August 2031."
     }
   },
   "work": {

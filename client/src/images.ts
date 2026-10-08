@@ -28,6 +28,12 @@ export const images = {
   technology: "/images/technology.jpg",
   /** Portrait of the specialist for the "Wer Sie behandelt" section. */
   specialist: "/images/specialist.jpg",
+  /**
+   * The specialist's NiSV certificate (eCertification GmbH), A4 portrait.
+   * Rendered from the issuer's PDF with the date-of-birth line painted
+   * out; the PDF itself is not published.
+   */
+  certificate: "/images/certificate.jpg",
   /** Square thumbnails for the "Für wen ist es geeignet?" cards. */
   reasons: {
     convenience: "/images/reason-convenience.jpg",
