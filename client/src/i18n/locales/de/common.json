@@ -147,8 +147,11 @@
   "technology": {
     "title": "Diodenlaser und IPL für glatte Haut",
     "imageAlt": "Diodenlaser-Gerät im Behandlungsraum",
-    "lead": "Bei elcorix wählen wir Technologie und Einstellungen individuell passend zu Ihrer Haut und Ihren Haaren. Wir arbeiten mit dem modernen Diodenlaser ALIX TWIN und mit IPL – mit Kühlsystem und professionellen Einstellungen für unterschiedliche Körperzonen.",
-    "consultationFirst": "Zuerst Beratung und Einschätzung Ihrer Haut – danach die passende Behandlung.",
+    "tagline": "Licht, Präzision, individuelle Behandlung.",
+    "lead": "Für unsere Laser-Haarentfernung verwenden wir den ALIX TWIN – ein modernes 4-Wellenlängen-Diodenlasersystem für unterschiedliche Haut- und Haartypen.",
+    "features": "Intelligente Parametersteuerung · effektive Kühlung · präzise Behandlung",
+    "tailored": "So wird die Behandlung individuell auf Haut, Haarstruktur und Behandlungsareal abgestimmt.",
+    "closing": "Ihre Haut ist individuell. Ihre Behandlung sollte es auch sein.",
     "more": {
       "show": "Mehr über die Technologie erfahren",
       "hide": "Weniger anzeigen",
@@ -166,7 +169,7 @@
           "die Reaktion der Haut während der Behandlung"
         ],
         "p2": "Ein intelligentes Analysesystem hilft, die Besonderheiten von Haut und Haaren einzuschätzen. Auf dieser Grundlage wählt die Fachkraft die passenden Behandlungsparameter.",
-        "p3": "Das leistungsstarke Kühlsystem Alix Freezing verringert die Erwärmung der Haut und macht die Behandlung deutlich angenehmer. Je nach Zone und gewählten Einstellungen kann das Handstück auf bis zu −26 °C gekühlt werden.",
+        "p3": "Das leistungsstarke Kühlsystem Alix Freezing verringert die Erwärmung der Haut und macht die Behandlung deutlich angenehmer. Je nach Zone und gewählten Einstellungen kann das Handstück auf bis zu −36 °C gekühlt werden.",
         "p4": "Wechselbare Aufsätze ermöglichen die Behandlung kleiner Zonen – etwa Gesicht und Achseln – ebenso wie großer Körperpartien."
       },
       "ipl": {
@@ -207,10 +210,10 @@
   "specialist": {
     "title": "Wer Sie behandelt",
     "imageAlt": "Elena, Spezialistin für professionelle Laser-Haarentfernung",
-    "p1": "Ich bin Elena und mache bei elcorix eine Sache: <b>Laser-Haarentfernung.</b>",
-    "p2": "Vor dem ersten Impuls nehmen wir uns Zeit für ein Gespräch. Ich schaue mir Haut und Haar an und frage nach Medikamenten, Sonne und allem, was gegen eine Behandlung sprechen kann. <b>Passt der Laser nicht zu Ihnen, sage ich es Ihnen offen.</b>",
-    "p3": "Dann stelle ich das Gerät auf Sie ein: Hauttyp, Haarstärke, Zone. <b>Ein Testimpuls zeigt, wie Ihre Haut reagiert, bevor wir die ganze Fläche behandeln.</b>",
-    "p4": "Nach jeder Sitzung bekommen Sie klare Pflegehinweise mit. Fragen zwischen den Terminen beantworte ich gern.",
+    "p1": "<b>Olena Solotnova</b> – NiSV-zertifizierte Fachkraft mit Schwerpunkt auf apparativer Kosmetik und moderner Hautästhetik.",
+    "p2": "Ich stehe für eine moderne, individuelle Hautästhetik, die Wirksamkeit und Hautgesundheit miteinander verbindet.",
+    "p3": "Ein durchdachtes Konzept, abgestimmt auf Ihre Haut, Ihre Bedürfnisse und Ihre Ziele.",
+    "p4": "<b>Gesunde Haut. Moderne Ästhetik. Individuell gedacht.</b>",
     "certificate": {
       "alt": "NiSV-Zertifikat der eCertification GmbH, Fachkunde-Modul „Optische Strahlung“, gültig bis 21. August 2031",
       "title": "NiSV-Fachkunde „Optische Strahlung“",
@@ -378,7 +381,7 @@
     "items": {
       "pain": {
         "question": "Ist die Laser-Haarentfernung schmerzhaft?",
-        "answer": "Das Handstück wird auf bis zu −26 °C gekühlt, das macht die Behandlung deutlich angenehmer. Vor der ersten Behandlung zeigt ein Testimpuls an einer kleinen Stelle, wie Ihre Haut reagiert – so wissen Sie vorher, wie es sich anfühlt."
+        "answer": "Das Handstück wird auf bis zu −36 °C gekühlt, das macht die Behandlung deutlich angenehmer. Vor der ersten Behandlung zeigt ein Testimpuls an einer kleinen Stelle, wie Ihre Haut reagiert – so wissen Sie vorher, wie es sich anfühlt."
       },
       "sessions": {
         "question": "Wie viele Sitzungen brauche ich?",

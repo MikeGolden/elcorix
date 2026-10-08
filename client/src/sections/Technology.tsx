@@ -72,8 +72,11 @@ export default function Technology() {
             {t("technology.title")}
           </h2>
           <div className="mt-6 space-y-4 text-[0.95rem] leading-relaxed">
+            <p className="font-semibold text-ink-900">{t("technology.tagline")}</p>
             <p>{t("technology.lead")}</p>
-            <p className="font-semibold text-ink-900">{t("technology.consultationFirst")}</p>
+            <p className="font-semibold text-ink-900">{t("technology.features")}</p>
+            <p>{t("technology.tailored")}</p>
+            <p className="font-semibold text-ink-900">{t("technology.closing")}</p>
           </div>
           <button
             type="button"
