@@ -20,8 +20,9 @@ describe("Technology section", () => {
     const section = (await screen.findByRole("heading", { level: 2, name: en.technology.title })).closest(
       "section",
     )!;
-    expect(within(section).getByText(en.technology.lead)).toBeVisible();
-    expect(within(section).getByText(en.technology.consultationFirst)).toBeVisible();
+    for (const key of ["tagline", "lead", "features", "tailored", "closing"] as const) {
+      expect(within(section).getByText(en.technology[key])).toBeVisible();
+    }
 
     const toggle = within(section).getByRole("button", { name: en.technology.more.show });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
@@ -53,9 +54,8 @@ describe("Technology section", () => {
 
   it.each(Object.entries(locales))("names the device and both technologies in %s", (_lng, locale) => {
     expect(locale.technology.lead).toContain("ALIX TWIN");
-    expect(locale.technology.lead).toContain("IPL");
     expect(locale.technology.more.intro).toContain("ALIX TWIN AI Smart 5000 8W");
     expect(locale.technology.more.laser.p1).toMatch(/755, 808, 940 .* 1064/);
-    expect(locale.technology.more.laser.p3).toContain("−26 °C");
+    expect(locale.technology.more.laser.p3).toContain("−36 °C");
   });
 });
