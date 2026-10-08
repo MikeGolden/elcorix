@@ -211,26 +211,10 @@
     "p2": "Vor dem ersten Impuls nehmen wir uns Zeit für ein Gespräch. Ich schaue mir Haut und Haar an und frage nach Medikamenten, Sonne und allem, was gegen eine Behandlung sprechen kann. <b>Passt der Laser nicht zu Ihnen, sage ich es Ihnen offen.</b>",
     "p3": "Dann stelle ich das Gerät auf Sie ein: Hauttyp, Haarstärke, Zone. <b>Ein Testimpuls zeigt, wie Ihre Haut reagiert, bevor wir die ganze Fläche behandeln.</b>",
     "p4": "Nach jeder Sitzung bekommen Sie klare Pflegehinweise mit. Fragen zwischen den Terminen beantworte ich gern.",
-    "visit": {
-      "title": "So läuft Ihr Termin",
-      "steps": {
-        "consultation": {
-          "title": "Beratung",
-          "text": "Haut, Haar, Medikamente, Sonne: Wir klären, ob der Laser zu Ihnen passt."
-        },
-        "testPulse": {
-          "title": "Testimpuls",
-          "text": "Ein Impuls an einer kleinen Stelle zeigt, wie Ihre Haut reagiert."
-        },
-        "treatment": {
-          "title": "Behandlung",
-          "text": "Das Gerät ist auf Ihren Hauttyp, Ihre Haarstärke und die Zone eingestellt."
-        },
-        "aftercare": {
-          "title": "Pflege",
-          "text": "Sie gehen mit klaren Hinweisen für die Tage danach."
-        }
-      }
+    "certificate": {
+      "alt": "NiSV-Zertifikat der eCertification GmbH, Fachkunde-Modul „Optische Strahlung“, gültig bis 21. August 2031",
+      "title": "NiSV-Fachkunde „Optische Strahlung“",
+      "text": "Gesetzlich vorgeschrieben für Laser-Haarentfernung in Deutschland. Gültig bis August 2031."
     }
   },
   "work": {
