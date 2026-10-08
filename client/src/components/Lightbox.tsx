@@ -17,6 +17,17 @@ type LightboxProps = {
 };
 
 /**
+ * Close and paging buttons. On a phone the image runs almost edge to edge,
+ * so the arrows sit ON it: a translucent white circle with a white chevron
+ * vanished over a white certificate scan. A dark, blurred disc with a light
+ * ring reads over any photo; `z-10` keeps them above the image explicitly
+ * rather than by DOM order alone.
+ */
+const controlClass =
+  "absolute z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/55 text-white " +
+  "shadow-lg ring-1 ring-white/30 backdrop-blur-sm transition hover:bg-black/75";
+
+/**
  * Full-screen viewer for a gallery image.
  *
  * Rendered inline — the overlay is `fixed` and nothing in the app creates a
@@ -116,8 +127,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
         type="button"
         onClick={onClose}
         aria-label={t("lightbox.close")}
-        className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full
-                   bg-white/10 text-white transition hover:bg-white/25 sm:right-5 sm:top-5"
+        className={`${controlClass} right-3 top-3 sm:right-5 sm:top-5`}
       >
         <CloseIcon />
       </button>
@@ -128,9 +138,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
             type="button"
             onClick={() => step(-1)}
             aria-label={t("lightbox.prev")}
-            className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center
-                       justify-center rounded-full bg-white/10 text-white transition
-                       hover:bg-white/25 sm:left-5"
+            className={`${controlClass} left-2 top-1/2 -translate-y-1/2 sm:left-5`}
           >
             <ChevronLeftIcon />
           </button>
@@ -138,9 +146,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
             type="button"
             onClick={() => step(1)}
             aria-label={t("lightbox.next")}
-            className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center
-                       justify-center rounded-full bg-white/10 text-white transition
-                       hover:bg-white/25 sm:right-5"
+            className={`${controlClass} right-2 top-1/2 -translate-y-1/2 sm:right-5`}
           >
             <ChevronRightIcon />
           </button>
