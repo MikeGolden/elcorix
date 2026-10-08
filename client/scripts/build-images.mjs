@@ -54,6 +54,7 @@ SMALL_WEBP = {
     "technology.jpg": 760,          # ~380px on a phone
     "specialist.jpg": 680,          # ~330px on a phone
     "certificate.jpg": 600,         # ~250-300px tile; the 1240px twin is for the lightbox
+    "certificate-skin.jpg": 600,    # the card under it in the same stack
 }
 for name, width in SMALL_WEBP.items():
     source = images / name

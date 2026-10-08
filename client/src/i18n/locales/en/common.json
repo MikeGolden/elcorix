@@ -214,10 +214,15 @@
     "p2": "I stand for modern, individual skin aesthetics that combine effectiveness with skin health.",
     "p3": "A well-thought-out concept, tailored to your skin, your needs and your goals.",
     "p4": "<b>Healthy skin. Modern aesthetics. Tailored to you.</b>",
-    "certificate": {
-      "alt": "NiSV certificate from eCertification GmbH, module “Optical radiation”, valid until 21 August 2031",
-      "title": "NiSV certificate: optical radiation",
-      "text": "Required by German law for laser hair removal. Valid until August 2031."
+    "certificates": {
+      "title": "NiSV certification for laser hair removal",
+      "text": "Both modules German law requires: “Skin basics” and “Optical radiation” (valid until August 2031).",
+      "count_one": "{{count}} certificate",
+      "count_other": "{{count}} certificates",
+      "alts": {
+        "optical": "NiSV certificate from eCertification GmbH, module “Optical radiation”, valid until 21 August 2031",
+        "skin": "Certificate from ADD Beauty Academy Frankfurt, NiSV module “Skin and its appendages”, 78 teaching units, issued 15 July 2026"
+      }
     }
   },
   "work": {

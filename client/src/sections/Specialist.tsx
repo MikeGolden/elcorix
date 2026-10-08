@@ -17,8 +17,12 @@ const tileSizes =
 
 export default function Specialist() {
   const { t } = useTranslation();
-  const [certificateOpen, setCertificateOpen] = useState(false);
-  const certificate = { src: images.certificate, alt: t("specialist.certificate.alt") };
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const certificates = [
+    { src: images.certificates[0], alt: t("specialist.certificates.alts.optical") },
+    { src: images.certificates[1], alt: t("specialist.certificates.alts.skin") },
+  ];
+  const [top, under] = certificates;
 
   return (
     <section
@@ -43,40 +47,72 @@ export default function Specialist() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          {/* The A4 scan is unreadable at tile size, so the tile opens it
-              full screen; the caption says what it certifies without that. */}
+          {/* The certificates lie as a stack: the second peeks out from under
+              the first, and a click opens both in the gallery viewer. The
+              back card leans left, into the section's padding, so it never
+              reaches the portrait next to it. A4 scans are unreadable at
+              tile size, so the caption says what they certify. */}
           <figure className="flex flex-col gap-3">
             <button
               type="button"
-              onClick={() => setCertificateOpen(true)}
-              aria-label={t("lightbox.open", { name: certificate.alt })}
-              data-testid="certificate-tile"
-              className="group block w-full cursor-zoom-in overflow-hidden rounded-panel bg-white
-                         shadow-[0_1px_3px_rgba(20,32,63,0.06)] focus:outline-none
+              onClick={() => setOpenIndex(0)}
+              aria-label={t("lightbox.open", { name: t("specialist.certificates.title") })}
+              data-testid="certificate-stack"
+              className="group relative block w-full cursor-zoom-in rounded-panel focus:outline-none
                          focus-visible:ring-2 focus-visible:ring-brand-700 focus-visible:ring-offset-2"
             >
-              <Photo
-                src={certificate.src}
-                webpSrcSet={webpSrcSet(images.certificate, 600, 1240)}
-                sizes={tileSizes}
-                alt={certificate.alt}
-                width="1240"
-                height="1754"
-                loading="lazy"
-                decoding="async"
-                className="aspect-[1240/1754] w-full object-cover transition-transform duration-300
-                           group-hover:scale-[1.03]"
-              />
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 -translate-x-2 -translate-y-2 -rotate-[4deg] overflow-hidden
+                           rounded-panel bg-white shadow-[0_1px_3px_rgba(20,32,63,0.08)] transition-transform
+                           duration-300 group-hover:-translate-x-3.5 group-hover:-translate-y-3
+                           group-hover:-rotate-[6deg]"
+              >
+                <Photo
+                  src={under.src}
+                  webpSrcSet={webpSrcSet(under.src, 600, 1240)}
+                  sizes={tileSizes}
+                  alt=""
+                  width="1240"
+                  height="1754"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+              </span>
+              <span
+                className="relative block overflow-hidden rounded-panel bg-white
+                           shadow-[0_2px_10px_rgba(20,32,63,0.12)]"
+              >
+                <Photo
+                  src={top.src}
+                  webpSrcSet={webpSrcSet(top.src, 600, 1240)}
+                  sizes={tileSizes}
+                  alt={top.alt}
+                  width="1240"
+                  height="1754"
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[1240/1754] w-full object-cover transition-transform duration-300
+                             group-hover:scale-[1.03]"
+                />
+                <span
+                  className="absolute bottom-3 right-3 rounded-full bg-ink-900/75 px-2.5 py-1 text-xs
+                             font-semibold text-white backdrop-blur-sm"
+                >
+                  {t("specialist.certificates.count", { count: certificates.length })}
+                </span>
+              </span>
             </button>
             <figcaption className="text-sm leading-snug">
               <span className="block font-semibold text-ink-900">
-                {t("specialist.certificate.title")}
+                {t("specialist.certificates.title")}
               </span>
-              <span className="mt-1 block text-ink-500">{t("specialist.certificate.text")}</span>
+              <span className="mt-1 block text-ink-500">{t("specialist.certificates.text")}</span>
             </figcaption>
           </figure>
           {/* Below xl the tiles size themselves, so the portrait takes the
-              certificate's A4 ratio and both end level. */}
+              certificates' A4 ratio and both end level. */}
           <Photo
             src={images.specialist}
             webpSrcSet={webpSrcSet(images.specialist, 680, 896)}
@@ -94,10 +130,10 @@ export default function Specialist() {
       {/* Outside the <Reveal> on purpose: the lightbox is `fixed` and must
           not sit inside an element that is briefly transformed. */}
       <Lightbox
-        images={[certificate]}
-        index={certificateOpen ? 0 : null}
-        onClose={() => setCertificateOpen(false)}
-        onIndexChange={() => {}}
+        images={certificates}
+        index={openIndex}
+        onClose={() => setOpenIndex(null)}
+        onIndexChange={setOpenIndex}
       />
     </section>
   );

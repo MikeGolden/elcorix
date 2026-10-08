@@ -29,11 +29,13 @@ export const images = {
   /** Portrait of the specialist for the "Wer Sie behandelt" section. */
   specialist: "/images/specialist.jpg",
   /**
-   * The specialist's NiSV certificate (eCertification GmbH), A4 portrait.
-   * Rendered from the issuer's PDF with the date-of-birth line painted
-   * out; the PDF itself is not published.
+   * The specialist's NiSV papers, A4 portrait, in stack order (top card
+   * first): the "Optische Strahlung" certificate (eCertification GmbH) and
+   * the "Grundlagen der Haut" course certificate (ADD Beauty, Frankfurt).
+   * Both are rendered from the issuers' PDFs with the date of birth painted
+   * out; the PDFs themselves are not published.
    */
-  certificate: "/images/certificate.jpg",
+  certificates: ["/images/certificate.jpg", "/images/certificate-skin.jpg"],
   /** Square thumbnails for the "Für wen ist es geeignet?" cards. */
   reasons: {
     convenience: "/images/reason-convenience.jpg",

@@ -214,10 +214,15 @@
     "p2": "Ich stehe für eine moderne, individuelle Hautästhetik, die Wirksamkeit und Hautgesundheit miteinander verbindet.",
     "p3": "Ein durchdachtes Konzept, abgestimmt auf Ihre Haut, Ihre Bedürfnisse und Ihre Ziele.",
     "p4": "<b>Gesunde Haut. Moderne Ästhetik. Individuell gedacht.</b>",
-    "certificate": {
-      "alt": "NiSV-Zertifikat der eCertification GmbH, Fachkunde-Modul „Optische Strahlung“, gültig bis 21. August 2031",
-      "title": "NiSV-Fachkunde „Optische Strahlung“",
-      "text": "Gesetzlich vorgeschrieben für Laser-Haarentfernung in Deutschland. Gültig bis August 2031."
+    "certificates": {
+      "title": "NiSV-Fachkunde für Laser-Haarentfernung",
+      "text": "Beide Module, die die NiSV verlangt: „Grundlagen der Haut“ und „Optische Strahlung“ (gültig bis August 2031).",
+      "count_one": "{{count}} Zertifikat",
+      "count_other": "{{count}} Zertifikate",
+      "alts": {
+        "optical": "NiSV-Zertifikat der eCertification GmbH, Fachkunde-Modul „Optische Strahlung“, gültig bis 21. August 2031",
+        "skin": "Bescheinigung der ADD Beauty Academy Frankfurt, NiSV-Fachkunde-Modul „Grundlagen der Haut und deren Anhangsgebilde“, 78 Lerneinheiten, ausgestellt am 15. Juli 2026"
+      }
     }
   },
   "work": {

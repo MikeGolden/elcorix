@@ -19,24 +19,37 @@ async function specialistSection() {
 }
 
 describe("Specialist section", () => {
-  it("shows the certificate with its caption next to the portrait", async () => {
+  it("shows the certificates as a stack with a caption next to the portrait", async () => {
     const section = await specialistSection();
-    const certificate = within(section).getByAltText(en.specialist.certificate.alt);
-    expect(certificate.getAttribute("src")).toBe("/images/certificate.jpg");
-    expect(within(section).getByText(en.specialist.certificate.title)).toBeInTheDocument();
+    const stack = within(section).getByTestId("certificate-stack");
+    // Top card carries the alt text; the card under it is decorative.
+    expect(within(stack).getByAltText(en.specialist.certificates.alts.optical)).toHaveAttribute(
+      "src",
+      "/images/certificate.jpg",
+    );
+    expect(stack.querySelector('img[src="/images/certificate-skin.jpg"]')).toHaveAttribute("alt", "");
+    expect(within(stack).getByText("2 certificates")).toBeInTheDocument();
+    expect(within(section).getByText(en.specialist.certificates.title)).toBeInTheDocument();
     expect(within(section).getByAltText(en.specialist.imageAlt)).toBeInTheDocument();
   });
 
-  it("opens the certificate full screen and closes it again", async () => {
+  it("opens the stack as a gallery of both certificates", async () => {
     const user = userEvent.setup();
     const section = await specialistSection();
     expect(screen.queryByTestId("lightbox")).toBeNull();
 
-    await user.click(within(section).getByTestId("certificate-tile"));
+    await user.click(within(section).getByTestId("certificate-stack"));
     const viewer = screen.getByTestId("lightbox");
-    expect(within(viewer).getByTestId("lightbox-image")).toHaveAttribute("src", "/images/certificate.jpg");
-    // One image: no paging arrows, no "1 of 1".
-    expect(within(viewer).queryByRole("button", { name: en.lightbox.next })).toBeNull();
+    const image = () => within(viewer).getByTestId("lightbox-image");
+    expect(image()).toHaveAttribute("src", "/images/certificate.jpg");
+    expect(within(viewer).getByText("1 of 2")).toBeInTheDocument();
+
+    await user.click(within(viewer).getByRole("button", { name: en.lightbox.next }));
+    expect(image()).toHaveAttribute("src", "/images/certificate-skin.jpg");
+    expect(image()).toHaveAttribute("alt", en.specialist.certificates.alts.skin);
+
+    await user.keyboard("{ArrowRight}");
+    expect(image()).toHaveAttribute("src", "/images/certificate.jpg");
 
     await user.keyboard("{Escape}");
     expect(screen.queryByTestId("lightbox")).toBeNull();
@@ -44,9 +57,10 @@ describe("Specialist section", () => {
 
   it.each(Object.entries(locales))("has every certificate string and no placeholders in %s", (_lng, locale) => {
     expect(JSON.stringify(locale.specialist)).not.toMatch(/\[[^\]]*\]/);
-    for (const key of ["alt", "title", "text"] as const) {
-      expect(locale.specialist.certificate[key]).toBeTruthy();
+    const c = locale.specialist.certificates;
+    for (const value of [c.title, c.text, c.count_one, c.count_other, c.alts.optical, c.alts.skin]) {
+      expect(value).toBeTruthy();
     }
-    expect(locale.specialist).not.toHaveProperty("visit");
+    expect(locale.specialist).not.toHaveProperty("certificate");
   });
 });

@@ -1,32 +1,39 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Specialist certificate", () => {
-  test("the tile serves the small WebP and opens the full scan", async ({ page }) => {
+test.describe("Specialist certificates", () => {
+  test("the stack serves small WebPs and pages through both scans", async ({ page }) => {
     await page.goto("/de");
 
-    const tile = page.getByTestId("certificate-tile");
-    await tile.scrollIntoViewIfNeeded();
-    const thumb = tile.locator("img");
-    await expect(thumb).toHaveJSProperty("complete", true);
+    const stack = page.getByTestId("certificate-stack");
+    await stack.scrollIntoViewIfNeeded();
     // The DOM src stays the JPEG fallback; currentSrc is what was fetched.
-    expect(await thumb.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(
-      /\/images\/certificate(-600)?\.webp$/,
-    );
-    await expect(page.getByText("NiSV-Fachkunde „Optische Strahlung“")).toBeVisible();
+    for (const [img, stem] of [
+      [stack.getByAltText(/Optische Strahlung/), "certificate"],
+      [stack.locator('img[src="/images/certificate-skin.jpg"]'), "certificate-skin"],
+    ] as const) {
+      await expect(img).toHaveJSProperty("complete", true);
+      expect(await img.evaluate((el: HTMLImageElement) => el.currentSrc)).toMatch(
+        new RegExp(`/images/${stem}(-600)?\\.webp$`),
+      );
+    }
+    await expect(stack.getByText("2 Zertifikate")).toBeVisible();
 
-    await tile.click();
+    await stack.click();
     const lightbox = page.getByTestId("lightbox");
     await expect(lightbox).toBeVisible();
+    await expect(lightbox.getByText("1 von 2")).toBeVisible();
     const full = lightbox.getByTestId("lightbox-image");
+    await expect(full).toHaveAttribute("src", "/images/certificate.jpg");
+
+    await lightbox.getByRole("button", { name: "Nächstes Bild", exact: true }).click();
+    await expect(full).toHaveAttribute("src", "/images/certificate-skin.jpg");
     await expect(full).toHaveJSProperty("complete", true);
-    expect(await full.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(
-      /\/images\/certificate\.webp$/,
+    expect(await full.evaluate((el: HTMLImageElement) => el.currentSrc)).toMatch(
+      /\/images\/certificate-skin\.webp$/,
     );
-    // A single image: no paging and no "1 von 1".
-    await expect(lightbox.getByRole("button", { name: "Nächstes Bild" })).toHaveCount(0);
 
     await page.keyboard.press("Escape");
     await expect(lightbox).toBeHidden();
-    await expect(tile).toBeFocused();
+    await expect(stack).toBeFocused();
   });
 });
