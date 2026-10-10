@@ -22,8 +22,8 @@ export const staticBusiness = {
   addressShort: "Bodmanstraße 14, Kempten",
   phone: "+49 155 625 14 872",
   email: "info@elcorix.de",
-  instagram: "https://instagram.com/elcorix",
-  instagramHandle: "@elcorix",
+  instagram: "https://www.instagram.com/elcorix.de",
+  instagramHandle: "@elcorix.de",
   /**
    * WhatsApp deep link (digits only, international format, no "+").
    * Must match the business phone above.

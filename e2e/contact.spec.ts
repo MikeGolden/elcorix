@@ -13,10 +13,10 @@ test.describe("Contact page", () => {
       main.getByRole("link", { name: "info@elcorix.de" }).first(),
     ).toHaveAttribute("href", /^mailto:/);
     await expect(
-      main.getByRole("link", { name: "@elcorix", exact: true }),
+      main.getByRole("link", { name: "@elcorix.de", exact: true }),
     ).toHaveAttribute(
       "href",
-      /instagram\.com/,
+      /^https:\/\/www\.instagram\.com\/elcorix\.de$/,
     );
   });
 

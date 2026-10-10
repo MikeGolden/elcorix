@@ -135,7 +135,7 @@ describe("link tracking", () => {
     ["https://wa.me/4915562514872", "whatsapp-click"],
     ["https://api.whatsapp.com/send?phone=49", "whatsapp-click"],
     ["https://instagram.com/elcorix", "instagram-click"],
-    ["https://www.instagram.com/elcorix/", "instagram-click"],
+    ["https://www.instagram.com/elcorix.de", "instagram-click"],
     ["/de/prices", null],
     ["#contact", null],
     ["https://www.openstreetmap.org/", null],
