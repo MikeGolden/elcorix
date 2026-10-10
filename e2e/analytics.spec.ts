@@ -52,8 +52,8 @@ test.describe("analytics on", () => {
     await page.route("**/u/p.js", (route) =>
       route.fulfill({ contentType: "application/javascript", body: STUB_TRACKER }),
     );
-    // WhatsApp and Instagram open in a new tab — keep those offline.
-    await context.route(/wa\.me|instagram\.com/, (route) => route.abort());
+    // WhatsApp, Instagram and Facebook open in a new tab — keep those offline.
+    await context.route(/wa\.me|instagram\.com|facebook\.com/, (route) => route.abort());
   });
 
   test("loads the first-party tracker with its privacy settings", async ({ page }) => {
@@ -74,19 +74,21 @@ test.describe("analytics on", () => {
     expect(foreign).toEqual([]);
   });
 
-  test("reports WhatsApp and Instagram taps with where they were", async ({ page }) => {
+  test("reports WhatsApp, Instagram and Facebook taps with where they were", async ({ page }) => {
     await page.goto("/en/contact");
     await page.waitForFunction(() => Array.isArray(window.__umamiCalls));
     const contact = page.locator("#contact");
 
     await contact.locator('a[href^="https://wa.me/"]').click();
     await contact.locator('a[href*="instagram.com"]').click();
+    await contact.locator('a[href*="facebook.com"]').click();
 
     await expect
       .poll(() => page.evaluate(() => window.__umamiCalls))
       .toEqual([
         ["whatsapp-click", { placement: "contact" }],
         ["instagram-click", { placement: "contact" }],
+        ["facebook-click", { placement: "contact" }],
       ]);
   });
 

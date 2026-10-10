@@ -181,7 +181,7 @@ too — that list is separate from the client's on purpose, so an untranslated
 auto-reply falls back to German rather than shipping half-translated.
 
 Business data that must not be translated (name, address, phone, e-mail,
-Instagram) stays in `client/src/config.ts`.
+Instagram, Facebook) stays in `client/src/config.ts`.
 
 ## Altegio integration
 
@@ -380,7 +380,7 @@ What gets tracked:
 | pageview | every route change (automatic) | path, title, referrer, UTM/click-ids |
 | `consultation-request` | consultation form accepted by the API | `preferredDate`: yes/no |
 | `contact-message` | contact form accepted by the API | — |
-| `phone-click`, `email-click`, `whatsapp-click`, `instagram-click` | tap on any such link, site-wide | `placement`: `header`, `footer` or the section id |
+| `phone-click`, `email-click`, `whatsapp-click`, `instagram-click`, `facebook-click` | tap on any such link, site-wide | `placement`: `header`, `footer` or the section id |
 | `booking-consent` | Altegio calendar opted into (feature flag off today) | — |
 
 Nothing a visitor types is ever sent. A new link to one of those channels
@@ -395,7 +395,7 @@ Umami's UTM, Attribution, Funnel (`/` → `/de/prices` →
 
 ## Contact details
 
-Business name, address, phone, e-mail, Instagram, WhatsApp, coordinates and
+Business name, address, phone, e-mail, Instagram, Facebook, WhatsApp, coordinates and
 opening hours are configured in `client/src/config.ts` — currently
 placeholders, replace with real values. The prices in
 `client/src/pricing.ts` and the testimonials in the translation files are

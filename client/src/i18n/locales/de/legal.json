@@ -252,7 +252,7 @@
   },
   "privacy": {
     "lead": [],
-    "stand": "Stand: 18. September 2026",
+    "stand": "Stand: 10. Oktober 2026",
     "preamble": [],
     "sections": [
       {
@@ -373,7 +373,7 @@
         "title": "11. Reichweitenmessung mit Umami",
         "feature": "analytics",
         "paragraphs": [
-          "Um zu erfahren, wie unsere Website genutzt wird und über welche Wege Besucherinnen und Besucher zu uns finden – etwa über Instagram, Suchmaschinen oder einzelne Werbeaktionen –, setzen wir die Open-Source-Software Umami ein. Wir betreiben Umami selbst auf unserem Server bei Hetzner in Deutschland (siehe Abschnitt 3). Die Daten werden weder an den Hersteller von Umami noch an sonstige Dritte übermittelt.",
+          "Um zu erfahren, wie unsere Website genutzt wird und über welche Wege Besucherinnen und Besucher zu uns finden – etwa über Instagram, Facebook, Suchmaschinen oder einzelne Werbeaktionen –, setzen wir die Open-Source-Software Umami ein. Wir betreiben Umami selbst auf unserem Server bei Hetzner in Deutschland (siehe Abschnitt 3). Die Daten werden weder an den Hersteller von Umami noch an sonstige Dritte übermittelt.",
           "Umami setzt keine Cookies und legt keine Informationen auf Ihrem Endgerät ab. Bei jedem Seitenaufruf und bei den unten genannten Interaktionen werden folgende Angaben verarbeitet:",
           {
             "list": [
@@ -382,7 +382,7 @@
               "Referrer-URL, also die Seite, von der Sie zu uns gekommen sind;",
               "Browser, Betriebssystem, Gerätetyp, Bildschirmgröße und Spracheinstellung;",
               "ungefährer Standort (Land, Region, Stadt), der aus der IP-Adresse abgeleitet wird;",
-              "Interaktionen ohne deren Inhalt: das erfolgreiche Absenden des Beratungs- oder Kontaktformulars sowie das Antippen der Telefonnummer, der E-Mail-Adresse, des WhatsApp- oder des Instagram-Links, jeweils mit dem Seitenbereich, in dem sich der Link befindet."
+              "Interaktionen ohne deren Inhalt: das erfolgreiche Absenden des Beratungs- oder Kontaktformulars sowie das Antippen der Telefonnummer, der E-Mail-Adresse, des WhatsApp-, des Instagram- oder des Facebook-Links, jeweils mit dem Seitenbereich, in dem sich der Link befindet."
             ]
           },
           "Ihre IP-Adresse wird nicht gespeichert. Sie wird zusammen mit der Browserkennung (User-Agent) und einem täglich wechselnden geheimen Wert zu einer nicht umkehrbaren Kennung verrechnet, mit der die Aufrufe eines Tages zusammengefasst werden. Eine Wiedererkennung an späteren Tagen, eine websiteübergreifende Profilbildung oder eine Zusammenführung mit Ihren Formularangaben findet nicht statt. Wir werten die Daten nur zusammengefasst aus und versuchen nicht, einzelne Personen zu identifizieren.",
@@ -413,11 +413,11 @@
         ]
       },
       {
-        "title": "14. Instagram-Link",
+        "title": "14. Instagram- und Facebook-Link",
         "paragraphs": [
-          "Unsere Website enthält lediglich einen externen Link zu unserem Instagram-Auftritt. Solange Sie den Link nicht anklicken, wird über diesen Link keine Verbindung zu Instagram hergestellt.",
-          "Nach dem Anklicken verlassen Sie unsere Website. Instagram beziehungsweise Meta verarbeitet dann eigenverantwortlich Daten über Ihren Zugriff und Ihre weitere Nutzung. Anbieter für Nutzer im Europäischen Wirtschaftsraum ist Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland.",
-          "Weitere Informationen zur Datenverarbeitung bei Instagram finden Sie unter https://privacycenter.instagram.com/policy/."
+          "Unsere Website enthält lediglich jeweils einen externen Link zu unserem Instagram- und zu unserem Facebook-Auftritt. Solange Sie einen Link nicht anklicken, wird über ihn keine Verbindung zu Instagram oder Facebook hergestellt.",
+          "Nach dem Anklicken verlassen Sie unsere Website. Instagram, Facebook beziehungsweise Meta verarbeitet dann eigenverantwortlich Daten über Ihren Zugriff und Ihre weitere Nutzung. Anbieter für Nutzer im Europäischen Wirtschaftsraum ist Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland.",
+          "Weitere Informationen zur Datenverarbeitung bei Instagram und Facebook finden Sie unter https://privacycenter.instagram.com/policy/ und https://www.facebook.com/privacy/policy/."
         ]
       },
       {
@@ -439,7 +439,7 @@
         "title": "16. Übermittlungen in Drittländer",
         "paragraphs": [
           "Eine Übermittlung personenbezogener Daten in ein Land außerhalb der Europäischen Union oder des Europäischen Wirtschaftsraums erfolgt nur, wenn dafür die Voraussetzungen der Art. 44 ff. DSGVO erfüllt sind. Dies kann insbesondere auf Grundlage eines Angemessenheitsbeschlusses der Europäischen Kommission oder geeigneter Garantien wie den Standardvertragsklauseln der Europäischen Kommission erfolgen.",
-          "Beim Aufruf externer Dienste wie WhatsApp oder Instagram können die jeweiligen Anbieter Daten auch in Drittländern verarbeiten. Einzelheiten ergeben sich aus den Datenschutzhinweisen der jeweiligen Anbieter."
+          "Beim Aufruf externer Dienste wie WhatsApp, Instagram oder Facebook können die jeweiligen Anbieter Daten auch in Drittländern verarbeiten. Einzelheiten ergeben sich aus den Datenschutzhinweisen der jeweiligen Anbieter."
         ]
       },
       {

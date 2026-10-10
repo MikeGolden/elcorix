@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Contact page", () => {
-  test("shows tel, mailto and instagram links", async ({ page }) => {
+  test("shows tel, mailto, instagram and facebook links", async ({ page }) => {
     await page.goto("/en/contact");
     // Scope to <main>: the footer repeats the phone/e-mail links.
     const main = page.getByRole("main");
@@ -18,6 +18,9 @@ test.describe("Contact page", () => {
       "href",
       /^https:\/\/www\.instagram\.com\/elcorix\.de$/,
     );
+    await expect(
+      main.getByRole("link", { name: "elcorix", exact: true }),
+    ).toHaveAttribute("href", "https://www.facebook.com/61595256750262");
   });
 
   test("shows the opening hours from the design", async ({ page }) => {

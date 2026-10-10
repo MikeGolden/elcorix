@@ -40,7 +40,7 @@ describe("legal documents", () => {
     for (const key of ["terms", "appointmentTerms", "packageTerms"] as const) {
       expect(de[key].stand).toBe("Stand: 15.09.2026");
     }
-    expect(de.privacy.stand).toBe("Stand: 18. September 2026");
+    expect(de.privacy.stand).toBe("Stand: 10. Oktober 2026");
   });
 
   it.each([
@@ -147,7 +147,7 @@ describe("legal documents", () => {
       (_l, documents) => {
         const body = text(documents);
         // Hetzner (server, DB, mail), components/MapEmbed.tsx, the WhatsApp
-        // and Instagram links, the local-storage keys and the authority.
+        // Instagram and Facebook links, the local-storage keys and the authority.
         for (const name of [
           "Hetzner Online GmbH",
           "OpenStreetMap Foundation",

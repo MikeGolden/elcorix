@@ -145,7 +145,7 @@ export function localBusinessJsonLd(
       opens: slot.opens,
       closes: slot.closes,
     })),
-    sameAs: [staticBusiness.instagram],
+    sameAs: [staticBusiness.instagram, staticBusiness.facebook],
     ...(altegioBookingUrl === null
       ? {}
       : { potentialAction: { "@type": "ReserveAction", target: altegioBookingUrl } }),

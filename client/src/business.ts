@@ -24,6 +24,10 @@ export const staticBusiness = {
   email: "info@elcorix.de",
   instagram: "https://www.instagram.com/elcorix.de",
   instagramHandle: "@elcorix.de",
+  /** The Facebook page has no username, only its numeric id. */
+  facebook: "https://www.facebook.com/61595256750262",
+  /** Link text for the Facebook page — the page name, since there is no handle. */
+  facebookLabel: "elcorix",
   /**
    * WhatsApp deep link (digits only, international format, no "+").
    * Must match the business phone above.

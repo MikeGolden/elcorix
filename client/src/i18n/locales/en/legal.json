@@ -252,7 +252,7 @@
   },
   "privacy": {
     "lead": [],
-    "stand": "Last updated: 18 September 2026",
+    "stand": "Last updated: 10 October 2026",
     "preamble": [],
     "sections": [
       {
@@ -373,7 +373,7 @@
         "title": "11. Audience measurement with Umami",
         "feature": "analytics",
         "paragraphs": [
-          "To learn how our website is used and how visitors find us – for example via Instagram, search engines or individual promotions – we use the open-source software Umami. We run Umami ourselves on our server at Hetzner in Germany (see section 3). The data is passed on neither to the maker of Umami nor to any other third party.",
+          "To learn how our website is used and how visitors find us – for example via Instagram, Facebook, search engines or individual promotions – we use the open-source software Umami. We run Umami ourselves on our server at Hetzner in Germany (see section 3). The data is passed on neither to the maker of Umami nor to any other third party.",
           "Umami sets no cookies and stores no information on your device. With every page view and the interactions listed below, the following data is processed:",
           {
             "list": [
@@ -382,7 +382,7 @@
               "the referrer URL, i.e. the page you came to us from;",
               "browser, operating system, device type, screen size and language setting;",
               "approximate location (country, region, city), derived from the IP address;",
-              "interactions without their content: successfully submitting the consultation or contact form, and tapping the phone number, the e-mail address, the WhatsApp or the Instagram link, each with the part of the page the link is in."
+              "interactions without their content: successfully submitting the consultation or contact form, and tapping the phone number, the e-mail address, the WhatsApp, the Instagram or the Facebook link, each with the part of the page the link is in."
             ]
           },
           "Your IP address is not stored. Together with your browser identifier (user agent) and a secret value that changes daily, it is turned into an irreversible identifier that groups the page views of one day. There is no recognition on later days, no cross-site profiling and no combination with what you enter in our forms. We only evaluate the data in aggregate and do not try to identify individual people.",
@@ -413,11 +413,11 @@
         ]
       },
       {
-        "title": "14. Instagram link",
+        "title": "14. Instagram and Facebook links",
         "paragraphs": [
-          "Our website merely contains an external link to our Instagram presence. As long as you do not click the link, no connection to Instagram is established via this link.",
-          "After clicking, you leave our website. Instagram or Meta then processes data about your access and your further use under its own responsibility. The provider for users in the European Economic Area is Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Ireland.",
-          "Further information on data processing at Instagram can be found at https://privacycenter.instagram.com/policy/."
+          "Our website merely contains one external link each to our Instagram and our Facebook presence. As long as you do not click a link, no connection to Instagram or Facebook is established via it.",
+          "After clicking, you leave our website. Instagram, Facebook or Meta then processes data about your access and your further use under its own responsibility. The provider for users in the European Economic Area is Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Ireland.",
+          "Further information on data processing at Instagram and Facebook can be found at https://privacycenter.instagram.com/policy/ and https://www.facebook.com/privacy/policy/."
         ]
       },
       {
@@ -439,7 +439,7 @@
         "title": "16. Transfers to third countries",
         "paragraphs": [
           "Personal data is transferred to a country outside the European Union or the European Economic Area only if the requirements of Art. 44 et seq. GDPR are met. This may take place in particular on the basis of an adequacy decision of the European Commission or appropriate safeguards such as the standard contractual clauses of the European Commission.",
-          "When external services such as WhatsApp or Instagram are accessed, the respective providers may also process data in third countries. Details can be found in the privacy notices of the respective providers."
+          "When external services such as WhatsApp, Instagram or Facebook are accessed, the respective providers may also process data in third countries. Details can be found in the privacy notices of the respective providers."
         ]
       },
       {

@@ -57,6 +57,19 @@ export default function ContactSection() {
                 </a>
               </dd>
             </div>
+            <div className="flex flex-wrap gap-x-2">
+              <dt className="font-semibold text-ink-900">Facebook:</dt>
+              <dd>
+                <a
+                  className="text-brand-600 hover:underline"
+                  href={business.facebook}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {business.facebookLabel}
+                </a>
+              </dd>
+            </div>
           </dl>
 
           <h3 className="mt-9 text-xl font-bold">{t("contact.hoursTitle")}</h3>

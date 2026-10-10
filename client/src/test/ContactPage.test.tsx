@@ -20,7 +20,7 @@ describe("ContactPage", () => {
     vi.restoreAllMocks();
   });
 
-  it("shows phone, e-mail and instagram links", () => {
+  it("shows phone, e-mail, instagram and facebook links", () => {
     renderPage();
     expect(
       screen.getByRole("link", { name: new RegExp(escapeRegExp(business.phone)) }),
@@ -31,6 +31,9 @@ describe("ContactPage", () => {
     expect(
       screen.getByRole("link", { name: business.instagramHandle }),
     ).toHaveAttribute("href", business.instagram);
+    expect(
+      screen.getByRole("link", { name: new RegExp(`^${escapeRegExp(business.facebookLabel)}$`) }),
+    ).toHaveAttribute("href", business.facebook);
   });
 
   it("links the privacy policy without a consent checkbox and warns against health data", () => {

@@ -171,9 +171,9 @@ describe("static head blocks", () => {
     ]);
   });
 
-  it("keeps the Instagram profile in sameAs", () => {
+  it("keeps the Instagram and Facebook profiles in sameAs", () => {
     const data = jsonLdFrom(seoBlock(home, "de", null));
-    expect(data.sameAs).toEqual([staticBusiness.instagram]);
+    expect(data.sameAs).toEqual([staticBusiness.instagram, staticBusiness.facebook]);
   });
 
   it.each([

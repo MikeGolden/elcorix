@@ -24,6 +24,7 @@ export type AnalyticsEvent =
   | "email-click"
   | "whatsapp-click"
   | "instagram-click"
+  | "facebook-click"
   | "consultation-request"
   | "contact-message"
   | "booking-consent";
@@ -98,6 +99,7 @@ export function linkEventFor(href: string): AnalyticsEvent | null {
   const is = (domain: string) => hostname === domain || hostname.endsWith(`.${domain}`);
   if (is("wa.me") || is("whatsapp.com")) return "whatsapp-click";
   if (is("instagram.com")) return "instagram-click";
+  if (is("facebook.com")) return "facebook-click";
   return null;
 }
 
@@ -113,8 +115,8 @@ export function placementOf(element: Element): string {
 }
 
 /**
- * One delegated listener for every phone, e-mail, WhatsApp and Instagram
- * link on the site, present and future — no component has to remember to
+ * One delegated listener for every phone, e-mail, WhatsApp, Instagram and
+ * Facebook link on the site, present and future — no component has to remember to
  * tag its links. Returns the cleanup function.
  */
 export function installLinkTracking(doc: Document = document): () => void {

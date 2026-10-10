@@ -136,11 +136,14 @@ describe("link tracking", () => {
     ["https://api.whatsapp.com/send?phone=49", "whatsapp-click"],
     ["https://instagram.com/elcorix", "instagram-click"],
     ["https://www.instagram.com/elcorix.de", "instagram-click"],
+    ["https://www.facebook.com/61595256750262", "facebook-click"],
+    ["https://m.facebook.com/61595256750262", "facebook-click"],
     ["/de/prices", null],
     ["#contact", null],
     ["https://www.openstreetmap.org/", null],
     ["https://notinstagram.com/", null],
     ["https://instagram.com.evil.example/", null],
+    ["https://facebook.com.evil.example/", null],
   ] as const)("%s → %s", (href, expected) => {
     expect(linkEventFor(href)).toBe(expected);
   });
