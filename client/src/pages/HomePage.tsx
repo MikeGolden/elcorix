@@ -5,6 +5,7 @@ import ForWhom from "../sections/ForWhom";
 import Technology from "../sections/Technology";
 import Specialist from "../sections/Specialist";
 import Works from "../sections/Works";
+import TrustPoints from "../sections/TrustPoints";
 import PriceHighlights from "../sections/PriceHighlights";
 import BookingSection from "../sections/BookingSection";
 import ConsultationSection from "../sections/ConsultationSection";
@@ -28,6 +29,7 @@ export default function HomePage() {
       <Technology />
       <Specialist />
       <Works />
+      <TrustPoints />
       <PriceHighlights />
       <Faq page="home" />
       {features.altegio && <BookingSection />}

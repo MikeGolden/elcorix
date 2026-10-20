@@ -1,4 +1,25 @@
 {
+  "trust": {
+    "label": "Why you can trust us",
+    "items": {
+      "permanent": {
+        "title": "Permanent hair removal",
+        "text": "Visible results after just a few sessions"
+      },
+      "safe": {
+        "title": "Gentle & safe",
+        "text": "Suitable for all skin types"
+      },
+      "technology": {
+        "title": "Modern technology",
+        "text": "Effective treatment with a medical laser system"
+      },
+      "life": {
+        "title": "More quality of life",
+        "text": "Smooth, well-groomed and confident – every day"
+      }
+    }
+  },
   "header": {
     "descriptor": "Laser hair removal studio",
     "hours": "Tue–Sat, 09:00–19:00"

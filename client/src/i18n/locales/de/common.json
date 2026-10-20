@@ -1,4 +1,25 @@
 {
+  "trust": {
+    "label": "Warum Sie uns vertrauen können",
+    "items": {
+      "permanent": {
+        "title": "Dauerhafte Haarentfernung",
+        "text": "Sichtbare Ergebnisse bereits nach wenigen Sitzungen"
+      },
+      "safe": {
+        "title": "Schonend & sicher",
+        "text": "Für alle Hauttypen geeignet"
+      },
+      "technology": {
+        "title": "Moderne Technologie",
+        "text": "Effektive Behandlung mit medizinischem Lasersystem"
+      },
+      "life": {
+        "title": "Mehr Lebensqualität",
+        "text": "Glatt, gepflegt und selbstbewusst – jeden Tag"
+      }
+    }
+  },
   "header": {
     "descriptor": "Studio für Laser-Haarentfernung",
     "hours": "Di–Sa, 09:00–19:00 Uhr"
