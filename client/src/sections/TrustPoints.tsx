@@ -3,10 +3,12 @@ import Reveal from "../components/Reveal";
 
 const iconProps = {
   viewBox: "0 0 24 24",
-  className: "h-7 w-7 shrink-0 text-brand-700",
+  // Sized to the title plus a two-line text; the stroke is thinned to
+  // keep the line weight it had at 28px.
+  className: "h-16 w-16 shrink-0 text-brand-700",
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.4,
+  strokeWidth: 0.8,
   strokeLinecap: "round",
   strokeLinejoin: "round",
   "aria-hidden": true,
