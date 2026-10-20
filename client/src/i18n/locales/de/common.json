@@ -1,4 +1,8 @@
 {
+  "header": {
+    "descriptor": "Studio für Laser-Haarentfernung",
+    "hours": "Di–Sa, 09:00–19:00 Uhr"
+  },
   "nav": {
     "label": "Menü",
     "skipToContent": "Zum Inhalt springen",

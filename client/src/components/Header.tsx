@@ -70,17 +70,22 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-4 py-4 sm:px-6">
-        <div className="flex items-center gap-4">
-          <Logo />
-          {/* Optically centred on the wordmark: the boxes are centred and the
-              2px nudge lines the digits up with the x-height band of "corix",
-              which carries the logo's visual weight. */}
-          <a
-            href={telHref}
-            className="hidden translate-y-[2px] text-sm font-medium text-brand-700 transition-colors hover:text-brand-500 md:inline"
-          >
-            {business.phone}
-          </a>
+        <div className="flex items-center gap-6">
+          <div className="flex flex-col gap-1">
+            <Logo />
+            <span className="whitespace-nowrap text-[0.7rem] leading-tight text-ink-500 sm:text-xs">
+              {t("header.descriptor")}
+            </span>
+          </div>
+          <div className="hidden flex-col border-l border-line pl-6 md:flex">
+            <a
+              href={telHref}
+              className="text-sm font-medium text-brand-700 transition-colors hover:text-brand-500"
+            >
+              {business.phone}
+            </a>
+            <span className="text-xs text-ink-500">{t("header.hours")}</span>
+          </div>
         </div>
 
         <div ref={menuRef} className="relative ml-auto flex items-center gap-2 sm:gap-3">
@@ -130,6 +135,15 @@ export default function Header() {
                     </Link>
                   </li>
                 ))}
+                <li className="border-t border-line px-4 pb-1 pt-3 md:hidden">
+                  <a
+                    href={telHref}
+                    className="block text-[0.95rem] font-semibold text-brand-700 transition-colors hover:text-brand-500"
+                  >
+                    {business.phone}
+                  </a>
+                  <span className="text-xs text-ink-500">{t("header.hours")}</span>
+                </li>
                 <li className="pt-1 sm:hidden">
                   <Link
                     to={anchor("consultation")}
