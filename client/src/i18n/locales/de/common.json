@@ -1,4 +1,19 @@
 {
+  "results": {
+    "title": "Echte Ergebnisse",
+    "subtitle": "Sichtbare Resultate für langfristig glatte Haut – schon nach wenigen Sitzungen.",
+    "before": "Vorher",
+    "after": "Nachher",
+    "slider": "Vorher-Nachher-Vergleich: {{name}}",
+    "beforeAlt": "{{name}} vor der Behandlung",
+    "afterAlt": "{{name}} nach der Behandlung",
+    "zones": {
+      "legs": "Beine",
+      "bikini": "Bikinizone",
+      "underarms": "Achseln",
+      "back": "Rücken"
+    }
+  },
   "trust": {
     "label": "Warum Sie uns vertrauen können",
     "items": {

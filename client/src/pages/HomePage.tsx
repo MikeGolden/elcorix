@@ -5,6 +5,7 @@ import ForWhom from "../sections/ForWhom";
 import Technology from "../sections/Technology";
 import Specialist from "../sections/Specialist";
 import Works from "../sections/Works";
+import Results from "../sections/Results";
 import TrustPoints from "../sections/TrustPoints";
 import PriceHighlights from "../sections/PriceHighlights";
 import BookingSection from "../sections/BookingSection";
@@ -29,6 +30,7 @@ export default function HomePage() {
       <Technology />
       <Specialist />
       <Works />
+      <Results />
       <TrustPoints />
       <PriceHighlights />
       <Faq page="home" />

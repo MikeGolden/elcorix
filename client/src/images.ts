@@ -50,6 +50,18 @@ export const images = {
     "/images/work-3.jpg",
     "/images/work-4.jpg",
   ],
+  /**
+   * "Echte Ergebnisse" — one before/after pair per treatment zone, the
+   * same framing in both. Placeholders until the studio's own photos
+   * arrive: swap in `ba-<zone>-before.jpg` / `-after.jpg` and run
+   * `npm run images -w client` for their WebP twins.
+   */
+  results: [
+    { zone: "legs", before: "/images/ba-placeholder-before.svg", after: "/images/ba-placeholder-after.svg" },
+    { zone: "bikini", before: "/images/ba-placeholder-before.svg", after: "/images/ba-placeholder-after.svg" },
+    { zone: "underarms", before: "/images/ba-placeholder-before.svg", after: "/images/ba-placeholder-after.svg" },
+    { zone: "back", before: "/images/ba-placeholder-before.svg", after: "/images/ba-placeholder-after.svg" },
+  ],
 } as const;
 
 export type ReasonKey = keyof typeof images.reasons;

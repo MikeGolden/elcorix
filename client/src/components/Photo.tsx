@@ -22,9 +22,11 @@ type PhotoProps = ComponentPropsWithoutRef<"img"> & {
  * placement its className gives it, exactly as a bare <img> would.
  */
 export default function Photo({ src, alt, webpSrcSet, sizes, ...rest }: PhotoProps) {
+  // Only raster originals have a WebP twin; an SVG is served as it is.
+  const webp = webpSrcSet ?? (/\.(jpe?g|png)$/i.test(src) ? webpFor(src) : undefined);
   return (
     <picture className="contents">
-      <source type="image/webp" srcSet={webpSrcSet ?? webpFor(src)} sizes={sizes} />
+      {webp && <source type="image/webp" srcSet={webp} sizes={sizes} />}
       <img src={src} alt={alt} {...rest} />
     </picture>
   );

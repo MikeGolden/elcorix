@@ -1,4 +1,19 @@
 {
+  "results": {
+    "title": "Real results",
+    "subtitle": "Visible results for lastingly smooth skin – after just a few sessions.",
+    "before": "Before",
+    "after": "After",
+    "slider": "Before and after comparison: {{name}}",
+    "beforeAlt": "{{name}} before treatment",
+    "afterAlt": "{{name}} after treatment",
+    "zones": {
+      "legs": "Legs",
+      "bikini": "Bikini line",
+      "underarms": "Underarms",
+      "back": "Back"
+    }
+  },
   "trust": {
     "label": "Why you can trust us",
     "items": {
