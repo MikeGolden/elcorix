@@ -57,8 +57,7 @@
     "book": "Book an appointment",
     "consultation": "Get a consultation",
     "whatsapp": "Message us on WhatsApp",
-    "learnMore": "Learn more",
-    "consultationTest": "Book a free consultation with a test pulse"
+    "learnMore": "Learn more"
   },
   "meta": {
     "home": {
@@ -67,7 +66,7 @@
     },
     "prices": {
       "title": "Laser hair removal prices in Kempten",
-      "description": "Laser hair removal prices in Kempten: every zone for women and men, plus package deals with 6- and 8-session rates."
+      "description": "Laser hair removal prices in Kempten: every zone for women and men, plus package deals with 6-, 8- and 10-session rates."
     },
     "gallery": {
       "title": "Our work – laser hair removal in Kempten",
@@ -288,8 +287,8 @@
   "prices": {
     "title": "Popular services and prices",
     "pageTitle": "Price list",
-    "intro": "All prices are per session and per zone. How many sessions you need depends on your skin and hair type — we go through that in the free consultation before your first treatment.",
-    "note": "All prices are final prices. Under the small business scheme (Section 19 UStG), no VAT is shown. We are happy to put together combinations of several zones and individual packages in person. Please cancel appointments at least 24 hours in advance.",
+    "intro": "All prices are per treatment. How many sessions you need depends on your skin and hair type — we go through that in the free consultation before your first treatment.",
+    "note": "Please cancel appointments at least 24 hours in advance.",
     "groups": {
       "women": "Services for women",
       "men": "Services for men",
@@ -298,24 +297,37 @@
     },
     "columns": {
       "package": "Package",
-      "zones": "Zones included",
+      "zones": "Zones per treatment",
       "single": "Single treatment",
       "six": "6 treatments",
-      "eight": "8 treatments"
-    },
-    "columnBadges": {
-      "six": "Popular choice",
-      "eight": "Best saving"
+      "eight": "8 treatments",
+      "ten": "10 treatments"
     },
     "women": {
       "upperLip": "Upper lip",
       "chin": "Chin",
+      "cheeks": "Cheeks",
+      "face": "Face",
+      "throat": "Throat",
+      "neck": "Neck",
       "underarms": "Underarms",
       "bikiniClassic": "Bikini line, classic",
-      "intimateComplete": "Intimate complete — incl. buttock crease",
+      "intimateBasic": "Intimate basic",
+      "intimateComplete": "Intimate complete",
+      "buttockCrease": "Buttock crease",
+      "buttocks": "Buttocks",
+      "buttocksFull": "Buttocks, full",
+      "forearms": "Forearms",
+      "upperArms": "Upper arms",
       "armsFull": "Full arms incl. hands/fingers",
+      "handsFingers": "Hands/fingers",
+      "stomach": "Stomach",
+      "bellyLine": "Belly line",
+      "backFull": "Full back",
       "lowerLegs": "Lower legs incl. knees",
-      "legsFull": "Full legs incl. feet/toes"
+      "thighs": "Thighs",
+      "legsFull": "Full legs incl. feet/toes",
+      "feetToes": "Feet/toes"
     },
     "men": {
       "beardContour": "Beard contour",
@@ -324,68 +336,130 @@
       "underarms": "Underarms",
       "shoulders": "Shoulders",
       "chest": "Chest",
+      "stomach": "Stomach",
       "backFull": "Full back",
-      "intimateComplete": "Intimate complete incl. buttock crease"
+      "intimateComplete": "Intimate complete incl. buttock crease",
+      "buttockCrease": "Buttock crease",
+      "buttocks": "Buttocks",
+      "armsFull": "Full arms incl. hands/fingers",
+      "lowerLegs": "Lower legs incl. knees",
+      "thighs": "Thighs",
+      "legsFull": "Full legs incl. feet/toes"
     },
     "packages": {
       "women": {
+        "smoothDuoLight": {
+          "name": "Smooth Duo Light",
+          "zones": "2 zones of your choice: underarms, classic bikini line or lower legs incl. knees"
+        },
         "smoothDuo": {
           "name": "Smooth Duo",
-          "zones": "Underarms + intimate complete incl. buttock crease"
+          "zones": "Underarms + intimate complete incl. bikini line and buttock crease"
         },
         "smoothLegs": {
           "name": "Smooth Legs",
-          "zones": "Intimate complete incl. buttock crease + lower legs incl. knees"
+          "zones": "Intimate complete incl. bikini line and buttock crease + lower legs incl. knees"
+        },
+        "smoothTrioLight": {
+          "name": "Smooth Trio Light",
+          "zones": "Underarms + classic bikini line + lower legs incl. knees"
         },
         "smoothTrio": {
           "name": "Smooth Trio",
-          "zones": "Underarms + intimate complete incl. buttock crease + lower legs incl. knees"
+          "zones": "Underarms + intimate complete incl. bikini line and buttock crease + lower legs incl. knees"
         },
         "smoothComplete": {
           "name": "Smooth Complete",
-          "zones": "Underarms + intimate complete incl. buttock crease + full legs incl. feet/toes"
-        },
-        "bodyCompleteWoman": {
-          "name": "Body Complete Woman",
-          "zones": "Underarms, arms, stomach, back, full buttocks, intimate complete and full legs",
-          "excluded": "Not included: face, throat, neck, chest area"
+          "zones": "Underarms + intimate complete incl. bikini line and buttock crease + full legs incl. feet/toes"
         }
       },
       "men": {
         "clearBack": {
           "name": "Clear Back",
-          "zones": "Full back"
+          "zones": "Full back + shoulders + neck"
         },
         "strongTorso": {
           "name": "Strong Torso",
           "zones": "Chest + stomach"
         },
+        "businessBody": {
+          "name": "Business Body",
+          "zones": "Chest + stomach + full back",
+          "excluded": "without shoulders and neck"
+        },
+        "neckShoulders": {
+          "name": "Neck & Shoulders",
+          "zones": "Shoulders + neck"
+        },
         "coolClean": {
           "name": "Cool & Clean",
           "zones": "Underarms + shoulders + neck"
         },
-        "intimClean": {
-          "name": "Intim Clean",
-          "zones": "Intimate complete incl. buttock crease"
-        },
-        "businessBody": {
-          "name": "Business Body",
-          "zones": "Chest + stomach + full back"
-        },
-        "bodyCompleteMan": {
-          "name": "Body Complete Man",
-          "zones": "Underarms, arms, chest, stomach, back, full buttocks, intimate complete and full legs",
-          "excluded": "Not included: face, beard area, throat, neck"
+        "menSmoothDuo": {
+          "name": "Men Smooth Duo",
+          "zones": "Underarms + intimate complete incl. bikini line and buttock crease",
+          "excluded": "without buttocks"
         }
+      }
+    },
+    "combinations": {
+      "underarmsBikini": "Underarms + classic bikini line",
+      "lowerLegsPlusOne": "Lower legs incl. knees + underarms OR lower legs incl. knees + classic bikini line"
+    },
+    "combinationBox": {
+      "title": "{{name}} · Which combination suits you?",
+      "intro": "2 zones of your choice: underarms, classic bikini line or lower legs incl. knees. Intimate complete is not included.",
+      "line": "{{zones}}: {{single}} single; {{courses}}.",
+      "course": "{{count}} × {{price}} = {{total}}",
+      "outro": "The combination you choose is fixed for the whole course. Please select the exact combination when booking."
+    },
+    "zoneNotes": {
+      "women": {
+        "line1": "Classic bikini line: only the sides outside the normal briefs line. Intimate basic: incl. bikini line, without buttock crease.",
+        "line2": "Intimate complete: incl. bikini line and buttock crease, not the whole buttocks. Buttocks without buttock crease; buttocks, full incl. buttock crease.",
+        "line3": "Face: upper lip, chin and cheeks. Full arms incl. hands/fingers. Full legs incl. feet/toes."
+      },
+      "men": {
+        "line1": "Neck: the back of the neck; the throat is a separate zone. Shoulders without upper arms. Full back without shoulders and neck.",
+        "line2": "Business Body without underarms, shoulders and neck. Men Smooth Duo incl. bikini line and buttock crease, not the whole buttocks.",
+        "line3": "Beard contour is not a full beard treatment. Full arms incl. hands/fingers. Full legs incl. feet/toes."
+      }
+    },
+    "firstVisit": {
+      "women": {
+        "title": "Women · First appointment",
+        "body": "Consultation included. For new clients. No obligation to buy a course."
+      },
+      "men": {
+        "title": "Men · First appointment",
+        "body": "Consultation included. For new clients. No obligation to buy a course."
+      },
+      "offer": "{{zones}} · {{name}}",
+      "price": "First appointment {{price}} · regular price {{regular}}",
+      "cta": "Book a first appointment"
+    },
+    "goodToKnow": {
+      "title": "Good to know · for women and men",
+      "items": {
+        "vat": "All prices are per treatment, including 19% VAT. For paired zones, both sides are included.",
+        "course": "A course covers the stated number of treatments for all zones of the chosen combination.",
+        "payment": "The course price applies when the course is paid in full. The total payment is shown next to the price per treatment.",
+        "switch": "Within 14 calendar days of your first appointment you can switch to a course. The first treatment and the full amount paid for it are credited.",
+        "switchTerms": "When you switch, the course term starts with the first appointment. We record the zones, the total price and the remaining payment in writing.",
+        "sessions": "How many treatments make sense is discussed individually. Not everyone needs a 10-treatment course.",
+        "discounts": "Course prices cannot be combined with other discounts. Paid gift vouchers can be used as a means of payment.",
+        "details": "Details on term, breaks and extensions are in the <termsLink>package terms</termsLink>."
       }
     },
     "packageMeta": {
       "total": "{{price}} total",
       "perTreatment": "{{price}} / treatment",
       "perSingle": "per treatment",
-      "save": "You save {{amount}} · {{percent}}%"
+      "save": "You save {{amount}} · {{percent}}%",
+      "from": "from {{price}}"
     },
-    "packagesTeaser": "Want to save up to 30%?"
+    "packagesTeaser": "Packages of 6, 8 or 10 treatments",
+    "bookCta": "Book an appointment"
   },
   "booking": {
     "title": "Book an appointment",
@@ -450,7 +524,7 @@
       },
       "pricing": {
         "question": "Is the price per session?",
-        "answer": "Yes, all prices are per session and per zone, and they are final prices — no VAT is shown under § 19 UStG (small-business scheme). Zones can be combined; we are happy to put a package together for you."
+        "answer": "Yes, all prices are per treatment and include 19% VAT. Zones can be combined — there are fixed packages of 6, 8 or 10 treatments for that."
       },
       "packages": {
         "question": "How do the packages work?",

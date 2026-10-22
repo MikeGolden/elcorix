@@ -181,7 +181,7 @@ describe("App", () => {
     // One link in the section, and it is the teaser.
     const [teaser] = within(prices).getAllByRole("link");
     expect(within(prices).getAllByRole("link")).toHaveLength(1);
-    expect(teaser).toHaveAccessibleName("Want to save up to 30%?");
+    expect(teaser).toHaveAccessibleName("Packages of 6, 8 or 10 treatments");
     expect(teaser).toHaveAttribute("href", "/en/prices#prices-packages-women");
   });
 

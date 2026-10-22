@@ -57,8 +57,7 @@
     "book": "Termin vereinbaren",
     "consultation": "Beratung erhalten",
     "whatsapp": "Über WhatsApp schreiben",
-    "learnMore": "Mehr erfahren",
-    "consultationTest": "Kostenlose Beratung mit Testimpuls buchen"
+    "learnMore": "Mehr erfahren"
   },
   "meta": {
     "home": {
@@ -67,7 +66,7 @@
     },
     "prices": {
       "title": "Preise Laser-Haarentfernung Kempten",
-      "description": "Preise für Laser-Haarentfernung in Kempten: alle Zonen für Frauen und Männer sowie Paketlösungen mit 6er- und 8er-Preisen."
+      "description": "Preise für Laser-Haarentfernung in Kempten: alle Zonen für Frauen und Männer sowie Paketlösungen mit 6er-, 8er- und 10er-Preisen."
     },
     "gallery": {
       "title": "Unsere Arbeiten – Laser-Haarentfernung Kempten",
@@ -288,8 +287,8 @@
   "prices": {
     "title": "Beliebte Leistungen und Preise",
     "pageTitle": "Preisliste",
-    "intro": "Alle Preise gelten pro Sitzung und Zone. Wie viele Sitzungen nötig sind, hängt von Haut- und Haartyp ab – das besprechen wir in der kostenlosen Beratung vor der ersten Behandlung.",
-    "note": "Alle Preise sind Endpreise. Gemäß § 19 UStG (Kleinunternehmerregelung) wird keine Umsatzsteuer ausgewiesen. Kombinationen mehrerer Zonen und individuelle Paketlösungen stellen wir Ihnen gern persönlich zusammen. Bitte sagen Sie Termine mindestens 24 Stunden vorher ab.",
+    "intro": "Alle Preise gelten pro Behandlung. Wie viele Sitzungen nötig sind, hängt von Haut- und Haartyp ab – das besprechen wir in der kostenlosen Beratung vor der ersten Behandlung.",
+    "note": "Bitte sagen Sie Termine mindestens 24 Stunden vorher ab.",
     "groups": {
       "women": "Leistungen für Frauen",
       "men": "Leistungen für Männer",
@@ -298,24 +297,37 @@
     },
     "columns": {
       "package": "Paket",
-      "zones": "Enthaltene Zonen",
+      "zones": "Zonen pro Behandlung",
       "single": "Einzelbehandlung",
       "six": "6 Behandlungen",
-      "eight": "8 Behandlungen"
-    },
-    "columnBadges": {
-      "six": "Beliebte Wahl",
-      "eight": "Beste Ersparnis"
+      "eight": "8 Behandlungen",
+      "ten": "10 Behandlungen"
     },
     "women": {
       "upperLip": "Oberlippe",
       "chin": "Kinn",
+      "cheeks": "Wangen",
+      "face": "Gesicht",
+      "throat": "Hals",
+      "neck": "Nacken",
       "underarms": "Achseln",
       "bikiniClassic": "Bikinizone klassisch",
-      "intimateComplete": "Intim Complete – inkl. Pofalte",
+      "intimateBasic": "Intim Basic",
+      "intimateComplete": "Intim Complete",
+      "buttockCrease": "Pofalte",
+      "buttocks": "Gesäß",
+      "buttocksFull": "Gesäß komplett",
+      "forearms": "Unterarme",
+      "upperArms": "Oberarme",
       "armsFull": "Arme komplett inkl. Hände/Finger",
+      "handsFingers": "Hände/Finger",
+      "stomach": "Bauch",
+      "bellyLine": "Bauchlinie",
+      "backFull": "Rücken komplett",
       "lowerLegs": "Unterschenkel inkl. Knie",
-      "legsFull": "Beine komplett inkl. Füße/Zehen"
+      "thighs": "Oberschenkel",
+      "legsFull": "Beine komplett inkl. Füße/Zehen",
+      "feetToes": "Füße/Zehen"
     },
     "men": {
       "beardContour": "Bartkontur",
@@ -324,68 +336,130 @@
       "underarms": "Achseln",
       "shoulders": "Schultern",
       "chest": "Brust",
+      "stomach": "Bauch",
       "backFull": "Rücken komplett",
-      "intimateComplete": "Intim Complete inkl. Pofalte"
+      "intimateComplete": "Intim Complete inkl. Pofalte",
+      "buttockCrease": "Pofalte",
+      "buttocks": "Gesäß",
+      "armsFull": "Arme komplett inkl. Hände/Finger",
+      "lowerLegs": "Unterschenkel inkl. Knie",
+      "thighs": "Oberschenkel",
+      "legsFull": "Beine komplett inkl. Füße/Zehen"
     },
     "packages": {
       "women": {
+        "smoothDuoLight": {
+          "name": "Smooth Duo Light",
+          "zones": "2 Zonen zur Wahl: Achseln, Bikini klassisch oder Unterschenkel inkl. Knie"
+        },
         "smoothDuo": {
           "name": "Smooth Duo",
-          "zones": "Achseln + Intim Complete inkl. Pofalte"
+          "zones": "Achseln + Intim komplett inkl. Bikinizone und Pofalte"
         },
         "smoothLegs": {
           "name": "Smooth Legs",
-          "zones": "Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
+          "zones": "Intim komplett inkl. Bikinizone und Pofalte + Unterschenkel inkl. Knie"
+        },
+        "smoothTrioLight": {
+          "name": "Smooth Trio Light",
+          "zones": "Achseln + Bikini klassisch + Unterschenkel inkl. Knie"
         },
         "smoothTrio": {
           "name": "Smooth Trio",
-          "zones": "Achseln + Intim Complete inkl. Pofalte + Unterschenkel inkl. Knie"
+          "zones": "Achseln + Intim komplett inkl. Bikinizone und Pofalte + Unterschenkel inkl. Knie"
         },
         "smoothComplete": {
           "name": "Smooth Complete",
-          "zones": "Achseln + Intim Complete inkl. Pofalte + Beine komplett inkl. Füße/Zehen"
-        },
-        "bodyCompleteWoman": {
-          "name": "Body Complete Woman",
-          "zones": "Achseln, Arme, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett",
-          "excluded": "Nicht enthalten: Gesicht, Hals, Nacken, Brustbereich"
+          "zones": "Achseln + Intim komplett inkl. Bikinizone und Pofalte + Beine komplett inkl. Füße/Zehen"
         }
       },
       "men": {
         "clearBack": {
           "name": "Clear Back",
-          "zones": "Rücken komplett"
+          "zones": "Rücken komplett + Schultern + Nacken"
         },
         "strongTorso": {
           "name": "Strong Torso",
           "zones": "Brust + Bauch"
         },
+        "businessBody": {
+          "name": "Business Body",
+          "zones": "Brust + Bauch + Rücken komplett",
+          "excluded": "ohne Schultern und Nacken"
+        },
+        "neckShoulders": {
+          "name": "Neck & Shoulders",
+          "zones": "Schultern + Nacken"
+        },
         "coolClean": {
           "name": "Cool & Clean",
           "zones": "Achseln + Schultern + Nacken"
         },
-        "intimClean": {
-          "name": "Intim Clean",
-          "zones": "Intim Complete inkl. Pofalte"
-        },
-        "businessBody": {
-          "name": "Business Body",
-          "zones": "Brust + Bauch + Rücken komplett"
-        },
-        "bodyCompleteMan": {
-          "name": "Body Complete Man",
-          "zones": "Achseln, Arme, Brust, Bauch, Rücken, Gesäß komplett, Intim Complete und Beine komplett",
-          "excluded": "Nicht enthalten: Gesicht, Bartbereich, Hals, Nacken"
+        "menSmoothDuo": {
+          "name": "Men Smooth Duo",
+          "zones": "Achseln + Intim komplett inkl. Bikinizone und Pofalte",
+          "excluded": "ohne Gesäß"
         }
+      }
+    },
+    "combinations": {
+      "underarmsBikini": "Achseln + Bikini klassisch",
+      "lowerLegsPlusOne": "Unterschenkel inkl. Knie + Achseln ODER Unterschenkel inkl. Knie + Bikini klassisch"
+    },
+    "combinationBox": {
+      "title": "{{name}} · Welche Kombination passt?",
+      "intro": "2 Zonen zur Wahl: Achseln, Bikini klassisch oder Unterschenkel inkl. Knie. Kein Intim komplett.",
+      "line": "{{zones}}: {{single}} einzeln; {{courses}}.",
+      "course": "{{count}} × {{price}} = {{total}}",
+      "outro": "Die gewählte Kombination wird für den Kurs festgehalten. Bitte bei der Buchung die genaue Kombination auswählen."
+    },
+    "zoneNotes": {
+      "women": {
+        "line1": "Bikini klassisch: nur seitlich außerhalb der normalen Sliplinie. Intim Basic: inkl. Bikinizone, ohne Pofalte.",
+        "line2": "Intim komplett: inkl. Bikinizone und Pofalte, ohne das gesamte Gesäß. Gesäß ohne Pofalte; Gesäß komplett inkl. Pofalte.",
+        "line3": "Gesicht: Oberlippe, Kinn und Wangen. Arme komplett inkl. Hände/Finger. Beine komplett inkl. Füße/Zehen."
+      },
+      "men": {
+        "line1": "Nacken: hinterer Halsbereich; Hals ist eine separate Zone. Schultern ohne Oberarme. Rücken komplett ohne Schultern und Nacken.",
+        "line2": "Business Body ohne Achseln, Schultern und Nacken. Men Smooth Duo inkl. Bikinizone und Pofalte, ohne das gesamte Gesäß.",
+        "line3": "Bartkontur ist keine vollständige Bartbehandlung. Arme komplett inkl. Hände/Finger. Beine komplett inkl. Füße/Zehen."
+      }
+    },
+    "firstVisit": {
+      "women": {
+        "title": "Damen · Ersttermin",
+        "body": "Beratung inklusive. Für Neukundinnen. Ohne Verpflichtung, einen Kurs zu kaufen."
+      },
+      "men": {
+        "title": "Herren · Ersttermin",
+        "body": "Beratung inklusive. Für Neukunden. Ohne Verpflichtung, einen Kurs zu kaufen."
+      },
+      "offer": "{{zones}} · {{name}}",
+      "price": "Ersttermin {{price}} · regulär {{regular}}",
+      "cta": "Ersttermin buchen"
+    },
+    "goodToKnow": {
+      "title": "Gut zu wissen · für Damen und Herren",
+      "items": {
+        "vat": "Alle Preise pro Behandlung, inklusive 19 % MwSt. Bei Paarzonen sind beide Seiten enthalten.",
+        "course": "Ein Kurs umfasst die angegebene Anzahl an Behandlungen aller Zonen der gewählten Kombination.",
+        "payment": "Der Kurspreis gilt bei vollständiger Bezahlung des Kurses. Die gesamte Zahlung ist neben dem Preis pro Behandlung angegeben.",
+        "switch": "Innerhalb von 14 Kalendertagen nach dem Ersttermin können Sie in einen Kurs wechseln. Die erste Behandlung und die gesamte dafür gezahlte Summe werden angerechnet.",
+        "switchTerms": "Beim Wechsel beginnt die Kurslaufzeit mit dem Ersttermin. Zonen, Gesamtpreis und Restzahlung halten wir schriftlich fest.",
+        "sessions": "Welche Anzahl an Behandlungen sinnvoll ist, wird individuell besprochen. Ein 10er-Kurs ist nicht für jede Person erforderlich.",
+        "discounts": "Kurspreise sind nicht mit weiteren Rabatten kombinierbar. Bezahlte Wertgutscheine können als Zahlungsmittel eingesetzt werden.",
+        "details": "Details zu Laufzeit, Pausen und Verlängerungen finden Sie in den <termsLink>Paketbedingungen</termsLink>."
       }
     },
     "packageMeta": {
       "total": "{{price}} gesamt",
       "perTreatment": "{{price}} / Behandlung",
       "perSingle": "pro Behandlung",
-      "save": "Sie sparen {{amount}} · {{percent}} %"
+      "save": "Sie sparen {{amount}} · {{percent}} %",
+      "from": "ab {{price}}"
     },
-    "packagesTeaser": "Bis zu 30 % sparen?"
+    "packagesTeaser": "Pakete für 6, 8 oder 10 Behandlungen",
+    "bookCta": "Termin buchen"
   },
   "booking": {
     "title": "Termin vereinbaren",
@@ -450,7 +524,7 @@
       },
       "pricing": {
         "question": "Gilt der Preis pro Sitzung?",
-        "answer": "Ja, alle Preise gelten pro Sitzung und Zone und sind Endpreise – nach § 19 UStG wird keine Umsatzsteuer ausgewiesen. Mehrere Zonen lassen sich kombinieren; ein passendes Paket stellen wir Ihnen gern zusammen."
+        "answer": "Ja, alle Preise gelten pro Behandlung und enthalten 19 % MwSt. Mehrere Zonen lassen sich kombinieren – dafür gibt es feste Pakete mit 6, 8 oder 10 Behandlungen."
       },
       "packages": {
         "question": "Wie funktionieren die Pakete?",

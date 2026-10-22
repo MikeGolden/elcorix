@@ -13,8 +13,10 @@ export const staticBusiness = {
   name: "elcorix",
   /**
    * Legal name of the owner, trading as ELCORIX — required in the German
-   * Impressum. No VAT ID: the studio uses the small-business scheme
-   * (§ 19 UStG), as the AGB of 15.09.2026 state.
+   * Impressum. No VAT ID listed yet. The AGB of 15.09.2026 describe the
+   * small-business scheme (§ 19 UStG), but the price sheet of 2026-10-22
+   * states prices "inklusive 19 % MwSt." — if the studio is now
+   * VAT-registered, its USt-IdNr belongs in the Impressum.
    */
   owner: "Ian Kipenko",
   address: "Bodmanstraße 14, 87435 Kempten (Allgäu), Germany",

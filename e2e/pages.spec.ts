@@ -11,8 +11,24 @@ test.describe("Deep-link routes", () => {
     // as stacked cards (PriceTables.tsx), so there is no <table> to count.
     const isMobile = test.info().project.name === "mobile";
     await expect(page.getByRole("table")).toHaveCount(isMobile ? 0 : 2);
-    await expect(page.getByText("Beard contour")).toBeVisible();
+    await expect(page.getByText("Beard contour", { exact: true })).toBeVisible();
     await expect(page).toHaveTitle("Laser hair removal prices in Kempten — elcorix");
+  });
+
+  test("prices page leads with the Ersttermin offers and links the package terms", async ({ page }) => {
+    await page.goto("/de/preise");
+    // \s: Intl puts a no-break space before €.
+    await expect(page.getByTestId("prices-first-visit-women")).toContainText(
+      /Ersttermin 129\s€ · regulär 139\s€/,
+    );
+    await expect(page.getByTestId("prices-first-visit-men")).toContainText(
+      /Ersttermin 159\s€ · regulär 179\s€/,
+    );
+    await expect(page.getByTestId("prices-combinations-smoothDuoLight")).toBeVisible();
+    const goodToKnow = page.getByRole("region", { name: /Gut zu wissen/ });
+    await expect(goodToKnow).toContainText("inklusive 19 % MwSt.");
+    await goodToKnow.getByRole("link", { name: "Paketbedingungen" }).click();
+    await expect(page).toHaveURL(/\/de\/paketbedingungen$/);
   });
 
   test("gallery page shows images with alt text", async ({ page }) => {

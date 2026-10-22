@@ -1,15 +1,23 @@
-import { Link } from "react-router";
+import { Trans, useTranslation } from "react-i18next";
+import BookingLink from "../components/BookingLink";
 import LocalizedLink from "../components/LocalizedLink";
-import { useTranslation } from "react-i18next";
 import { PriceGroup } from "../components/PriceTables";
 import { usePageMeta } from "../seo/usePageMeta";
-import { features } from "../config";
-import { useAnchorHref } from "../i18n/useLanguage";
 import Faq from "../sections/Faq";
+
+/** The sheet's "Gut zu wissen" lines, in its order. */
+const GOOD_TO_KNOW = [
+  "vat",
+  "course",
+  "payment",
+  "switch",
+  "switchTerms",
+  "sessions",
+  "discounts",
+] as const;
 
 export default function PricesPage() {
   const { t } = useTranslation();
-  const anchor = useAnchorHref();
   usePageMeta("prices");
   return (
     <>
@@ -27,25 +35,35 @@ export default function PricesPage() {
           <PriceGroup group="men" />
         </div>
 
-        <p className="mt-12 max-w-2xl text-sm leading-relaxed text-ink-500">
-          {t("prices.note")}
-        </p>
-        {/* The sheet of 2026-09-14 fixes the wording of this one button
-            („Kostenlose Beratung mit Testimpuls buchen"), so both branches
-            carry the same label and only the destination differs: /booking
-            exists while the Altegio flag is on (src/features.ts), otherwise
-            the CTA goes to the consultation request on the landing page,
-            which needs no third party. It is deliberately NOT cta.consultation
-            — that one also labels the header button and the form's submit. */}
-        {features.altegio ? (
-          <LocalizedLink to="/booking" className="btn-primary mt-8">
-            {t("cta.consultationTest")}
-          </LocalizedLink>
-        ) : (
-          <Link to={anchor("consultation")} className="btn-primary mt-8">
-            {t("cta.consultationTest")}
-          </Link>
-        )}
+        {/* The price sheet of 2026-10-22 puts these course rules under the
+            tables itself; validity, breaks and extensions stay in the
+            Paketbedingungen, which the last line links to. */}
+        <section aria-labelledby="prices-good-to-know" className="mt-16 max-w-3xl">
+          <h2 id="prices-good-to-know" className="text-lg font-bold text-brand-700">
+            {t("prices.goodToKnow.title")}
+          </h2>
+          <ul className="mt-4 grid list-disc gap-2 pl-5 text-[0.95rem] leading-relaxed text-ink-700">
+            {GOOD_TO_KNOW.map((item) => (
+              <li key={item}>{t(`prices.goodToKnow.items.${item}`)}</li>
+            ))}
+            <li>
+              <Trans
+                i18nKey="prices.goodToKnow.items.details"
+                components={{
+                  termsLink: (
+                    <LocalizedLink
+                      to="/package-terms"
+                      className="font-medium text-brand-600 underline underline-offset-2"
+                    />
+                  ),
+                }}
+              />
+            </li>
+          </ul>
+          <p className="mt-6 text-sm leading-relaxed text-ink-500">{t("prices.note")}</p>
+        </section>
+
+        <BookingLink className="btn-primary mt-8">{t("prices.bookCta")}</BookingLink>
       </section>
       <Faq page="prices" />
     </>
