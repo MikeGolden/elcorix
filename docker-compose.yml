@@ -148,69 +148,71 @@ services:
       fi;
       psql -h db -U kosmetic -d kosmetic -q -v umami_password="$$UMAMI_DB_PASSWORD" -f /umami-db-init.sql'
 
-  umami:
-    logging: *default-logging
-    security_opt: ["no-new-privileges:true"]
-    # Major-version pin: minor/patch updates arrive with `docker compose
-    # pull`; a v4 needs a deliberate change here (and a look at the notes).
-    image: ghcr.io/umami-software/umami:3
-    profiles: [analytics]
-    restart: unless-stopped
-    init: true
-    environment:
-      # Use a hex password (openssl rand -hex 32): it goes into a URL.
-      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD:-}@db:5432/umami
-      APP_SECRET: ${UMAMI_APP_SECRET:-}
-      # The anonymous visitor hash (IP + user agent + salt) changes every
-      # day, so nobody is recognised across days. The privacy policy states
-      # this — do not switch to "month" without changing the policy.
-      SALT_ROTATION: day
-      # Read the visitor IP only from X-Forwarded-For. Caddy overwrites that
-      # header with the real client address; without this Umami would trust
-      # whichever of true-client-ip / cf-connecting-ip / x-real-ip … a
-      # visitor chooses to send.
-      CLIENT_IP_HEADER: x-forwarded-for
-      # No calls home to Umami's servers from the dashboard.
-      DISABLE_TELEMETRY: "1"
-      DISABLE_UPDATES: "1"
-      # Enables two-factor login on the dashboard (openssl rand -hex 32).
-      TWO_FACTOR_ENCRYPTION_KEY: ${UMAMI_2FA_KEY:-}
-    depends_on:
-      umami-db-init:
-        condition: service_completed_successfully
-    healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/heartbeat"]
-      interval: 10s
-      timeout: 3s
-      retries: 10
-      start_period: 30s
-    # Loopback only: the public way in is Caddy (stats.<domain>). Locally,
-    # or through an SSH tunnel, the dashboard is http://localhost:3002.
-    ports:
-      - "127.0.0.1:${UMAMI_PORT:-3002}:3000"
+  # Umami is switched off for now: umami and umami-retention (which depends
+  # on it) are commented out. Uncomment both to bring analytics back.
+#   umami:
+#     logging: *default-logging
+#     security_opt: ["no-new-privileges:true"]
+#     # Major-version pin: minor/patch updates arrive with `docker compose
+#     # pull`; a v4 needs a deliberate change here (and a look at the notes).
+#     image: ghcr.io/umami-software/umami:3
+#     profiles: [analytics]
+#     restart: unless-stopped
+#     init: true
+#     environment:
+#       # Use a hex password (openssl rand -hex 32): it goes into a URL.
+#       DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD:-}@db:5432/umami
+#       APP_SECRET: ${UMAMI_APP_SECRET:-}
+#       # The anonymous visitor hash (IP + user agent + salt) changes every
+#       # day, so nobody is recognised across days. The privacy policy states
+#       # this — do not switch to "month" without changing the policy.
+#       SALT_ROTATION: day
+#       # Read the visitor IP only from X-Forwarded-For. Caddy overwrites that
+#       # header with the real client address; without this Umami would trust
+#       # whichever of true-client-ip / cf-connecting-ip / x-real-ip … a
+#       # visitor chooses to send.
+#       CLIENT_IP_HEADER: x-forwarded-for
+#       # No calls home to Umami's servers from the dashboard.
+#       DISABLE_TELEMETRY: "1"
+#       DISABLE_UPDATES: "1"
+#       # Enables two-factor login on the dashboard (openssl rand -hex 32).
+#       TWO_FACTOR_ENCRYPTION_KEY: ${UMAMI_2FA_KEY:-}
+#     depends_on:
+#       umami-db-init:
+#         condition: service_completed_successfully
+#     healthcheck:
+#       test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/heartbeat"]
+#       interval: 10s
+#       timeout: 3s
+#       retries: 10
+#       start_period: 30s
+#     # Loopback only: the public way in is Caddy (stats.<domain>). Locally,
+#     # or through an SSH tunnel, the dashboard is http://localhost:3002.
+#     ports:
+#       - "127.0.0.1:${UMAMI_PORT:-3002}:3000"
 
-  # Deletes analytics data older than UMAMI_RETENTION_MONTHS once a day —
-  # the limit the privacy policy promises. Connects as the umami role, so
-  # it cannot touch the customer database.
-  umami-retention:
-    logging: *default-logging
-    security_opt: ["no-new-privileges:true"]
-    image: postgres:16-alpine
-    profiles: [analytics]
-    restart: unless-stopped
-    environment:
-      PGPASSWORD: ${UMAMI_DB_PASSWORD:-}
-      UMAMI_RETENTION_MONTHS: ${UMAMI_RETENTION_MONTHS:-14}
-    volumes:
-      - ./docker/umami-retention.sql:/umami-retention.sql:ro
-    depends_on:
-      umami:
-        condition: service_healthy
-    entrypoint: >
-      sh -c 'while true; do
-        psql -h db -U umami -d umami -q -v keep_months="$$UMAMI_RETENTION_MONTHS" -f /umami-retention.sql;
-        sleep 86400;
-      done'
+#   # Deletes analytics data older than UMAMI_RETENTION_MONTHS once a day —
+#   # the limit the privacy policy promises. Connects as the umami role, so
+#   # it cannot touch the customer database.
+#   umami-retention:
+#     logging: *default-logging
+#     security_opt: ["no-new-privileges:true"]
+#     image: postgres:16-alpine
+#     profiles: [analytics]
+#     restart: unless-stopped
+#     environment:
+#       PGPASSWORD: ${UMAMI_DB_PASSWORD:-}
+#       UMAMI_RETENTION_MONTHS: ${UMAMI_RETENTION_MONTHS:-14}
+#     volumes:
+#       - ./docker/umami-retention.sql:/umami-retention.sql:ro
+#     depends_on:
+#       umami:
+#         condition: service_healthy
+#     entrypoint: >
+#       sh -c 'while true; do
+#         psql -h db -U umami -d umami -q -v keep_months="$$UMAMI_RETENTION_MONTHS" -f /umami-retention.sql;
+#         sleep 86400;
+#       done'
 
   # Enforces the seven-day limit on server logs from the privacy policy
   # (§ 3). Docker's json-file driver only rotates by size, so once a day
