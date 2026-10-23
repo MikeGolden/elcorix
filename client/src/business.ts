@@ -75,3 +75,25 @@ export function sanitizeCompanyId(raw: string | undefined): string {
 export function altegioBookingUrlFor(companyId: string): string {
   return `https://n${companyId}.alteg.io`;
 }
+
+/**
+ * Plain links into the studio's Altegio booking pages (2026-10-23). These
+ * are ordinary outbound links, not the embed behind the `altegio` flag:
+ * nothing reaches Altegio until the visitor clicks, so they need no consent.
+ *
+ * The `o=s…` ids are Altegio service ids for the three entry offers; each
+ * must stay in step with the price it is shown next to (firstVisitOffers
+ * and the beard contour zone in pricing.ts).
+ */
+const altegioCompany = "https://n1463826.alteg.io/company/1390972/personal/select-master";
+
+export const altegioLinks = {
+  /** Generic "Termin buchen": the studio's booking start page. */
+  general: "https://n1463826.alteg.io",
+  /** Women's first visit — Smooth Duo, 129 €. */
+  firstVisitWomen: `${altegioCompany}?o=s13920267`,
+  /** Men's first visit — Clear Back, 159 €. */
+  firstVisitMen: `${altegioCompany}?o=s13920268`,
+  /** Bartkontur, 59 €. */
+  beardContour: `${altegioCompany}?o=s13859238`,
+} as const;

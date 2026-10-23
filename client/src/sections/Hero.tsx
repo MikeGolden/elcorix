@@ -5,7 +5,7 @@ import { images, webpSrcSet } from "../images";
 import { heroSizes, heroWebpSrcSet } from "../heroImage";
 import LocalizedLink from "../components/LocalizedLink";
 import { useAnchorHref } from "../i18n/useLanguage";
-import { features } from "../config";
+import AltegioLink from "../components/AltegioLink";
 
 /**
  * Hero of the Figma one-pager: the copy sits in the 1200px column while
@@ -25,12 +25,6 @@ import { features } from "../config";
 export default function Hero() {
   const { t } = useTranslation();
   const anchor = useAnchorHref();
-  // With the Altegio booking section hidden (src/features.ts) there is no
-  // #booking on the page, so the primary CTA takes the visitor to the
-  // consultation request instead of scrolling nowhere.
-  const cta = features.altegio
-    ? { to: anchor("booking"), label: t("cta.book") }
-    : { to: anchor("consultation"), label: t("cta.consultation") };
   return (
     // -mt-19/pt-19 = the header's height: the section starts under the
     // header without moving any of its content. The copy's right padding
@@ -44,9 +38,15 @@ export default function Hero() {
         <h1 className="text-[2.1rem] font-extrabold leading-[1.1] tracking-[-0.02em] sm:text-5xl lg:text-[3.35rem]">
           {t("hero.title")}
         </h1>
-        <Link to={cta.to} className="btn-primary mt-8">
-          {cta.label}
-        </Link>
+        {/* Booking in Altegio first, the free consultation beside it. */}
+        <div className="mt-8 flex flex-wrap gap-3">
+          <AltegioLink to="general" className="btn-primary">
+            {t("cta.bookOnline")}
+          </AltegioLink>
+          <Link to={anchor("consultation")} className="btn-ghost">
+            {t("cta.consultation")}
+          </Link>
+        </div>
 
         <div className="mt-12">
           <p className="text-sm font-bold text-brand-700">{t("hero.servicesLabel")}</p>

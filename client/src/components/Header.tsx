@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { business, telHref } from "../config";
 import { navAnchors } from "../content";
 import { useAnchorHref } from "../i18n/useLanguage";
+import AltegioLink from "./AltegioLink";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
 import { CloseIcon, MenuIcon, WhatsAppIcon } from "./icons";
@@ -90,9 +91,18 @@ export default function Header() {
 
         <div ref={menuRef} className="relative ml-auto flex items-center gap-2 sm:gap-3">
           <LanguageSwitcher />
+          {/* Booking first, the consultation request beside it. Both only
+              fit next to the phone number from `lg`; below that the
+              consultation moves into the menu. */}
+          <AltegioLink
+            to="general"
+            className="btn-primary hidden px-6 py-3 text-sm sm:inline-flex"
+          >
+            {t("cta.bookOnline")}
+          </AltegioLink>
           <Link
             to={anchor("consultation")}
-            className="btn-primary hidden px-6 py-3 text-sm sm:inline-flex"
+            className="btn-ghost hidden px-6 py-3 text-sm lg:inline-flex"
           >
             {t("cta.consultation")}
           </Link>
@@ -145,9 +155,14 @@ export default function Header() {
                   <span className="text-xs text-ink-500">{t("header.hours")}</span>
                 </li>
                 <li className="pt-1 sm:hidden">
+                  <AltegioLink to="general" className="btn-primary w-full">
+                    {t("cta.bookOnline")}
+                  </AltegioLink>
+                </li>
+                <li className="pt-1 lg:hidden">
                   <Link
                     to={anchor("consultation")}
-                    className="btn-primary w-full"
+                    className="btn-ghost w-full"
                   >
                     {t("cta.consultation")}
                   </Link>

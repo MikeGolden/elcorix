@@ -56,6 +56,7 @@
   "cta": {
     "book": "Book an appointment",
     "consultation": "Get a consultation",
+    "bookOnline": "Book an appointment",
     "whatsapp": "Message us on WhatsApp",
     "learnMore": "Learn more"
   },
@@ -288,6 +289,12 @@
     "title": "Popular services and prices",
     "pageTitle": "Price list",
     "intro": "All prices are per treatment. How many sessions you need depends on your skin and hair type — we go through that in the free consultation before your first treatment.",
+    "jump": {
+      "label": "Jump to prices",
+      "women": "Women",
+      "men": "Men",
+      "courseTerms": "Course terms"
+    },
     "note": "Please cancel appointments at least 24 hours in advance.",
     "groups": {
       "women": "Services for women",
@@ -438,6 +445,10 @@
       "price": "First appointment {{price}} · regular price {{regular}}",
       "cta": "Book a first appointment"
     },
+    "bookZone": {
+      "link": "Book",
+      "label": "Book {{zone}}"
+    },
     "goodToKnow": {
       "title": "Good to know · for women and men",
       "items": {
@@ -458,8 +469,7 @@
       "save": "You save {{amount}} · {{percent}}%",
       "from": "from {{price}}"
     },
-    "packagesTeaser": "Packages of 6, 8 or 10 treatments",
-    "bookCta": "Book an appointment"
+    "packagesTeaser": "Packages of 6, 8 or 10 treatments"
   },
   "booking": {
     "title": "Book an appointment",

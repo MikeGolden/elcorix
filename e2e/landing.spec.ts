@@ -54,9 +54,8 @@ test.describe("Landing page", () => {
       .toBeGreaterThan(500);
   });
 
-  // While the Altegio flag is off (client/src/features.ts) the price list's
-  // CTA leads to the consultation request instead of /booking. Restore the
-  // "Book an appointment" → /booking → widget path together with the flag.
+  // The booking buttons go out to Altegio as plain links (AltegioLink.tsx);
+  // the consultation request beside them stays on the site, no embed.
   test("leads from the price list to the consultation request", async ({ page }) => {
     await page.goto("/en");
     await page.getByTestId("packages-teaser").click();

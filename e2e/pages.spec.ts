@@ -31,6 +31,49 @@ test.describe("Deep-link routes", () => {
     await expect(page).toHaveURL(/\/de\/paketbedingungen$/);
   });
 
+  test("the jump links at the top of /prices land on each block", async ({ page }) => {
+    await page.goto("/de/preise");
+    const jumps = page.getByRole("navigation", { name: "Zu den Preisen springen" });
+    await expect(jumps).toBeInViewport();
+    for (const [name, heading] of [
+      ["Herren", "Herren · Ersttermin"],
+      ["Kursbedingungen", "Gut zu wissen · für Damen und Herren"],
+      ["Damen", "Damen · Ersttermin"],
+    ]) {
+      await page.goto("/de/preise");
+      await jumps.getByRole("link", { name, exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`#prices-`));
+      const target = page.getByRole("heading", { name: heading });
+      await expect(target).toBeInViewport();
+      // Not hidden under the sticky header.
+      const box = await target.boundingBox();
+      const header = await page.getByRole("banner").boundingBox();
+      expect(box!.y).toBeGreaterThanOrEqual(header!.y + header!.height - 1);
+    }
+  });
+
+  test("Altegio booking links open in a new tab and never push the page sideways", async ({ page }) => {
+    await page.goto("/de/preise");
+    const men = page.getByTestId("prices-first-visit-men");
+    await expect(men.getByRole("link", { name: "Ersttermin buchen" })).toHaveAttribute(
+      "href",
+      "https://n1463826.alteg.io/company/1390972/personal/select-master?o=s13920268",
+    );
+    const beard = page.getByRole("link", { name: "Bartkontur buchen" });
+    await expect(beard).toBeVisible();
+    await expect(beard).toHaveAttribute("target", "_blank");
+    for (const width of [390, 640, 768, 1024, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const path of ["/de", "/de/preise"]) {
+        await page.goto(path);
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
+        expect(overflow, `${path} at ${width}px`).toBeLessThanOrEqual(0);
+      }
+    }
+  });
+
   test("gallery page shows images with alt text", async ({ page }) => {
     await page.goto("/en/gallery");
     await expect(page.getByRole("heading", { level: 1, name: "Our work" })).toBeVisible();

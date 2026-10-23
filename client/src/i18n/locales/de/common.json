@@ -56,6 +56,7 @@
   "cta": {
     "book": "Termin vereinbaren",
     "consultation": "Beratung erhalten",
+    "bookOnline": "Termin buchen",
     "whatsapp": "Über WhatsApp schreiben",
     "learnMore": "Mehr erfahren"
   },
@@ -288,6 +289,12 @@
     "title": "Beliebte Leistungen und Preise",
     "pageTitle": "Preisliste",
     "intro": "Alle Preise gelten pro Behandlung. Wie viele Sitzungen nötig sind, hängt von Haut- und Haartyp ab – das besprechen wir in der kostenlosen Beratung vor der ersten Behandlung.",
+    "jump": {
+      "label": "Zu den Preisen springen",
+      "women": "Damen",
+      "men": "Herren",
+      "courseTerms": "Kursbedingungen"
+    },
     "note": "Bitte sagen Sie Termine mindestens 24 Stunden vorher ab.",
     "groups": {
       "women": "Leistungen für Frauen",
@@ -438,6 +445,10 @@
       "price": "Ersttermin {{price}} · regulär {{regular}}",
       "cta": "Ersttermin buchen"
     },
+    "bookZone": {
+      "link": "Buchen",
+      "label": "{{zone}} buchen"
+    },
     "goodToKnow": {
       "title": "Gut zu wissen · für Damen und Herren",
       "items": {
@@ -458,8 +469,7 @@
       "save": "Sie sparen {{amount}} · {{percent}} %",
       "from": "ab {{price}}"
     },
-    "packagesTeaser": "Pakete für 6, 8 oder 10 Behandlungen",
-    "bookCta": "Termin buchen"
+    "packagesTeaser": "Pakete für 6, 8 oder 10 Behandlungen"
   },
   "booking": {
     "title": "Termin vereinbaren",

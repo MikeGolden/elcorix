@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import BookingLink from "./BookingLink";
+import AltegioLink from "./AltegioLink";
 import {
   COURSE_SIZES,
   firstVisitOffer,
@@ -63,10 +63,14 @@ function ZoneTable({
   group,
   rows,
   headingLevel: Heading,
+  bookable = false,
 }: {
   group: PackageGroup;
   rows: ZonePrice<"women">[] | ZonePrice<"men">[];
   headingLevel: HeadingLevel;
+  /** Show the Altegio link on zones that have one — /prices only; the
+      home page's price list keeps the packages teaser as its one link. */
+  bookable?: boolean;
 }) {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage ?? "de";
@@ -94,8 +98,19 @@ function ZoneTable({
             className="flex items-baseline justify-between gap-6 rounded-lg px-4 py-3 text-[0.95rem]"
           >
             <span className="text-ink-700">{t(zoneLabel(group, row.key))}</span>
-            <span className="whitespace-nowrap font-semibold text-ink-900">
-              {formatPrice(language, row.price)}
+            <span className="flex items-baseline gap-3 whitespace-nowrap">
+              {/* Bartkontur has its own Altegio service, so it is the one
+                  zone that can be booked straight from the list. */}
+              {bookable && row.key === "beardContour" && (
+                <AltegioLink
+                  to="beardContour"
+                  ariaLabel={t("prices.bookZone.label", { zone: t(zoneLabel(group, row.key)) })}
+                  className="text-sm font-semibold text-brand-600 underline underline-offset-2 hover:text-brand-800"
+                >
+                  {t("prices.bookZone.link")}
+                </AltegioLink>
+              )}
+              <span className="font-semibold text-ink-900">{formatPrice(language, row.price)}</span>
             </span>
           </li>
         ))}
@@ -454,7 +469,12 @@ function FirstVisitCard({ group }: { group: PackageGroup }) {
       <p className="mt-2 text-sm text-ink-700">
         {t(`prices.firstVisit.${group}.body` as "prices.firstVisit.women.body")}
       </p>
-      <BookingLink className="btn-primary mt-5">{t("prices.firstVisit.cta")}</BookingLink>
+      <AltegioLink
+        to={group === "women" ? "firstVisitWomen" : "firstVisitMen"}
+        className="btn-primary mt-5"
+      >
+        {t("prices.firstVisit.cta")}
+      </AltegioLink>
     </section>
   );
 }
@@ -493,15 +513,18 @@ export function PriceGroup({ group }: { group: PackageGroup }) {
   const { t } = useTranslation();
   const { zones, packages } = GROUPS[group];
   return (
-    <div className="grid gap-10">
+    // The id is the target of the jump links at the top of /prices.
+    <div id={`prices-group-${group}`} className="grid gap-10">
       <FirstVisitCard group={group} />
       <div className="grid gap-4">
-        <ZoneTable group={group} rows={zones} headingLevel="h2" />
+        <ZoneTable group={group} rows={zones} headingLevel="h2" bookable />
         <ZoneNotes group={group} />
       </div>
       <PackageTable group={group} rows={packages} headingLevel="h2" />
       <div className="px-4">
-        <BookingLink className="btn-ghost">{t("prices.bookCta")}</BookingLink>
+        <AltegioLink to="general" className="btn-ghost">
+          {t("cta.bookOnline")}
+        </AltegioLink>
       </div>
     </div>
   );

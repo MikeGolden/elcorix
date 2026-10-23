@@ -1,5 +1,6 @@
 import { Trans, useTranslation } from "react-i18next";
-import BookingLink from "../components/BookingLink";
+import { Link } from "react-router";
+import AltegioLink from "../components/AltegioLink";
 import LocalizedLink from "../components/LocalizedLink";
 import { PriceGroup } from "../components/PriceTables";
 import { usePageMeta } from "../seo/usePageMeta";
@@ -16,6 +17,19 @@ const GOOD_TO_KNOW = [
   "discounts",
 ] as const;
 
+/**
+ * The jump links under the title, in page order. Without them the men's
+ * prices only show up after scrolling past the whole women's block.
+ * Router links rather than bare `#id` hrefs: ScrollToTop does the smooth
+ * scroll and fires again on a repeat click, and the prerendered href still
+ * works before hydration.
+ */
+const PRICE_JUMPS = [
+  { id: "prices-group-women", key: "women" },
+  { id: "prices-group-men", key: "men" },
+  { id: "prices-course-terms", key: "courseTerms" },
+] as const;
+
 export default function PricesPage() {
   const { t } = useTranslation();
   usePageMeta("prices");
@@ -30,6 +44,21 @@ export default function PricesPage() {
         </h1>
         <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed">{t("prices.intro")}</p>
 
+        <nav aria-label={t("prices.jump.label")} className="mt-8">
+          <ul className="flex flex-wrap gap-2">
+            {PRICE_JUMPS.map(({ id, key }) => (
+              <li key={id}>
+                <Link
+                  to={{ hash: id }}
+                  className="inline-flex rounded-full border border-brand-200 bg-white px-5 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:border-brand-400 hover:bg-brand-50"
+                >
+                  {t(`prices.jump.${key}`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         <div className="mt-12 grid gap-16">
           <PriceGroup group="women" />
           <PriceGroup group="men" />
@@ -38,7 +67,11 @@ export default function PricesPage() {
         {/* The price sheet of 2026-10-22 puts these course rules under the
             tables itself; validity, breaks and extensions stay in the
             Paketbedingungen, which the last line links to. */}
-        <section aria-labelledby="prices-good-to-know" className="mt-16 max-w-3xl">
+        <section
+          id="prices-course-terms"
+          aria-labelledby="prices-good-to-know"
+          className="mt-16 max-w-3xl"
+        >
           <h2 id="prices-good-to-know" className="text-lg font-bold text-brand-700">
             {t("prices.goodToKnow.title")}
           </h2>
@@ -63,7 +96,9 @@ export default function PricesPage() {
           <p className="mt-6 text-sm leading-relaxed text-ink-500">{t("prices.note")}</p>
         </section>
 
-        <BookingLink className="btn-primary mt-8">{t("prices.bookCta")}</BookingLink>
+        <AltegioLink to="general" className="btn-primary mt-8">
+          {t("cta.bookOnline")}
+        </AltegioLink>
       </section>
       <Faq page="prices" />
     </>
