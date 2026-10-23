@@ -252,7 +252,7 @@
   },
   "privacy": {
     "lead": [],
-    "stand": "Stand: 10. Oktober 2026",
+    "stand": "Stand: 23. Oktober 2026",
     "preamble": [],
     "sections": [
       {
@@ -366,7 +366,7 @@
             ]
           },
           "Diese Informationen sind erforderlich, um die von Ihnen gewünschte Website-Funktion beziehungsweise Ihre Datenschutzauswahl bereitzustellen. Das Speichern oder Auslesen erfolgt auf Grundlage von § 25 Abs. 2 Nr. 2 TDDDG. Soweit dabei personenbezogene Daten verarbeitet werden, ist die Rechtsgrundlage Art. 6 Abs. 1 Buchst. f DSGVO; hinsichtlich der Dokumentation einer Einwilligung außerdem Art. 6 Abs. 1 Buchst. c DSGVO.",
-          "Wir verwenden derzeit keine Google Fonts, kein Google reCAPTCHA und kein externes Content Delivery Network. Google Analytics und der Meta Pixel sind derzeit nicht aktiviert. Auch das Buchungssystem Altegio wird derzeit nicht geladen."
+          "Wir verwenden derzeit keine Google Fonts, kein Google reCAPTCHA und kein externes Content Delivery Network. Google Analytics und der Meta Pixel sind derzeit nicht aktiviert."
         ]
       },
       {
@@ -402,7 +402,19 @@
         ]
       },
       {
-        "title": "13. WhatsApp-Link",
+        "title": "13. Online-Terminbuchung mit Altegio",
+        "feature": "altegio",
+        "paragraphs": [
+          "Für die Online-Terminbuchung binden wir den Buchungskalender von Altegio über einen sogenannten iFrame ein. Anbieter ist:",
+          "Altegio Europe KFT\nSzéchenyi István tér 7\n1054 Budapest\nUngarn",
+          "Der Kalender wird erst geladen, nachdem Sie ausdrücklich zugestimmt haben – im Cookie-Banner oder über die Schaltfläche im Buchungsbereich. Vorher werden keine Daten an Altegio übermittelt. Beim Laden erhält Altegio technisch bedingt insbesondere Ihre IP-Adresse sowie Informationen über Browser und Gerät, Datum und Uhrzeit des Aufrufs und die aufgerufene Seite. Altegio und der von Altegio eingesetzte Dienst Cloudflare setzen dabei Cookies und vergleichbare Technologien, unter anderem zum Schutz vor missbräuchlichen Zugriffen.",
+          "Wenn Sie einen Termin buchen, verarbeitet Altegio die von Ihnen eingegebenen Angaben – insbesondere Name, Telefonnummer, gegebenenfalls E-Mail-Adresse, gewählte Leistung sowie Datum und Uhrzeit des Termins – und stellt sie uns zur Terminverwaltung bereit. Bei einer Online-Zahlung werden zusätzlich die dafür erforderlichen Zahlungsdaten auf den Seiten von Altegio verarbeitet.",
+          "Rechtsgrundlage für das Laden des Kalenders und das Speichern oder Auslesen von Informationen auf Ihrem Endgerät ist Ihre Einwilligung nach Art. 6 Abs. 1 Buchst. a DSGVO und § 25 Abs. 1 TDDDG. Rechtsgrundlage für die Verarbeitung Ihrer Buchungsangaben ist Art. 6 Abs. 1 Buchst. b DSGVO. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft über „Cookie-Einstellungen“ am Ende jeder Seite widerrufen; die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt unberührt. Ohne Einwilligung können Sie den Kalender in einem neuen Tab direkt bei Altegio öffnen oder uns über das Beratungsformular, telefonisch oder per E-Mail erreichen.",
+          "Altegio verarbeitet die Buchungsangaben in unserem Auftrag auf Grundlage eines Vertrags nach Art. 28 DSGVO. Nach Angaben von Altegio werden die Daten in der Europäischen Union gehostet. Weitere Informationen finden Sie in der Datenschutzerklärung von Altegio: https://alteg.io/en/info/privacy/."
+        ]
+      },
+      {
+        "title": "14. WhatsApp-Link",
         "paragraphs": [
           "Unsere Website enthält einen Link, über den Sie eine Unterhaltung bei WhatsApp beginnen können. Solange Sie den Link nicht anklicken, wird allein aufgrund dieses Links keine Verbindung zu WhatsApp hergestellt.",
           "Wenn Sie den Link anklicken oder uns über WhatsApp schreiben, werden Sie zum Dienst von WhatsApp weitergeleitet. Dabei verarbeitet WhatsApp unter anderem Ihre IP-Adresse und weitere technische Daten. Wenn Sie uns eine Nachricht senden, erhalten und verarbeiten wir insbesondere Ihre Telefonnummer, gegebenenfalls Ihren Profilnamen, den Nachrichteninhalt sowie Kommunikations- und Zeitdaten.",
@@ -413,7 +425,7 @@
         ]
       },
       {
-        "title": "14. Instagram- und Facebook-Link",
+        "title": "15. Instagram- und Facebook-Link",
         "paragraphs": [
           "Unsere Website enthält lediglich jeweils einen externen Link zu unserem Instagram- und zu unserem Facebook-Auftritt. Solange Sie einen Link nicht anklicken, wird über ihn keine Verbindung zu Instagram oder Facebook hergestellt.",
           "Nach dem Anklicken verlassen Sie unsere Website. Instagram, Facebook beziehungsweise Meta verarbeitet dann eigenverantwortlich Daten über Ihren Zugriff und Ihre weitere Nutzung. Anbieter für Nutzer im Europäischen Wirtschaftsraum ist Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland.",
@@ -421,7 +433,7 @@
         ]
       },
       {
-        "title": "15. Empfänger personenbezogener Daten",
+        "title": "16. Empfänger personenbezogener Daten",
         "paragraphs": [
           "Innerhalb von ELCORIX erhalten nur diejenigen Personen Zugriff auf personenbezogene Daten, die sie zur Bearbeitung der jeweiligen Anfrage benötigen. Darüber hinaus können Daten im erforderlichen Umfang an folgende Kategorien von Empfängern übermittelt werden:",
           {
@@ -429,6 +441,10 @@
               "Hosting- und IT-Dienstleister;",
               "Anbieter des geschäftlichen E-Mail-Postfachs und der E-Mail-Übermittlung;",
               "Kommunikationsdienste, wenn Sie diese selbst zur Kontaktaufnahme verwenden;",
+              {
+                "feature": "altegio",
+                "text": "Anbieter unseres Online-Buchungssystems (Altegio), wenn Sie darüber einen Termin buchen;"
+              },
               "Steuerberater, Rechtsberater oder Behörden, soweit dies gesetzlich erforderlich ist oder der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen dient."
             ]
           },
@@ -436,14 +452,14 @@
         ]
       },
       {
-        "title": "16. Übermittlungen in Drittländer",
+        "title": "17. Übermittlungen in Drittländer",
         "paragraphs": [
           "Eine Übermittlung personenbezogener Daten in ein Land außerhalb der Europäischen Union oder des Europäischen Wirtschaftsraums erfolgt nur, wenn dafür die Voraussetzungen der Art. 44 ff. DSGVO erfüllt sind. Dies kann insbesondere auf Grundlage eines Angemessenheitsbeschlusses der Europäischen Kommission oder geeigneter Garantien wie den Standardvertragsklauseln der Europäischen Kommission erfolgen.",
           "Beim Aufruf externer Dienste wie WhatsApp, Instagram oder Facebook können die jeweiligen Anbieter Daten auch in Drittländern verarbeiten. Einzelheiten ergeben sich aus den Datenschutzhinweisen der jeweiligen Anbieter."
         ]
       },
       {
-        "title": "17. Ihre Rechte",
+        "title": "18. Ihre Rechte",
         "paragraphs": [
           "Sie haben nach Maßgabe der gesetzlichen Voraussetzungen insbesondere folgende Rechte:",
           {
@@ -465,7 +481,7 @@
         ]
       },
       {
-        "title": "18. Beschwerderecht",
+        "title": "19. Beschwerderecht",
         "paragraphs": [
           "Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren. Für nichtöffentliche Unternehmen mit Sitz in Bayern ist insbesondere zuständig:",
           "Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)\nhttps://www.lda.bayern.de/",
@@ -473,13 +489,13 @@
         ]
       },
       {
-        "title": "19. Keine automatisierte Entscheidungsfindung",
+        "title": "20. Keine automatisierte Entscheidungsfindung",
         "paragraphs": [
           "Eine ausschließlich automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO findet nicht statt."
         ]
       },
       {
-        "title": "20. Aktualisierung dieser Datenschutzerklärung",
+        "title": "21. Aktualisierung dieser Datenschutzerklärung",
         "paragraphs": [
           "Wir passen diese Datenschutzerklärung an, wenn sich die Website, die eingesetzten Dienste oder die rechtlichen Anforderungen ändern. Die jeweils aktuelle Fassung ist auf dieser Website abrufbar."
         ]

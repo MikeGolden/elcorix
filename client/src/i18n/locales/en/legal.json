@@ -252,7 +252,7 @@
   },
   "privacy": {
     "lead": [],
-    "stand": "Last updated: 10 October 2026",
+    "stand": "Last updated: 23 October 2026",
     "preamble": [],
     "sections": [
       {
@@ -366,7 +366,7 @@
             ]
           },
           "This information is necessary to provide the website function you have requested or your privacy choice. Storing or reading takes place on the basis of § 25 (2) no. 2 TDDDG. Insofar as personal data is processed in the process, the legal basis is Art. 6 (1) (f) GDPR; with regard to documenting consent, also Art. 6 (1) (c) GDPR.",
-          "We currently do not use Google Fonts, Google reCAPTCHA or an external content delivery network. Google Analytics and the Meta Pixel are currently not activated. The Altegio booking system is currently not loaded either."
+          "We currently do not use Google Fonts, Google reCAPTCHA or an external content delivery network. Google Analytics and the Meta Pixel are currently not activated."
         ]
       },
       {
@@ -402,7 +402,19 @@
         ]
       },
       {
-        "title": "13. WhatsApp link",
+        "title": "13. Online booking with Altegio",
+        "feature": "altegio",
+        "paragraphs": [
+          "For online booking, we embed the Altegio booking calendar via a so-called iFrame. The provider is:",
+          "Altegio Europe KFT\nSzéchenyi István tér 7\n1054 Budapest\nHungary",
+          "The calendar is only loaded after you have expressly agreed – in the cookie banner or via the button in the booking area. Before that, no data is transmitted to Altegio. When it loads, Altegio receives for technical reasons in particular your IP address as well as information about your browser and device, the date and time of access and the page opened. Altegio and the Cloudflare service it uses set cookies and similar technologies in the process, among other things to protect against abusive access.",
+          "When you book an appointment, Altegio processes the details you enter – in particular your name, telephone number, e-mail address if provided, the chosen service and the date and time of the appointment – and makes them available to us for managing appointments. For an online payment, the payment data required for it is additionally processed on Altegio's pages.",
+          "The legal basis for loading the calendar and for storing or reading information on your device is your consent under Art. 6 (1) (a) GDPR and § 25 (1) TDDDG. The legal basis for processing your booking details is Art. 6 (1) (b) GDPR. You can withdraw your consent at any time with effect for the future via “Cookie settings” at the bottom of every page; the lawfulness of the processing carried out until the withdrawal remains unaffected. Without consent, you can open the calendar in a new tab directly at Altegio or reach us via the consultation form, by telephone or by e-mail.",
+          "Altegio processes the booking details on our behalf on the basis of a contract under Art. 28 GDPR. According to Altegio, the data is hosted in the European Union. Further information can be found in Altegio's privacy policy: https://alteg.io/en/info/privacy/."
+        ]
+      },
+      {
+        "title": "14. WhatsApp link",
         "paragraphs": [
           "Our website contains a link that lets you start a conversation on WhatsApp. As long as you do not click the link, no connection to WhatsApp is established merely because of this link.",
           "If you click the link or write to us via WhatsApp, you are forwarded to the WhatsApp service. WhatsApp processes, among other things, your IP address and other technical data. If you send us a message, we receive and process in particular your phone number, where applicable your profile name, the content of the message and communication and time data.",
@@ -413,7 +425,7 @@
         ]
       },
       {
-        "title": "14. Instagram and Facebook links",
+        "title": "15. Instagram and Facebook links",
         "paragraphs": [
           "Our website merely contains one external link each to our Instagram and our Facebook presence. As long as you do not click a link, no connection to Instagram or Facebook is established via it.",
           "After clicking, you leave our website. Instagram, Facebook or Meta then processes data about your access and your further use under its own responsibility. The provider for users in the European Economic Area is Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Ireland.",
@@ -421,7 +433,7 @@
         ]
       },
       {
-        "title": "15. Recipients of personal data",
+        "title": "16. Recipients of personal data",
         "paragraphs": [
           "Within ELCORIX, only those persons who need personal data to handle the respective enquiry have access to it. In addition, data may be transferred to the extent necessary to the following categories of recipients:",
           {
@@ -429,6 +441,10 @@
               "hosting and IT service providers;",
               "providers of the business e-mail inbox and e-mail transmission;",
               "communication services, if you use them yourself to contact us;",
+              {
+                "feature": "altegio",
+                "text": "the provider of our online booking system (Altegio), if you book an appointment through it;"
+              },
               "tax advisers, legal advisers or authorities, insofar as this is required by law or serves the establishment, exercise or defence of legal claims."
             ]
           },
@@ -436,14 +452,14 @@
         ]
       },
       {
-        "title": "16. Transfers to third countries",
+        "title": "17. Transfers to third countries",
         "paragraphs": [
           "Personal data is transferred to a country outside the European Union or the European Economic Area only if the requirements of Art. 44 et seq. GDPR are met. This may take place in particular on the basis of an adequacy decision of the European Commission or appropriate safeguards such as the standard contractual clauses of the European Commission.",
           "When external services such as WhatsApp, Instagram or Facebook are accessed, the respective providers may also process data in third countries. Details can be found in the privacy notices of the respective providers."
         ]
       },
       {
-        "title": "17. Your rights",
+        "title": "18. Your rights",
         "paragraphs": [
           "Subject to the statutory requirements, you have in particular the following rights:",
           {
@@ -465,7 +481,7 @@
         ]
       },
       {
-        "title": "18. Right to lodge a complaint",
+        "title": "19. Right to lodge a complaint",
         "paragraphs": [
           "You have the right to lodge a complaint with a data protection supervisory authority. For non-public companies based in Bavaria, the competent authority is in particular:",
           "Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)\nhttps://www.lda.bayern.de/",
@@ -473,13 +489,13 @@
         ]
       },
       {
-        "title": "19. No automated decision-making",
+        "title": "20. No automated decision-making",
         "paragraphs": [
           "Solely automated decision-making, including profiling within the meaning of Art. 22 GDPR, does not take place."
         ]
       },
       {
-        "title": "20. Updates to this privacy policy",
+        "title": "21. Updates to this privacy policy",
         "paragraphs": [
           "We amend this privacy policy when the website, the services used or the legal requirements change. The current version is always available on this website."
         ]

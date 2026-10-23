@@ -14,8 +14,7 @@ out="$root/deploy/cloudflare"
 
 # The booking block stays hidden (see client/src/features.ts); flip this to
 # "true" to ship the Altegio section, /booking route and embed.
-export VITE_ENABLE_ALTEGIO="${VITE_ENABLE_ALTEGIO:-false}"
-export VITE_ALTEGIO_COMPANY_ID="${VITE_ALTEGIO_COMPANY_ID:-000000}"
+export VITE_ENABLE_ALTEGIO="${VITE_ENABLE_ALTEGIO:-true}"
 
 cd "$root/client"
 npx tsc --noEmit

@@ -5,7 +5,7 @@ import { images, webpSrcSet } from "../images";
 import { heroSizes, heroWebpSrcSet } from "../heroImage";
 import LocalizedLink from "../components/LocalizedLink";
 import { useAnchorHref } from "../i18n/useLanguage";
-import AltegioLink from "../components/AltegioLink";
+import BookingLink from "../components/BookingLink";
 
 /**
  * Hero of the Figma one-pager: the copy sits in the 1200px column while
@@ -40,9 +40,9 @@ export default function Hero() {
         </h1>
         {/* Booking in Altegio first, the free consultation beside it. */}
         <div className="mt-8 flex flex-wrap gap-3">
-          <AltegioLink to="general" className="btn-primary">
+          <BookingLink service="general" className="btn-primary">
             {t("cta.bookOnline")}
-          </AltegioLink>
+          </BookingLink>
           <Link to={anchor("consultation")} className="btn-ghost">
             {t("cta.consultation")}
           </Link>

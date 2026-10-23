@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import AltegioLink from "./AltegioLink";
+import BookingLink from "./BookingLink";
 import {
   COURSE_SIZES,
   firstVisitOffer,
@@ -102,13 +102,13 @@ function ZoneTable({
               {/* Bartkontur has its own Altegio service, so it is the one
                   zone that can be booked straight from the list. */}
               {bookable && row.key === "beardContour" && (
-                <AltegioLink
-                  to="beardContour"
+                <BookingLink
+                  service="beardContour"
                   ariaLabel={t("prices.bookZone.label", { zone: t(zoneLabel(group, row.key)) })}
                   className="text-sm font-semibold text-brand-600 underline underline-offset-2 hover:text-brand-800"
                 >
                   {t("prices.bookZone.link")}
-                </AltegioLink>
+                </BookingLink>
               )}
               <span className="font-semibold text-ink-900">{formatPrice(language, row.price)}</span>
             </span>
@@ -469,12 +469,12 @@ function FirstVisitCard({ group }: { group: PackageGroup }) {
       <p className="mt-2 text-sm text-ink-700">
         {t(`prices.firstVisit.${group}.body` as "prices.firstVisit.women.body")}
       </p>
-      <AltegioLink
-        to={group === "women" ? "firstVisitWomen" : "firstVisitMen"}
+      <BookingLink
+        service={group === "women" ? "firstVisitWomen" : "firstVisitMen"}
         className="btn-primary mt-5"
       >
         {t("prices.firstVisit.cta")}
-      </AltegioLink>
+      </BookingLink>
     </section>
   );
 }
@@ -522,9 +522,9 @@ export function PriceGroup({ group }: { group: PackageGroup }) {
       </div>
       <PackageTable group={group} rows={packages} headingLevel="h2" />
       <div className="px-4">
-        <AltegioLink to="general" className="btn-ghost">
+        <BookingLink service="general" className="btn-ghost">
           {t("cta.bookOnline")}
-        </AltegioLink>
+        </BookingLink>
       </div>
     </div>
   );

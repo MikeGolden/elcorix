@@ -54,10 +54,12 @@ test.describe("Landing page", () => {
       .toBeGreaterThan(500);
   });
 
-  // The booking buttons go out to Altegio as plain links (AltegioLink.tsx);
-  // the consultation request beside them stays on the site, no embed.
+  // The consultation request stays beside the booking buttons and needs
+  // no third party at all.
   test("leads from the price list to the consultation request", async ({ page }) => {
     await page.goto("/en");
+    // The banner sits over the bottom of the page until the visitor decides.
+    await page.getByRole("dialog").getByRole("button", { name: "Only necessary" }).click();
     await page.getByTestId("packages-teaser").click();
     await expect(page).toHaveURL(/\/prices#prices-packages-women$/);
     // On a phone the header CTA lives in the menu drawer.

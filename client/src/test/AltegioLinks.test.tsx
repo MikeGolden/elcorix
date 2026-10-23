@@ -1,10 +1,17 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
 import App from "../App";
 import { altegioLinks } from "../business";
 import { firstVisitOffer, menPrices } from "../pricing";
 
-const SELECT = "https://n1463826.alteg.io/company/1390972/personal/select-master";
+/** Pinned on: a local .env must not decide which behaviour is tested. */
+vi.mock("../config", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../config")>();
+  return { ...actual, features: { ...actual.features, altegio: true } };
+});
+
+const SERVICES = "https://n1463826.alteg.io/company/1390972/personal/select-services";
 
 function renderAt(path: string) {
   return render(
@@ -14,54 +21,58 @@ function renderAt(path: string) {
   );
 }
 
-/** Every Altegio link opens a new tab without handing Altegio our window. */
-function expectExternal(link: HTMLElement, href: string) {
-  expect(link).toHaveAttribute("href", href);
-  expect(link).toHaveAttribute("target", "_blank");
-  expect(link.getAttribute("rel")).toContain("noopener");
+function grantBookingConsent() {
+  window.localStorage.setItem(
+    "cookie-consent",
+    JSON.stringify({ version: 1, decidedAt: new Date().toISOString(), booking: true }),
+  );
 }
 
 describe("the Altegio booking links", () => {
-  it("are the four links the studio sent, character for character", () => {
+  it("are the studio's start page and its three services", () => {
+    // select-services, not the select-master links the studio sent: those
+    // bounce to the start page and hang (business.ts).
     expect(altegioLinks).toEqual({
       general: "https://n1463826.alteg.io",
-      firstVisitWomen: `${SELECT}?o=s13920267`,
-      firstVisitMen: `${SELECT}?o=s13920268`,
-      beardContour: `${SELECT}?o=s13859238`,
+      firstVisitWomen: `${SERVICES}?o=s13920267`,
+      firstVisitMen: `${SERVICES}?o=s13920268`,
+      beardContour: `${SERVICES}?o=s13859238`,
     });
   });
 
-  it("sit next to the prices the studio booked them at", () => {
-    // The Altegio services are 129 € / 159 € / 59 €. If a price on the site
-    // moves, the service in Altegio has to move with it.
+  it("sit next to the prices the services cost in Altegio", () => {
+    // Altegio: Smooth Duo – Ersttermin 129 €, Clear Back – Ersttermin 159 €,
+    // Bartkontur 59 €. If a price on the site moves, the service has to move too.
     expect(firstVisitOffer("women")).toMatchObject({ packageKey: "smoothDuo", price: 129 });
     expect(firstVisitOffer("men")).toMatchObject({ packageKey: "clearBack", price: 159 });
     expect(menPrices.find((zone) => zone.key === "beardContour")?.price).toBe(59);
   });
+});
 
-  it("book each first visit from its own card", async () => {
+describe("the booking buttons", () => {
+  it("open the on-site calendar on each first-visit service", async () => {
     renderAt("/de/preise");
     const women = await screen.findByTestId("prices-first-visit-women");
     const men = screen.getByTestId("prices-first-visit-men");
-    expectExternal(within(women).getByRole("link", { name: "Ersttermin buchen" }), altegioLinks.firstVisitWomen);
-    expectExternal(within(men).getByRole("link", { name: "Ersttermin buchen" }), altegioLinks.firstVisitMen);
+    expect(within(women).getByRole("link", { name: "Ersttermin buchen" })).toHaveAttribute(
+      "href",
+      "/de/termin-vereinbaren?service=firstVisitWomen",
+    );
+    expect(within(men).getByRole("link", { name: "Ersttermin buchen" })).toHaveAttribute(
+      "href",
+      "/de/termin-vereinbaren?service=firstVisitMen",
+    );
   });
 
   it("book the beard contour from its row, and no other zone", async () => {
     renderAt("/de/preise");
     const link = await screen.findByRole("link", { name: "Bartkontur buchen" });
-    expectExternal(link, altegioLinks.beardContour);
+    expect(link).toHaveAttribute("href", "/de/termin-vereinbaren?service=beardContour");
     expect(link.closest("li")).toHaveTextContent("Bartkontur");
-    expect(document.querySelectorAll('[data-altegio="beardContour"]')).toHaveLength(1);
+    expect(document.querySelectorAll('[data-booking="beardContour"]')).toHaveLength(1);
   });
 
-  it("leave the home page's price list without a beard contour link", async () => {
-    renderAt("/de");
-    await screen.findByRole("heading", { level: 1 });
-    expect(document.querySelectorAll('[data-altegio="beardContour"]')).toHaveLength(0);
-  });
-
-  it("send every generic 'Termin buchen' on /prices to the booking start page", async () => {
+  it("send every generic 'Termin buchen' on /prices to the calendar's start page", async () => {
     renderAt("/de/preise");
     await screen.findByTestId("prices-first-visit-women");
     const generic = screen
@@ -69,19 +80,36 @@ describe("the Altegio booking links", () => {
       .filter((link) => link.closest("main"));
     // One under each block, one under the course terms.
     expect(generic).toHaveLength(3);
-    for (const link of generic) expectExternal(link, altegioLinks.general);
+    for (const link of generic) expect(link).toHaveAttribute("href", "/de/termin-vereinbaren");
   });
 
-  it("put the booking button beside the consultation one in the hero and the header", async () => {
+  it("sit beside the consultation button in the hero and the header", async () => {
     renderAt("/en");
-    const hero = await screen.findByRole("heading", { level: 1 });
-    const section = hero.closest("section")!;
-    expectExternal(within(section).getByRole("link", { name: "Book an appointment" }), altegioLinks.general);
+    const hero = (await screen.findByRole("heading", { level: 1 })).closest("section")!;
+    expect(within(hero).getByRole("link", { name: "Book an appointment" })).toHaveAttribute(
+      "href",
+      "/en/booking",
+    );
     expect(
-      within(section).getByRole("link", { name: "Get a consultation" }).getAttribute("href"),
+      within(hero).getByRole("link", { name: "Get a consultation" }).getAttribute("href"),
     ).toMatch(/#consultation$/);
     const header = screen.getByRole("banner");
-    expectExternal(within(header).getByRole("link", { name: "Book an appointment" }), altegioLinks.general);
+    expect(within(header).getByRole("link", { name: "Book an appointment" })).toHaveAttribute(
+      "href",
+      "/en/booking",
+    );
     expect(within(header).getByRole("link", { name: "Get a consultation" })).toBeInTheDocument();
+  });
+
+  it("land on the calendar with the right service loaded", async () => {
+    grantBookingConsent();
+    const user = userEvent.setup();
+    renderAt("/de/preise");
+    const men = await screen.findByTestId("prices-first-visit-men");
+    await user.click(within(men).getByRole("link", { name: "Ersttermin buchen" }));
+    expect(await screen.findByTestId("altegio-widget")).toHaveAttribute(
+      "src",
+      altegioLinks.firstVisitMen,
+    );
   });
 });

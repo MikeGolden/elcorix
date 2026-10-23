@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { loadEnv, type Plugin, type ResolvedConfig } from "vite";
-import { altegioBookingUrlFor, sanitizeCompanyId } from "../src/business";
+import { altegioLinks } from "../src/business";
 import {
   defaultLanguage,
   splitLanguagePath,
@@ -120,11 +120,7 @@ export function seoPrerender(): Plugin {
       const features: Features = featuresFrom({
         VITE_ENABLE_ALTEGIO: env.VITE_ENABLE_ALTEGIO ?? process.env.VITE_ENABLE_ALTEGIO,
       });
-      bookingUrl = features.altegio
-        ? altegioBookingUrlFor(
-            sanitizeCompanyId(env.VITE_ALTEGIO_COMPANY_ID ?? process.env.VITE_ALTEGIO_COMPANY_ID),
-          )
-        : null;
+      bookingUrl = features.altegio ? altegioLinks.general : null;
       routes = publicRoutes(features);
     },
 

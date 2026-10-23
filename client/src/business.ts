@@ -61,39 +61,33 @@ export const staticBusiness = {
 } as const;
 
 /**
- * Altegio company id from the environment, or "000000" when it is unset or
- * malformed. Digits only: the id is interpolated into the booking/payment
- * URL, so a malformed value must never produce an unexpected host.
+ * The studio's Altegio booking pages (2026-10-23). `general` is the start
+ * page; the other three open the service list with that one service
+ * already chosen and its price in the footer bar ("1 Dienstleistung ·
+ * 129 € · Fortsetzen"). Used as the iframe source on /booking and as the
+ * new-tab fallback link.
  *
- * Replace the id with your real one from alteg.io
- * (Settings → Online booking → Booking link / widget).
+ * `select-services`, not the `select-master` links the studio sent: those
+ * bounce to the start page and hang on a spinner (checked in Chromium on
+ * 2026-10-23, in and outside an iframe). Each `s…` id must stay in step
+ * with the price shown next to its button — firstVisitOffers and the beard
+ * contour zone in pricing.ts; AltegioLinks.test.tsx pins both.
  */
-export function sanitizeCompanyId(raw: string | undefined): string {
-  return raw !== undefined && /^\d{1,12}$/.test(raw) ? raw : "000000";
-}
-
-export function altegioBookingUrlFor(companyId: string): string {
-  return `https://n${companyId}.alteg.io`;
-}
-
-/**
- * Plain links into the studio's Altegio booking pages (2026-10-23). These
- * are ordinary outbound links, not the embed behind the `altegio` flag:
- * nothing reaches Altegio until the visitor clicks, so they need no consent.
- *
- * The `o=s…` ids are Altegio service ids for the three entry offers; each
- * must stay in step with the price it is shown next to (firstVisitOffers
- * and the beard contour zone in pricing.ts).
- */
-const altegioCompany = "https://n1463826.alteg.io/company/1390972/personal/select-master";
+const altegioServices = "https://n1463826.alteg.io/company/1390972/personal/select-services";
 
 export const altegioLinks = {
-  /** Generic "Termin buchen": the studio's booking start page. */
   general: "https://n1463826.alteg.io",
-  /** Women's first visit — Smooth Duo, 129 €. */
-  firstVisitWomen: `${altegioCompany}?o=s13920267`,
-  /** Men's first visit — Clear Back, 159 €. */
-  firstVisitMen: `${altegioCompany}?o=s13920268`,
+  /** Smooth Duo – Ersttermin, 129 €. */
+  firstVisitWomen: `${altegioServices}?o=s13920267`,
+  /** Clear Back – Ersttermin, 159 €. */
+  firstVisitMen: `${altegioServices}?o=s13920268`,
   /** Bartkontur, 59 €. */
-  beardContour: `${altegioCompany}?o=s13859238`,
+  beardContour: `${altegioServices}?o=s13859238`,
 } as const;
+
+export type AltegioService = keyof typeof altegioLinks;
+
+/** `?service=` on /booking is visitor input: only the four keys above count. */
+export function parseAltegioService(raw: string | null): AltegioService {
+  return raw !== null && Object.hasOwn(altegioLinks, raw) ? (raw as AltegioService) : "general";
+}

@@ -44,8 +44,11 @@ test.describe("Static SEO head (dev server)", () => {
     expect(data["@type"]).toBe("BeautySalon");
     expect(data.address.addressLocality).toBe("Kempten (Allgäu)");
     expect(data.openingHoursSpecification).toHaveLength(1);
-    // No ReserveAction while there is no booking page to reserve on.
-    expect(data).not.toHaveProperty("potentialAction");
+    // Booking runs through Altegio, so search engines get its start page.
+    expect(data.potentialAction).toEqual({
+      "@type": "ReserveAction",
+      target: "https://n1463826.alteg.io",
+    });
 
     const faq = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
       .map((m) => JSON.parse(m[1]))

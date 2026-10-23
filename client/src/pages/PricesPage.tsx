@@ -1,6 +1,6 @@
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import AltegioLink from "../components/AltegioLink";
+import BookingLink from "../components/BookingLink";
 import LocalizedLink from "../components/LocalizedLink";
 import { PriceGroup } from "../components/PriceTables";
 import { usePageMeta } from "../seo/usePageMeta";
@@ -96,9 +96,9 @@ export default function PricesPage() {
           <p className="mt-6 text-sm leading-relaxed text-ink-500">{t("prices.note")}</p>
         </section>
 
-        <AltegioLink to="general" className="btn-primary mt-8">
+        <BookingLink service="general" className="btn-primary mt-8">
           {t("cta.bookOnline")}
-        </AltegioLink>
+        </BookingLink>
       </section>
       <Faq page="prices" />
     </>

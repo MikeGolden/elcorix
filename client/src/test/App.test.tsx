@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, useLocation } from "react-router";
 import App from "../App";
+import { altegioLinks } from "../business";
 import BookingPage from "../pages/BookingPage";
 import { ConsentProvider } from "../consent/ConsentContext";
 import { navAnchors } from "../content";
@@ -36,11 +37,7 @@ function renderAt(path: string) {
   );
 }
 
-/**
- * The Altegio booking route is behind an (off) feature flag, so the page is
- * mounted on its own rather than routed to — the widget, its consent gate
- * and the page itself all still ship and are still covered.
- */
+/** The booking page on its own, inside the consent provider App supplies. */
 function renderBookingPage() {
   return render(
     <ConsentProvider>
@@ -130,43 +127,41 @@ describe("App", () => {
     expect(screen.queryByTestId("altegio-widget")).not.toBeInTheDocument();
   });
 
-  it("hides the booking block while the Altegio feature flag is off", () => {
+  it("shows the booking section on the home page, behind the consent placeholder", () => {
     renderAt("/");
-    expect(
-      screen.queryByRole("heading", { name: /book an appointment/i }),
-    ).not.toBeInTheDocument();
-    expect(screen.queryByTestId("altegio-consent-placeholder")).not.toBeInTheDocument();
-    // Nothing may point at a section that is no longer on the page — the
-    // hero CTA is repointed at the consultation request instead.
-    for (const link of screen.getAllByRole("link")) {
-      expect(link.getAttribute("href")).not.toMatch(/#booking$|\/booking$/);
-    }
-    expect(
-      screen.getAllByRole("link", { name: /get a consultation/i })[0],
-    ).toHaveAttribute("href", "/en#consultation");
+    const section = screen.getByRole("region", { name: "Book an appointment" });
+    expect(within(section).getByTestId("altegio-consent-placeholder")).toBeInTheDocument();
+    // Nothing from alteg.io loads before the visitor agrees.
+    expect(screen.queryByTestId("altegio-widget")).not.toBeInTheDocument();
   });
 
-  it("asks for no cookie consent while the flag is off — nothing needs it", async () => {
-    renderAt("/");
-    // The banner opens only after the stored decision has been read (an
-    // effect), so give it that tick before asserting it stays away.
-    await waitFor(() => expect(screen.getByRole("contentinfo")).toBeInTheDocument());
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Cookie settings" })).not.toBeInTheDocument();
-  });
-
-  it("leaves the cookie-consent storage line out of the privacy policy while the flag is off", async () => {
-    renderAt("/en/privacy");
-    expect(await screen.findByText(/^i18nextLng, to store the language/)).toBeInTheDocument();
-    expect(screen.queryByText(/^cookie-consent, to store your choice/)).not.toBeInTheDocument();
-  });
-
-  it("does not serve /booking while the flag is off", () => {
-    renderAt("/booking");
+  it("serves /booking and opens the calendar on the service in ?service=", async () => {
+    window.localStorage.setItem(
+      "cookie-consent",
+      JSON.stringify({ version: 1, decidedAt: new Date().toISOString(), booking: true }),
+    );
+    renderAt("/en/booking?service=beardContour");
     expect(
-      screen.getByRole("heading", { level: 1, name: /page not found/i }),
+      screen.getByRole("heading", { level: 1, name: /book an appointment/i }),
     ).toBeInTheDocument();
+    expect(await screen.findByTestId("altegio-widget")).toHaveAttribute(
+      "src",
+      altegioLinks.beardContour,
+    );
+  });
+
+  it("falls back to the start page for an unknown ?service=", async () => {
+    window.localStorage.setItem(
+      "cookie-consent",
+      JSON.stringify({ version: 1, decidedAt: new Date().toISOString(), booking: true }),
+    );
+    renderAt("/en/booking?service=https%3A%2F%2Fevil.example");
+    expect(await screen.findByTestId("altegio-widget")).toHaveAttribute("src", altegioLinks.general);
+  });
+
+  it("lists the cookie-consent storage line in the privacy policy", async () => {
+    renderAt("/en/privacy");
+    expect(await screen.findByText(/^cookie-consent, to store your choice/)).toBeInTheDocument();
   });
 
   it("shows only the zone prices on the home page and teases the packages", () => {

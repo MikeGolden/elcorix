@@ -40,7 +40,7 @@ describe("legal documents", () => {
     for (const key of ["terms", "appointmentTerms", "packageTerms"] as const) {
       expect(de[key].stand).toBe("Stand: 15.09.2026");
     }
-    expect(de.privacy.stand).toBe("Stand: 10. Oktober 2026");
+    expect(de.privacy.stand).toBe("Stand: 23. Oktober 2026");
   });
 
   it.each([
@@ -151,6 +151,7 @@ describe("legal documents", () => {
         for (const name of [
           "Hetzner Online GmbH",
           "OpenStreetMap Foundation",
+          "Altegio Europe KFT",
           "Meta Platforms Ireland Limited",
           "WhatsApp Ireland Limited",
           "Telegram",
@@ -183,7 +184,7 @@ describe("legal documents", () => {
           paragraphs: LegalBlock[];
         }[];
         const gated = sections.filter((section) => section.feature !== undefined);
-        expect(gated.map((section) => section.feature)).toEqual(["analytics"]);
+        expect(gated.map((section) => section.feature)).toEqual(["analytics", "altegio"]);
         expect(gated[0]!.title).toMatch(/^11\. .*Umami/);
         // Cross-references in the Umami text point at §3 and §6 only —
         // sections before it, which keep their numbers when it is hidden.
@@ -191,6 +192,28 @@ describe("legal documents", () => {
         expect(body).toContain("Hetzner");
         expect(body).toContain("14");
         expect(body).toMatch(/Global Privacy Control/);
+      },
+    );
+
+    it.each(Object.entries(all))(
+      "%s gates the Altegio section behind its flag, right after OpenStreetMap",
+      (_l, documents) => {
+        const sections = documents.privacy.sections as {
+          title: string;
+          feature?: string;
+          paragraphs: LegalBlock[];
+        }[];
+        const index = sections.findIndex((section) => section.feature === "altegio");
+        expect(sections[index - 1]!.title).toBe("12. OpenStreetMap");
+        expect(sections[index]!.title).toMatch(/^13\. .*Altegio/);
+        const body = sections[index]!.paragraphs.flatMap(blockTexts).join(" ");
+        expect(body).toContain("Altegio Europe KFT");
+        expect(body).toContain("1054 Budapest");
+        expect(body).toMatch(/(Art\.|ст\.) 28/);
+        expect(body).toContain("§ 25");
+        expect(body).toContain("https://alteg.io/en/info/privacy/");
+        // The "Altegio is not loaded" line went with the section's arrival.
+        expect(text(documents)).not.toMatch(/Altegio[^.]*(nicht geladen|not loaded|не завантажено|не загружается)/);
       },
     );
   });

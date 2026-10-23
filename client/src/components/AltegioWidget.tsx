@@ -1,19 +1,21 @@
 import { useTranslation } from "react-i18next";
-import { altegioBookingUrl, business } from "../config";
+import { altegioLinks, type AltegioService } from "../business";
+import { business } from "../config";
 import { useConsent } from "../consent/ConsentContext";
 import { track } from "../analytics";
 
 /**
- * Embeds the Altegio online-booking page (calendar, services, staff)
- * for the configured company — but only after the visitor has consented:
+ * Embeds the Altegio online-booking page (calendar, services, staff) —
+ * the start page, or one service already chosen (`service`) — but only after the visitor has consented:
  * the embed sets third-party cookies from alteg.io, so GDPR requires the
  * two-click pattern (placeholder first, iframe after opt-in). The
  * new-tab fallback link needs no consent — no third-party content loads
  * on our page.
  */
-export default function AltegioWidget() {
+export default function AltegioWidget({ service = "general" }: { service?: AltegioService }) {
   const { t } = useTranslation();
   const { consent, decide } = useConsent();
+  const src = altegioLinks[service];
 
   if (consent?.booking !== true) {
     return (
@@ -38,9 +40,9 @@ export default function AltegioWidget() {
         <p className="mt-5 text-sm">
           <a
             className="font-medium text-brand-600 underline underline-offset-4"
-            href={altegioBookingUrl}
+            href={src}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             {t("booking.fallbackLink", { businessName: business.name })}
           </a>
@@ -59,7 +61,10 @@ export default function AltegioWidget() {
         <iframe
           title={t("booking.widgetTitle")}
           data-testid="altegio-widget"
-          src={altegioBookingUrl}
+          // A new service is a new page in Altegio: remount rather than let
+          // the frame keep the old one's history.
+          key={src}
+          src={src}
           className="block h-[720px] w-full rounded-panel"
           loading="lazy"
           allow="payment"
@@ -70,9 +75,9 @@ export default function AltegioWidget() {
         {t("booking.fallbackQuestion")}{" "}
         <a
           className="font-medium text-brand-600 underline underline-offset-4"
-          href={altegioBookingUrl}
+          href={src}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           {t("booking.fallbackLink", { businessName: business.name })}
         </a>

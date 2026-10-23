@@ -6,11 +6,11 @@
  * not exist. The env-derived value lives in `config.ts`.
  *
  * `altegio` — the online-booking integration (the `<AltegioWidget>` embed,
- * the `#booking` landing section and the `/booking` route). Off by default
- * since 2026-09-09: the studio is not taking bookings through Altegio yet,
- * so the block is hidden rather than removed. Everything it needs is still
- * in the tree; set `VITE_ENABLE_ALTEGIO=true` at build time to bring the
- * section, the route, its sitemap entries and its prerendered shells back.
+ * the `#booking` landing section, the `/booking` route, the consent banner
+ * and the privacy policy's Altegio section). On by default since
+ * 2026-10-23, when the studio started taking bookings through Altegio;
+ * `VITE_ENABLE_ALTEGIO=false` at build time hides all of it again, and the
+ * booking buttons then fall back to new-tab links into Altegio.
  */
 export type Features = {
   altegio: boolean;
@@ -29,7 +29,7 @@ export function isUmamiWebsiteId(value: string | undefined): value is string {
 }
 
 /**
- * Anything but the exact string "true" leaves `altegio` off.
+ * Only the exact string "false" turns `altegio` off.
  *
  * `analytics` — self-hosted Umami (see `analytics.ts`), on when
  * `VITE_UMAMI_WEBSITE_ID` holds a website id. The flag also shows the
@@ -41,7 +41,7 @@ export function featuresFrom(env: {
   readonly VITE_UMAMI_WEBSITE_ID?: string;
 }): Features {
   return {
-    altegio: env.VITE_ENABLE_ALTEGIO === "true",
+    altegio: env.VITE_ENABLE_ALTEGIO !== "false",
     analytics: isUmamiWebsiteId(env.VITE_UMAMI_WEBSITE_ID),
   };
 }

@@ -95,8 +95,7 @@ hardening: [SECURITY.md → Server hardening](SECURITY.md#server-hardening-hetzn
 both images to GHCR on every push to `main`.
 
 - **client** — multi-stage build ([client/Dockerfile](client/Dockerfile)):
-  Vite production build (the Altegio company id is inlined via the
-  `VITE_ALTEGIO_COMPANY_ID` build arg), served by nginx with the SPA
+  Vite production build, served by nginx with the SPA
   fallback, gzip, immutable asset caching and the security headers from
   [SECURITY.md](SECURITY.md) (CSP, `frame-ancestors 'none'`, …) already in
   place ([docker/nginx.conf](docker/nginx.conf)).
@@ -185,12 +184,17 @@ Instagram, Facebook) stays in `client/src/config.ts`.
 
 ## Altegio integration
 
-The booking page embeds the Altegio-hosted booking flow (services, staff,
-calendar, confirmation) at `https://n<companyId>.alteg.io`.
+The booking page (`/booking`, and the `#booking` section on the home page)
+embeds the Altegio-hosted booking flow (services, staff, calendar,
+confirmation) behind a consent click. The URLs live in `altegioLinks` in
+[client/src/business.ts](client/src/business.ts): the start page plus one
+`select-services?o=s<serviceId>` link per bookable offer, which the price
+page's buttons open via `/booking?service=<key>`.
 
-1. In Altegio: Settings → Online booking → copy your booking link / company id.
-2. Set `ALTEGIO_COMPANY_ID` in `.env` (server) and `VITE_ALTEGIO_COMPANY_ID`
-   for the client build.
+`VITE_ENABLE_ALTEGIO=false` at build time hides the embed, the page, the
+consent banner and the policy section; the buttons then become new-tab
+links into Altegio. The server's `ALTEGIO_COMPANY_ID` in `.env` is separate
+and only feeds `GET /api/bookings/link`.
 
 The API also exposes `GET /api/bookings/link` (canonical booking URL) and
 `POST /api/bookings` (logs booking requests to Postgres for staff follow-up).
@@ -381,7 +385,7 @@ What gets tracked:
 | `consultation-request` | consultation form accepted by the API | `preferredDate`: yes/no |
 | `contact-message` | contact form accepted by the API | — |
 | `phone-click`, `email-click`, `whatsapp-click`, `instagram-click`, `facebook-click` | tap on any such link, site-wide | `placement`: `header`, `footer` or the section id |
-| `booking-consent` | Altegio calendar opted into (feature flag off today) | — |
+| `booking-consent` | Altegio calendar opted into | — |
 
 Nothing a visitor types is ever sent. A new link to one of those channels
 is picked up automatically (one delegated listener). A new event name goes

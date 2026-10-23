@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router";
+import { parseAltegioService } from "../business";
 import AltegioWidget from "../components/AltegioWidget";
 import ConsultationForm from "../components/ConsultationForm";
 import { usePageMeta } from "../seo/usePageMeta";
@@ -6,6 +8,10 @@ import { usePageMeta } from "../seo/usePageMeta";
 export default function BookingPage() {
   const { t } = useTranslation();
   usePageMeta("booking");
+  // "Ersttermin buchen" and "Bartkontur buchen" arrive with ?service=…
+  // and open the calendar on that service.
+  const [params] = useSearchParams();
+  const service = parseAltegioService(params.get("service"));
   return (
     <section
       aria-labelledby="booking-page-title"
@@ -16,7 +22,7 @@ export default function BookingPage() {
       </h1>
       <p className="mt-5 max-w-2xl text-[0.95rem] leading-relaxed">{t("booking.intro")}</p>
       <div className="mt-10">
-        <AltegioWidget />
+        <AltegioWidget service={service} />
       </div>
 
       <div className="mt-14 rounded-panel bg-surface-soft px-6 py-12 sm:px-10">

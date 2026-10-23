@@ -11,9 +11,10 @@ import {
 
 /**
  * The banner only exists while the Altegio flag is on (CookieBanner.tsx) —
- * it is the one thing it asks about. This file tests the banner and the
- * embed's gate, so it builds with the flag on; App.test.tsx covers the
- * shipped default, where neither the banner nor its footer link renders.
+ * it is the one thing it asks about. The flag is on by default since
+ * 2026-10-23; the mock pins it here so this file keeps testing the banner
+ * and the embed's gate whatever a local .env says. altegioFlagOff.test.tsx
+ * covers a build with the flag off.
  */
 vi.mock("../config", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../config")>();
@@ -28,12 +29,7 @@ function renderAt(path: string) {
   );
 }
 
-/**
- * `/booking` is behind the (off) Altegio feature flag, so the page is
- * mounted directly. The consent gate is the reason the embed can come back
- * at any time without a GDPR review, so it stays fully covered while the
- * block is hidden.
- */
+/** The booking page mounted directly, inside its consent provider. */
 function renderBookingPage() {
   return render(
     <ConsentProvider>
@@ -175,7 +171,7 @@ describe("legal pages", () => {
   it("renders the German policy verbatim, with no translation note", async () => {
     storeConsent(true);
     renderAt("/de/datenschutz");
-    expect(await screen.findByText("Stand: 10. Oktober 2026")).toBeInTheDocument();
+    expect(await screen.findByText("Stand: 23. Oktober 2026")).toBeInTheDocument();
     expect(screen.queryByTestId("legal-translation-note")).toBeNull();
     expect(
       screen.getByText(
@@ -184,14 +180,18 @@ describe("legal pages", () => {
     ).toBeInTheDocument();
   });
 
-  it("says Altegio is not loaded and does not cross-link the contract terms", async () => {
-    // The policy of 17.09.2026 has no Altegio section: switching the widget
-    // on (VITE_ENABLE_ALTEGIO) needs a new policy text first.
+  it("describes Altegio and does not cross-link the contract terms", async () => {
     storeConsent(true);
     renderAt("/en/privacy");
+    // Numbered 12 or 13: sections are renumbered around the Umami one.
     expect(
-      await screen.findByText(/The Altegio booking system is currently not loaded either\./),
+      await screen.findByRole("heading", { name: /^\d+\. Online booking with Altegio$/ }),
     ).toBeInTheDocument();
+    expect(screen.getByText(/^Altegio Europe KFT/)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "https://alteg.io/en/info/privacy/" }),
+    ).toHaveAttribute("href", "https://alteg.io/en/info/privacy/");
+    expect(screen.queryByText(/Altegio booking system is currently not loaded/)).toBeNull();
     // Not a contract document, so no "Related terms" cross-links.
     expect(
       screen.queryByRole("navigation", { name: "Related terms" }),

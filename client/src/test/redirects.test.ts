@@ -63,6 +63,8 @@ describe("legacy URL redirects", () => {
   });
 
   it("leaves out anything pointing at a flagged-off route", () => {
-    expect([...map.keys()].some((from) => from.endsWith("/booking"))).toBe(false);
+    expect(map.get("/de/booking")).toBe("/de/termin-vereinbaren");
+    const withoutBooking = redirects(publicRoutes({ ...features, altegio: false }));
+    expect([...withoutBooking.keys()].some((from) => from.endsWith("/booking"))).toBe(false);
   });
 });

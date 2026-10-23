@@ -101,8 +101,7 @@ services:
       context: .
       dockerfile: client/Dockerfile
       args:
-        VITE_ALTEGIO_COMPANY_ID: ${ALTEGIO_COMPANY_ID:-000000}
-        VITE_ENABLE_ALTEGIO: ${VITE_ENABLE_ALTEGIO:-false}
+        VITE_ENABLE_ALTEGIO: ${VITE_ENABLE_ALTEGIO:-true}
         # Umami tracker (profile "analytics" below). Empty id = no tracker,
         # no analytics section in the privacy policy — see client/src/analytics.ts.
         VITE_UMAMI_WEBSITE_ID: ${UMAMI_WEBSITE_ID:-}

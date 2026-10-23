@@ -52,16 +52,16 @@ test.describe("Deep-link routes", () => {
     }
   });
 
-  test("Altegio booking links open in a new tab and never push the page sideways", async ({ page }) => {
+  test("booking buttons lead to the calendar and never push the page sideways", async ({ page }) => {
     await page.goto("/de/preise");
     const men = page.getByTestId("prices-first-visit-men");
     await expect(men.getByRole("link", { name: "Ersttermin buchen" })).toHaveAttribute(
       "href",
-      "https://n1463826.alteg.io/company/1390972/personal/select-master?o=s13920268",
+      "/de/termin-vereinbaren?service=firstVisitMen",
     );
     const beard = page.getByRole("link", { name: "Bartkontur buchen" });
     await expect(beard).toBeVisible();
-    await expect(beard).toHaveAttribute("target", "_blank");
+    await expect(beard).toHaveAttribute("href", "/de/termin-vereinbaren?service=beardContour");
     for (const width of [390, 640, 768, 1024, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       for (const path of ["/de", "/de/preise"]) {
@@ -162,18 +162,29 @@ test.describe("Deep-link routes", () => {
     await expect(page).toHaveURL(/\/en$/);
   });
 
-  test("the hidden Altegio booking block is nowhere on the site", async ({ page }) => {
-    // The flag is off (client/src/features.ts): no landing section, no
-    // embed, no route, and nothing linking to either.
+  test("the booking section and the booking page show the calendar after consent", async ({ page }) => {
+    // Altegio itself is stubbed: the test is about our page, not their uptime.
+    await page.route("https://n1463826.alteg.io/**", (route) =>
+      route.fulfill({ contentType: "text/html", body: "<title>Altegio</title><h1>Altegio stub</h1>" }),
+    );
     await page.goto("/en");
-    await expect(page.locator("#booking")).toHaveCount(0);
-    await expect(page.getByTestId("altegio-consent-placeholder")).toHaveCount(0);
-    await expect(page.locator('a[href$="#booking"], a[href$="/booking"]')).toHaveCount(0);
+    await expect(page.locator("#booking")).toHaveCount(1);
+    await expect(page.locator("#booking").getByTestId("altegio-consent-placeholder")).toBeVisible();
+    await expect(page.getByTestId("altegio-widget")).toHaveCount(0);
 
-    await page.goto("/en/booking");
-    await expect(
-      page.getByRole("heading", { level: 1, name: "Page not found" }),
-    ).toBeVisible();
+    await page.goto("/de/preise");
+    await page.getByRole("dialog").getByRole("button", { name: "Nur notwendige" }).click();
+    await page.getByTestId("prices-first-visit-women").getByRole("link", { name: "Ersttermin buchen" }).click();
+    await expect(page).toHaveURL(/\/de\/termin-vereinbaren\?service=firstVisitWomen$/);
+    await page.getByRole("button", { name: /Kalender laden/ }).click();
+    const frame = page.getByTestId("altegio-widget");
+    await expect(frame).toHaveAttribute(
+      "src",
+      "https://n1463826.alteg.io/company/1390972/personal/select-services?o=s13920267",
+    );
+    await expect(page.frameLocator('[data-testid="altegio-widget"]').getByRole("heading")).toHaveText(
+      "Altegio stub",
+    );
   });
 
   // Was the /booking page; that route is behind an off feature flag

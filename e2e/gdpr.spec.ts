@@ -1,13 +1,12 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("GDPR consent", () => {
-  // The Altegio booking block is hidden behind an off feature flag
-  // (client/src/features.ts), so /booking is not served and the embed never
-  // renders. The consent gate itself is still covered by the unit tests in
-  // client/src/test/consent.test.tsx; un-skip this together with the flag.
-  test.skip("banner gates the Altegio calendar until consent and persists", async ({
+  test("banner gates the Altegio calendar until consent and persists", async ({
     page,
   }) => {
+    await page.route("https://n1463826.alteg.io/**", (route) =>
+      route.fulfill({ contentType: "text/html", body: "<h1>Altegio stub</h1>" }),
+    );
     await page.goto("/en/booking");
     const banner = page.getByRole("dialog", {
       name: "Cookies & external services",
@@ -34,23 +33,40 @@ test.describe("GDPR consent", () => {
     await expect(page.getByTestId("altegio-widget")).toBeVisible();
   });
 
-  // The banner only asks about the Altegio calendar, which is behind the
-  // off flag — so it is not rendered at all (CookieBanner.tsx). The banner
-  // and its footer "Cookie settings" flow are unit-tested with the flag on
-  // in client/src/test/consent.test.tsx.
-  test("asks for no consent while nothing on the site needs it", async ({ page }) => {
+  test("asks once, and the footer reopens the choice", async ({ page }) => {
+    await page.route("https://n1463826.alteg.io/**", (route) =>
+      route.fulfill({ contentType: "text/html", body: "<h1>Altegio stub</h1>" }),
+    );
+    let altegioRequests = 0;
+    page.on("request", (request) => {
+      if (request.url().includes("alteg.io")) altegioRequests += 1;
+    });
     await page.goto("/en");
-    await page.waitForLoadState("networkidle");
-    await expect(page.getByRole("dialog")).toHaveCount(0);
-    await expect(page.locator("footer").getByRole("button", { name: "Cookie settings" })).toHaveCount(0);
-    // Nothing was written that would need a consent record either.
-    expect(await page.evaluate(() => localStorage.getItem("cookie-consent"))).toBeNull();
+    const banner = page.getByRole("dialog", { name: "Cookies & external services" });
+    await expect(banner).toBeVisible();
+    await banner.getByRole("button", { name: "Accept all" }).click();
+    await expect(banner).toBeHidden();
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("cookie-consent")!));
+    expect(stored).toMatchObject({ version: 1, booking: true });
+
+    await page.locator("footer").getByRole("button", { name: "Cookie settings" }).click();
+    await expect(banner).toBeVisible();
+    await banner.getByRole("button", { name: "Only necessary" }).click();
+    // Declined: from here on, not one request may reach Altegio.
+    altegioRequests = 0;
+    await page.goto("/en/booking");
+    await expect(page.getByTestId("altegio-consent-placeholder")).toBeVisible();
+    await page.goto("/en");
+    await expect(page.locator("#booking").getByTestId("altegio-consent-placeholder")).toBeVisible();
+    expect(altegioRequests).toBe(0);
   });
 
   test("privacy policy and imprint are reachable from the footer", async ({
     page,
   }) => {
     await page.goto("/en");
+    // The banner sits over the bottom of the page until the visitor decides.
+    await page.getByRole("dialog").getByRole("button", { name: "Only necessary" }).click();
 
     const footer = page.locator("footer");
     await footer.getByRole("link", { name: "Privacy policy" }).click();

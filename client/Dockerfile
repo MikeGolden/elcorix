@@ -7,8 +7,6 @@ WORKDIR /app
 # Vite inlines VITE_* variables into the bundle at build time.
 # NOTE: .env.local is excluded from the build context (.dockerignore), so
 # every VITE_* variable must be passed as a build ARG here.
-ARG VITE_ALTEGIO_COMPANY_ID=000000
-ENV VITE_ALTEGIO_COMPANY_ID=$VITE_ALTEGIO_COMPANY_ID
 # The booking block is compiled out unless this is "true" — see
 # client/src/features.ts.
 ARG VITE_ENABLE_ALTEGIO=false

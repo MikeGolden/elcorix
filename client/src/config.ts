@@ -4,16 +4,10 @@
 // The static half sits in src/business.ts so the SEO prerender plugin can
 // import it without an environment; this module adds everything that is
 // derived from `import.meta.env` at build time.
-import { staticBusiness, sanitizeCompanyId, altegioBookingUrlFor } from "./business";
+import { staticBusiness } from "./business";
 import { featuresFrom } from "./features";
 
-export const business = {
-  ...staticBusiness,
-  /** Altegio booking page / widget — see sanitizeCompanyId. */
-  altegioCompanyId: sanitizeCompanyId(import.meta.env.VITE_ALTEGIO_COMPANY_ID),
-} as const;
-
-export const altegioBookingUrl = altegioBookingUrlFor(business.altegioCompanyId);
+export const business = staticBusiness;
 
 /** Build-time feature flags — see src/features.ts. */
 export const features = featuresFrom(import.meta.env);
