@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { business, features } from "../config";
 import { useConsent } from "../consent/ConsentContext";
 import Logo from "./Logo";
+import { FacebookIcon, InstagramIcon } from "./icons";
 
 /**
  * The site's own pages. Without these the price, gallery and contact
@@ -16,7 +17,7 @@ const pageLinks = [
 ] as const;
 
 /**
- * The Figma footer is a single indigo band: the wordmark on the left and
+ * The Figma footer is a single brand-blue band: the wordmark on the left and
  * the page and legal links on the right. "Cookie-Einstellungen" is added to that
  * row — the consent decision has to stay changeable from every page —
  * but only while there is a decision to make (see CookieBanner).
@@ -35,20 +36,41 @@ const linkClass =
 
 const pageLinkClass = "text-base font-semibold text-white transition-colors hover:text-white/80";
 
+/** On every page — the contact block is only on the home and contact pages. */
+const socialLinks = [
+  { name: "Instagram", href: business.instagram, Icon: InstagramIcon },
+  { name: "Facebook", href: business.facebook, Icon: FacebookIcon },
+] as const;
+
 export default function Footer() {
   const { t } = useTranslation();
   const { openSettings } = useConsent();
   return (
     <footer className="pt-16">
-      {/* The indigo band spans the viewport; only its content keeps the
+      {/* The blue band spans the viewport; only its content keeps the
           1200px column of the rest of the page. */}
       <div className="rounded-t-panel bg-brand-700 py-10 sm:py-12">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-7 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <Logo variant="light" />
-            <p className="mt-2 text-xs text-white/60">
+            <p className="mt-2 text-xs text-white/80">
               © {new Date().getFullYear()} {business.name}
             </p>
+            <ul className="mt-4 flex gap-3">
+              {socialLinks.map(({ name, href, Icon }) => (
+                <li key={name}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={name}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                  >
+                    <Icon />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
           <div className="flex flex-col gap-4">
             {/* Pages first, then the legal row — the order a visitor looks for them. */}

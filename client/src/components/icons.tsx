@@ -131,3 +131,27 @@ export function CalendarIcon({ className = "h-5 w-5" }: IconProps) {
     </svg>
   );
 }
+
+/** Outline camera glyph, drawn to match the line icons above. */
+export function InstagramIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <g fill="none" stroke="currentColor" strokeWidth="1.8">
+        <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+        <circle cx="12" cy="12" r="3.9" />
+      </g>
+      <circle cx="17.1" cy="6.9" r="1.15" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function FacebookIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...base}>
+      <path
+        fill="currentColor"
+        d="M13.6 21v-7.4h2.5l.4-3h-2.9V8.8c0-.9.3-1.5 1.5-1.5h1.5V4.6c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.3H8.2v3h2.5V21h2.9z"
+      />
+    </svg>
+  );
+}

@@ -24,9 +24,14 @@
 /*
  * elcorix visual language, taken from the Figma file
  * (figma.com/design/L3SYAnqXeHiD81Ny4cdVmF/elcorix):
- * white page, soft blue-grey bands, one deep indigo used for every
+ * white page, soft blue-grey bands, one brand blue used for every
  * heading, button and the footer, generous 16px corner radii on every
  * photo and card, Manrope for headings and Inter for copy.
+ *
+ * The brand blue is #0013ff (brand-700), set by the studio on 2026-11-07 in
+ * place of the Figma indigo #26397f. The rest of the scale keeps its hue
+ * (OKLCH h≈264) and steps lightness around it; brand-600 (links) is 6.5:1
+ * and brand-700 8.3:1 against white.
  *
  *   brand-600  section headings and links
  *   brand-700  primary buttons, footer band, H1
@@ -38,16 +43,16 @@
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
 
-  --color-brand-50: #f2f5fc;
-  --color-brand-100: #e4eaf8;
-  --color-brand-200: #c9d5f0;
-  --color-brand-300: #9dafe0;
-  --color-brand-400: #6a83c9;
-  --color-brand-500: #4460b4;
-  --color-brand-600: #2c4aa8;
-  --color-brand-700: #26397f;
-  --color-brand-800: #1e2d64;
-  --color-brand-900: #16224a;
+  --color-brand-50: #f0f5ff;
+  --color-brand-100: #dfeaff;
+  --color-brand-200: #bfd5ff;
+  --color-brand-300: #8eb3ff;
+  --color-brand-400: #4e84ff;
+  --color-brand-500: #215cff;
+  --color-brand-600: #0842ff;
+  --color-brand-700: #0013ff;
+  --color-brand-800: #001ebc;
+  --color-brand-900: #00008d;
 
   --color-ink-900: #14203f;
   --color-ink-700: #3d4a6b;

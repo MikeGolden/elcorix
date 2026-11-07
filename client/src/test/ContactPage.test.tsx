@@ -28,12 +28,12 @@ describe("ContactPage", () => {
     expect(
       screen.getByRole("link", { name: new RegExp(escapeRegExp(business.email)) }),
     ).toHaveAttribute("href", `mailto:${business.email}`);
-    expect(
-      screen.getByRole("link", { name: business.instagramHandle }),
-    ).toHaveAttribute("href", business.instagram);
-    expect(
-      screen.getByRole("link", { name: new RegExp(`^${escapeRegExp(business.facebookLabel)}$`) }),
-    ).toHaveAttribute("href", business.facebook);
+    const instagram = screen.getByRole("link", { name: `Instagram ${business.instagramHandle}` });
+    expect(instagram).toHaveAttribute("href", business.instagram);
+    expect(instagram).toHaveTextContent(business.instagramHandle);
+    const facebook = screen.getByRole("link", { name: `Facebook ${business.facebookLabel}` });
+    expect(facebook).toHaveAttribute("href", "https://www.facebook.com/elcorix.de");
+    expect(facebook).toHaveTextContent(business.facebookLabel);
   });
 
   it("links the privacy policy without a consent checkbox and warns against health data", () => {

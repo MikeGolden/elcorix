@@ -50,6 +50,7 @@ export default function ContactSection() {
                 <a
                   className="text-brand-600 hover:underline"
                   href={business.instagram}
+                  aria-label={`Instagram ${business.instagramHandle}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -63,6 +64,7 @@ export default function ContactSection() {
                 <a
                   className="text-brand-600 hover:underline"
                   href={business.facebook}
+                  aria-label={`Facebook ${business.facebookLabel}`}
                   target="_blank"
                   rel="noreferrer"
                 >

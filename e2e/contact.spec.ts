@@ -13,14 +13,26 @@ test.describe("Contact page", () => {
       main.getByRole("link", { name: "info@elcorix.de" }).first(),
     ).toHaveAttribute("href", /^mailto:/);
     await expect(
-      main.getByRole("link", { name: "@elcorix.de", exact: true }),
-    ).toHaveAttribute(
-      "href",
-      /^https:\/\/www\.instagram\.com\/elcorix\.de$/,
-    );
+      main.getByRole("link", { name: "Instagram @elcorix.de", exact: true }),
+    ).toHaveAttribute("href", "https://www.instagram.com/elcorix.de");
     await expect(
-      main.getByRole("link", { name: "elcorix", exact: true }),
-    ).toHaveAttribute("href", "https://www.facebook.com/61595256750262");
+      main.getByRole("link", { name: "Facebook @elcorix.de", exact: true }),
+    ).toHaveAttribute("href", "https://www.facebook.com/elcorix.de");
+  });
+
+  test("links Instagram and Facebook from the footer of every page", async ({ page }) => {
+    for (const path of ["/de", "/de/preise", "/en/gallery"]) {
+      await page.goto(path);
+      const footer = page.locator("footer");
+      await expect(footer.getByRole("link", { name: "Instagram", exact: true })).toHaveAttribute(
+        "href",
+        "https://www.instagram.com/elcorix.de",
+      );
+      await expect(footer.getByRole("link", { name: "Facebook", exact: true })).toHaveAttribute(
+        "href",
+        "https://www.facebook.com/elcorix.de",
+      );
+    }
   });
 
   test("shows the opening hours from the design", async ({ page }) => {
