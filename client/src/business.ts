@@ -32,9 +32,10 @@ export const staticBusiness = {
   facebookLabel: "@elcorix.de",
   /**
    * WhatsApp deep link (digits only, international format, no "+").
-   * Must match the business phone above.
+   * Since 2026-11-14 this is the studio's own WhatsApp Business number,
+   * separate from the phone above.
    */
-  whatsapp: "https://wa.me/4915562514872",
+  whatsapp: "https://wa.me/4915567924359",
   /**
    * Canonical production origin — used for <link rel="canonical">, Open
    * Graph URLs and JSON-LD. Keep public/robots.txt in sync when changing it

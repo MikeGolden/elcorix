@@ -132,7 +132,7 @@ describe("link tracking", () => {
   it.each([
     ["tel:+4915562514872", "phone-click"],
     ["mailto:info@elcorix.de", "email-click"],
-    ["https://wa.me/4915562514872", "whatsapp-click"],
+    ["https://wa.me/4915567924359", "whatsapp-click"],
     ["https://api.whatsapp.com/send?phone=49", "whatsapp-click"],
     ["https://instagram.com/elcorix", "instagram-click"],
     ["https://www.instagram.com/elcorix.de", "instagram-click"],
@@ -165,7 +165,7 @@ describe("link tracking", () => {
     const umamiTrack = stubUmami();
     document.body.innerHTML = `
       <section id="contact">
-        <a id="wa" href="https://wa.me/4915562514872" target="_blank"><span id="icon">WA</span></a>
+        <a id="wa" href="https://wa.me/4915567924359" target="_blank"><span id="icon">WA</span></a>
         <a id="tel" href="tel:+4915562514872">call</a>
         <a id="prices" href="/de/prices">prices</a>
       </section>`;
